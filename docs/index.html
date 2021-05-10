@@ -4,6 +4,8 @@ layout: default
 
 <div class="posts">
   <h1>Agenda</h1>
+  <hr>
+
   {% for post in site.posts %}
     <article class="post">
       {% if post.title == "Agenda" %}
@@ -16,6 +18,8 @@ layout: default
   {% endfor %}
   
   <h1>Minutes</h1>
+  <hr>
+
   {% for post in site.posts %}
     <article class="post">
       {% if post.title == "Minutes" %}
