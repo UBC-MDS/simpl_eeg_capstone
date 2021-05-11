@@ -7,48 +7,30 @@
 **Date**: May 13, 2021
 
 ## 3.1. Executive Summary
-We are developing a Python package and dashboard for SimPL, a research lab that explores research questions concerning the human brain, to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. 
-
-After learning about SimPL’s problem with limited visualization methods, we are proposing the following deliverables:
+We are developing a Python package and dashboard for SimPL, a research lab that explores research questions concerning the human brain, to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. After learning about SimPL’s problem with limited visualization methods, we are proposing the following deliverables:
 1) A Python package for generating advanced EEG visualizations and metrics
 2) An interactive web app to provide a user interface for the package
+If time permits, we will expand our deliverables to include a stretch goal of building a data pipeline for unsupervised learning methods such as clustering.
 
-
-We will expand our deliverables to include one of the following stretch goals if time permits:
-1) Including EEG preprocessing functionality for the Python package
-2) Answering a research question by building a data pipeline for unsupervised learning methods such as clustering
-  
 ## 3.2 Introduction
 ### 3.2.1 Background
 SimPL is a research lab in the department of Mechanical Engineering at UBC. They are developing quantitative and sensitive methods to evaluate the electrophysiological changes after sport head injuries. In addition, SimPL is developing a mobile brain and body imaging system, head impact detection using machine learning, and investigating concussion mechanisms.
 
-Concussion and brain injuries in general are invisible. The underlying mechanisms of brain dysfunction is not clear yet. SimpPL have employed electroencephalograms (EEG) to measure and detect potential changes in the brain electrophysiology due to sports head impacts. The team was approached to design novel solutions and methods to extract and visualize the human brain state using EEG data and to apply data science techniques learned in the MDS program. We have received a set of multichannel EEG data containing multi-participant and multi-trial experimental data.
+Concussion and brain injuries in general are invisible. The underlying mechanisms of brain dysfunction are not clear yet. SimpPL have employed electroencephalograms (EEG) to measure and detect potential changes in the brain electrophysiology due to sports head impacts. The team was approached to design novel solutions and methods to extract and visualize the human brain state using EEG data and to apply data science techniques learned in the MDS program. We have received a set of multichannel EEG data containing multi-participant and multi-trial experimental data.
 
-The main benefit of EEG technology is that it is unobtrusive and inexpensive. EEG data has high dimensionality, so humans need visualizations and metrics in order to interpret it. Currently the visualizations options for EEG data are limited. By extending the number of visualizations available and making them convenient to access our tool will help scientists analyze their EEG data and provide an intuition of what the effects of their experiments may be on the brain. 
-
-<Description for stretch goal>
+The main benefit of EEG technology is that it is unobtrusive and inexpensive. EEG data has high dimensionality, so humans need visualizations and metrics in order to interpret it. Currently, the visualizations options for EEG data are limited. By extending the number of visualizations available and making them convenient to access, our tool will help scientists analyze their EEG data and provide an intuition of what the effects of their experiments may be on the brain. Additionally, our machine learning stretch goal could uncover patterns in the data which could not be determined based on visualization alone.
 
 ### 3.2.1 Main Goals
-We will be designing a custom, well-documented Python package which will provide the ability to conveniently produce advanced visualizations and metrics for specified time ranges of EEG data. The package at a minimum include the following functionality:
+We will be designing a customized, well-documented Python package which will provide the ability to conveniently produce advanced visualizations and metrics for specified time ranges of EEG data. At a minimum, the package will include the following functionality:
+1) _Raw voltage values_ - produce raw voltage values to measure the EEG amplifier
 
-1) Raw voltage values
-    - Produce raw voltage values to measure the EEG amplifier
+2) _Connectivity_ - calculate the correlation between nodes or groups of nodes for specified time ranges
 
-2) Power changes
-    - Generate the power changes to represent the magnitude of the signal as a function of frequency
+3) _2D head map video_ - generate an animated 2D topographic heatmap of the voltage values recorded by each node of the EEG device. Includes the ability to take snapshots of power changes that represent the magnitude of the signal as a function of frequency
 
-3) Connectivity 
-    - Calculate the correlation between nodes or groups of nodes for specified time ranges
+4) _3D skull map video_ - generate an animated topographic heatmap of voltage values mapped to a 3D model of skull
 
-4) 2D head map video 
-    - Generate an animated 2D topographic heatmap of the voltage values recorded by each node of the EEG device
-
-5) 3D skull map video
-    - Generate an animated 3D topographic heatmap of the voltage values recorded by each node of the EEG device
-
-6) Interpolated 3D brain map
-    - Generate an animated topographic heatmap of voltage values mapped to a 3D model of the brain by interpolating voltage values to their presumed location in the brain
-
+5) _Interpolated 3D brain map_ - generate an animated topographic heatmap of voltage values mapped to a 3D model of the brain by interpolating voltage values to their presumed location in the brain.
 
 We will also build an interactive web application to serve as a user interface (UI) for the package. The web application will be accessible by running a simple command and will provide widgets for customizing settings. At a minimum, the widgets will provide the following options: 
 1) File selection
@@ -60,12 +42,8 @@ We will also build an interactive web application to serve as a user interface (
 3) Frame rate
     - The frame rate for the animations
 
-### 3.2.2 Stretch goals
-Stretch goals will only be delivered if sufficient time is available after completing the main deliverables. The decision of which stretch goal to pursue is at the discretion of the Capstone partner and mentor.
-
-The first possible stretch goal is to implement additional package functionality for a preprocessing pipeline to denoise and clean raw EEG data.
-
-The second possible stretch goal is to create a data pipeline for pattern identifying clustering of the data, which is an unsupervised learning method. It might involve decomposing the signal into alpha, beta, theta, and delta waves to look for structure, and then use a Markov model or hidden Markov model to carry out the clustering task. 
+### 3.2.2 Stretch goal
+If sufficient time is available after completing the main deliverables we will complete an additional deliverable. Our stretch goal is to create a data pipeline for pattern identifying clustering of the data, which is an unsupervised learning method. It might involve decomposing the signal into alpha, beta, theta, and delta waves to look for structure, and then use a Markov model or hidden Markov model to carry out the clustering task. 
 
 ## 3.3. Data Science Techniques
 ### 3.3.1 Source Data
@@ -73,26 +51,23 @@ We will be using cleaned EEG data from 8 provided experiments as input for our m
 - `fixica.set` (metadata) 
 - `fixica.fdt` (raw data)
 - `impact locations.mat` (impact timestamps)
-- `fixedareas.mat`
+- `fixedareas.mat` (record of values that have been altered in cleaning process) 
 - 33 impacts per experiment
-- 19 channels (one for each electrode)
+- 19 channels, one for each electrode
 - Approximate duration of 1.5 hours
 - Sampling rate of 2048 Hz (samples per second)
 
 ### 3.3.2 Techniques
-The python visualization package will mainly be developed using an open source library called [MNE](https://mne.tools/stable/index.html). Custom visualizations may also be built with the [Matplotlib](https://matplotlib.org/) library. Function development will be driven by the needs of the partner, improving ease-of-use compared to using MNE or Matplotlib directly. Clear documentation and code will be prioritized to allow package functionality to easily be updated following the completion of the Capstone. The main difficulties are expected to be  
-wrangling and transforming the data into the evoked format which MNE requires and long rendering times for visualizations due to the high dimensionality of data (1GB per experiment: 19 nodes * 1.5 hours sampled at 2048 Hz).
+The Python visualization package will mainly be developed using the open source library [MNE](https://mne.tools/stable/index.html). Custom visualizations may also be built with [Matplotlib](https://matplotlib.org/). Function development will be driven by the needs of the partner, improving ease-of-use compared to using MNE or Matplotlib directly. Clear documentation and code will be prioritized to allow package functionality to easily be updated following the completion of the Capstone. The main difficulties are expected to be  
+wrangling and transforming the data into the evoked format which MNE requires and long rendering times for visualizations due to the high dimensionality of data.
 
-For the interactive user interface we are planning to use an open source framework called [Streamlit](https://streamlit.io/) designed for creating web apps from Python scripts. Streamlit benefits from being lightweight and requiring no front-end experience. This will facilitate ease of updating in the future. The main difficulty will be to design a straightforward but informative UI with a large number of visualizations.
+For the interactive user interface we are planning to use an open source framework called [Streamlit](https://streamlit.io/) which is designed for creating web apps from Python scripts. Streamlit benefits from being lightweight and requiring no front-end experience. This will facilitate ease of updating in the future. The main difficulty will be to design a straightforward but informative UI with a large number of visualizations.
 
-Preprocessing functions can be implemented as an extension of our python package using the MNE library. The main difficulty is that EEG data contains a large amount of noise, so many preprocessing steps are required. Our tool would also need to be as good as the current denoising software which our partner uses (EEGLAB) in order to be useful. EEGLAB is a GUI based-software specifically designed for processing EEG data.
-
-For the machine learning classification/clustering, [SciPy](https://www.scipy.org/) can be used to perform data wrangling and decompose data into frequency-specific bandwidths. The use of a Markov or Hidden Markov model for the clustering tasks was recommended by the Capstone partner. Other researchers have historically used k-means clustering, support vector machine (SVM) or CNN models in the classification process, which are viable alternatives. A pipeline can be built using [scikit-learn](https://scikit-learn.org/stable/) or [PyTorch](https://pytorch.org/) and can be delivered in either a Jupyter notebook or Python script. The main difficulty is that domain expertise is required for interpretation, so identifying clusters will be difficult without significant assistance from the capstone partner. Additionally, the data likely does not contain consistent results between experiments, complicating the testing of pattern identification tools.
-
+For the machine learning classification/clustering stretch goal, [SciPy](https://www.scipy.org/) can be used to perform data wrangling and decompose data into frequency-specific bandwidths. We may use a Markov or Hidden Markov model for the clustering tasks, as recommended by our Capstone partner. Other researchers have historically used k-means clustering, support vector machine (SVM) or CNN models in the classification process, which are viable alternatives. The pipeline will  be built using [scikit-learn](https://scikit-learn.org/stable/) or [PyTorch](https://pytorch.org/) and can be delivered in either a Jupyter notebook or Python script. The main difficulty is that domain expertise is required for interpretation, so identifying clusters will be difficult without significant assistance from the Capstone partner. Additionally, the data likely does not contain consistent results between experiments, complicating the testing of pattern identification tools.
 
 ## 3.4 Timeline
 **Milestone 1 - May 21, 2021**
-MVP for Python package visualizations and metrics (6 functions)
+MVP for Python package visualizations and metrics (5 functions)
 
 **Milestone 2 - May 28, 2021**
 MVP for interactive user interface, first round improvements for package
