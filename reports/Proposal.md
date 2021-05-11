@@ -1,3 +1,7 @@
+---
+output:
+  pdf_document: default
+---
 # DSCI 591: Capstone Project – Proposal Report for Sensing in Biomechanical Processes Lab (SimPL)
 
 **Team members**: Matthew Pin, Mo Garoub, Sasha Babicki, Zhanyi (Yiki) Su
@@ -8,8 +12,11 @@
 
 ## 3.1. Executive Summary
 We are developing a Python package and dashboard for SimPL, a research lab that explores research questions concerning the human brain, to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. After learning about SimPL’s problem with limited visualization methods, we are proposing the following deliverables:
+
 1) A Python package for generating advanced EEG visualizations and metrics
+
 2) An interactive web app to provide a user interface for the package
+
 If time permits, we will expand our deliverables to include a stretch goal of building a data pipeline for unsupervised learning methods such as clustering.
 
 ## 3.2 Introduction
@@ -22,23 +29,27 @@ The main benefit of EEG technology is that it is unobtrusive and inexpensive. EE
 
 ### 3.2.1 Main Goals
 We will be designing a customized, well-documented Python package which will provide the ability to conveniently produce advanced visualizations and metrics for specified time ranges of EEG data. At a minimum, the package will include the following functionality:
-1) _Raw voltage values_ - produce raw voltage values to measure the EEG amplifier
 
-2) _Connectivity_ - calculate the correlation between nodes or groups of nodes for specified time ranges
+1) Raw voltage values - produce raw voltage values to measure the EEG amplifier
 
-3) _2D head map video_ - generate an animated 2D topographic heatmap of the voltage values recorded by each node of the EEG device. Includes the ability to take snapshots of power changes that represent the magnitude of the signal as a function of frequency
+3) Connectivity - calculate the correlation between nodes or groups of nodes for specified time ranges
 
-4) _3D skull map video_ - generate an animated topographic heatmap of voltage values mapped to a 3D model of skull
+4) 2D head map video - generate an animated 2D topographic heatmap of the voltage values recorded by each node of the EEG device. Includes the ability to take snapshots of power changes that represent the magnitude of the signal as a function of frequency
 
-5) _Interpolated 3D brain map_ - generate an animated topographic heatmap of voltage values mapped to a 3D model of the brain by interpolating voltage values to their presumed location in the brain.
+5) 3D skull map video - generate an animated topographic heatmap of voltage values mapped to a 3D model of skull
+
+6) Interpolated 3D brain map - generate an animated topographic heatmap of voltage values mapped to a 3D model of the brain by interpolating voltage values to their presumed location in the brain.
 
 We will also build an interactive web application to serve as a user interface (UI) for the package. The web application will be accessible by running a simple command and will provide widgets for customizing settings. At a minimum, the widgets will provide the following options: 
+
 1) File selection
     - Depending on the preferences of the partner, this can be linked directly to their local files or files on cloud
     - If requested by the partner, a file upload option is also feasible
+    
 2) Two time selection options
     - The user may input epoch timing data and then select epochs to display
     - The user may input a specific start time and duration of the animation
+    
 3) Frame rate
     - The frame rate for the animations
 
@@ -48,13 +59,21 @@ If sufficient time is available after completing the main deliverables we will c
 ## 3.3. Data Science Techniques
 ### 3.3.1 Source Data
 We will be using cleaned EEG data from 8 provided experiments as input for our main goals. Each experiment is expected to have: 
+
 - `fixica.set` (metadata) 
+
 - `fixica.fdt` (raw data)
+
 - `impact locations.mat` (impact timestamps)
+
 - `fixedareas.mat` (record of values that have been altered in cleaning process) 
+
 - 33 impacts per experiment
+
 - 19 channels, one for each electrode
+
 - Approximate duration of 1.5 hours
+
 - Sampling rate of 2048 Hz (samples per second)
 
 ### 3.3.2 Techniques
@@ -77,3 +96,4 @@ MVP for stretch goal, first round improvements for UI
 
 **Milestone 4 - June 22, 2021**
 Report and touch-ups for previous milestones
+ 
