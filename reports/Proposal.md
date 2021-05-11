@@ -7,9 +7,13 @@
 **Date**: May 13, 2021
 
 ## 3.1. Executive Summary
-We are developing a Python package and dashboard for SimPL, a research lab that explores research questions concerning the human brain, to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. After learning about SimPL’s problem with limited visualization methods, we are proposing the following deliverables:
+We are developing a Python package and dashboard for SimPL, a research lab that explores research questions concerning the human brain, to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. 
+
+After learning about SimPL’s problem with limited visualization methods, we are proposing the following deliverables:
 1) A Python package for generating advanced EEG visualizations and metrics
 2) An interactive web app to provide a user interface for the package
+
+
 We will expand our deliverables to include one of the following stretch goals if time permits:
 1) Including EEG preprocessing functionality for the Python package
 2) Answering a research question by building a data pipeline for unsupervised learning methods such as clustering
@@ -28,22 +32,22 @@ The main benefit of EEG technology is that it is unobtrusive and inexpensive. EE
 We will be designing a custom, well-documented Python package which will provide the ability to conveniently produce advanced visualizations and metrics for specified time ranges of EEG data. The package at a minimum include the following functionality:
 
 1) Raw voltage values
-Produce raw voltage values to measure the EEG amplifier
+    - Produce raw voltage values to measure the EEG amplifier
 
 2) Power changes
-- Generate the power changes to represent the magnitude of the signal as a function of frequency
+    - Generate the power changes to represent the magnitude of the signal as a function of frequency
 
 3) Connectivity 
-- Calculate the correlation between nodes or groups of nodes for specified time ranges
+    - Calculate the correlation between nodes or groups of nodes for specified time ranges
 
 4) 2D head map video 
-- Generate an animated 2D topographic heatmap of the voltage values recorded by each node of the EEG device
+    - Generate an animated 2D topographic heatmap of the voltage values recorded by each node of the EEG device
 
 5) 3D skull map video
-- Generate an animated 3D topographic heatmap of the voltage values recorded by each node of the EEG device
+    - Generate an animated 3D topographic heatmap of the voltage values recorded by each node of the EEG device
 
-7) Interpolated 3D brain map
-- Generate an animated topographic heatmap of voltage values mapped to a 3D model of the brain by interpolating voltage values to their presumed location in the brain
+6) Interpolated 3D brain map
+    - Generate an animated topographic heatmap of voltage values mapped to a 3D model of the brain by interpolating voltage values to their presumed location in the brain
 
 
 We will also build an interactive web application to serve as a user interface (UI) for the package. The web application will be accessible by running a simple command and will provide widgets for customizing settings. At a minimum, the widgets will provide the following options: 
