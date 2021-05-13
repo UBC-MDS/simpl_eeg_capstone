@@ -1,6 +1,7 @@
 ---
 output:
   pdf_document: default
+geometry: margin=2.5cm
 ---
 # DSCI 591: Capstone Project – Proposal Report for Sensing in Biomechanical Processes Lab (SimPL)
 
