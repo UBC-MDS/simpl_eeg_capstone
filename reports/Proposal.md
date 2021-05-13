@@ -32,21 +32,20 @@ By extending the number of visualizations available and making them convenient t
 
 
 
-
 ### 3.2.1 Main Goals
-We will be designing a customized, well-documented Python package which will provide the ability to conveniently produce advanced visualizations and metrics for specified time ranges of EEG data. At a minimum, the package will include the following functionality:
+We will be designing a customized, well-documented Python package which will provide the ability to conveniently produce advanced visualizations and metrics for specified time ranges of EEG data. At minimum, the package will include the following functionality which was requested by the partner in order to help intuitively understand the state of brain: 
 
 1) Raw voltage values - produce raw voltage values to measure the EEG amplifier
 
-3) Connectivity - calculate the correlation between nodes or groups of nodes for specified time ranges
+2) Connectivity - calculate the correlation between nodes or groups of nodes for specified time ranges
 
-4) 2D head map video - generate an animated 2D topographic heatmap of the voltage values recorded by each node of the EEG device. Includes the ability to take snapshots of power changes that represent the magnitude of the signal as a function of frequency
+3) 2D head map video - generate an animated 2D topographic heatmap of the voltage values recorded by each node of the EEG device. Includes the ability to take snapshots of power changes that represent the magnitude of the signal as a function of frequency
 
-5) 3D skull map video - generate an animated topographic heatmap of voltage values mapped to a 3D model of skull
+4) 3D skull map video - generate an animated topographic heatmap of voltage values mapped to a 3D model of skull
 
-6) Interpolated 3D brain map - generate an animated topographic heatmap of voltage values mapped to a 3D model of the brain by interpolating voltage values to their presumed location in the brain.
+5) Interpolated 3D brain map - generate an animated topographic heatmap of voltage values mapped to a 3D model of the brain by interpolating voltage values to their presumed location in the brain.
 
-We will also build an interactive web application to serve as a user interface (UI) for the package. The web application will be accessible by running a simple command and will provide widgets for customizing settings. At a minimum, the widgets will provide the following options: 
+We will also build an interactive web application to serve as a user interface (UI) for the package. The web application will be accessible by running a simple command and will provide all of the visuializations in one place. At a minimum, the widgets for customizing settings will provide the following options: 
 
 1) File selection
     - Depending on the preferences of the partner, this can be linked directly to their local files or files on cloud
@@ -74,7 +73,7 @@ We will be using cleaned EEG data from 8 provided experiments as input for our m
 
 - `fixedareas.mat` (record of values that have been altered in cleaning process) 
 
-- 33 impacts per experiment
+- 33 impacts per experiment including shams
 
 - 19 channels, one for each electrode
 
@@ -83,12 +82,11 @@ We will be using cleaned EEG data from 8 provided experiments as input for our m
 - Sampling rate of 2048 Hz (samples per second)
 
 ### 3.3.2 Techniques
-The Python visualization package will mainly be developed using the open source library [MNE](https://mne.tools/stable/index.html). Custom visualizations may also be built with [Matplotlib](https://matplotlib.org/). Function development will be driven by the needs of the partner, improving ease-of-use compared to using MNE or Matplotlib directly. Clear documentation and code will be prioritized to allow package functionality to easily be updated following the completion of the Capstone. The main difficulties are expected to be  
-wrangling and transforming the data into the evoked format which MNE requires and long rendering times for visualizations due to the high dimensionality of data.
+The Python visualization package will mainly be developed using the open source library [MNE](https://mne.tools/stable/index.html), which is desgined for visualizing and analyzing human neurophysiological data. Custom visualizations may also be built with [Matplotlib](https://matplotlib.org/). Function development will be driven by the needs of the partner, improving ease-of-use compared to using MNE or Matplotlib directly. Clear documentation and code will be prioritized to allow package functionality to easily be updated following the completion of the Capstone. The main difficulties are expected to be processing and transforming the data into the format which MNE requires. Also, the high dimensionality of data causes long rendering times for visualizations.
 
 For the interactive user interface we are planning to use an open source framework called [Streamlit](https://streamlit.io/) which is designed for creating web apps from Python scripts. Streamlit benefits from being lightweight and requiring no front-end experience. This will facilitate ease of updating in the future. The main difficulty will be to design a straightforward but informative UI with a large number of visualizations.
 
-For the machine learning classification/clustering stretch goal, [SciPy](https://www.scipy.org/) can be used to perform data wrangling and decompose data into frequency-specific bandwidths. We may use a Markov or Hidden Markov model for the clustering tasks, as recommended by our Capstone partner. Other researchers have historically used k-means clustering, support vector machine (SVM) or CNN models in the classification process, which are viable alternatives. The pipeline will  be built using [scikit-learn](https://scikit-learn.org/stable/) or [PyTorch](https://pytorch.org/) and can be delivered in either a Jupyter notebook or Python script. The main difficulty is that domain expertise is required for interpretation, so identifying clusters will be difficult without significant assistance from the Capstone partner. Additionally, the data likely does not contain consistent results between experiments, complicating the testing of pattern identification tools.
+For the machine learning classification/clustering stretch goal, [SciPy](https://www.scipy.org/) can be used to perform data wrangling and decompose data into frequency-specific bandwidths. We may use a Markov or Hidden Markov model for the clustering tasks, as recommended by our Capstone partner. Other researchers have historically used k-means clustering, support vector machine (SVM) or CNN models in the classification process, which are viable alternatives. The pipeline will  be built using [scikit-learn](https://scikit-learn.org/stable/) or [PyTorch](https://pytorch.org/) and can be delivered in either a Jupyter notebook or Python script. The main difficulty is that domain expertise is required for interpretation, so identifying clusters will be difficult without significant assistance from the Capstone partner.
 
 ## 3.4 Timeline
 **Milestone 1 - May 21, 2021**
