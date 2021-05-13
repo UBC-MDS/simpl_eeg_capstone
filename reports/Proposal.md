@@ -17,15 +17,21 @@ We are developing a Python package and dashboard for SimPL, a research lab that 
 
 2) An interactive web app to provide a user interface for the package
 
-If time permits, we will expand our deliverables to include a stretch goal of building a data pipeline for unsupervised learning methods such as clustering.
+If time permits, we will expand our deliverables to include a stretch goal of building a data pipeline for detecting underlying structure in EEG data using unsupervised learning methods such as clustering.
 
 ## 3.2 Introduction
 ### 3.2.1 Background
-SimPL is a research lab in the department of Mechanical Engineering at UBC. They are developing quantitative and sensitive methods to evaluate the electrophysiological changes after sport head injuries. In addition, SimPL is developing a mobile brain and body imaging system, head impact detection using machine learning, and investigating concussion mechanisms.
+EEG is a technique used to measure the electrical activity of the brain by providing an image of the activity represented as waves and frequencies. EEG has many applications such as measuring brain functions for detecting seizures. The main benefit of EEG technology is that it is unobtrusive and inexpensive. EEG data has high dimensionality, so humans need visualizations and metrics in order to interpret it. Currently, the visualizations options for EEG data are limited. 
 
-Concussion and brain injuries in general are invisible. The underlying mechanisms of brain dysfunction are not clear yet. SimpPL have employed electroencephalograms (EEG) to measure and detect potential changes in the brain electrophysiology due to sports head impacts. The team was approached to design novel solutions and methods to extract and visualize the human brain state using EEG data and to apply data science techniques learned in the MDS program. We have received a set of multichannel EEG data containing multi-participant and multi-trial experimental data.
+Concussion and brain injuries in general are invisible. The underlying mechanisms of brain dysfunction are not clear yet. SimPL is a research lab in the department of Mechanical Engineering at UBC which focuses on developing quantitative and sensitive methods to evaluate the electrophysiological changes after sport head injuries. In addition, SimPL is developing a mobile brain and body imaging system, head impact detection using machine learning, and investigating concussion mechanisms.
 
-The main benefit of EEG technology is that it is unobtrusive and inexpensive. EEG data has high dimensionality, so humans need visualizations and metrics in order to interpret it. Currently, the visualizations options for EEG data are limited. By extending the number of visualizations available and making them convenient to access, our tool will help scientists analyze their EEG data and provide an intuition of what the effects of their experiments may be on the brain. Additionally, our machine learning stretch goal could uncover patterns in the data which could not be determined based on visualization alone.
+SimpPL have employed electroencephalograms (EEG) to measure and detect potential changes in the brain electrophysiology due to sports head impacts. The team was approached to design novel solutions and methods to extract and visualize the human brain state using EEG data and to apply data science techniques learned in the MDS program. We have received a set of multichannel EEG data containing multi-participant and multi-trial experimental data.
+
+
+By extending the number of visualizations available and making them convenient to access, our tool will help scientists analyze their EEG data and provide an intuition of what the effects of their experiments may be on the brain. Additionally, our machine learning stretch goal could uncover patterns in the data which could not be determined based on visualization alone.
+
+
+
 
 ### 3.2.1 Main Goals
 We will be designing a customized, well-documented Python package which will provide the ability to conveniently produce advanced visualizations and metrics for specified time ranges of EEG data. At a minimum, the package will include the following functionality:
