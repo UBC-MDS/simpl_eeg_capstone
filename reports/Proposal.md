@@ -54,7 +54,7 @@ We will also build an interactive web application to serve as a user interface (
     - The frame rate for the animations
 
 ### 3.2.2 Stretch goal
-If sufficient time is available after completing the main deliverables we will complete an additional deliverable. Our stretch goal is to create a data pipeline for pattern identifying clustering of the data, which is an unsupervised learning method. The direction of the data pipeline is to find structures of node signals and patterns in the brain indicating that an impact is in effect at the specific time stamp. It might involve decomposing the signal into alpha, beta, theta, and delta waves to look for structure, and then use a Markov model or hidden Markov model to carry out the clustering task. 
+If sufficient time is available after completing the main deliverables we will complete an additional deliverable. Our stretch goal is to create a data pipeline for identifying patterns using clustering, which is an unsupervised learning method. The purpose is to distinguish structures of node signals and patterns in the brain indicating that an impact is in effect at specific time stamps. It might involve decomposing the signal into alpha, beta, theta, and delta waves to look for structure, and then use a Markov model or hidden Markov model to carry out the clustering task. 
 
 ## 3.3. Data Science Techniques
 ### 3.3.1 Source Data
