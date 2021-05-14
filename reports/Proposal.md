@@ -85,17 +85,7 @@ For the interactive UI we are planning to use an open source framework called [S
 For the machine learning classification/clustering stretch goal, [SciPy](https://www.scipy.org/) can be used to perform data wrangling and decompose data into frequency-specific bandwidths. We may use a Markov or Hidden Markov model for the clustering tasks, as recommended by our Capstone partner. Performing the clustering task using hidden Markov model could reduce the complexity of physiologic variables while retaining the significant signal structures (Asgari et al, 2019). Other researchers have historically used k-means clustering, support vector machine (SVM) or CNN models in the classification process, which are viable alternatives. The pipeline will be built using [scikit-learn](https://scikit-learn.org/stable/) or [PyTorch](https://pytorch.org/) and can be delivered in either a Jupyter notebook or Python script. The main difficulty is that domain expertise is required for interpretation, so identifying the meaning of clusters will be difficult without significant assistance from the Capstone partner.
 
 ## 3.4 Timeline
-**Milestone 1 - May 21, 2021**
-MVP for Python package visualizations and metrics (5 functions)
-
-**Milestone 2 - May 28, 2021**
-MVP for interactive UI, first round improvements for package
-
-**Milestone 3 - June 7, 2021**
-MVP for stretch goal, first round improvements for UI
-
-**Milestone 4 - June 22, 2021**
-Report and touch-ups for previous milestones
+![Timeline and Milestones](reports/images/TimelineGanttChart.pdf)
 
 \newpage
 ## References
