@@ -3,13 +3,14 @@ output:
   pdf_document: default
 geometry: margin=2.5cm
 ---
+
 # DSCI 591: Capstone Project – Proposal Report for Sensing in Biomechanical Processes Lab (SimPL)
 
 **Team members**: Matthew Pin, Mo Garoub, Sasha Babicki, Zhanyi (Yiki) Su
 
 **Project mentor**: Joel Ostblom
 
-**Date**: May 13, 2021
+**Date**: May 14, 2021
 
 ## 3.1. Executive Summary
 We are developing a Python package and dashboard for SimPL, a research lab that explores research questions concerning the human brain, to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. After learning about SimPL’s problem with limited visualization methods, we are proposing the following deliverables:
@@ -59,23 +60,51 @@ If sufficient time is available after completing the main deliverable we will co
 
 ## 3.3. Data Science Techniques
 ### 3.3.1 Source Data
-We will be using cleaned EEG data from 8 provided experiments as input for our main goals. Each experiment is expected to have: 
+We will be using cleaned EEG data from 8 provided experiments as input for our main goals. 
 
-- `fixica.set` (metadata) 
+Each experiment has the following files and attributes: 
 
-- `fixica.fdt` (raw data)
+- `fixica.set` - metadata
 
-- `impact locations.mat` (impact timestamps)
+- `fixica.fdt` -  raw data
 
-- `fixedareas.mat` (record of values that have been altered in cleaning process) 
+- `impact locations.mat` - impact timestamps
 
-- 33 impacts per experiment including shams
+- `fixedareas.mat` - record of values that have been altered in cleaning process
 
 - 19 channels, one for each electrode
 
-- Approximate duration of 1.5 hours
+- 33 head impacts per experiment including shams
 
 - Sampling rate of 2048 Hz (samples per second)
+
+- Approximate duration of 1.5 hours or less
+
+\newpage
+```{python example-table, include=FALSE}
+
+from mne.io import read_raw_eeglab
+example_file = "../data/927/fixica.set"
+raw = read_raw_eeglab(example_file)
+
+table = raw.to_data_frame().head(10)
+
+```
+
+```{r print-table, echo=FALSE}
+library(reticulate)
+table = knitr::kable(
+  py$table,
+  caption = "First Ten Rows of Example Source Data for Experiment 927",
+  digits = 4,
+  format = "latex"
+)
+
+kableExtra::kable_styling(
+  table, 
+  latex_options = "scale_down"
+)
+```
 
 ### 3.3.2 Techniques
 The Python visualization package will mainly be developed using the open source library [MNE](https://mne.tools/stable/index.html), which is designed for visualizing and analyzing human neurophysiological data. Custom visualizations may also be built with [Matplotlib](https://matplotlib.org/). Function development will be driven by the needs of the partner, improving ease-of-use compared to using MNE or Matplotlib directly. Clear documentation and code will be prioritized to allow package functionality to easily be updated following the completion of the Capstone. The main difficulties are expected to be processing and transforming the data into the format which MNE requires and building custom animations. We may also need to find solutions to reduce rendering times due to the high dimensionality of the data. 
@@ -85,7 +114,8 @@ For the interactive UI we are planning to use an open source framework called [S
 For the machine learning classification/clustering stretch goal, [SciPy](https://www.scipy.org/) can be used to perform data wrangling and decompose data into frequency-specific bandwidths. We may use a Markov or Hidden Markov model for the clustering tasks, as recommended by our Capstone partner. Performing the clustering task using hidden Markov model could reduce the complexity of physiologic variables while retaining the significant signal structures (Asgari et al, 2019). Other researchers have historically used k-means clustering, support vector machine (SVM) or CNN models in the classification process, which are viable alternatives. The pipeline will be built using [scikit-learn](https://scikit-learn.org/stable/) or [PyTorch](https://pytorch.org/) and can be delivered in either a Jupyter notebook or Python script. The main difficulty is that domain expertise is required for interpretation, so identifying the meaning of clusters will be difficult without significant assistance from the Capstone partner.
 
 ## 3.4 Timeline
-![Timeline and Milestones](reports/images/TimelineGanttChart.pdf)
+
+![Timeline and Milestones](images/TimelineGanttChart.pdf)
 
 \newpage
 ## References
