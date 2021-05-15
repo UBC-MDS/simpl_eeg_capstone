@@ -14,7 +14,6 @@ table = raw.to_data_frame().head(10)
 
 ```
 
-
 # DSCI 591: Capstone Project – Proposal Report for Sensing in Biomechanical Processes Lab (SimPL)
 
 **Team members**: Matthew Pin, Mo Garoub, Sasha Babicki, Zhanyi (Yiki) Su
@@ -97,17 +96,17 @@ Each experiment has the following files and attributes:
 
 - Approximate duration of 1.5 hours or less
 
-```{r print-table, echo=FALSE, fig.pos="H"}
+```{r print-table, echo=FALSE}
 library(reticulate)
 table = knitr::kable(
-  py$table,
-  caption = "First Ten Rows of Example Source Data for Experiment 927",
+  py$table[1:10,1:10],
+  caption = "First Ten Rows and Columns of Example Source Data for Experiment 927",
   digits = 4,
   format = "latex"
 )
 kableExtra::kable_styling(
   table, 
-  latex_options = "scale_down"
+  latex_options = "hold_position"
 )
 ```
 
