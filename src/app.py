@@ -18,6 +18,8 @@ import connectivity
 # import matplotlib
 # import matplotlib.pyplot as plt
 
+st.set_page_config(layout="wide")
+
 
 class eeg_file:
 
@@ -25,6 +27,7 @@ class eeg_file:
         self.experiment = experiment
         self.mat = scipy.io.loadmat("data/"+experiment+"/impact locations.mat")
         self.raw = mne.io.read_raw_eeglab("data/"+experiment+"/fixica.set")
+
 
 class epochs:
 
@@ -44,8 +47,14 @@ class epochs:
         epochs = mne.Epochs(self.eeg_file.raw, events, tmin=-0.3, tmax=0.7)
         event_dict = {"header": 1}
 
-        epochs = mne.Epochs(self.eeg_file.raw, events, tmin=-0.3, tmax=0.7, event_id=event_dict,
-                            preload=True)
+        epochs = mne.Epochs(
+            self.eeg_file.raw,
+            events,
+            tmin=-0.3,
+            tmax=0.7,
+            event_id=event_dict,
+            preload=True
+        )
         return epochs
 
     def generate_evoked(self):
@@ -60,7 +69,7 @@ def main():
     # else:
     #     #streamlit run your_script.py --server.maxUploadSize=1028
     #     st.sidebar.file_uploader('File uploader')
-    col1, col2 = st.beta_columns((2,1))
+    col1, col2 = st.beta_columns((1, 1))
 
     st.sidebar.header("Visualize your EEG data based on the following options")
     experiment_num = st.sidebar.selectbox(
@@ -82,14 +91,15 @@ def main():
     epoch_obj = epochs(experiment_num)
     epoch = epoch_obj.data[0]
 
-    col1.pyplot(
+    st.pyplot(
         epoch.plot()
     )
 
-    with col2:
+    with col1:
         anim = connectivity.animate_connectivity(epoch, "correlation")
         components.html(anim.to_jshtml(), height=600, width=600)
 
+    with col2:
         anim = connectivity.animate_connectivity_circle(epoch, "correlation")
         components.html(anim.to_jshtml(), height=600, width=600)
 
