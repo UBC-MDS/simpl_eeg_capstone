@@ -66,22 +66,22 @@ def animate_topomap_2d(epoch, raw, colormap = 'RdBu_r', plot_epoch_number = 0,
 	def animate(frame_number):
 	    fig.clear()
 	    # https://mne.tools/dev/generated/mne.viz.plot_topomap.html
-	    topomap_2d = animate_topomap_2d(epoch = epoch,
-	    								frame_number = frame_number,
-				                        raw = raw.info, # Location info for data points
-				                        colormap = colormap,
-				                        plot_epoch_number = plot_epoch_number,
-				                        mark = mark,
-				                        contours = contours,
-				                        sphere = sphere,
-				                        mu_v_min = mu_v_min,
-				                        mu_v_max = mu_v_max,
-				                        res = res,
-				                        extrapolate = extrapolate,
-				                        outlines = outlines,
-				                        axes = axes,
-				                        mask = mask,
-				                        mask_params = mask_params)[0];
+	    topomap_2d = plot_topomap_2d(epoch = epoch,
+    								 frame_number = frame_number,
+			                         raw = raw.info, # Location info for data points
+			                         colormap = colormap,
+			                         plot_epoch_number = plot_epoch_number,
+			                         mark = mark,
+			                         contours = contours,
+			                         sphere = sphere,
+			                         mu_v_min = mu_v_min,
+			                         mu_v_max = mu_v_max,
+			                         res = res,
+			                         extrapolate = extrapolate,
+			                         outlines = outlines,
+			                         axes = axes,
+			                         mask = mask,
+			                         mask_params = mask_params)[0];
 	    
 	    # Consider changing to screenshot of colorbar genearted at the start to increase calculation speed
 	    if colorbar == True:
