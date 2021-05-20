@@ -16,13 +16,21 @@ def plot_topomap_2d(epoch, frame_number, raw, colormap = 'RdBu_r', plot_epoch_nu
 	    plotting_data = epoch
 
 	if mark == 'dot':
-    	sensor_value = True; names_value = False; show_names_value = False;
+    	sensor_value = True
+    	names_value = False
+    	show_names_value = False
 	if mark == 'r+':
-	    sensor_value = 'r+'; names_value = False; show_names_value = False;
+	    sensor_value = 'r+'
+	    names_value = False
+	    show_names_value = False
 	if mark == 'channel_name':
-	    sensor_value = True; names_value = raw.ch_names; show_names_value = True;
+	    sensor_value = True
+	    names_value = raw.ch_names
+	    show_names_value = True
 	if mark == 'none':
-	    sensor_value = False; names_value = False; show_names_value = False;
+	    sensor_value = False
+	    names_value = False
+	    show_names_value = False
 
 	fig = plt.figure
 
@@ -53,15 +61,15 @@ def animate_topomap_2d(epoch, raw, colormap = 'RdBu_r', plot_epoch_number = 0,
 	extrapolate = 'head', outlines = 'head', axes = None, mask = None, mask_params = None,
 	colorbar = True, show_every_nth_frame = 3, frame_rate = 12):
 
-	fig, ax = plt.subplots()
-
-	ms_between_frames = 1000/frame_rate
-
 	# Generate array of all frames to be shown based on parameters
 	if type(epoch) == mne.epochs.Epochs:
 	    frames_to_show = np.arange(0, epoch[0].get_data()[0].shape[1], show_every_nth_frame)
 	elif type(epoch) == mne.evoked.EvokedArray:
 	    frames_to_show = np.arange(0, evoked.data.shape[1], show_every_nth_frame)
+
+	ms_between_frames = 1000/frame_rate
+
+	fig, ax = plt.subplots()
 
 	def animate(frame_number):
 	    fig.clear()
@@ -104,3 +112,5 @@ def animate_topomap_2d(epoch, raw, colormap = 'RdBu_r', plot_epoch_number = 0,
 	                              blit=False)
 
 	return ani
+
+
