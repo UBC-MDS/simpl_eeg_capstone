@@ -7,19 +7,9 @@ import mne
 import scipy.io
 
 import connectivity
-# from mne.preprocessing import (create_eog_epochs, create_ecg_epochs,
-#                                compute_proj_ecg, compute_proj_eog)
-
-# from mne.viz import ClickableImage  # noqa
-# from mne.viz import (plot_alignment, snapshot_brain_montage,
-#                      set_3d_view)
-# import matplotlib.animation as animation
-# import pandas as pd
-# import matplotlib
-# import matplotlib.pyplot as plt
+import topomap_2d
 
 st.set_page_config(layout="wide")
-
 
 class eeg_file:
 
@@ -101,6 +91,9 @@ def main():
 
     with col2:
         anim = connectivity.animate_connectivity_circle(epoch, "correlation")
+        components.html(anim.to_jshtml(), height=600, width=600)
+
+        anim = topomap_2d.animate_topomap_2d(epoch)
         components.html(anim.to_jshtml(), height=600, width=600)
 
 
