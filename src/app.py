@@ -1,52 +1,65 @@
 
 import streamlit as st
+import streamlit.components.v1 as components
+
 import numpy as np
 import mne
 import scipy.io
+
+import connectivity
 # from mne.preprocessing import (create_eog_epochs, create_ecg_epochs,
 #                                compute_proj_ecg, compute_proj_eog)
 
 # from mne.viz import ClickableImage  # noqa
 # from mne.viz import (plot_alignment, snapshot_brain_montage,
 #                      set_3d_view)
-# import streamlit.components.v1 as components
 # import matplotlib.animation as animation
 # import pandas as pd
 # import matplotlib
 # import matplotlib.pyplot as plt
 
-
-def get_epochs(raw, mat):
-    stim_mock = mat["elecmax1"]
-
-    events = ([[stim_mock[0][0], 0, 1]])
-    for i in range(len(stim_mock[0])-1):
-        events.append([stim_mock[0][i+1], 0, 1])
-    events = np.array(events)
-
-    epochs = mne.Epochs(raw, events, tmin=-0.3, tmax=0.7)
-    event_dict = {"header": 1}
-
-    epochs = mne.Epochs(raw, events, tmin=-0.3, tmax=0.7, event_id=event_dict,
-                        preload=True)
-    return epochs
+st.set_page_config(layout="wide")
 
 
-def get_source_files(experiment):
-    mat = scipy.io.loadmat("data/"+experiment+"/impact locations.mat")
-    raw = mne.io.read_raw_eeglab("data/"+experiment+"/fixica.set")
-    files = {
-        "raw": raw,
-        "mat": mat,
-        "epochs": get_epochs(raw, mat)
-    }
-    return files
+class eeg_file:
+
+    def __init__(self, experiment):
+        self.experiment = experiment
+        self.mat = scipy.io.loadmat("data/"+experiment+"/impact locations.mat")
+        self.raw = mne.io.read_raw_eeglab("data/"+experiment+"/fixica.set")
 
 
-def generate_evoked(raw):
-    epochs = get_epochs(raw)
-    evoked = epochs["header"].average()
-    return evoked
+class epochs:
+
+    # constructor
+    def __init__(self, experiment):
+        self.eeg_file = eeg_file(experiment)
+        self.data = self.generate_epochs()
+
+    def generate_epochs(self):
+        stim_mock = self.eeg_file.mat["elecmax1"]
+
+        events = ([[stim_mock[0][0], 0, 1]])
+        for i in range(len(stim_mock[0])-1):
+            events.append([stim_mock[0][i+1], 0, 1])
+        events = np.array(events)
+
+        epochs = mne.Epochs(self.eeg_file.raw, events, tmin=-0.3, tmax=0.7)
+        event_dict = {"header": 1}
+
+        epochs = mne.Epochs(
+            self.eeg_file.raw,
+            events,
+            tmin=-0.3,
+            tmax=0.7,
+            event_id=event_dict,
+            preload=True
+        )
+        return epochs
+
+    def generate_evoked(self):
+        evoked = self.data["header"].average()
+        return evoked
 
 
 def main():
@@ -56,8 +69,8 @@ def main():
     # else:
     #     #streamlit run your_script.py --server.maxUploadSize=1028
     #     st.sidebar.file_uploader('File uploader')
+    col1, col2 = st.beta_columns((1, 1))
 
-    col1, col2 = st.beta_columns(2)
     st.sidebar.header("Visualize your EEG data based on the following options")
     experiment_num = st.sidebar.selectbox(
         "Select experiment",
@@ -67,6 +80,7 @@ def main():
         "Time selection type",
         ["Time", "Epoch"]
     )
+
     st.sidebar.time_input("Start Time")
     st.sidebar.slider(
         "Duration (seconds)",
@@ -74,11 +88,20 @@ def main():
         max_value=10.0
     )
 
-    file_dict = get_source_files(experiment_num)
+    epoch_obj = epochs(experiment_num)
+    epoch = epoch_obj.data[0]
 
-    col1.pyplot(
-        file_dict["raw"].plot()
+    st.pyplot(
+        epoch.plot()
     )
+
+    with col1:
+        anim = connectivity.animate_connectivity(epoch, "correlation")
+        components.html(anim.to_jshtml(), height=600, width=600)
+
+    with col2:
+        anim = connectivity.animate_connectivity_circle(epoch, "correlation")
+        components.html(anim.to_jshtml(), height=600, width=600)
 
 
 if __name__ == "__main__":
