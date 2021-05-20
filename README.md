@@ -18,7 +18,9 @@ $ cd simpl_eeg_capstone
 
 # Running the Web Application
 Run the following command from the root folder of the project: 
-`streamlit run src/app.py`
+```
+$ streamlit run src/app.py
+```
 
 # Group Members
 - Matthew Pin
