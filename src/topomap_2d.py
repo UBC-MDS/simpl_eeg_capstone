@@ -5,7 +5,7 @@ import numpy as np
 from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 
 
-def plot_topomap_2d(epoch, frame_number, raw, colormap='RdBu_r', plot_epoch_number=0,
+def plot_topomap_2d(epoch, frame_number, colormap='RdBu_r', plot_epoch_number=0,
     mark='dot', contours='6', sphere=100, mu_v_min=-10, mu_v_max=10, res=100,
     extrapolate='head', outlines='head', axes=None, mask=None, mask_params=None,
     ):
@@ -27,21 +27,19 @@ def plot_topomap_2d(epoch, frame_number, raw, colormap='RdBu_r', plot_epoch_numb
         show_names_value = False
     if mark == 'channel_name':
         sensor_value = True
-        names_value = raw.ch_names
+        names_value = epoch.ch_names
         show_names_value = True
     if mark == 'none':
         sensor_value = False
         names_value = False
         show_names_value = False
 
-    fig = plt.figure()
-
-    mne.viz.plot_topomap(
+    topo_2d_fig = mne.viz.plot_topomap(
         data=plotting_data[:, frame_number],
-        pos=raw.info,  # Location info for data points
+        pos=epoch.info,  # Location info for data points
         show=False,
-        vmin=vmin_mu_V_2d/1e6,  # Convert back to volts
-        vmax=vmax_mu_V_2d/1e6,
+        #vmin=vmin_mu_V_2d/1e6,  # Convert back to volts
+        #vmax=vmax_mu_V_2d/1e6,
         sphere=sphere,  # Causes head to appear, see documentation, not sure what value should be here so 100 is placeholder
         outlines=outlines,  # 'head' keeps signals within head space, 'skirt' extrapolates beyond PROBS LEAVE ON 'head'
         extrapolate=extrapolate,  # 'local' is off-center. PROBS LEAVE ALWAYS ON 'head'
@@ -54,11 +52,11 @@ def plot_topomap_2d(epoch, frame_number, raw, colormap='RdBu_r', plot_epoch_numb
         mask=mask,  # Marks siginficant points/times if that's wanted PROBABLY NOT USEFUL
         mask_params=None,  # PROBABLY NOT USEFUL
         contours=contours,  # Number of lines that divide up sections to be drawn MAYBE USEFUL
-        )[0];
+    )[0]
 
-    return fig
+    return topo_2d_fig
 
-def animate_topomap_2d(epoch, raw, colormap='RdBu_r', plot_epoch_number=0,
+def animate_topomap_2d(epoch, colormap='RdBu_r', plot_epoch_number=0,
     mark='dot', contours='6', sphere=100, mu_v_min=-10, mu_v_max=10, res=100,
     extrapolate='head', outlines='head', axes=None, mask=None, mask_params=None,
     colorbar=True, show_every_nth_frame=3, frame_rate=12):
@@ -79,7 +77,6 @@ def animate_topomap_2d(epoch, raw, colormap='RdBu_r', plot_epoch_number=0,
         topomap_2d = plot_topomap_2d(
             epoch=epoch,
             frame_number=frame_number,
-            raw=raw.info,  # Location info for data points
             colormap=colormap,
             plot_epoch_number=plot_epoch_number,
             mark=mark,
@@ -90,35 +87,34 @@ def animate_topomap_2d(epoch, raw, colormap='RdBu_r', plot_epoch_number=0,
             res=res,
             extrapolate=extrapolate,
             outlines=outlines,
-            axes=axes,
+            axes=ax,
             mask=mask,
             mask_params=mask_params
-        )[0];
+        )
 
         # Consider changing to screenshot of colorbar genearted at the start to increase calculation speed
         if colorbar == True:
             ax_divider = make_axes_locatable(ax)
             cax = ax_divider.append_axes("right", size="2%", pad="0%")
-            clim = dict(kind='value', lims=[vmin_mu_V_2d , 0, vmax_mu_V_2d])
+            clim = dict(kind='value', lims=[mu_v_min, 0, mu_v_max])  # CHECK
             # https://mne.tools/stable/generated/mne.viz.plot_brain_colorbar.html
             mne.viz.plot_brain_colorbar(
                 cax,
                 clim,
-                colormap=topomap_2d.get_cmap().name,  # get same cmap that's in the 2D topomap
+                #colormap=topomap_2d.get_cmap().name,  # get same cmap that's in the 2D topomap
                 transparent=False,
                 orientation='vertical',
                 label='µV',
                 bgcolor='0'
             )
+        return [fig]
 
     ani = animation.FuncAnimation(
         fig,
         animate,
         frames=frames_to_show,
         interval=ms_between_frames,  # Time between frames in ms
-        blit=False
+        blit=True
     )
 
     return ani
-
-
