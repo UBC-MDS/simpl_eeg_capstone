@@ -21,28 +21,33 @@ class eeg_file:
 
 class epochs:
 
-    def __init__(self, experiment):
+    def __init__(self, experiment, duration=2, start_second=None):
         self.eeg_file = eeg_file(experiment)
-        self.data = self.generate_epochs()
+        self.data = self.generate_epochs(duration, start_second)
 
-    def generate_epochs(self):
-        stim_mock = self.eeg_file.mat["elecmax1"]
+    def generate_epochs(self, duration, start_second):
+        if start_second:
+            start_time = start_second*2049
+            stim_mock = [[start_time]]
+            tmin = 0
+            tmax = duration
+        else:
+            stim_mock = self.eeg_file.mat["elecmax1"]
+            tmin = -0.3
+            tmax = tmin + duration
+            print(tmax)
 
-        events = ([[stim_mock[0][0], 0, 1]])
-        for i in range(len(stim_mock[0])-1):
-            events.append([stim_mock[0][i+1], 0, 1])
-        events = np.array(events)
-
-        epochs = mne.Epochs(self.eeg_file.raw, events, tmin=-0.3, tmax=0.7)
+        events = [[i, 0, 1] for i in stim_mock[0]]
         event_dict = {"header": 1}
 
         epochs = mne.Epochs(
             self.eeg_file.raw,
             events,
-            tmin=-0.3,
-            tmax=0.7,
+            tmin=tmin,
+            tmax=tmax,
             event_id=event_dict,
-            preload=True
+            preload=True,
+            baseline=(0, 0)
         )
         return epochs
 
@@ -91,12 +96,13 @@ def main():
         components.html(anim.to_jshtml(), height=600, width=600)
 
     with col2:
-        anim = connectivity.animate_connectivity_circle(epoch, "correlation", show_every_nth_frame=10)
+        anim = connectivity.animate_connectivity_circle(epoch, "correlation")
         components.html(anim.to_jshtml(), height=600, width=600)
 
-        anim = topomap_2d.animate_topomap_2d(epoch, show_every_nth_frame=10)
+        anim = topomap_2d.animate_topomap_2d(epoch, show_every_nth_frame=20)
         components.html(anim.to_jshtml(), height=600, width=600)
 
 
 if __name__ == "__main__":
     main()
+ 
