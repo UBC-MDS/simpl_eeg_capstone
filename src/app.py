@@ -74,17 +74,33 @@ def main():
         "Time selection type",
         ["Time", "Epoch"]
     )
+    if time_select == "Time":
+        start_second = st.sidebar.selectbox(
+            "Start second",
+            [0, 100, 200, 300]
+        )
+        epoch_num = 0
+        # st.sidebar.time_input("Start Time")
+    else:
+        start_second = None
+        epoch_num = st.sidebar.selectbox(
+            "Epoch",
+            [i for i in range(33)]
+        )
 
-    st.sidebar.time_input("Start Time")
-    st.sidebar.slider(
+    duration = st.sidebar.slider(
         "Duration (seconds)",
         value=1.0,
         min_value=0.5,
         max_value=10.0
     )
 
-    epoch_obj = epochs(experiment_num)
-    epoch_num = 0
+    epoch_obj = epochs(
+        experiment_num,
+        duration=duration,
+        start_second=start_second
+    )
+
     epoch = epoch_obj.data[epoch_num]
 
     st.pyplot(
@@ -99,8 +115,8 @@ def main():
         anim = connectivity.animate_connectivity_circle(epoch, "correlation")
         components.html(anim.to_jshtml(), height=600, width=600)
 
-        anim = topomap_2d.animate_topomap_2d(epoch, show_every_nth_frame=20)
-        components.html(anim.to_jshtml(), height=600, width=600)
+        # anim = topomap_2d.animate_topomap_2d(epoch, show_every_nth_frame=20)
+        # components.html(anim.to_jshtml(), height=600, width=600)
 
 
 if __name__ == "__main__":
