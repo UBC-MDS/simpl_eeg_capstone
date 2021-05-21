@@ -1,3 +1,8 @@
+# -*- coding: utf-8 -*-
+
+"""Module for generating and animating EEG connectivity figures
+"""
+
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import pandas as pd
@@ -20,6 +25,14 @@ PAIR_OPTIONS = {
 
 
 def convert_pairs(string_pairs):
+    """Convert pair names to usable format
+
+    Args:
+        string_pairs (str): Comma seperated node pairs in format "node1-node2"
+
+    Returns:
+        [tuple]: List of tuples with node pair names
+    """
     tuple_pairs = string_pairs
     if type(string_pairs) == str:
         pairs = string_pairs.split(", ")
@@ -28,6 +41,15 @@ def convert_pairs(string_pairs):
 
 
 def calculate_connectivity(data, calc_type="correlation"):
+    """Calculate connectivity between nodes
+
+    Args:
+        data (mne.epochs.Epochs): Epoch to calculate connectivity for
+        calc_type (str, optional): Calculation type, one of spectral_connectivity, envelope_correlation, covariance, correlation. Defaults to "correlation".
+
+    Returns:
+        pandas.core.frame.DataFrame: Data frame containing connectivity values
+    """
     conn_df = data.to_data_frame().corr()
     if calc_type == "spectral_connectivity":
         conn = mne.connectivity.spectral_connectivity(
@@ -42,7 +64,20 @@ def calculate_connectivity(data, calc_type="correlation"):
     return conn_df
 
 
-def plot_connectivity(fig, data, locations, pair_list=[], threshold=0, calc_type="correlation"):
+def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0):
+    """Plot 2d EEG nodes on scalp with lines representing connectivity
+
+    Args:
+        data (mne.epochs.Epochs): Epoch to visualize
+        fig (matplotlib.pyplot.figure): Figure to plot on
+        locations ([matplotlib.text.Text]): List of node locations
+        calc_type (str): Connectivity calculation type
+        pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
+        threshold (int, optional): Connectivity threshold to display connection. Defaults to 0.
+
+    Returns:
+        matplotlib.pyplot.figure: Connectivity figure
+    """    
     correlation_df = calculate_connectivity(data, calc_type)
     possible_colours = plt.cm.rainbow(correlation_df)
 
@@ -78,7 +113,17 @@ def plot_connectivity(fig, data, locations, pair_list=[], threshold=0, calc_type
 
 
 def animate_connectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=10):
+    """Animate 2d EEG nodes on scalp with lines representing connectivity
 
+    Args:
+        epochs (mne.epochs.Epochs): Epoch to visualize
+        calc_type (str: Connectivity calculation type
+        pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
+        show_every_nth_frame (int, optional): Number of frames to generate. Defaults to 10.
+
+    Returns:
+        matplotlib.animation.Animation: Animation of connectivity plot
+    """
     sensor_locations = epochs.plot_sensors(show_names=True, show=False)
     locations = sensor_locations.findobj(
         match=lambda x: type(x) == plt.Text and x.get_text() != ""
@@ -102,19 +147,31 @@ def animate_connectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=1
         )
         return [
             plot_connectivity(
-                fig,
                 data,
+                fig,
                 locations,
+                calc_type,
                 pair_list=pair_list,
                 threshold=0,
-                calc_type=calc_type)
+            )
         ]
     anim = animation.FuncAnimation(fig, animate, steps, blit=True)
     return anim
 
 
 def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[]):
+    """Plot connectivity circle
 
+    Args:
+        data (mne.epochs.Epochs): Epoch to visualize
+        fig (matplotlib.pyplot.figure): Figure to plot on
+        calc_type (str): Connectivity calculation type
+        max_connections (int, optional): Maximum connections to plot. Defaults to 50.
+        ch_names ([str], optional): List of channel names to display. Defaults to [], which indicates all channels.
+
+    Returns:
+        matplotlib.pyplot.figure: Connectivity circle figure
+    """
     if not ch_names:
         ch_names = data.ch_names
 
@@ -136,6 +193,16 @@ def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[]):
 
 
 def animate_connectivity_circle(epochs, calc_type, show_every_nth_frame=10):
+    """Animate connectivity circle
+
+    Args:
+        epochs (mne.epochs.Epochs): Epoch to visualize
+        calc_type (str: Connectivity calculation type
+        show_every_nth_frame (int, optional): Number of frames to generate. Defaults to 10.
+
+    Returns:
+        matplotlib.animation.Animation: Animation of connectivity plot
+    """
     fig = plt.figure()
 
     steps = show_every_nth_frame
