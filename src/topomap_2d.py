@@ -28,7 +28,7 @@ def plot_topomap_2d(epoch, plotting_data, colormap='RdBu_r',
         show=False,
         vmin=colorbar_lims[0]/1e6,  # Convert back to volts
         vmax=colorbar_lims[1]/1e6,
-        sphere= 100,  # Causes head to appear, see documentation, not sure what value should be here so 100 is placeholder
+        sphere= sphere,  # Causes head to appear, see documentation, not sure what value should be here so 100 is placeholder
         outlines=outlines,  # 'head' keeps signals within head space, 'skirt' extrapolates beyond PROBS LEAVE ON 'head'
         extrapolate=extrapolate,  # 'local' is off-center. PROBS LEAVE ALWAYS ON 'head'
         res=res,  # n x n pixels in the actual waves MAYBE USEFUL
@@ -103,8 +103,8 @@ def animate_topomap_2d(epoch, colormap='RdBu_r', plot_epoch_number=0,
     ani = animation.FuncAnimation(
         fig,
         animate,
-        frames=frames_to_show,
-        interval=ms_between_frames,  # Time between frames in ms
+        frames = frames_to_show,
+        interval = ms_between_frames,  # Time between frames in ms
         blit=True
     )
 
