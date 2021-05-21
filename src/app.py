@@ -21,28 +21,33 @@ class eeg_file:
 
 class epochs:
 
-    def __init__(self, experiment):
+    def __init__(self, experiment, duration=2, start_second=None):
         self.eeg_file = eeg_file(experiment)
-        self.data = self.generate_epochs()
+        self.data = self.generate_epochs(duration, start_second)
 
-    def generate_epochs(self):
-        stim_mock = self.eeg_file.mat["elecmax1"]
+    def generate_epochs(self, duration, start_second):
+        if start_second:
+            start_time = start_second*2049
+            stim_mock = [[start_time]]
+            tmin = 0
+            tmax = duration
+        else:
+            stim_mock = self.eeg_file.mat["elecmax1"]
+            tmin = -0.3
+            tmax = tmin + duration
+            print(tmax)
 
-        events = ([[stim_mock[0][0], 0, 1]])
-        for i in range(len(stim_mock[0])-1):
-            events.append([stim_mock[0][i+1], 0, 1])
-        events = np.array(events)
-
-        epochs = mne.Epochs(self.eeg_file.raw, events, tmin=-0.3, tmax=0.7)
+        events = [[i, 0, 1] for i in stim_mock[0]]
         event_dict = {"header": 1}
 
         epochs = mne.Epochs(
             self.eeg_file.raw,
             events,
-            tmin=-0.3,
-            tmax=0.7,
+            tmin=tmin,
+            tmax=tmax,
             event_id=event_dict,
-            preload=True
+            preload=True,
+            baseline=(0, 0)
         )
         return epochs
 
@@ -69,17 +74,33 @@ def main():
         "Time selection type",
         ["Time", "Epoch"]
     )
+    if time_select == "Time":
+        start_second = st.sidebar.selectbox(
+            "Start second",
+            [0, 100, 200, 300]
+        )
+        epoch_num = 0
+        # st.sidebar.time_input("Start Time")
+    else:
+        start_second = None
+        epoch_num = st.sidebar.selectbox(
+            "Epoch",
+            [i for i in range(33)]
+        )
 
-    st.sidebar.time_input("Start Time")
-    st.sidebar.slider(
+    duration = st.sidebar.slider(
         "Duration (seconds)",
         value=1.0,
         min_value=0.5,
         max_value=10.0
     )
 
-    epoch_obj = epochs(experiment_num)
-    epoch_num = 0
+    epoch_obj = epochs(
+        experiment_num,
+        duration=duration,
+        start_second=start_second
+    )
+
     epoch = epoch_obj.data[epoch_num]
 
     st.pyplot(
@@ -91,12 +112,13 @@ def main():
         components.html(anim.to_jshtml(), height=600, width=600)
 
     with col2:
-        anim = connectivity.animate_connectivity_circle(epoch, "correlation", show_every_nth_frame=10)
+        anim = connectivity.animate_connectivity_circle(epoch, "correlation")
         components.html(anim.to_jshtml(), height=600, width=600)
 
-        anim = topomap_2d.animate_topomap_2d(epoch, show_every_nth_frame=10)
-        components.html(anim.to_jshtml(), height=600, width=600)
+        # anim = topomap_2d.animate_topomap_2d(epoch, show_every_nth_frame=20)
+        # components.html(anim.to_jshtml(), height=600, width=600)
 
 
 if __name__ == "__main__":
     main()
+ 

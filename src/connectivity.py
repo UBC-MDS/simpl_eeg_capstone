@@ -77,7 +77,8 @@ def plot_connectivity(fig, data, locations, pair_list=[], threshold=0, calc_type
     return fig
 
 
-def animate_connectivity(epochs, calc_type, pair_list=[]):
+def animate_connectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=10):
+
     sensor_locations = epochs.plot_sensors(show_names=True, show=False)
     locations = sensor_locations.findobj(
         match=lambda x: type(x) == plt.Text and x.get_text() != ""
@@ -87,18 +88,28 @@ def animate_connectivity(epochs, calc_type, pair_list=[]):
 
     fig = plt.figure()
 
+    steps = show_every_nth_frame
+    tmin = epochs.tmin
+    tmax = epochs.tmax
+    step_size = (tmax - tmin)/steps
+
     def animate(frame_number):
         fig.clear()
+        data = epochs.copy().crop(
+            tmin=tmin+step_size*frame_number,
+            tmax=tmin+step_size*(frame_number+1),
+            include_tmax=False
+        )
         return [
             plot_connectivity(
                 fig,
-                epochs[frame_number],
+                data,
                 locations,
                 pair_list=pair_list,
                 threshold=0,
                 calc_type=calc_type)
         ]
-    anim = animation.FuncAnimation(fig, animate, len(epochs), blit=True)
+    anim = animation.FuncAnimation(fig, animate, steps, blit=True)
     return anim
 
 
@@ -134,9 +145,6 @@ def animate_connectivity_circle(epochs, calc_type, show_every_nth_frame=10):
 
     def animate(frame_number):
         fig.clear()
-        print(frame_number)
-        print(tmin+step_size*frame_number)
-        print(tmin+step_size*(frame_number+1))
         data = epochs.copy().crop(
             tmin=tmin+step_size*frame_number,
             tmax=tmin+step_size*(frame_number+1),
