@@ -5,37 +5,25 @@ import numpy as np
 from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 
 
-def plot_topomap_2d(epoch, frame_number, colormap='RdBu_r', plot_epoch_number=0,
+def plot_topomap_2d(epoch, plotting_data, colormap='RdBu_r',
     mark='dot', contours='6', sphere=100, mu_v_min=-10, mu_v_max=10, res=100,
     extrapolate='head', outlines='head', axes=None, mask=None, mask_params=None,
     ):
 
-    # if epoch data is passed then extract a specific epoch number 
-    # and convert it to the same format as evoked data
-    if type(epoch) == mne.epochs.Epochs:
-        plotting_data = epoch[plot_epoch_number].get_data()[0]
-    elif type(epoch) == mne.evoked.EvokedArray:
-        plotting_data = epoch
+    names_value = False
+    sensor_value = True
+    show_names_value = False
 
-    if mark == 'dot':
-        sensor_value = True
-        names_value = False
-        show_names_value = False
     if mark == 'r+':
         sensor_value = 'r+'
-        names_value = False
-        show_names_value = False
     if mark == 'channel_name':
-        sensor_value = True
         names_value = epoch.ch_names
         show_names_value = True
     if mark == 'none':
         sensor_value = False
-        names_value = False
-        show_names_value = False
 
     topo_2d_fig = mne.viz.plot_topomap(
-        data=plotting_data[:, frame_number],
+        data=plotting_data,
         pos=epoch.info,  # Location info for data points
         show=False,
         #vmin=vmin_mu_V_2d/1e6,  # Convert back to volts
@@ -61,11 +49,16 @@ def animate_topomap_2d(epoch, colormap='RdBu_r', plot_epoch_number=0,
     extrapolate='head', outlines='head', axes=None, mask=None, mask_params=None,
     colorbar=True, show_every_nth_frame=3, frame_rate=12):
 
+
+    # if epoch data is passed then extract a specific epoch number 
+    # and convert it to the same format as evoked data
     # Generate array of all frames to be shown based on parameters
     if type(epoch) == mne.epochs.Epochs:
         frames_to_show = np.arange(0, epoch[0].get_data()[0].shape[1], show_every_nth_frame)
+        plotting_data = epoch[plot_epoch_number].get_data()[0]
     elif type(epoch) == mne.evoked.EvokedArray:
         frames_to_show = np.arange(0, evoked.data.shape[1], show_every_nth_frame)
+        plotting_data = epoch
 
     ms_between_frames = 1000/frame_rate
 
@@ -75,10 +68,9 @@ def animate_topomap_2d(epoch, colormap='RdBu_r', plot_epoch_number=0,
         fig.clear()
         # https://mne.tools/dev/generated/mne.viz.plot_topomap.html
         topomap_2d = plot_topomap_2d(
-            epoch=epoch,
-            frame_number=frame_number,
+			epoch=epoch,
+            plotting_data=plotting_data[:, frame_number],
             colormap=colormap,
-            plot_epoch_number=plot_epoch_number,
             mark=mark,
             contours=contours,
             sphere=sphere,
@@ -87,7 +79,7 @@ def animate_topomap_2d(epoch, colormap='RdBu_r', plot_epoch_number=0,
             res=res,
             extrapolate=extrapolate,
             outlines=outlines,
-            axes=ax,
+            axes=axes,
             mask=mask,
             mask_params=mask_params
         )
