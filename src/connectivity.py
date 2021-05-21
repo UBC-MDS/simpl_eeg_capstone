@@ -124,14 +124,27 @@ def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[]):
     return fig
 
 
-def animate_connectivity_circle(epochs, calc_type):
+def animate_connectivity_circle(epochs, calc_type, show_every_nth_frame=10):
     fig = plt.figure()
+
+    steps = show_every_nth_frame
+    tmin = epochs.tmin
+    tmax = epochs.tmax
+    step_size = (tmax - tmin)/steps
 
     def animate(frame_number):
         fig.clear()
+        print(frame_number)
+        print(tmin+step_size*frame_number)
+        print(tmin+step_size*(frame_number+1))
+        data = epochs.copy().crop(
+            tmin=tmin+step_size*frame_number,
+            tmax=tmin+step_size*(frame_number+1),
+            include_tmax=False
+        )
         return [
-            plot_conn_circle(epochs[frame_number], fig, calc_type=calc_type)
+            plot_conn_circle(data, fig, calc_type=calc_type)
         ]
 
-    anim = animation.FuncAnimation(fig, animate, len(epochs), blit=True)
+    anim = animation.FuncAnimation(fig, animate, steps, blit=True)
     return anim

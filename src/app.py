@@ -21,7 +21,6 @@ class eeg_file:
 
 class epochs:
 
-    # constructor
     def __init__(self, experiment):
         self.eeg_file = eeg_file(experiment)
         self.data = self.generate_epochs()
@@ -74,12 +73,14 @@ def main():
     st.sidebar.time_input("Start Time")
     st.sidebar.slider(
         "Duration (seconds)",
+        value=1.0,
         min_value=0.5,
         max_value=10.0
     )
 
     epoch_obj = epochs(experiment_num)
-    epoch = epoch_obj.data[0]
+    epoch_num = 0
+    epoch = epoch_obj.data[epoch_num]
 
     st.pyplot(
         epoch.plot()
@@ -90,10 +91,10 @@ def main():
         components.html(anim.to_jshtml(), height=600, width=600)
 
     with col2:
-        anim = connectivity.animate_connectivity_circle(epoch, "correlation")
+        anim = connectivity.animate_connectivity_circle(epoch, "correlation", show_every_nth_frame=10)
         components.html(anim.to_jshtml(), height=600, width=600)
 
-        anim = topomap_2d.animate_topomap_2d(epoch)
+        anim = topomap_2d.animate_topomap_2d(epoch, show_every_nth_frame=10)
         components.html(anim.to_jshtml(), height=600, width=600)
 
 
