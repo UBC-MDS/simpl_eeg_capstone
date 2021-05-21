@@ -5,8 +5,8 @@ import numpy as np
 from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 
 
-def plot_topomap_2d(epoch, frame_number, colormap='RdBu_r', plot_epoch_number=0,
-    mark='dot', contours='6', sphere=100, mu_v_min=-10, mu_v_max=10, res=100,
+def plot_topomap_2d(epoch, frame_number, colormap='RdBu_r', plot_epoch_number = 0,
+    mark='dot', contours='6', sphere=100, colorbar_lims = [-10, 10], res = 100,
     extrapolate='head', outlines='head', axes=None, mask=None, mask_params=None,
     ):
 
@@ -38,8 +38,8 @@ def plot_topomap_2d(epoch, frame_number, colormap='RdBu_r', plot_epoch_number=0,
         data=plotting_data[:, frame_number],
         pos=epoch.info,  # Location info for data points
         show=False,
-        #vmin=vmin_mu_V_2d/1e6,  # Convert back to volts
-        #vmax=vmax_mu_V_2d/1e6,
+        vmin=colorbar_lims[0]/1e6,  # Convert back to volts
+        vmax=colorbar_lims[1]/1e6,
         sphere=sphere,  # Causes head to appear, see documentation, not sure what value should be here so 100 is placeholder
         outlines=outlines,  # 'head' keeps signals within head space, 'skirt' extrapolates beyond PROBS LEAVE ON 'head'
         extrapolate=extrapolate,  # 'local' is off-center. PROBS LEAVE ALWAYS ON 'head'
@@ -57,7 +57,7 @@ def plot_topomap_2d(epoch, frame_number, colormap='RdBu_r', plot_epoch_number=0,
     return topo_2d_fig
 
 def animate_topomap_2d(epoch, colormap='RdBu_r', plot_epoch_number=0,
-    mark='dot', contours='6', sphere=100, mu_v_min=-10, mu_v_max=10, res=100,
+    mark='dot', contours='6', sphere=100, colorbar_lims = [-10, 10], res=100,
     extrapolate='head', outlines='head', axes=None, mask=None, mask_params=None,
     colorbar=True, show_every_nth_frame=3, frame_rate=12):
 
@@ -82,8 +82,7 @@ def animate_topomap_2d(epoch, colormap='RdBu_r', plot_epoch_number=0,
             mark=mark,
             contours=contours,
             sphere=sphere,
-            mu_v_min=mu_v_min,
-            mu_v_max=mu_v_max,
+            colorbar_lims=colorbar_lims,
             res=res,
             extrapolate=extrapolate,
             outlines=outlines,
@@ -96,12 +95,12 @@ def animate_topomap_2d(epoch, colormap='RdBu_r', plot_epoch_number=0,
         if colorbar == True:
             ax_divider = make_axes_locatable(ax)
             cax = ax_divider.append_axes("right", size="2%", pad="0%")
-            clim = dict(kind='value', lims=[mu_v_min, 0, mu_v_max])  # CHECK
+            clim = dict(kind='value', lims=[colorbar_lims[0], 0, colorbar_lims[1]])
             # https://mne.tools/stable/generated/mne.viz.plot_brain_colorbar.html
             mne.viz.plot_brain_colorbar(
                 cax,
                 clim,
-                #colormap=topomap_2d.get_cmap().name,  # get same cmap that's in the 2D topomap
+                colormap=colormap,
                 transparent=False,
                 orientation='vertical',
                 label='µV',
@@ -112,8 +111,8 @@ def animate_topomap_2d(epoch, colormap='RdBu_r', plot_epoch_number=0,
     ani = animation.FuncAnimation(
         fig,
         animate,
-        frames=frames_to_show,
-        interval=ms_between_frames,  # Time between frames in ms
+        frames = frames_to_show,
+        interval = ms_between_frames,  # Time between frames in ms
         blit=True
     )
 
