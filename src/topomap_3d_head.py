@@ -121,6 +121,9 @@ def animate_3d_head(raw, starting=0, duration=10, color_min = -50, color_max = 5
         duration (int, optional): The duration of the animation, it could not be longer than the length of the data frame. Defaults to 10.
         color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
         color_max (int, optional): The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
+
+    Returns:
+        figure: An animated topographic map in a 3D head shape
     """
     # read in the data and store it in a dataframe
     raw_data = mne.io.read_raw_eeglab(raw)
