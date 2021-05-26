@@ -112,14 +112,18 @@ def get_node_dataframe(raw, montage):
     return node_df
 
 
-def animate_3d_head(raw, starting=0, ending=50, duration=10):
+def animate_3d_head(raw, starting=0, duration=10, color_min = -50, color_max = 50):
     """Plot an animated topographic map in a 3D head shape
 
     Args:
         raw (str): A file path for the EEGLab data
         starting (int, optional): The starting time stamp of the animation. Defaults to 0.
-        ending (int, optional): The ending time stamp of the animation. Defaults to 50.
         duration (int, optional): The duration of the animation, it could not be longer than the length of the data frame. Defaults to 10.
+        color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
+        color_max (int, optional): The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
+
+    Returns:
+        figure: An animated topographic map in a 3D head shape
     """
     # read in the data and store it in a dataframe
     raw_data = mne.io.read_raw_eeglab(raw)
@@ -129,7 +133,7 @@ def animate_3d_head(raw, starting=0, ending=50, duration=10):
     channel_names = raw_data.ch_names
 
     # slice the dataframe to only include EEG data for the specified time frame
-    df = raw_df[(raw_df["time"] > starting) & (raw_df["time"] < ending)]
+    df = raw_df[(raw_df["time"] > starting) & (raw_df["time"] < starting+duration)]
 
     # get the standard montage coordinates
     standard_montage, standard_coord = get_standard_coord()
@@ -152,6 +156,8 @@ def animate_3d_head(raw, starting=0, ending=50, duration=10):
                     z=np.array(standard_coord)[:, 2],
                     colorscale="Bluered",
                     colorbar_title="EEG Voltage",
+                    cmin = color_min,
+                    cmax = color_max,
                     intensity=interpolated_time(
                         df, channel_names, node_coord, x, y, z, k
                     ),
@@ -175,6 +181,8 @@ def animate_3d_head(raw, starting=0, ending=50, duration=10):
             z=np.array(standard_coord)[:, 2],
             colorscale="Bluered",
             colorbar_title="EEG Voltage",
+            cmin = color_min,
+            cmax = color_max,
             intensity=interpolated_time(df, channel_names, node_coord, x, y, z, 0),
             intensitymode="vertex",
             alphahull=1,
@@ -250,4 +258,4 @@ def animate_3d_head(raw, starting=0, ending=50, duration=10):
         ],
         sliders=sliders,
     )
-    fig.show()
+    return fig
