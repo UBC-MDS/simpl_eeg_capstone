@@ -112,7 +112,7 @@ def get_node_dataframe(raw, montage):
     return node_df
 
 
-def animate_3d_head(raw, starting=0, duration=10, color_min = -50, color_max = 50):
+def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50):
     """Plot an animated topographic map in a 3D head shape
 
     Args:
@@ -125,15 +125,12 @@ def animate_3d_head(raw, starting=0, duration=10, color_min = -50, color_max = 5
     Returns:
         figure: An animated topographic map in a 3D head shape
     """
-    # read in the data and store it in a dataframe
-    raw_data = mne.io.read_raw_eeglab(raw)
-    raw_df = raw_data.to_data_frame()
 
     # find out the channel names
-    channel_names = raw_data.ch_names
+    channel_names = epoch.ch_names
 
     # slice the dataframe to only include EEG data for the specified time frame
-    df = raw_df[(raw_df["time"] > starting) & (raw_df["time"] < starting+duration)]
+    df = epoch.to_data_frame()
 
     # get the standard montage coordinates
     standard_montage, standard_coord = get_standard_coord()
@@ -142,9 +139,9 @@ def animate_3d_head(raw, starting=0, duration=10, color_min = -50, color_max = 5
     z = np.array(standard_coord)[:, 2]
 
     # get the coordinated of the electrodes in the raw data
-    node_coord = get_eeg_node(raw_data, standard_montage)
-    nb_frames = duration
-    node_df = get_node_dataframe(raw_data, standard_montage)
+    node_coord = get_eeg_node(epoch, standard_montage)
+    nb_frames = steps
+    node_df = get_node_dataframe(epoch, standard_montage)
 
     # generate the animated plot
     fig = go.Figure(
