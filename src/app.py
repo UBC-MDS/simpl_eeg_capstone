@@ -9,9 +9,25 @@ import scipy.io
 import connectivity
 import topomap_2d
 
+import topomap_3d_brain
+import topomap_3d_head
+
 st.set_page_config(layout="wide")
 
-class eeg_file:
+
+class EEG_File:
+    """
+    A class to import and store relevant eeg files
+
+    Attributes
+    ----------
+    experiment : str
+        experiment folder name within the data folder
+    mat : list(int)
+        a list of integers representing impact times
+    raw : mne.io.Raw
+        raw experiment data in FIF format
+    """
 
     def __init__(self, experiment):
         self.experiment = experiment
@@ -19,10 +35,27 @@ class eeg_file:
         self.raw = mne.io.read_raw_eeglab("data/"+experiment+"/fixica.set")
 
 
-class epochs:
+class Epochs:
+    """
+    A class to represent epochs and underlying data
+
+    Attributes
+    ----------
+    eeg_file : EEG_File
+        eeg file data
+    data : mne.Epochs
+        the generated epoch data
+
+    Methods
+    -------
+    generate_epochs(duration, start_second):
+        Calculates epochs based on a duration and start second
+    generate_evoked():
+        Converts epochs into evoked data
+    """
 
     def __init__(self, experiment, duration=2, start_second=None):
-        self.eeg_file = eeg_file(experiment)
+        self.eeg_file = EEG_File(experiment)
         self.data = self.generate_epochs(duration, start_second)
 
     def generate_epochs(self, duration, start_second):
@@ -49,7 +82,9 @@ class epochs:
             preload=True,
             baseline=(0, 0)
         )
+
         return epochs
+
 
     def generate_evoked(self):
         evoked = self.data["header"].average()
@@ -57,13 +92,9 @@ class epochs:
 
 
 def main():
-    # file_option = st.sidebar.radio('File upload', ["Selection","Upload"])
-    # if file_option == "Selection":
-    #     st.sidebar.selectbox('Select experiment', ["109","97","1112"])
-    # else:
-    #     #streamlit run your_script.py --server.maxUploadSize=1028
-    #     st.sidebar.file_uploader('File uploader')
-    col1, col2 = st.beta_columns((1, 1))
+    """
+    Populate and display the streamlit user interface
+    """
 
     st.sidebar.header("Visualize your EEG data based on the following options")
     experiment_num = st.sidebar.selectbox(
@@ -95,7 +126,7 @@ def main():
         max_value=10.0
     )
 
-    epoch_obj = epochs(
+    epoch_obj = Epochs(
         experiment_num,
         duration=duration,
         start_second=start_second
@@ -107,18 +138,37 @@ def main():
         epoch.plot()
     )
 
+    anim = topomap_3d_head.animate_3d_head(epoch)
+    st.plotly_chart(anim)
+
+    anim = topomap_2d.animate_topomap_2d(epoch, steps=100, frame_rate=1000)
+    components.html(anim.to_jshtml(), height=600, width=600)
+
+    col1, col2 = st.beta_columns((1, 1))
+
+    # brain = topomap_3d_brain.plot_topomap_3d_brain(epoch)
+    # st.pyplot(brain)
+
     with col1:
-        anim = connectivity.animate_connectivity(epoch, "correlation")
+        pair_list = connectivity.PAIR_OPTIONS["far_coherence"]
+        anim = connectivity.animate_connectivity(epoch, "correlation", pair_list=pair_list)
         components.html(anim.to_jshtml(), height=600, width=600)
 
     with col2:
         anim = connectivity.animate_connectivity_circle(epoch, "correlation")
         components.html(anim.to_jshtml(), height=600, width=600)
 
-        # anim = topomap_2d.animate_topomap_2d(epoch, show_every_nth_frame=20)
-        # components.html(anim.to_jshtml(), height=600, width=600)
+
+def test():
+    epoch_obj = Epochs(
+        "109",
+        duration=1, 
+        start_second=0
+    )
+    epoch = epoch_obj.data[0]
+    brain = topomap_3d_brain.plot_topomap_3d_brain(epoch)   
+    topomap_3d_brain.save_animated_topomap_3d_brain(brain, "test.gif")
 
 
 if __name__ == "__main__":
     main()
- 
