@@ -2,7 +2,7 @@
 name = "eeg"
 version = "0.1.0"
 description = "A package to generate animated visualization for EEG data"
-authors =  [“Matthew Pin”, “Mo Garoub”, “Yiki Su”, “Sasha Babicki”]
+authors =  ["Matthew Pin", "Mo Garoub", "Yiki Su", "Sasha Babicki"]
 license = "MIT"
 readme = "README.md"
 documentation = "https://eeg.readthedocs.io/en/latest/"
