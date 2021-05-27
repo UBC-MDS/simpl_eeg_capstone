@@ -27,7 +27,7 @@ jobs:
         pip install poetry
         poetry install
     - name: Check style
-      run: poetry run flake8 --exclude=docs*
+      run: poetry run flake8 --exit-zero --exclude=docs*
     - name: Test with pytest
       run: poetry run pytest --cov=./ --cov-report=xml
     - name: Upload coverage to Codecov  
