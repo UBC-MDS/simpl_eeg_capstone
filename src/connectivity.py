@@ -187,7 +187,9 @@ def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[]):
         ch_names,
         n_lines=max_connections,
         fig=fig,
-        node_angles=angles
+        node_angles=angles,
+        facecolor="w",
+        colormap="rainbow"
     )[0]
     return fig
 

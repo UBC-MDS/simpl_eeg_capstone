@@ -6,11 +6,13 @@ import numpy as np
 import mne
 import scipy.io
 
+import raw_voltage
 import connectivity
 import topomap_2d
-
 import topomap_3d_brain
 import topomap_3d_head
+
+import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
 
@@ -85,7 +87,6 @@ class Epochs:
 
         return epochs
 
-
     def generate_evoked(self):
         evoked = self.data["header"].average()
         return evoked
@@ -134,29 +135,35 @@ def main():
 
     epoch = epoch_obj.data[epoch_num]
 
-    st.pyplot(
-        epoch.plot()
-    )
+    with st.beta_expander("Raw Voltage Values", expanded=True):
+        st.pyplot(
+            raw_voltage.plot_voltage(epoch, {"events":epoch.events})
+        )
 
-    anim = topomap_3d_head.animate_3d_head(epoch)
-    st.plotly_chart(anim)
+    with st.beta_expander("3D Head Map", expanded=True):
+        anim = topomap_3d_head.animate_3d_head(epoch)
+        st.plotly_chart(anim)
 
-    anim = topomap_2d.animate_topomap_2d(epoch, steps=100, frame_rate=1000)
-    components.html(anim.to_jshtml(), height=600, width=600)
-
-    col1, col2 = st.beta_columns((1, 1))
-
-    # brain = topomap_3d_brain.plot_topomap_3d_brain(epoch)
-    # st.pyplot(brain)
-
-    with col1:
-        pair_list = connectivity.PAIR_OPTIONS["far_coherence"]
-        anim = connectivity.animate_connectivity(epoch, "correlation", pair_list=pair_list)
+    with st.beta_expander("2D Head Map", expanded=True):
+        anim = topomap_2d.animate_topomap_2d(epoch, steps=100, frame_rate=1000)
         components.html(anim.to_jshtml(), height=600, width=600)
 
-    with col2:
-        anim = connectivity.animate_connectivity_circle(epoch, "correlation")
-        components.html(anim.to_jshtml(), height=600, width=600)
+    with st.beta_expander("3D Brain Map", expanded=False):
+        # brain = topomap_3d_brain.plot_topomap_3d_brain(epoch)
+        brain = plt.figure()
+        st.pyplot(brain)
+
+    with st.beta_expander("Connectivity", expanded=True):
+        col1, col2 = st.beta_columns((1, 1))
+
+        with col1:
+            pair_list = connectivity.PAIR_OPTIONS["far_coherence"]
+            anim = connectivity.animate_connectivity(epoch, "correlation", pair_list=pair_list)
+            components.html(anim.to_jshtml(), height=600, width=600)
+
+        with col2:
+            anim = connectivity.animate_connectivity_circle(epoch, "correlation")
+            components.html(anim.to_jshtml(), height=600, width=600)
 
 
 def test():
