@@ -116,7 +116,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50):
     """Plot an animated topographic map in a 3D head shape
 
     Args:
-        raw (str): A file path for the EEGLab data
+        epoch (epoch): An epoched file for the EEGLab data
         starting (int, optional): The starting time stamp of the animation. Defaults to 0.
         duration (int, optional): The duration of the animation, it could not be longer than the length of the data frame. Defaults to 10.
         color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
@@ -129,7 +129,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50):
     # find out the channel names
     channel_names = epoch.ch_names
 
-    # slice the dataframe to only include EEG data for the specified time frame
+    # change the raw epoched data to a dataframe
     df = epoch.to_data_frame()
 
     # get the standard montage coordinates
