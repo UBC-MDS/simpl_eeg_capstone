@@ -61,8 +61,9 @@ class Epochs:
         self.data = self.generate_epochs(duration, start_second)
 
     def generate_epochs(self, duration, start_second):
+        freq = int(self.eeg_file.raw.info["sfreq"])
         if start_second:
-            start_time = start_second*2049
+            start_time = start_second*freq
             stim_mock = [[start_time]]
             tmin = 0
             tmax = duration
@@ -70,10 +71,8 @@ class Epochs:
             stim_mock = self.eeg_file.mat["elecmax1"]
             tmin = -0.3
             tmax = tmin + duration
-            print(tmax)
 
-        events = [[ts, 0, i+1] for i, ts in enumerate(stim_mock[0])]
-
+        events = [[ts, 0, ts//freq] for i, ts in enumerate(stim_mock[0])]
         epochs = mne.Epochs(
             self.eeg_file.raw,
             events,
@@ -85,7 +84,6 @@ class Epochs:
 
         return epochs
 
-
 def main():
     """
     Populate and display the streamlit user interface
@@ -94,19 +92,19 @@ def main():
     st.sidebar.header("Visualize your EEG data based on the following options")
     experiment_num = st.sidebar.selectbox(
         "Select experiment",
-        ["109", "97", "1112"]
+        ["109", "927", "1122"]
     )
     time_select = st.sidebar.radio(
         "Time selection type",
-        ["Time", "Epoch"]
+        ["Epoch", "Time"]
     )
     if time_select == "Time":
-        start_second = st.sidebar.selectbox(
+        start_second = st.sidebar.number_input(
             "Start second",
-            [0, 100, 200, 300]
+            value=0,
+            min_value=0
         )
         epoch_num = 0
-        # st.sidebar.time_input("Start Time")
     else:
         start_second = None
         epoch_num = st.sidebar.selectbox(
@@ -114,11 +112,11 @@ def main():
             [i for i in range(33)]
         )
 
-    duration = st.sidebar.slider(
+    duration = st.sidebar.number_input(
         "Duration (seconds)",
         value=1.0,
         min_value=0.5,
-        max_value=10.0
+        max_value=15.0
     )
 
     epoch_obj = Epochs(
@@ -131,8 +129,15 @@ def main():
     epoch = all_epochs[epoch_num]
 
     with st.beta_expander("Raw Voltage Values", expanded=True):
+        kwargs = {
+            "show_scrollbars": False
+        }
+
+        # show impact times if epochs selected
+        if(time_select == "Epoch"):
+            kwargs["events"] = np.array(all_epochs.events)
         st.pyplot(
-            raw_voltage.plot_voltage(all_epochs, {"events": all_epochs.events, "n_epochs": 2})
+            raw_voltage.plot_voltage(epoch, kwargs)
         )
 
     with st.beta_expander("2D and 3D Head Map", expanded=True):
