@@ -6,11 +6,13 @@ import numpy as np
 import mne
 import scipy.io
 
-import raw_voltage
-import connectivity
-import topomap_2d
-import topomap_3d_brain
-import topomap_3d_head
+from eeg import (
+    raw_voltage,
+    connectivity,
+    topomap_2d,
+    topomap_3d_brain,
+    topomap_3d_head
+)
 
 import matplotlib.pyplot as plt
 
@@ -52,8 +54,6 @@ class Epochs:
     -------
     generate_epochs(duration, start_second):
         Calculates epochs based on a duration and start second
-    generate_evoked():
-        Converts epochs into evoked data
     """
 
     def __init__(self, experiment, duration=2, start_second=None):
@@ -72,24 +72,18 @@ class Epochs:
             tmax = tmin + duration
             print(tmax)
 
-        events = [[i, 0, 1] for i in stim_mock[0]]
-        event_dict = {"header": 1}
+        events = [[ts, 0, i+1] for i, ts in enumerate(stim_mock[0])]
 
         epochs = mne.Epochs(
             self.eeg_file.raw,
             events,
             tmin=tmin,
             tmax=tmax,
-            event_id=event_dict,
             preload=True,
             baseline=(0, 0)
         )
 
         return epochs
-
-    def generate_evoked(self):
-        evoked = self.data["header"].average()
-        return evoked
 
 
 def main():
@@ -133,20 +127,23 @@ def main():
         start_second=start_second
     )
 
-    epoch = epoch_obj.data[epoch_num]
+    all_epochs = epoch_obj.data
+    epoch = all_epochs[epoch_num]
 
     with st.beta_expander("Raw Voltage Values", expanded=True):
         st.pyplot(
-            raw_voltage.plot_voltage(epoch, {"events":epoch.events})
+            raw_voltage.plot_voltage(all_epochs, {"events": all_epochs.events, "n_epochs": 2})
         )
 
-    with st.beta_expander("3D Head Map", expanded=True):
-        anim = topomap_3d_head.animate_3d_head(epoch)
-        st.plotly_chart(anim)
+    with st.beta_expander("2D and 3D Head Map", expanded=True):
+        col1, col2 = st.beta_columns((1, 1))
 
-    with st.beta_expander("2D Head Map", expanded=True):
-        anim = topomap_2d.animate_topomap_2d(epoch, steps=100, frame_rate=1000)
-        components.html(anim.to_jshtml(), height=600, width=600)
+        with col1:
+            anim = topomap_2d.animate_topomap_2d(epoch, steps=100, frame_rate=1000)
+            components.html(anim.to_jshtml(), height=600, width=600)
+        with col2:
+            anim = topomap_3d_head.animate_3d_head(epoch)
+            st.plotly_chart(anim, use_container_width=True)
 
     with st.beta_expander("3D Brain Map", expanded=False):
         # brain = topomap_3d_brain.plot_topomap_3d_brain(epoch)
