@@ -12,3 +12,6 @@ def plot_voltage(epoch, kwargs):
                event_id=None, show_scrollbars=True, show_scalebars=True, verbose=None)
     """
     return epoch.plot(**kwargs)
+
+# raw = mne.io.read_raw_eeglab(epoches)
+# plot_voltage('C:/Users/mgaro/UBC-MDS/Capstone/simpl_eeg_capstone/data/fixica.set','C:/Users/mgaro/UBC-MDS/Capstone/simpl_eeg_capstone/data/fixica.svg' , duration =2)
