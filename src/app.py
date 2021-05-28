@@ -84,6 +84,7 @@ class Epochs:
 
         return epochs
 
+
 def main():
     """
     Populate and display the streamlit user interface
@@ -94,6 +95,13 @@ def main():
         "Select experiment",
         ["109", "927", "1122"]
     )
+
+    frame_steps = st.sidebar.number_input(
+        "Number of timesteps per frame", 
+        value=50,
+        min_value=0
+    )
+
     time_select = st.sidebar.radio(
         "Time selection type",
         ["Epoch", "Time"]
@@ -144,10 +152,11 @@ def main():
         col1, col2 = st.beta_columns((1, 1))
 
         with col1:
-            anim = topomap_2d.animate_topomap_2d(epoch, steps=100, frame_rate=1000)
+            steps = epoch.time_as_index(epoch.times[-1])[0]//frame_steps
+            anim = topomap_2d.animate_topomap_2d(epoch, steps=steps)
             components.html(anim.to_jshtml(), height=600, width=600)
         with col2:
-            anim = topomap_3d_head.animate_3d_head(epoch)
+            anim = topomap_3d_head.animate_3d_head(epoch, steps=frame_steps)
             st.plotly_chart(anim, use_container_width=True)
 
     with st.beta_expander("3D Brain Map", expanded=False):
@@ -160,11 +169,11 @@ def main():
 
         with col1:
             pair_list = connectivity.PAIR_OPTIONS["far_coherence"]
-            anim = connectivity.animate_connectivity(epoch, "correlation", pair_list=pair_list)
+            anim = connectivity.animate_connectivity(epoch, "correlation", pair_list=pair_list, show_every_nth_frame=frame_steps)
             components.html(anim.to_jshtml(), height=600, width=600)
 
         with col2:
-            anim = connectivity.animate_connectivity_circle(epoch, "correlation")
+            anim = connectivity.animate_connectivity_circle(epoch, "correlation", show_every_nth_frame=frame_steps)
             components.html(anim.to_jshtml(), height=600, width=600)
 
 
