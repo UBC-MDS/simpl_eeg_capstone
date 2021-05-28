@@ -97,7 +97,7 @@ def main():
     )
 
     frame_steps = st.sidebar.number_input(
-        "Number of timesteps per frame", 
+        "Number of timesteps per frame",
         value=50,
         min_value=0
     )
@@ -127,6 +127,11 @@ def main():
         max_value=15.0
     )
 
+    colormap = st.sidebar.selectbox(
+        "Select Colour Scheme",
+        ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
+    )
+
     epoch_obj = Epochs(
         experiment_num,
         duration=duration,
@@ -153,10 +158,10 @@ def main():
 
         with col1:
             steps = epoch.time_as_index(epoch.times[-1])[0]//frame_steps
-            anim = topomap_2d.animate_topomap_2d(epoch, steps=steps)
+            anim = topomap_2d.animate_topomap_2d(epoch, steps=steps, colormap=colormap)
             components.html(anim.to_jshtml(), height=600, width=600)
         with col2:
-            anim = topomap_3d_head.animate_3d_head(epoch, steps=frame_steps)
+            anim = topomap_3d_head.animate_3d_head(epoch, steps=frame_steps, colormap=colormap)
             st.plotly_chart(anim, use_container_width=True)
 
     with st.beta_expander("3D Brain Map", expanded=False):
@@ -169,23 +174,14 @@ def main():
 
         with col1:
             pair_list = connectivity.PAIR_OPTIONS["far_coherence"]
-            anim = connectivity.animate_connectivity(epoch, "correlation", pair_list=pair_list, show_every_nth_frame=frame_steps)
+            anim = connectivity.animate_connectivity(epoch, "correlation", pair_list=pair_list,
+                show_every_nth_frame=frame_steps, colormap=colormap)
             components.html(anim.to_jshtml(), height=600, width=600)
 
         with col2:
-            anim = connectivity.animate_connectivity_circle(epoch, "correlation", show_every_nth_frame=frame_steps)
+            anim = connectivity.animate_connectivity_circle(epoch, "correlation", 
+                show_every_nth_frame=frame_steps, colormap=colormap)
             components.html(anim.to_jshtml(), height=600, width=600)
-
-
-def test():
-    epoch_obj = Epochs(
-        "109",
-        duration=1, 
-        start_second=0
-    )
-    epoch = epoch_obj.data[0]
-    brain = topomap_3d_brain.plot_topomap_3d_brain(epoch)   
-    topomap_3d_brain.save_animated_topomap_3d_brain(brain, "test.gif")
 
 
 if __name__ == "__main__":

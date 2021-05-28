@@ -64,7 +64,7 @@ def calculate_connectivity(data, calc_type="correlation"):
     return conn_df
 
 
-def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0):
+def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0, colormap="RdBu_r"):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
@@ -74,12 +74,13 @@ def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0
         calc_type (str): Connectivity calculation type
         pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
         threshold (int, optional): Connectivity threshold to display connection. Defaults to 0.
+        colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
 
     Returns:
         matplotlib.pyplot.figure: Connectivity figure
     """    
     correlation_df = calculate_connectivity(data, calc_type)
-    possible_colours = plt.cm.rainbow(correlation_df)
+    possible_colours = plt.cm.get_cmap(colormap)(correlation_df)
 
     ax = fig.add_subplot()
     node_df = pd.DataFrame(
@@ -107,12 +108,12 @@ def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0
                         color=possible_colours[row, col],
                         linewidth=0.2/(1-correlation),
                     )
-    fig.colorbar(plt.cm.ScalarMappable(cmap="rainbow"))
+    fig.colorbar(plt.cm.ScalarMappable(cmap=colormap))
     data.plot_sensors(axes=ax, show_names=True, kind="topomap")
     return fig
 
 
-def animate_connectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=10):
+def animate_connectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=10, colormap="RdBlu_r"):
     """Animate 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
@@ -120,6 +121,7 @@ def animate_connectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=1
         calc_type (str: Connectivity calculation type
         pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
         show_every_nth_frame (int, optional): Number of frames to generate. Defaults to 10.
+        colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
@@ -159,7 +161,7 @@ def animate_connectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=1
     return anim
 
 
-def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[]):
+def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[], colormap="RdBu_r"):
     """Plot connectivity circle
 
     Args:
@@ -168,6 +170,7 @@ def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[]):
         calc_type (str): Connectivity calculation type
         max_connections (int, optional): Maximum connections to plot. Defaults to 50.
         ch_names ([str], optional): List of channel names to display. Defaults to [], which indicates all channels.
+        colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
 
     Returns:
         matplotlib.pyplot.figure: Connectivity circle figure
@@ -189,18 +192,20 @@ def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[]):
         fig=fig,
         node_angles=angles,
         facecolor="w",
-        colormap="rainbow"
+        textcolor="black",
+        colormap=colormap
     )[0]
     return fig
 
 
-def animate_connectivity_circle(epochs, calc_type, show_every_nth_frame=10):
+def animate_connectivity_circle(epochs, calc_type, show_every_nth_frame=10, colormap="RdBu_r"):
     """Animate connectivity circle
 
     Args:
         epochs (mne.epochs.Epochs): Epoch to visualize
         calc_type (str: Connectivity calculation type
         show_every_nth_frame (int, optional): Number of frames to generate. Defaults to 10.
+        colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
