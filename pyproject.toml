@@ -1,6 +1,12 @@
 [build-system]
 requires = [
     "setuptools>=42",
-    "wheel"
+    "wheel",
+    'pandas', 
+    'numpy', 
+    'mne', 
+    'scipy', 
+    'matplotlib',  
+    'plotly'
 ]
 build-backend = "setuptools.build_meta"
