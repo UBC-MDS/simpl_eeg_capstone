@@ -143,7 +143,8 @@ def create_inverse_solution(
 def plot_topomap_3d_brain(
         epochs,
         stc='auto',
-        display_time=None,
+        display_time=0,
+        backend = 'auto',
         views=[
             'lateral',
             'dorsal',
@@ -165,7 +166,8 @@ def plot_topomap_3d_brain(
         background='black',
         foreground='white',
         spacing='oct6',
-        smoothing_steps=0):
+        smoothing_steps=10,
+        figure = None):
     """
     Creates a still image of the epochs or stc data mapped to the brain using the mne.SourceEstimate.plot
     function.
@@ -250,12 +252,15 @@ def plot_topomap_3d_brain(
 
     # if hemi == "split" and view_layout == 'horizontal':
     #     # Return warning that the horizontal with split isn't reccomended
+    
+    if backend == 'matplotlib':
+        print("Warning, when backend is set to matplotlib hemi must be set to 'lh' or 'rh' and only a single view may be provided.") #throw error
 
     # Calculate stc if one is not provided
     if stc == 'auto':
         forward = create_fsaverage_forward(epochs)
         stc = create_inverse_solution(epochs, forward)
-
+    
     # Calculate font size for colorbar/time label
     colorbar_font_size = round(height_per_view / 25)
     time_label_size = round(height_per_view / 33)
@@ -298,37 +303,132 @@ def plot_topomap_3d_brain(
                                                      colorbar_lims[1],
                                                      colorbar_lims[2]]
                                )
+    
+    if type(views) == str:
+        views = [views]
+            
+    def remove_colorbar(image):
+        height = image.shape[1]
+        cut_height = round(height * 0.25)
 
-    brain = stc.plot(views=views,
-                     surface='inflated',
-                     # white is the other option (but I hate it)
-                     hemi=hemi,
-                     colormap=colormap,
-                     size=auto_plot_size,
-                     subject=None,
-                     initial_time=display_time,
-                     # For selecting image of individual frame.
-                     clim=clim_values,
-                     time_viewer=False,  # Use to open up interactive version
-                     show_traces=False,
-                     colorbar=colorbar,
-                     transparent=transparent,  # Makes values below min fully transparent
-                     alpha=alpha,  # used to make brain transparent
-                     # figure = None, # used to attach to other figures
-                     cortex=cortex,  # changes binarized curvature values
-                     background=background,  # changes background color
-                     foreground=foreground,  # changes color of display text
-                     spacing=spacing,
-                     # changes spacing for souce space. oct6 is default but can
-                     # use lower number for speed
-                     view_layout=view_layout,  # must be vertical when hemi is 'split'
-                     smoothing_steps=smoothing_steps,
-                     add_data_kwargs=dict(time_label_size=time_label_size,
-                                          colorbar_kwargs=dict(label_font_size=colorbar_font_size)),
+        blank_image = np.zeros((cut_height, height,3), np.uint8)
+        blank_image[:,0:height] = (0,0,0) 
 
-                     )
+        x1, x2, y1, y2 = 0, height, 0, (height-cut_height)
+        cropped = image[y1:y2, x1:x2]
+        combined = np.vstack((cropped,blank_image))
 
-    return brain
+        return combined
+    
+    def make_plot(
+         epoch = epochs,
+         stc = stc,
+         views=views,
+         hemi=hemi,
+         colormap=colormap,
+         size=auto_plot_size,
+         subject=None,
+         initial_time=display_time,
+         clim=clim_values,
+         time_viewer=False,  # Use to open up interactive version
+         show_traces=False,
+         colorbar=colorbar,
+         transparent=transparent,
+         alpha=alpha, 
+         figure = figure,
+         cortex=cortex, 
+         background=background, 
+         foreground=foreground, 
+         spacing=spacing,
+         backend = backend,
+         view_layout=view_layout,
+         smoothing_steps=smoothing_steps,
+         time_label_size=time_label_size,
+         label_font_size=colorbar_font_size,
+         ):
+            brain = stc.plot(
+                    views=views,
+                    surface='inflated',
+                    hemi=hemi,
+                    colormap=colormap,
+                    size=size,
+                    subject=None,
+                    initial_time=initial_time,
+                    clim=clim_values,
+                    time_viewer=False, 
+                    show_traces=False,
+                    colorbar=colorbar,
+                    transparent=transparent,
+                    alpha=alpha, 
+                    figure = figure,
+                    cortex=cortex,
+                    background=background,  
+                    foreground=foreground, 
+                    spacing=spacing,
+                    backend = backend,
+                    view_layout=view_layout,  
+                    smoothing_steps=smoothing_steps,
+                    add_data_kwargs=dict(time_label_size=time_label_size,
+                                      colorbar_kwargs=dict(label_font_size=colorbar_font_size)),
+                );
+            
+            return(brain)
+            
+            
+    if backend != 'matplotlib':
+        print("making non matplotlib plot")
+        return (make_plot())
+    
+    elif (hemi == 'lh' and len(views) == 1) or (hemi == 'rh' and len(views) == 1):
+        print("making single plot of matplot")
+        return (make_plot(views = views[0]))
+    
+    else:
+        view_images = []
+            
+        for v in range(len(views)):
+
+            brain_images = list()
+            
+            if hemi == 'both' or hemi == 'split':
+                brain_hemi = ['lh', 'rh']
+                final_axis = 0 # Will stack images of both hemis vertically
+            else:
+                brain_hemi = [hemi]
+                final_axis = 1 # Will stack each view horizontally
+
+            # run twice for each side of the brain if using both or split
+            for i in range(len(brain_hemi)):
+
+                fig, ax = plt.subplots(figsize=(3, 3))
+
+                make_plot(figure = fig, hemi = brain_hemi[i], views = str(views[v]), size = [100,100])
+
+                # Convert figures to images so they can be combined
+                ax.margins(0)
+                fig.canvas.draw()
+                plot_image = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
+                plot_image = plot_image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
+
+                # Get rid of colorbar if not the top left
+                if i == 1 or v >= 1:
+                    plot_image = remove_colorbar(plot_image)
+
+                brain_images.append(plot_image)
+            
+            if hemi == 'both' or hemi == 'split':
+                view_image = np.concatenate((brain_images[0], brain_images[1]), axis=1)
+            else:
+                view_image = brain_images[0]
+            
+            view_images.append(view_image)
+
+    if len(view_images) > 1:
+        for i in range(1, len(view_images)):
+            view_images[0] = np.concatenate((view_images[0], view_images[i]), axis=final_axis)
+
+    return (view_images[0])
+            
 
 
 def save_animated_topomap_3d_brain(
@@ -377,3 +477,106 @@ def save_animated_topomap_3d_brain(
                      framerate=framerate,
                      interpolation=interpolation,
                      time_viewer=time_viewer)
+
+    
+    
+def animate_matplot_brain(
+                    epochs,
+                    stc='auto',
+                    display_time=0,
+                    backend = 'auto',
+                    views=[
+                        'lateral',
+                        'dorsal',
+                        'coronal',
+                        'frontal'],
+                    view_layout='horizontal',
+                    height_per_view=400,
+                    hemi='both',
+                    colormap='mne',
+                    colorbar_limit_type= 'pos_lims_value',
+                    colorbar_lims=[
+                                0,
+                                1.5,
+                                3],
+                    colorbar=True,
+                    transparent=False,
+                    alpha=1.0,
+                    cortex='classic',
+                    background='black',
+                    foreground='white',
+                    spacing='oct6',
+                    smoothing_steps=10,
+                    steps=3,
+                    frame_rate=12
+                        ):
+    
+    # CURRENTLY UNFINISHED AND IN NEED OF EXTENSIVE BUG TESTING
+    # MAIN PROBLEMS ARE THAT IT'S SLOW FOR MULTI AND SINGLE DOESN'T WORK PROPERLY YET
+
+    import matplotlib.animation as animation
+    
+    if type(views) == str:
+        views = [views]
+
+    frames_to_show = round(user_epoch.times.shape[0]/steps)
+    times_to_show = np.linspace(user_epoch.tmin, user_epoch.tmax, frames_to_show)
+
+    #FOR TESTING ONLY DELETE LATER
+    times_to_show = times_to_show[0:3] #FOR TESTING ONLY DELETE LATER
+
+    ms_between_frames = 1000 / frame_rate
+    
+
+    if (hemi == 'lh' and len(views) == 1) or (hemi == 'rh' and len(views) == 1):
+        #fig = plt.figure()
+        def animate(frame_number):
+            fig.clear()
+            # NEEDS TO BE UPDATED WITH ALL THE ARGUMENTS
+            fig = plot_topomap_3d_brain(user_epoch,
+                                             stc = stc,
+                                             backend = 'matplotlib',
+                                             hemi = hemi,
+                                             views = views,
+                                             colorbar_limit_type = 'pos_lims_value',
+                                             colorbar_lims=[0, 1, 2],
+                                             height_per_view = 200,
+                                             figure = fig,
+                                             display_time = frame_number
+                                             )
+            return [fig]
+
+    else:
+        fig = plt.figure()
+        ax = plt.gca()
+        
+        def animate(frame):
+
+            # remove previous image
+            ax.clear()
+
+            # get new image from list
+            art = plot_topomap_3d_brain(user_epoch,
+                                         stc = stc,
+                                         backend = 'matplotlib',
+                                         hemi = hemi,
+                                         views = views,
+                                         colorbar_limit_type = 'pos_lims_value',
+                                         colorbar_lims=[0, 1, 2],
+                                         height_per_view = 200,
+                                         #figure = fig,
+                                         display_time = frame
+                                         )
+            # display new image
+            ax.imshow(art)
+
+
+    ani = animation.FuncAnimation(
+        fig,
+        animate,
+        frames=times_to_show,
+        interval=ms_between_frames,  # Time between frames in ms
+        blit=False
+    )
+
+    return ani
