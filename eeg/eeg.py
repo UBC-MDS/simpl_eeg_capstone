@@ -1,6 +1,7 @@
 import numpy as np
 import mne
 import scipy.io
+
 class eeg_file:
 
     def __init__(self, experiment):

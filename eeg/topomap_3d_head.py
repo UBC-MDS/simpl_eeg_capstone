@@ -5,9 +5,7 @@
 import mne
 import numpy as np
 import pandas as pd
-import plotly
 import plotly.graph_objects as go
-import scipy.io
 from scipy.interpolate import NearestNDInterpolator
 
 
@@ -112,15 +110,16 @@ def get_node_dataframe(raw, montage):
     return node_df
 
 
-def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50):
+def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="Bluered"):
     """Plot an animated topographic map in a 3D head shape
 
     Args:
-        raw (str): A file path for the EEGLab data
+        epoch (epoch): An epoched file for the EEGLab data
         starting (int, optional): The starting time stamp of the animation. Defaults to 0.
         duration (int, optional): The duration of the animation, it could not be longer than the length of the data frame. Defaults to 10.
         color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
         color_max (int, optional): The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
+        colormap (str, optional): The colour scheme to use. Defaults to Bluered.
 
     Returns:
         figure: An animated topographic map in a 3D head shape
@@ -129,7 +128,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50):
     # find out the channel names
     channel_names = epoch.ch_names
 
-    # slice the dataframe to only include EEG data for the specified time frame
+    # change the raw epoched data to a dataframe
     df = epoch.to_data_frame()
 
     # get the standard montage coordinates
@@ -151,10 +150,10 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50):
                     x=np.array(standard_coord)[:, 0],
                     y=np.array(standard_coord)[:, 1],
                     z=np.array(standard_coord)[:, 2],
-                    colorscale="Bluered",
+                    colorscale=colormap,
                     colorbar_title="EEG Voltage",
-                    cmin = color_min,
-                    cmax = color_max,
+                    cmin=color_min,
+                    cmax=color_max,
                     intensity=interpolated_time(
                         df, channel_names, node_coord, x, y, z, k
                     ),
@@ -176,10 +175,10 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50):
             x=np.array(standard_coord)[:, 0],
             y=np.array(standard_coord)[:, 1],
             z=np.array(standard_coord)[:, 2],
-            colorscale="Bluered",
+            colorscale=colormap,
             colorbar_title="EEG Voltage",
-            cmin = color_min,
-            cmax = color_max,
+            cmin=color_min,
+            cmax=color_max,
             intensity=interpolated_time(df, channel_names, node_coord, x, y, z, 0),
             intensitymode="vertex",
             alphahull=1,
@@ -196,8 +195,8 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50):
         text=node_df["channel"],
         mode="markers+text",
         marker={"size": 5, "color": "black"},
-        textposition="top left",
-        textfont=dict(family="sans serif", size=18, color="White"),
+        textposition="top center",
+        textfont=dict(family="sans serif", size=18),
     )
 
     # set up slider for the animated plot
@@ -210,7 +209,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50):
             "steps": [
                 {
                     "args": [[f.name], frame_args(0)],
-                    "label": str(k),
+                    "label": "",
                     "method": "animate",
                 }
                 for k, f in enumerate(fig.frames)
@@ -223,13 +222,6 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50):
         width=1000,
         height=600,
         scene=dict(
-            zaxis=dict(
-                range=[
-                    np.nan_to_num(np.array(standard_coord)[:, 2].tolist()).min(),
-                    np.nan_to_num(np.array(standard_coord)[:, 2].tolist()).max(),
-                ],
-                autorange=False,
-            ),
             aspectratio=dict(x=1.5, y=1.5, z=1),
         ),
         updatemenus=[
@@ -254,5 +246,6 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50):
             }
         ],
         sliders=sliders,
+        transition=dict(duration=0, easing="linear"),
     )
     return fig

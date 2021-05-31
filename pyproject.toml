@@ -1,5 +1,24 @@
+[tool.poetry]
+name = "eeg"
+version = "0.1.0"
+description = "A package to generate animated visualization for EEG data"
+authors =  ["Matthew Pin", "Mo Garoub", "Yiki Su", "Sasha Babicki"]
+license = "MIT"
+readme = "README.md"
+documentation = "https://eeg.readthedocs.io/en/latest/"
+homepage = "https://github.com/UBC-MDS/simpl_eeg_capstone"
+repository = "https://github.com/UBC-MDS/simpl_eeg_capstone"
+
+[tool.poetry.dependencies]
+python = "^3.8"
+flake8 = "^3.9.2"
+pytest = "^6.2.4"
+
+[tool.poetry.dev-dependencies]
+
 [build-system]
 requires = [
+    "poetry-core>=1.0.0", 
     "setuptools>=42",
     "wheel",
     'pandas', 
@@ -7,6 +26,6 @@ requires = [
     'mne', 
     'scipy', 
     'matplotlib',  
-    'plotly'
-]
-build-backend = "setuptools.build_meta"
+    'plotly',
+    ]
+build-backend = "poetry.core.masonry.api"
