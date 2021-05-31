@@ -48,7 +48,7 @@ class Epochs:
     def __init__(self, experiment, duration=2, start_second=None):
         self.eeg_file = EEG_File(experiment)
         self.data = self.generate_epochs(duration, start_second)
-        self.epoch = self.get_epoch(0)
+        self.epoch = self.get_nth_epoch(0)
 
     def generate_epochs(self, duration, start_second):
         freq = int(self.eeg_file.raw.info["sfreq"])
