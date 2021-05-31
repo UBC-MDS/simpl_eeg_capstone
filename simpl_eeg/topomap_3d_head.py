@@ -129,7 +129,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
     channel_names = epoch.ch_names
 
     # change the raw epoched data to a dataframe
-    df = epoch.to_data_frame()
+    df = epoch.to_data_frame().groupby("time").mean().reset_index()
 
     # get the standard montage coordinates
     standard_montage, standard_coord = get_standard_coord()
@@ -215,6 +215,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
                 }
                 for k, f in enumerate(fig.frames)
             ],
+            'transition': {'duration': 0, 'easing': 'linear'},
         }
     ]
 
