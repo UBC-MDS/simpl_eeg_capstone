@@ -45,3 +45,11 @@ class epochs:
     def generate_evoked(self):
         evoked = self.data["header"].average()
         return evoked
+    
+    def get_nth_epoch(self, n):
+        """Return the nth epoch from the raw data
+
+        Args:
+            n (int): The number of the epoch
+        """
+        return self.data[n]
