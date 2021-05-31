@@ -116,7 +116,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
     Args:
         epoch (epoch): An epoched file for the EEGLab data
         starting (int, optional): The starting time stamp of the animation. Defaults to 0.
-        duration (int, optional): The duration of the animation, it could not be longer than the length of the data frame. Defaults to 10.
+        steps (int, optional): The duration of the animation, it could not be longer than the length of the data frame. Defaults to 10.
         color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
         color_max (int, optional): The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
         colormap (str, optional): The colour scheme to use. Defaults to Bluered.
@@ -151,7 +151,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
                     y=np.array(standard_coord)[:, 1],
                     z=np.array(standard_coord)[:, 2],
                     colorscale=colormap,
-                    colorbar_title="EEG Voltage",
+                    colorbar_title="EEG MicroVolt",
                     cmin=color_min,
                     cmax=color_max,
                     intensity=interpolated_time(
@@ -165,7 +165,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
                     k
                 ),  # you need to name the frame for the animation to behave properly
             )
-            for k in range(nb_frames)
+            for k in df["time"]
         ]
     )
 
@@ -206,10 +206,11 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
             "len": 0.9,
             "x": 0.1,
             "y": 0,
+            "currentvalue":{"prefix": "Time stamp : "},
             "steps": [
                 {
                     "args": [[f.name], frame_args(0)],
-                    "label": "",
+                    "label": f.name,
                     "method": "animate",
                 }
                 for k, f in enumerate(fig.frames)

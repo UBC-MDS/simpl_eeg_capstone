@@ -1,4 +1,4 @@
-def plot_voltage(epoch, kwargs):
+def plot_voltage(epoch, **kwargs):
     """
     Return interactive raw voltage plot
     
