@@ -17,5 +17,15 @@ pytest = "^6.2.4"
 [tool.poetry.dev-dependencies]
 
 [build-system]
-requires = ["poetry-core>=1.0.0"]
+requires = [
+    "poetry-core>=1.0.0", 
+    "setuptools>=42",
+    "wheel",
+    'pandas', 
+    'numpy', 
+    'mne', 
+    'scipy', 
+    'matplotlib',  
+    'plotly',
+    ]
 build-backend = "poetry.core.masonry.api"
