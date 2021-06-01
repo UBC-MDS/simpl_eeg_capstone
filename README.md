@@ -14,7 +14,27 @@ Clone the repository:
 ```
 $ git clone https://github.com/UBC-MDS/simpl_eeg_capstone.git
 $ cd simpl_eeg_capstone
+
 ```
+
+# Package Installation Instructions
+Run the following command from the root folder of the project:
+```
+$ pip install -e .
+
+```
+
+When you want to use the package,  you could call the following commands for respective functions:
+```
+from simpl_eeg import raw_voltage
+from simpl_eeg import eeg_objects
+from simpl_eeg import connectivity
+from simpl_eeg import topomap_2d
+from simpl_eeg import topomap_3d_brain
+from simpl_eeg import topomap_3d_head
+
+```
+
 
 # Running the Web Application
 Run the following command from the root folder of the project: 
