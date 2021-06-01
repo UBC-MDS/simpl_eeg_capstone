@@ -76,10 +76,6 @@ def main():
     events = epoch_obj.data.events
     epoch = epoch_obj.get_nth_epoch(epoch_num)
 
-    anim = connectivity.animate_all_conectivity(epoch, "correlation", pair_list=connectivity.PAIR_OPTIONS["far_coherence"],
-                show_every_nth_frame=frame_steps, colormap=colormap)
-    components.html(anim.to_jshtml(), height=600)
-
     with st.beta_expander("Raw Voltage Values", expanded=True):
         kwargs = {
             "show_scrollbars": False
@@ -109,6 +105,13 @@ def main():
         st.pyplot(brain)
 
     with st.beta_expander("Connectivity", expanded=True):
+        anim = connectivity.animate_all_conectivity(
+            epoch,
+            "correlation",
+            show_every_nth_frame=frame_steps,
+            colormap=colormap)
+        components.html(anim.to_jshtml(), height=600)
+
         col1, col2 = st.beta_columns((1, 1))
 
         with col1:

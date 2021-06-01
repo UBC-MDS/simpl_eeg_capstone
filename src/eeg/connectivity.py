@@ -157,13 +157,14 @@ def animate_connectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=1
                 calc_type,
                 pair_list=pair_list,
                 threshold=0,
+                colormap=colormap
             )
         ]
     anim = animation.FuncAnimation(fig, animate, steps, blit=True)
     return anim
 
 
-def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[], colormap="RdBu_r"):
+def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[], colormap="RdBu_r", colorbar=True):
     """Plot connectivity circle
 
     Args:
@@ -173,6 +174,7 @@ def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[], colo
         max_connections (int, optional): Maximum connections to plot. Defaults to 50.
         ch_names ([str], optional): List of channel names to display. Defaults to [], which indicates all channels.
         colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
+        colormap (bool, optional): Whether to plot the colorbar. Defaults to True.
 
     Returns:
         matplotlib.pyplot.figure: Connectivity circle figure
@@ -195,7 +197,8 @@ def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[], colo
         node_angles=angles,
         facecolor="w",
         textcolor="black",
-        colormap=colormap
+        colormap=colormap,
+        colorbar=colorbar
     )[0]
     return fig
 
@@ -228,7 +231,7 @@ def animate_connectivity_circle(epochs, calc_type, show_every_nth_frame=10, colo
             include_tmax=False
         )
         return [
-            plot_conn_circle(data, fig, calc_type=calc_type)
+            plot_conn_circle(data, fig, calc_type=calc_type, colormap=colormap)
         ]
 
     anim = animation.FuncAnimation(fig, animate, steps, blit=True)
@@ -240,9 +243,7 @@ def animate_all_conectivity(epochs, calc_type, pair_list=[], show_every_nth_fram
         match=lambda x: type(x) == plt.Text and x.get_text() != ""
     )
 
-    pair_list = convert_pairs(pair_list)
-
-    fig = plt.figure(figsize=(8, 4.8)) 
+    fig = plt.figure(figsize=(10, 4.8))
 
     steps = show_every_nth_frame
     tmin = epochs.tmin
@@ -258,7 +259,13 @@ def animate_all_conectivity(epochs, calc_type, pair_list=[], show_every_nth_fram
             include_tmax=False
         )
 
-        plot_conn_circle(data, fig, calc_type=calc_type)
+        plot_conn_circle(
+            data,
+            fig,
+            calc_type=calc_type,
+            colorbar=False,
+            colormap=colormap
+        )
 
         ax2 = fig.add_subplot(122)
 
@@ -269,7 +276,8 @@ def animate_all_conectivity(epochs, calc_type, pair_list=[], show_every_nth_fram
                 calc_type,
                 pair_list=pair_list,
                 threshold=0,
-                ax=ax2
+                ax=ax2,
+                colormap=colormap
         )
 
         ax = fig.axes[0]
