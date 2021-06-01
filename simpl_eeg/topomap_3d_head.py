@@ -8,7 +8,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from scipy.interpolate import NearestNDInterpolator
 
-# define the frame arguments fro the animated plot
+# define the frame arguments for the animated plot
 def frame_args(duration):
     """Return the frame arguments of the animated plot
 
