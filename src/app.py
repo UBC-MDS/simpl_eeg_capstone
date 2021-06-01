@@ -6,7 +6,7 @@ import numpy as np
 import mne
 import scipy.io
 
-from eeg import (
+from simpl_eeg import (
     eeg_objects,
     raw_voltage,
     connectivity,
@@ -108,6 +108,7 @@ def main():
         anim = connectivity.animate_all_conectivity(
             epoch,
             "correlation",
+            pair_list=connectivity.PAIR_OPTIONS["local_anterior"],
             show_every_nth_frame=frame_steps,
             colormap=colormap)
         components.html(anim.to_jshtml(), height=600)
