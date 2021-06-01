@@ -9,6 +9,9 @@ reports/Proposal.pdf : reports/Proposal.Rmd reports/images/TimelineGanttChart.pd
 ui :
 	streamlit run src/app.py
 
+install : 
+	python -m pip install -e .
+
 clean :
 	rm -f reports/images/viz_example.png
 	rm -f reports/Proposal.pdf
