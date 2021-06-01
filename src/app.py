@@ -7,6 +7,7 @@ import mne
 import scipy.io
 
 from eeg import (
+    eeg_objects,
     raw_voltage,
     connectivity,
     topomap_2d,
@@ -17,72 +18,6 @@ from eeg import (
 import matplotlib.pyplot as plt
 
 st.set_page_config(layout="wide")
-
-
-class EEG_File:
-    """
-    A class to import and store relevant eeg files
-
-    Attributes
-    ----------
-    experiment : str
-        experiment folder name within the data folder
-    mat : list(int)
-        a list of integers representing impact times
-    raw : mne.io.Raw
-        raw experiment data in FIF format
-    """
-
-    def __init__(self, experiment):
-        self.experiment = experiment
-        self.mat = scipy.io.loadmat("data/"+experiment+"/impact locations.mat")
-        self.raw = mne.io.read_raw_eeglab("data/"+experiment+"/fixica.set")
-
-
-class Epochs:
-    """
-    A class to represent epochs and underlying data
-
-    Attributes
-    ----------
-    eeg_file : EEG_File
-        eeg file data
-    data : mne.Epochs
-        the generated epoch data
-
-    Methods
-    -------
-    generate_epochs(duration, start_second):
-        Calculates epochs based on a duration and start second
-    """
-
-    def __init__(self, experiment, duration=2, start_second=None):
-        self.eeg_file = EEG_File(experiment)
-        self.data = self.generate_epochs(duration, start_second)
-
-    def generate_epochs(self, duration, start_second):
-        freq = int(self.eeg_file.raw.info["sfreq"])
-        if start_second:
-            start_time = start_second*freq
-            stim_mock = [[start_time]]
-            tmin = 0
-            tmax = duration
-        else:
-            stim_mock = self.eeg_file.mat["elecmax1"]
-            tmin = -0.3
-            tmax = tmin + duration
-
-        events = [[ts, 0, ts//freq] for i, ts in enumerate(stim_mock[0])]
-        epochs = mne.Epochs(
-            self.eeg_file.raw,
-            events,
-            tmin=tmin,
-            tmax=tmax,
-            preload=True,
-            baseline=(0, 0)
-        )
-
-        return epochs
 
 
 def main():
@@ -132,14 +67,18 @@ def main():
         ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
     )
 
-    epoch_obj = Epochs(
+    epoch_obj = eeg_objects.Epochs(
         experiment_num,
         duration=duration,
         start_second=start_second
     )
 
-    all_epochs = epoch_obj.data
-    epoch = all_epochs[epoch_num]
+    events = epoch_obj.data.events
+    epoch = epoch_obj.get_nth_epoch(epoch_num)
+
+    anim = connectivity.animate_all_conectivity(epoch, "correlation", pair_list=connectivity.PAIR_OPTIONS["far_coherence"],
+                show_every_nth_frame=frame_steps, colormap=colormap)
+    components.html(anim.to_jshtml(), height=600, width=1200)
 
     with st.beta_expander("Raw Voltage Values", expanded=True):
         kwargs = {
@@ -148,9 +87,9 @@ def main():
 
         # show impact times if epochs selected
         if(time_select == "Epoch"):
-            kwargs["events"] = np.array(all_epochs.events)
+            kwargs["events"] = np.array(events)
         st.pyplot(
-            raw_voltage.plot_voltage(epoch, kwargs)
+            raw_voltage.plot_voltage(epoch, **kwargs)
         )
 
     with st.beta_expander("2D and 3D Head Map", expanded=True):

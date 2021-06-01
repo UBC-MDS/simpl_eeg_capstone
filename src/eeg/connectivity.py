@@ -64,7 +64,7 @@ def calculate_connectivity(data, calc_type="correlation"):
     return conn_df
 
 
-def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0, colormap="RdBu_r"):
+def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0, colormap="RdBu_r", ax=None):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
@@ -82,7 +82,9 @@ def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0
     correlation_df = calculate_connectivity(data, calc_type)
     possible_colours = plt.cm.get_cmap(colormap)(correlation_df)
 
-    ax = fig.add_subplot()
+    if ax==None:
+        ax = fig.add_subplot()
+
     node_df = pd.DataFrame(
         {
             "name": [node.get_text() for node in locations],
@@ -184,7 +186,7 @@ def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[], colo
     ].to_numpy()
 
     angles = mne.viz.circular_layout(ch_names, ch_names, start_pos=90)
-
+    
     mne.viz.plot_connectivity_circle(
         conn,
         ch_names,
@@ -210,7 +212,37 @@ def animate_connectivity_circle(epochs, calc_type, show_every_nth_frame=10, colo
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
     """
+
+    steps = show_every_nth_frame
+    tmin = epochs.tmin
+    tmax = epochs.tmax
+    step_size = (tmax - tmin)/steps
+
     fig = plt.figure()
+
+    def animate(frame_number):
+        fig.clear()
+        data = epochs.copy().crop(
+            tmin=tmin+step_size*frame_number,
+            tmax=tmin+step_size*(frame_number+1),
+            include_tmax=False
+        )
+        return [
+            plot_conn_circle(data, fig, calc_type=calc_type)
+        ]
+
+    anim = animation.FuncAnimation(fig, animate, steps, blit=True)
+    return anim
+
+def animate_all_conectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=10, colormap="RdBlu_r"):
+    sensor_locations = epochs.plot_sensors(show_names=True, show=False)
+    locations = sensor_locations.findobj(
+        match=lambda x: type(x) == plt.Text and x.get_text() != ""
+    )
+
+    pair_list = convert_pairs(pair_list)
+
+    fig = plt.figure() #figsize=(2*3,2))
 
     steps = show_every_nth_frame
     tmin = epochs.tmin
@@ -224,9 +256,21 @@ def animate_connectivity_circle(epochs, calc_type, show_every_nth_frame=10, colo
             tmax=tmin+step_size*(frame_number+1),
             include_tmax=False
         )
-        return [
-            plot_conn_circle(data, fig, calc_type=calc_type)
-        ]
 
+        plot_conn_circle(data, fig, calc_type=calc_type)
+        ax2 = fig.add_subplot(122)
+        plot_connectivity(
+                data,
+                fig,
+                locations,
+                calc_type,
+                pair_list=pair_list,
+                threshold=0,
+                ax=ax2
+        )
+        
+        return [
+            fig
+        ]
     anim = animation.FuncAnimation(fig, animate, steps, blit=True)
     return anim
