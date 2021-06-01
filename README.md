@@ -19,7 +19,7 @@ cd simpl_eeg_capstone
 # Package Installation Instructions
 Run the following command from the root folder of the project:
 ```bash
-make install
+pip install -e .
 ```
 
 The package contains 6 modules, which can be imported with the following commands:
@@ -35,7 +35,7 @@ from simpl_eeg import topomap_3d_head
 # Running the Web Application
 Run the following command from the root folder of the project: 
 ```bash
-make ui
+streamlit run src/app.py
 ```
 
 # Group Members
