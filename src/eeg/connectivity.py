@@ -82,7 +82,7 @@ def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0
     correlation_df = calculate_connectivity(data, calc_type)
     possible_colours = plt.cm.get_cmap(colormap)(correlation_df)
 
-    if ax==None:
+    if ax == None:
         ax = fig.add_subplot()
 
     node_df = pd.DataFrame(
@@ -186,7 +186,7 @@ def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[], colo
     ].to_numpy()
 
     angles = mne.viz.circular_layout(ch_names, ch_names, start_pos=90)
-    
+
     mne.viz.plot_connectivity_circle(
         conn,
         ch_names,
@@ -242,7 +242,7 @@ def animate_all_conectivity(epochs, calc_type, pair_list=[], show_every_nth_fram
 
     pair_list = convert_pairs(pair_list)
 
-    fig = plt.figure() #figsize=(2*3,2))
+    fig = plt.figure(figsize=(8, 4.8)) 
 
     steps = show_every_nth_frame
     tmin = epochs.tmin
@@ -251,6 +251,7 @@ def animate_all_conectivity(epochs, calc_type, pair_list=[], show_every_nth_fram
 
     def animate(frame_number):
         fig.clear()
+
         data = epochs.copy().crop(
             tmin=tmin+step_size*frame_number,
             tmax=tmin+step_size*(frame_number+1),
@@ -258,7 +259,9 @@ def animate_all_conectivity(epochs, calc_type, pair_list=[], show_every_nth_fram
         )
 
         plot_conn_circle(data, fig, calc_type=calc_type)
+
         ax2 = fig.add_subplot(122)
+
         plot_connectivity(
                 data,
                 fig,
@@ -268,7 +271,12 @@ def animate_all_conectivity(epochs, calc_type, pair_list=[], show_every_nth_fram
                 threshold=0,
                 ax=ax2
         )
-        
+
+        ax = fig.axes[0]
+        pos1 = ax.get_position() 
+        pos2 = [pos1.x0 - 0.2, pos1.y0,  pos1.width, pos1.height] 
+        ax.set_position(pos2) 
+
         return [
             fig
         ]

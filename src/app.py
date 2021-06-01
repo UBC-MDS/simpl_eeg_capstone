@@ -78,7 +78,7 @@ def main():
 
     anim = connectivity.animate_all_conectivity(epoch, "correlation", pair_list=connectivity.PAIR_OPTIONS["far_coherence"],
                 show_every_nth_frame=frame_steps, colormap=colormap)
-    components.html(anim.to_jshtml(), height=600, width=1200)
+    components.html(anim.to_jshtml(), height=600)
 
     with st.beta_expander("Raw Voltage Values", expanded=True):
         kwargs = {
