@@ -12,6 +12,13 @@ repository = "https://github.com/UBC-MDS/simpl_eeg_capstone"
 python = "^3.8"
 flake8 = "^3.9.2"
 pytest = "^6.2.4"
+pandas = "^1.2.4"
+numpy = "^1.20.2"
+mne = "^0.23.0"
+scipy = "^1.6.3"
+matplotlib = "^3.4.1"
+plotly = "4.14.3"
+
 
 [tool.poetry.dev-dependencies]
 
