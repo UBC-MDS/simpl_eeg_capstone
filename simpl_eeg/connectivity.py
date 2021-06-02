@@ -5,6 +5,7 @@
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib.colors as mpl_colors
 import pandas as pd
 import mne
 #from mne import compute_covariance
@@ -40,28 +41,40 @@ def convert_pairs(string_pairs):
     return tuple_pairs
 
 
-def calculate_connectivity(data, calc_type="correlation"):
+def calculate_connectivity(epoch, calc_type="correlation"):
     """Calculate connectivity between nodes
 
     Args:
-        data (mne.epochs.Epochs): Epoch to calculate connectivity for
+        epoch (mne.epochs.Epochs): Epoch to calculate connectivity for
         calc_type (str, optional): Calculation type, one of spectral_connectivity, envelope_correlation, covariance, correlation. Defaults to "correlation".
 
     Returns:
         pandas.core.frame.DataFrame: Data frame containing connectivity values
     """
+    ch_names = epoch.ch_names
 
-    conn_df = data.to_data_frame().corr()
-    if calc_type == "spectral_connectivity":
-        conn = mne.connectivity.spectral_connectivity(
-            data, method="pli", mode="fourier", faverage=True, verbose=False
-        )[0][:, :, 0]
-    elif calc_type == "envelope_correlation":
-        conn = mne.connectivity.envelope_correlation(data)
-    elif calc_type == "covariance":
-        conn = mne.compute_covariance(data, verbose=False).data
+    # only return channel data
+    conn_df = epoch.to_data_frame().corr().loc[ch_names, ch_names]
+
     if calc_type != "correlation":
+
+        if calc_type == "spectral_connectivity":
+            conn = mne.connectivity.spectral_connectivity(
+                epoch, method="pli", mode="fourier", faverage=True, verbose=False
+            )[0][:, :, 0]
+
+        elif calc_type == "envelope_correlation":
+            conn = mne.connectivity.envelope_correlation(epoch)
+
+        elif calc_type == "covariance":
+            conn = mne.compute_covariance(epoch, verbose=False).data
+
+        else:
+            raise Exception("Invalid calculation type")
+
         conn_df.iloc[-conn.shape[0]:, -conn.shape[1]:] = conn
+
+    print(conn_df)
     return conn_df
 
 
@@ -84,7 +97,7 @@ def get_frame(epoch, step_size, frame_number):
     )
 
 
-def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0, colormap="RdBu_r", ax=None):
+def plot_connectivity(data, fig=None, locations=None, calc_type="correlation", pair_list=[], threshold=0, colormap="RdBu_r"):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
@@ -99,12 +112,23 @@ def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0
     Returns:
         matplotlib.pyplot.figure: Connectivity figure
     """
+    if locations is None:
+        sensor_locations = data.plot_sensors(show_names=True, show=False);
+        locations = sensor_locations.findobj(
+            match=lambda x: type(x) == plt.Text and x.get_text() != ""
+        )
+    if fig is None:
+        fig = plt.plot()
 
     correlation_df = calculate_connectivity(data, calc_type)
-    possible_colours = plt.cm.get_cmap(colormap)(correlation_df)
 
-    if ax is None:
-        ax = fig.add_subplot()
+    cmap = plt.cm.ScalarMappable(cmap=colormap)
+    cmap.set_array(correlation_df)
+    cmap.autoscale()
+
+    colour_array = cmap.cmap(correlation_df)
+
+    ax = fig.add_subplot()
 
     node_df = pd.DataFrame(
         {
@@ -128,11 +152,16 @@ def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0
                     ax.plot(
                         x_list,
                         y_list,
-                        color=possible_colours[row, col],
+                        color=colour_array[row, col],
                         linewidth=0.2/(1-correlation),
                     )
-    fig.colorbar(plt.cm.ScalarMappable(cmap=colormap))
-    data.plot_sensors(axes=ax, show_names=True, kind="topomap")
+    fig.colorbar(cmap)
+    data.plot_sensors(
+        axes=ax,
+        show_names=True,
+        kind="topomap",
+        sphere=(9, -12, 0, 100)
+    )
     return fig
 
 
@@ -202,6 +231,12 @@ def plot_conn_circle(epoch, fig, calc_type, max_connections=20, ch_names=[], col
 
     angles = mne.viz.circular_layout(ch_names, ch_names, start_pos=90)
 
+    node_range = list(range(len(ch_names)+4))
+    node_cmap = plt.cm.ScalarMappable(cmap="Greys")
+    node_cmap.set_array(node_range)
+    node_cmap.autoscale()
+    node_colors = node_cmap.to_rgba(node_range)
+
     mne.viz.plot_connectivity_circle(
         conn,
         ch_names,
@@ -211,7 +246,9 @@ def plot_conn_circle(epoch, fig, calc_type, max_connections=20, ch_names=[], col
         facecolor="w",
         textcolor="black",
         colormap=colormap,
-        colorbar=colorbar
+        colorbar=colorbar,
+        node_colors=[tuple(i) for i in node_colors],
+        title="test title"
     )[0]
     return fig
 
