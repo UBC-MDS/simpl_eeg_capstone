@@ -97,7 +97,7 @@ def get_frame(epoch, step_size, frame_number):
     )
 
 
-def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0, colormap="RdBu_r", ax=None):
+def plot_connectivity(data, fig=None, locations=None, calc_type="correlation", pair_list=[], threshold=0, colormap="RdBu_r"):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
@@ -112,16 +112,23 @@ def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0
     Returns:
         matplotlib.pyplot.figure: Connectivity figure
     """
+    if locations is None:
+        sensor_locations = data.plot_sensors(show_names=True, show=False);
+        locations = sensor_locations.findobj(
+            match=lambda x: type(x) == plt.Text and x.get_text() != ""
+        )
+    if fig is None:
+        fig = plt.plot()
 
     correlation_df = calculate_connectivity(data, calc_type)
+
     cmap = plt.cm.ScalarMappable(cmap=colormap)
     cmap.set_array(correlation_df)
     cmap.autoscale()
 
     colour_array = cmap.cmap(correlation_df)
 
-    if ax is None:
-        ax = fig.add_subplot()
+    ax = fig.add_subplot()
 
     node_df = pd.DataFrame(
         {
