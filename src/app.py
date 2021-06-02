@@ -39,16 +39,15 @@ def animate_3d_brain(epoch):
 
 
 @st.cache(show_spinner=False)
-def animate_connectivity(epoch, colormap, frame_steps, pair_selection, connection_type):
+def animate_connectivity(epoch, connection_type, steps, pair_selection, colormap):
     pair_list = connectivity.PAIR_OPTIONS[pair_selection]
-    anim = connectivity.animate_connectivity(epoch, connection_type, pair_list=pair_list,
-        show_every_nth_frame=frame_steps, colormap=colormap)
+    anim = connectivity.animate_connectivity(epoch, connection_type, steps=steps, pair_list=pair_list, colormap=colormap)
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_connectivity_circle(epoch, colormap, connection_type):
-    anim = connectivity.animate_connectivity_circle(epoch, connection_type, colormap=colormap)
+def animate_connectivity_circle(epoch, connection_type, steps, colormap):
+    anim = connectivity.animate_connectivity_circle(epoch, connection_type, steps=steps, colormap=colormap)
     return anim.to_jshtml()
 
 
@@ -166,13 +165,13 @@ def main():
 
         with col1:
             components.html(
-                animate_connectivity2(epoch, connection_type, steps=frame_steps, pair_list=pair_selection, colormap=colormap),
+                animate_connectivity(epoch, connection_type, frame_steps, pair_selection, colormap),
                 height=600,
                 width=600
             )
 
             components.html(
-                animate_connectivity_circle(epoch, connection_type, steps=frame_steps, colormap=colormap),
+                animate_connectivity_circle(epoch, connection_type, frame_steps, colormap),
                 height=600,
                 width=600
             )

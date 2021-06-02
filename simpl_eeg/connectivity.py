@@ -65,17 +65,24 @@ def calculate_connectivity(data, calc_type="correlation"):
     return conn_df
 
 
-def get_frame(epoch, steps, frame_number):
+def get_frame(epoch, step_size, frame_number):
+    """Crop an epoch based on a frame number
 
-    tmin = epoch.tmin
-    tmax = epoch.tmax
-    step_size = (tmax - tmin)/steps
+    Args:
+        epoch (mne.epochs.Epochs): Epoch to crop
+        steps (int): Number of time frames per step
+        frame_number (int): Current frame number
 
+    Returns:
+        mne.epochs.Epochs: Cropped epochs for the given frame
+    """
+    times = epoch.times
     return epoch.copy().crop(
-        tmin=tmin+step_size*frame_number,
-        tmax=tmin+step_size*(frame_number+1),
-        include_tmax=False
+        times[frame_number],
+        times[frame_number+step_size],
+        include_tmax=True
     )
+
 
 def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0, colormap="RdBu_r", ax=None):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
@@ -149,14 +156,15 @@ def animate_connectivity(epoch, calc_type, steps=20, pair_list=[], colormap="RdB
     )
 
     pair_list = convert_pairs(pair_list)
-
+    num_steps = (len(epoch.times)//steps)-1
+    print(num_steps)
     fig = plt.figure()
 
     def animate(frame_number):
         fig.clear()
         return [
             plot_connectivity(
-                get_frame(epoch, steps, frame_number),
+                get_frame(epoch, num_steps, frame_number),
                 fig,
                 locations,
                 calc_type,
@@ -165,7 +173,7 @@ def animate_connectivity(epoch, calc_type, steps=20, pair_list=[], colormap="RdB
                 colormap=colormap
             )
         ]
-    anim = animation.FuncAnimation(fig, animate, steps, blit=True)
+    anim = animation.FuncAnimation(fig, animate, num_steps, blit=True)
     return anim
 
 
@@ -225,12 +233,12 @@ def animate_connectivity_circle(epoch, calc_type, steps=20, colormap="RdBu_r"):
 
     def animate(frame_number):
         fig.clear()
-        curr_frame = epoch.copy().crop(epoch.times[frame_number], epoch.times[frame_number], include_tmax=True)
+
         return [
             plot_conn_circle(
                 get_frame(epoch, steps, frame_number),
                 fig,
-                calc_type=calc_type, 
+                calc_type=calc_type,
                 colormap=colormap
             )
         ]
