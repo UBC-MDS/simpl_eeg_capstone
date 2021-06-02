@@ -7,6 +7,7 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 from scipy.interpolate import NearestNDInterpolator
+import gif
 
 # define the frame arguments for the animated plot
 def frame_args(duration):
@@ -252,3 +253,96 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
         transition=dict(duration=0, easing="linear")
     )
     return fig
+
+# generate the 3D topographic map for a single time stamp
+def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", color_min = -50, color_max = 50, colormap="Bluered"):
+    """Plot a topographic map in a 3D head shape for a single time stamp
+
+    Args:
+        epoch (epoch): An epoched file for the EEGLab data
+        time_stamp (int): The time stamp that is of interest
+        plot_title (str, optionl): The title of the plot. Defaults to "".
+        color_title (str,  optional): The title of the color bar. Defaults to "EEG MicroVolt".
+        color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
+        color_max (int, optional): The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
+        colormap (str, optional): The colour scheme to use. Defaults to Bluered.
+
+    Returns:
+        figure: A topographic map in a 3D head shape
+    """
+    # find out the channel names
+    channel_names = epoch.ch_names
+
+    # change the raw epoched data to a dataframe
+    df = epoch.to_data_frame().groupby("time").mean().reset_index()
+    df = df[df["time"] == time_stamp]
+
+    # get the standard montage coordinates
+    standard_montage, standard_coord = get_standard_coord()
+    x = np.array(standard_coord)[:, 0]
+    y = np.array(standard_coord)[:, 1]
+    z = np.array(standard_coord)[:, 2]
+
+    # get the coordinated of the electrodes in the raw data
+    node_coord = get_eeg_node(epoch, standard_montage)
+    node_df = get_node_dataframe(epoch, standard_montage)
+    
+    fig = go.Figure(
+                data=go.Mesh3d(
+                    x=np.array(standard_coord)[:, 0],
+                    y=np.array(standard_coord)[:, 1],
+                    z=np.array(standard_coord)[:, 2],
+                    colorscale=colormap,
+                    colorbar_title=color_title,
+                    cmin=color_min,
+                    cmax=color_max,
+                    intensity=interpolated_time(
+                        df, channel_names, node_coord, x, y, z, time_stamp
+                    ),
+                    intensitymode="vertex",
+                    alphahull=1,
+                    opacity=1,
+                )
+    )
+    
+    fig.add_scatter3d(
+        connectgaps=True,
+        x=node_df["X"],
+        y=node_df["Y"],
+        z=node_df["Z"],
+        text=node_df["channel"],
+        mode="markers+text",
+        marker={"size": 5, "color": "black"},
+        textposition="top center",
+        textfont=dict(family="sans serif", size=18),
+    )
+    
+    fig.update_layout(
+        title=plot_title,
+        width=1000,
+        height=600,
+        scene=dict(
+            aspectratio=dict(x=1.5, y=1.5, z=1),
+        ),)
+    
+    return fig
+
+@gif.frame
+def topo3dhead_plot(epoch, i):
+    fig = topo_3d_map(epoch, i, plot_title = f"Time stamp: {i}")
+    return fig
+
+def save_gif(epoch, starting, ending, gifname, duration):
+    """Save the animated plot as gif file
+
+    Args:
+        starting (int): The starting time of the animated plot.
+        ending (int): The ending time of the animated plot.
+        gifname (str): The file name.
+        duration (int): The duration (milliseconds) between each frame
+    """
+    frames = []
+    for i in range(starting, ending, 1):
+        frame = topo3dhead_plot(epoch, i)
+        frames.append(frame)
+    gif.save(frames, f"{gifname}.gif", duration=duration)

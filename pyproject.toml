@@ -20,6 +20,8 @@ matplotlib = "^3.4.1"
 plotly = "4.14.3"
 streamlit = "0.82.0"
 ipywidgets = "^7.5"
+python-kaleido = "0.2.1"
+gif = "3.0.0"
 
 
 [tool.poetry.dev-dependencies]
