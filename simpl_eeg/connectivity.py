@@ -41,28 +41,40 @@ def convert_pairs(string_pairs):
     return tuple_pairs
 
 
-def calculate_connectivity(data, calc_type="correlation"):
+def calculate_connectivity(epoch, calc_type="correlation"):
     """Calculate connectivity between nodes
 
     Args:
-        data (mne.epochs.Epochs): Epoch to calculate connectivity for
+        epoch (mne.epochs.Epochs): Epoch to calculate connectivity for
         calc_type (str, optional): Calculation type, one of spectral_connectivity, envelope_correlation, covariance, correlation. Defaults to "correlation".
 
     Returns:
         pandas.core.frame.DataFrame: Data frame containing connectivity values
     """
+    ch_names = epoch.ch_names
 
-    conn_df = data.to_data_frame().corr()
-    if calc_type == "spectral_connectivity":
-        conn = mne.connectivity.spectral_connectivity(
-            data, method="pli", mode="fourier", faverage=True, verbose=False
-        )[0][:, :, 0]
-    elif calc_type == "envelope_correlation":
-        conn = mne.connectivity.envelope_correlation(data)
-    elif calc_type == "covariance":
-        conn = mne.compute_covariance(data, verbose=False).data
+    # only return channel data
+    conn_df = epoch.to_data_frame().corr().loc[ch_names, ch_names]
+
     if calc_type != "correlation":
+
+        if calc_type == "spectral_connectivity":
+            conn = mne.connectivity.spectral_connectivity(
+                epoch, method="pli", mode="fourier", faverage=True, verbose=False
+            )[0][:, :, 0]
+
+        elif calc_type == "envelope_correlation":
+            conn = mne.connectivity.envelope_correlation(epoch)
+
+        elif calc_type == "covariance":
+            conn = mne.compute_covariance(epoch, verbose=False).data
+
+        else:
+            raise Exception("Invalid calculation type")
+
         conn_df.iloc[-conn.shape[0]:, -conn.shape[1]:] = conn
+
+    print(conn_df)
     return conn_df
 
 
@@ -137,7 +149,12 @@ def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0
                         linewidth=0.2/(1-correlation),
                     )
     fig.colorbar(cmap)
-    data.plot_sensors(axes=ax, show_names=True, kind="topomap")
+    data.plot_sensors(
+        axes=ax,
+        show_names=True,
+        kind="topomap",
+        sphere=(9, -12, 0, 100)
+    )
     return fig
 
 
@@ -223,7 +240,8 @@ def plot_conn_circle(epoch, fig, calc_type, max_connections=20, ch_names=[], col
         textcolor="black",
         colormap=colormap,
         colorbar=colorbar,
-        node_colors=[tuple(i) for i in node_colors]
+        node_colors=[tuple(i) for i in node_colors],
+        title="test title"
     )[0]
     return fig
 
