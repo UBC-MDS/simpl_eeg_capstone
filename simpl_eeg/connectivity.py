@@ -5,6 +5,7 @@
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
+import matplotlib.colors as mpl_colors
 import pandas as pd
 import mne
 #from mne import compute_covariance
@@ -101,7 +102,11 @@ def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0
     """
 
     correlation_df = calculate_connectivity(data, calc_type)
-    possible_colours = plt.cm.get_cmap(colormap)(correlation_df)
+    cmap = plt.cm.ScalarMappable(cmap=colormap)
+    cmap.set_array(correlation_df)
+    cmap.autoscale()
+
+    colour_array = cmap.cmap(correlation_df)
 
     if ax is None:
         ax = fig.add_subplot()
@@ -128,10 +133,10 @@ def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0
                     ax.plot(
                         x_list,
                         y_list,
-                        color=possible_colours[row, col],
+                        color=colour_array[row, col],
                         linewidth=0.2/(1-correlation),
                     )
-    fig.colorbar(plt.cm.ScalarMappable(cmap=colormap))
+    fig.colorbar(cmap)
     data.plot_sensors(axes=ax, show_names=True, kind="topomap")
     return fig
 
