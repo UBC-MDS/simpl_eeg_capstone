@@ -80,9 +80,3 @@ class Epochs:
 
         return self.data[n]
 
-    def get_frame(self, tmin, step_size, frame_number):
-        return self.epoch.copy().crop(
-            tmin=tmin+step_size*frame_number,
-            tmax=tmin+step_size*(frame_number+1),
-            include_tmax=False
-        )

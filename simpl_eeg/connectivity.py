@@ -50,6 +50,7 @@ def calculate_connectivity(data, calc_type="correlation"):
     Returns:
         pandas.core.frame.DataFrame: Data frame containing connectivity values
     """
+
     conn_df = data.to_data_frame().corr()
     if calc_type == "spectral_connectivity":
         conn = mne.connectivity.spectral_connectivity(
@@ -63,6 +64,18 @@ def calculate_connectivity(data, calc_type="correlation"):
         conn_df.iloc[-conn.shape[0]:, -conn.shape[1]:] = conn
     return conn_df
 
+
+def get_frame(epoch, steps, frame_number):
+
+    tmin = epoch.tmin
+    tmax = epoch.tmax
+    step_size = (tmax - tmin)/steps
+
+    return epoch.copy().crop(
+        tmin=tmin+step_size*frame_number,
+        tmax=tmin+step_size*(frame_number+1),
+        include_tmax=False
+    )
 
 def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0, colormap="RdBu_r", ax=None):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
@@ -116,20 +129,21 @@ def plot_connectivity(data, fig, locations, calc_type, pair_list=[], threshold=0
     return fig
 
 
-def animate_connectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=10, colormap="RdBlu_r"):
+def animate_connectivity(epoch, calc_type, steps=20, pair_list=[], colormap="RdBlu_r"):
     """Animate 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
         epochs (mne.epochs.Epochs): Epoch to visualize
         calc_type (str: Connectivity calculation type
         pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
-        show_every_nth_frame (int, optional): Number of frames to generate. Defaults to 10.
+        steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20. 
         colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
     """
-    sensor_locations = epochs.plot_sensors(show_names=True, show=False)
+
+    sensor_locations = epoch.plot_sensors(show_names=True, show=False);
     locations = sensor_locations.findobj(
         match=lambda x: type(x) == plt.Text and x.get_text() != ""
     )
@@ -138,21 +152,11 @@ def animate_connectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=1
 
     fig = plt.figure()
 
-    steps = show_every_nth_frame
-    tmin = epochs.tmin
-    tmax = epochs.tmax
-    step_size = (tmax - tmin)/steps
-
     def animate(frame_number):
         fig.clear()
-        data = epochs.copy().crop(
-            tmin=tmin+step_size*frame_number,
-            tmax=tmin+step_size*(frame_number+1),
-            include_tmax=False
-        )
         return [
             plot_connectivity(
-                data,
+                get_frame(epoch, steps, frame_number),
                 fig,
                 locations,
                 calc_type,
@@ -165,11 +169,11 @@ def animate_connectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=1
     return anim
 
 
-def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[], colormap="RdBu_r", colorbar=True):
+def plot_conn_circle(epoch, fig, calc_type, max_connections=20, ch_names=[], colormap="RdBu_r", colorbar=True):
     """Plot connectivity circle
 
     Args:
-        data (mne.epochs.Epochs): Epoch to visualize
+        epoch (mne.epochs.Epochs): Epoch to visualize
         fig (matplotlib.pyplot.figure): Figure to plot on
         calc_type (str): Connectivity calculation type
         max_connections (int, optional): Maximum connections to plot. Defaults to 50.
@@ -181,9 +185,9 @@ def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[], colo
         matplotlib.pyplot.figure: Connectivity circle figure
     """
     if not ch_names:
-        ch_names = data.ch_names
+        ch_names = epoch.ch_names
 
-    conn = calculate_connectivity(data, calc_type=calc_type).loc[
+    conn = calculate_connectivity(epoch, calc_type=calc_type).loc[
         ch_names,
         ch_names
     ].to_numpy()
@@ -204,90 +208,32 @@ def plot_conn_circle(data, fig, calc_type, max_connections=50, ch_names=[], colo
     return fig
 
 
-def animate_connectivity_circle(epochs, calc_type, show_every_nth_frame=10, colormap="RdBu_r"):
+def animate_connectivity_circle(epoch, calc_type, steps=20, colormap="RdBu_r"):
     """Animate connectivity circle
 
     Args:
-        epochs (mne.epochs.Epochs): Epoch to visualize
+        epoch (mne.epochs.Epochs): Epoch to visualize
         calc_type (str: Connectivity calculation type
-        show_every_nth_frame (int, optional): Number of frames to generate. Defaults to 10.
+        steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20. 
         colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
     """
 
-    steps = show_every_nth_frame
-    tmin = epochs.tmin
-    tmax = epochs.tmax
-    step_size = (tmax - tmin)/steps
-
     fig = plt.figure()
 
     def animate(frame_number):
         fig.clear()
-        data = epochs.copy().crop(
-            tmin=tmin+step_size*frame_number,
-            tmax=tmin+step_size*(frame_number+1),
-            include_tmax=False
-        )
+        curr_frame = epoch.copy().crop(epoch.times[frame_number], epoch.times[frame_number], include_tmax=True)
         return [
-            plot_conn_circle(data, fig, calc_type=calc_type, colormap=colormap)
-        ]
-
-    anim = animation.FuncAnimation(fig, animate, steps, blit=True)
-    return anim
-
-def animate_all_conectivity(epochs, calc_type, pair_list=[], show_every_nth_frame=10, colormap="RdBlu_r"):
-    sensor_locations = epochs.plot_sensors(show_names=True, show=False)
-    locations = sensor_locations.findobj(
-        match=lambda x: type(x) == plt.Text and x.get_text() != ""
-    )
-
-    fig = plt.figure(figsize=(10, 4.8))
-
-    steps = show_every_nth_frame
-    tmin = epochs.tmin
-    tmax = epochs.tmax
-    step_size = (tmax - tmin)/steps
-
-    def animate(frame_number):
-        fig.clear()
-
-        data = epochs.copy().crop(
-            tmin=tmin+step_size*frame_number,
-            tmax=tmin+step_size*(frame_number+1),
-            include_tmax=False
-        )
-
-        plot_conn_circle(
-            data,
-            fig,
-            calc_type=calc_type,
-            colorbar=False,
-            colormap=colormap
-        )
-
-        ax2 = fig.add_subplot(122)
-
-        plot_connectivity(
-                data,
+            plot_conn_circle(
+                get_frame(epoch, steps, frame_number),
                 fig,
-                locations,
-                calc_type,
-                pair_list=convert_pairs(pair_list),
-                threshold=0,
-                ax=ax2,
+                calc_type=calc_type, 
                 colormap=colormap
-        )
-
-        ax = fig.axes[0]
-        pos1 = ax.get_position() 
-        pos2 = [pos1.x0 - 0.2, pos1.y0,  pos1.width, pos1.height] 
-        ax.set_position(pos2) 
-
-        return [
-            fig
+            )
         ]
+
     anim = animation.FuncAnimation(fig, animate, steps, blit=True)
     return anim
