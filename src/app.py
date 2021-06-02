@@ -39,16 +39,16 @@ def animate_3d_brain(epoch):
 
 
 @st.cache(show_spinner=False)
-def animate_connectivity(epoch, colormap, frame_steps, pair_selection):
+def animate_connectivity(epoch, colormap, frame_steps, pair_selection, connection_type):
     pair_list = connectivity.PAIR_OPTIONS[pair_selection]
-    anim = connectivity.animate_connectivity(epoch, "correlation", pair_list=pair_list,
+    anim = connectivity.animate_connectivity(epoch, connection_type, pair_list=pair_list,
         show_every_nth_frame=frame_steps, colormap=colormap)
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_connectivity_circle(epoch, colormap, frame_steps):
-    anim = connectivity.animate_connectivity_circle(epoch, "correlation", 
+def animate_connectivity_circle(epoch, colormap, frame_steps, connection_type):
+    anim = connectivity.animate_connectivity_circle(epoch, connection_type, 
         show_every_nth_frame=frame_steps, colormap=colormap)
     return anim.to_jshtml()
 
@@ -161,15 +161,25 @@ def main():
                 index=2
             )
 
+            connection_type = st.selectbox(
+                "Selection connection calculation",
+                [
+                    "correlation",
+                    "covariance",
+                    "spectral_connectivity",
+                    "envelope_correlation",
+                ]
+            )
+
         with col1:
             components.html(
-                animate_connectivity(epoch, colormap, frame_steps, pair_selection),
+                animate_connectivity(epoch, colormap, frame_steps, pair_selection, connection_type),
                 height=600,
                 width=600
             )
 
             components.html(
-                animate_connectivity_circle(epoch, colormap, frame_steps),
+                animate_connectivity_circle(epoch, colormap, frame_steps, connection_type),
                 height=600,
                 width=600
             )
