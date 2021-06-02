@@ -81,28 +81,25 @@ def main():
             min_value=0
         )
         epoch_num = 0
-
-        duration = st.sidebar.number_input(
-            "Duration (seconds)",
-            value=1.0,
-            min_value=0.5,
-            max_value=15.0
-        )
     else:
         start_second = None
         epoch_num = st.sidebar.selectbox(
             "Epoch",
             [i for i in range(33)]
         )
-        tmin = st.sidebar.number_input(
-            "Time before impact (seconds)",
-            value=0.3
-        )
-        tmax = st.sidebar.number_input(
-            "Time after impact (seconds)",
-            value=0.7
-        )
-        duration = tmin+tmax
+
+    tmin = st.sidebar.number_input(
+        "Seconds before impact",
+        value=0.3,
+        min_value=0.0,
+        max_value=10.0
+    )
+    tmax = st.sidebar.number_input(
+        "Seconds after impact",
+        value=0.7,
+        min_value=0.5,
+        max_value=10.0
+    )
 
     colormap = st.sidebar.selectbox(
         "Select Colour Scheme",
@@ -111,7 +108,8 @@ def main():
 
     epoch_obj = eeg_objects.Epochs(
         experiment_num,
-        duration=duration,
+        tmin=-tmin,
+        tmax=tmax,
         start_second=start_second
     )
 
