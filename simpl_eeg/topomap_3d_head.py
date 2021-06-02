@@ -108,15 +108,15 @@ def get_node_dataframe(raw, montage):
         )
     node_df = pd.DataFrame(node_list_name, columns=["channel", "X", "Y", "Z"])
     return node_df
+    
 
-
-def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="Bluered"):
+def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min = -50, color_max = 50, colormap="Bluered"):
     """Plot an animated topographic map in a 3D head shape
 
     Args:
         epoch (epoch): An epoched file for the EEGLab data
-        starting (int, optional): The starting time stamp of the animation. Defaults to 0.
-        steps (int, optional): The duration of the animation, it could not be longer than the length of the data frame. Defaults to 10.
+        plot_title (str, optionl): The title of the plot. Defaults to "".
+        color_title (str,  optional): The title of the color bar. Defaults to "EEG MicroVolt".
         color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
         color_max (int, optional): The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
         colormap (str, optional): The colour scheme to use. Defaults to Bluered.
@@ -139,7 +139,6 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
 
     # get the coordinated of the electrodes in the raw data
     node_coord = get_eeg_node(epoch, standard_montage)
-    nb_frames = steps
     node_df = get_node_dataframe(epoch, standard_montage)
 
     # generate the animated plot
@@ -151,7 +150,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
                     y=np.array(standard_coord)[:, 1],
                     z=np.array(standard_coord)[:, 2],
                     colorscale=colormap,
-                    colorbar_title="EEG MicroVolt",
+                    colorbar_title=color_title,
                     cmin=color_min,
                     cmax=color_max,
                     intensity=interpolated_time(
@@ -160,7 +159,8 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
                     intensitymode="vertex",
                     alphahull=1,
                     opacity=1,
-                ),
+                )
+                ,
                 name=str(
                     k
                 ),  # you need to name the frame for the animation to behave properly
@@ -176,7 +176,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
             y=np.array(standard_coord)[:, 1],
             z=np.array(standard_coord)[:, 2],
             colorscale=colormap,
-            colorbar_title="EEG Voltage",
+            colorbar_title=color_title,
             cmin=color_min,
             cmax=color_max,
             intensity=interpolated_time(df, channel_names, node_coord, x, y, z, 0),
@@ -198,15 +198,16 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
         textposition="top center",
         textfont=dict(family="sans serif", size=18),
     )
+    
 
     # set up slider for the animated plot
     sliders = [
         {
-            "pad": {"b": 10, "t": 60},
+            "pad": {"b": 0, "t": 0},
             "len": 0.9,
             "x": 0.1,
             "y": 0,
-            "currentvalue":{"prefix": "Time stamp : "},
+            "currentvalue":{"prefix": "Time stamp : ", "visible": True, "xanchor":"center"},
             "steps": [
                 {
                     "args": [[f.name], frame_args(0)],
@@ -220,7 +221,7 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
     ]
 
     fig.update_layout(
-        title="EEG Interpolated 3D Graph",
+        title=plot_title,
         width=1000,
         height=600,
         scene=dict(
@@ -231,12 +232,12 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
                 "buttons": [
                     {
                         "args": [None, frame_args(0)],
-                        "label": "&#9654;",  # play symbol
+                        "label": "Play",  # play symbol
                         "method": "animate",
                     },
                     {
                         "args": [[None], frame_args(0)],
-                        "label": "&#9724;",  # pause symbol
+                        "label": "Pause",  # pause symbol
                         "method": "animate",
                     },
                 ],
@@ -248,6 +249,6 @@ def animate_3d_head(epoch, steps=10, color_min = -50, color_max = 50, colormap="
             }
         ],
         sliders=sliders,
-        transition=dict(duration=0, easing="linear"),
+        transition=dict(duration=0, easing="linear")
     )
     return fig
