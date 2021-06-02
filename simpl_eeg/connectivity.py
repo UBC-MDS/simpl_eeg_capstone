@@ -74,7 +74,6 @@ def calculate_connectivity(epoch, calc_type="correlation"):
 
         conn_df.iloc[-conn.shape[0]:, -conn.shape[1]:] = conn
 
-    print(conn_df)
     return conn_df
 
 
@@ -118,7 +117,7 @@ def plot_connectivity(data, fig=None, locations=None, calc_type="correlation", p
             match=lambda x: type(x) == plt.Text and x.get_text() != ""
         )
     if fig is None:
-        fig = plt.plot()
+        fig = plt.figure()
 
     correlation_df = calculate_connectivity(data, calc_type)
 
