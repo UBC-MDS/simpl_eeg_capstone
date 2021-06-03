@@ -288,38 +288,41 @@ def main():
                 width=600
             )
 
-        node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
+        col1, col2 = st.beta_columns((3, 1))
+        with col2:
+            node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
 
-        pair_selection = st.selectbox(
-            "Select node pair template",
-            node_pair_options,
-            index=1
-        )
-
-        selected_pairs = []
-        if pair_selection == "all_pairs":
-            selected_pairs = connectivity.PAIR_OPTIONS[pair_selection]
-        else:
-            custom_pair_selection = st.text_input(
-                "Enter comma separated pairs below in format Node1-Node2, Node3-Node4 to customize",
-                connectivity.PAIR_OPTIONS[pair_selection]
+            pair_selection = st.selectbox(
+                "Select node pair template",
+                node_pair_options,
+                index=1
             )
-            selected_pairs = custom_pair_selection
 
-        components.html(
-            animate_ui_connectivity(
-                epoch,
-                connection_type,
-                frame_steps,
-                selected_pairs,
-                colormap,
-                cmin,
-                cmax,
-                line_width
-            ),
-            height=600,
-            width=600
-        )
+            selected_pairs = []
+            if pair_selection == "all_pairs":
+                selected_pairs = connectivity.PAIR_OPTIONS[pair_selection]
+            else:
+                custom_pair_selection = st.text_area(
+                    "Enter comma separated pairs below in format Node1-Node2, Node3-Node4 to customize",
+                    connectivity.PAIR_OPTIONS[pair_selection]
+                )
+                selected_pairs = custom_pair_selection
+
+        with col1:
+            components.html(
+                animate_ui_connectivity(
+                    epoch,
+                    connection_type,
+                    frame_steps,
+                    selected_pairs,
+                    colormap,
+                    cmin,
+                    cmax,
+                    line_width
+                ),
+                height=600,
+                width=600
+            )
 
 if __name__ == "__main__":
     main()
