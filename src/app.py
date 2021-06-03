@@ -192,19 +192,31 @@ def main():
             )
 
     with st.beta_expander("3D Brain Map", expanded=True):
-        show_brain = st.button(
-            "CLICK HERE to render the 3D brain map (this may take a while...)"
+        st.markdown(
+            """
+            \n
+            Select your customizations, 
+            then click the *Run* button below to render the 3D brain map.
+            \n
+            **WARNING: rendering may take a while...**
+            \n
+            """
         )
-        view_options = [
-            "lat",
-            "dor",
-            "fro"
-        ]
-        view_selection = st.multiselect(
-            "Select view",
-            view_options,
-            default=["lat"]
-        )
+        col1, col2 = st.beta_columns((3, 1))
+        with col1:
+            view_options = [
+                "lat",
+                "dor",
+                "fro"
+            ]
+            view_selection = st.multiselect(
+                "Select view",
+                view_options,
+                default=["lat"]
+            )
+        with col2:
+            st.header("")
+            show_brain = st.button("Run")
 
         if show_brain:
             with st.spinner("Rendering..."):
