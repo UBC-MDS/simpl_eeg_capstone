@@ -40,7 +40,7 @@ def animate_3d_brain(epoch):
 
 
 @st.cache(show_spinner=False)
-def animate_ui_connectivity(epoch, connection_type, steps, pair_selection, colormap, cmin, cmax):
+def animate_ui_connectivity(epoch, connection_type, steps, pair_selection, colormap, cmin, cmax, line_width):
     pair_list = connectivity.PAIR_OPTIONS[pair_selection]
     anim = connectivity.animate_connectivity(
         epoch,
@@ -49,20 +49,22 @@ def animate_ui_connectivity(epoch, connection_type, steps, pair_selection, color
         pair_list=pair_list,
         colormap=colormap,
         cmin=cmin,
-        cmax=cmax
+        cmax=cmax,
+        line_width=line_width
     )
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, cmin, cmax):
+def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, cmin, cmax, line_width):
     anim = connectivity.animate_connectivity_circle(
         epoch,
         connection_type,
         steps=steps,
         colormap=colormap,
         cmin=cmin,
-        cmax=cmax
+        cmax=cmax,
+        line_width=line_width
     )
     return anim.to_jshtml()
 
@@ -182,25 +184,46 @@ def main():
                 index=2
             )
 
+            connectivity_methods = [
+                "correlation",
+                "spectral_connectivity",
+                "envelope_correlation",
+            ]
+            if (len(epoch.times)//frame_steps) >= 100:
+                connectivity_methods.append("covariance")
+
             connection_type = st.selectbox(
-                "Selection connection calculation",
-                [
-                    "correlation",
-                    "covariance",
-                    "spectral_connectivity",
-                    "envelope_correlation",
-                ]
+                "Select connection calculation",
+                connectivity_methods
             )
+            default_cmin = -1.0
+            default_cmax = 1.0
+            if(connection_type == "envelope_correlation"):
+                default_cmin = -0.000005
+                default_cmax = 0.000005
 
             cmin = st.number_input(
                 "Minimum Value",
-                value=-1.0
+                value=default_cmin
             )
             cmax = st.number_input(
                 "Maximum Value",
-                value=1.0
+                value=default_cmax
             )
 
+            line_width_type = st.checkbox(
+                "Set line width",
+                False
+            )
+
+            line_width = None
+            if line_width_type is True:
+                line_width = st.slider(
+                    "Select line width",
+                    min_value=1,
+                    max_value=5,
+                    value=2
+                )
 
         with col1:
             components.html(
@@ -211,7 +234,8 @@ def main():
                     pair_selection,
                     colormap,
                     cmin,
-                    cmax
+                    cmax,
+                    line_width
                 ),
                 height=600,
                 width=600
@@ -224,7 +248,8 @@ def main():
                     frame_steps,
                     colormap,
                     cmin,
-                    cmax
+                    cmax,
+                    line_width
                 ),
                 height=600,
                 width=600

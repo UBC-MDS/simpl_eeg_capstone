@@ -8,9 +8,6 @@ import matplotlib.animation as animation
 import matplotlib.colors as mpl_colors
 import pandas as pd
 import mne
-#from mne import compute_covariance
-#from mne.connectivity import envelope_correlation, spectral_connectivity
-#from mne.viz import circular_layout, plot_connectivity_circle
 
 PAIR_OPTIONS = {
     "all_pairs": [],
@@ -105,7 +102,9 @@ def plot_connectivity(
     threshold=0,
     colormap="RdBu_r",
     cmin=None,
-    cmax=None):
+    cmax=None,
+    line_width=None
+):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
@@ -118,6 +117,7 @@ def plot_connectivity(
         colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
         cmin (int, optional): The minimum for the scale. Defaults to None.
         cmin (int, optional): The maximum for the scale. Defaults to None.
+        line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
 
     Returns:
         matplotlib.pyplot.figure: Connectivity figure
@@ -133,8 +133,11 @@ def plot_connectivity(
     correlation_df = calculate_connectivity(data, calc_type)
 
     cmap = plt.cm.ScalarMappable(cmap=colormap)
-    cmap.set_array(correlation_df)
-    cmap.autoscale()
+    if cmin is None or cmax is None:
+        cmap.set_array(correlation_df)
+        cmap.autoscale()
+    else:
+        cmap.set_clim(cmin, cmax)
 
     colour_array = cmap.cmap(correlation_df)
 
@@ -159,11 +162,13 @@ def plot_connectivity(
                     col = correlation_df.index.get_loc(name2)
                     x_list = [x1, x2]
                     y_list = [y1, y2]
+                    if line_width is None:
+                        line_width = 0.2/(1-correlation)
                     ax.plot(
                         x_list,
                         y_list,
                         color=colour_array[row, col],
-                        linewidth=0.2/(1-correlation),
+                        linewidth=line_width,
                     )
     fig.colorbar(cmap)
     data.plot_sensors(
@@ -182,7 +187,9 @@ def animate_connectivity(
     pair_list=[],
     colormap="RdBu_r",
     cmin=None,
-    cmax=None):
+    cmax=None,
+    line_width=None
+):
     """Animate 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
@@ -193,19 +200,19 @@ def animate_connectivity(
         colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r"
         cmin (int, optional): The minimum for the scale. Defaults to None.
         cmin (int, optional): The maximum for the scale. Defaults to None.
+        line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
     """
 
-    sensor_locations = epoch.plot_sensors(show_names=True, show=False);
+    sensor_locations = epoch.plot_sensors(show_names=True, show=False)
     locations = sensor_locations.findobj(
         match=lambda x: type(x) == plt.Text and x.get_text() != ""
     )
 
     pair_list = convert_pairs(pair_list)
-    num_steps = (len(epoch.times)//steps)-1
-    print(num_steps)
+    num_steps = (len(epoch.times)//steps)
     fig = plt.figure()
 
     def animate(frame_number):
@@ -218,7 +225,10 @@ def animate_connectivity(
                 calc_type,
                 pair_list=pair_list,
                 threshold=0,
-                colormap=colormap
+                colormap=colormap,
+                cmin=cmin,
+                cmax=cmax,
+                line_width=line_width
             )
         ]
     anim = animation.FuncAnimation(fig, animate, num_steps, blit=True)
@@ -234,7 +244,8 @@ def plot_conn_circle(
     colormap="RdBu_r",
     cmin=None,
     cmax=None,
-    colorbar=True):
+    line_width=None
+):
     """Plot connectivity circle
 
     Args:
@@ -247,6 +258,7 @@ def plot_conn_circle(
         cmin (int, optional): The maximum for the scale. Defaults to None.
         colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
         colormap (bool, optional): Whether to plot the colorbar. Defaults to True.
+        line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
 
     Returns:
         matplotlib.pyplot.figure: Connectivity circle figure
@@ -269,6 +281,8 @@ def plot_conn_circle(
     node_cmap.autoscale()
     node_colors = node_cmap.to_rgba(node_range)
 
+    if line_width is None:
+        line_width = 1.5
     mne.viz.plot_connectivity_circle(
         conn,
         ch_names,
@@ -278,9 +292,10 @@ def plot_conn_circle(
         facecolor="w",
         textcolor="black",
         colormap=colormap,
-        colorbar=colorbar,
         node_colors=[tuple(i) for i in node_colors],
-        title="test title"
+        vmin=cmin,
+        vmax=cmax,
+        linewidth=line_width
     )[0]
     return fig
 
@@ -289,9 +304,11 @@ def animate_connectivity_circle(
     epoch,
     calc_type="correlation",
     steps=20,
+    colormap="RdBu_r",
     cmin=None,
     cmax=None,
-    colormap="RdBu_r"):
+    line_width=None
+):
     """Animate connectivity circle
 
     Args:
@@ -301,6 +318,7 @@ def animate_connectivity_circle(
         colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
         cmin (int, optional): The minimum for the scale. Defaults to None.
         cmin (int, optional): The maximum for the scale. Defaults to None.
+        line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
@@ -316,7 +334,10 @@ def animate_connectivity_circle(
                 get_frame(epoch, steps, frame_number),
                 fig,
                 calc_type=calc_type,
-                colormap=colormap
+                colormap=colormap,
+                cmin=cmin,
+                cmax=cmax,
+                line_width=line_width
             )
         ]
 
