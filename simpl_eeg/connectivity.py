@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib.colors as mpl_colors
 import pandas as pd
+import math
 import mne
 
 PAIR_OPTIONS = {
@@ -33,7 +34,7 @@ def convert_pairs(string_pairs):
     """
     tuple_pairs = string_pairs
     if type(string_pairs) == str:
-        pairs = string_pairs.split(", ")
+        pairs = string_pairs.replace(" ", "").split(",")
         tuple_pairs = [tuple(pair.split("-")) for pair in pairs]
     return tuple_pairs
 
@@ -162,13 +163,12 @@ def plot_connectivity(
                     col = correlation_df.index.get_loc(name2)
                     x_list = [x1, x2]
                     y_list = [y1, y2]
-                    if line_width is None:
-                        line_width = 0.2/(1-correlation)
+
                     ax.plot(
                         x_list,
                         y_list,
                         color=colour_array[row, col],
-                        linewidth=line_width,
+                        linewidth=line_width if line_width else 1.5+math.log(1-min(abs(correlation), 0.999)),
                     )
     fig.colorbar(cmap)
     data.plot_sensors(

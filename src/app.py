@@ -13,7 +13,6 @@ from simpl_eeg import (
     topomap_2d,
     topomap_3d_brain,
     topomap_3d_head
-    #topomap_3d_head
 )
 
 import matplotlib.pyplot as plt
@@ -40,8 +39,7 @@ def animate_3d_brain(epoch):
 
 
 @st.cache(show_spinner=False)
-def animate_ui_connectivity(epoch, connection_type, steps, pair_selection, colormap, cmin, cmax, line_width):
-    pair_list = connectivity.PAIR_OPTIONS[pair_selection]
+def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, cmin, cmax, line_width):
     anim = connectivity.animate_connectivity(
         epoch,
         connection_type,
@@ -145,22 +143,34 @@ def main():
         )
 
     with st.beta_expander("2D Head Map", expanded=True):
-        components.html(
-            animate_2d_head(plot_epoch, 1, colormap),
-            height=600,
-            width=600
-        )
+        col1, col2 = st.beta_columns((3, 1))
+
+        with col2:
+            vmin_2d_head = st.number_input(
+                "Minimum Voltage (uV)",
+                value=-40.0
+            )
+            vmax_2d_head = st.number_input(
+                "Maximum Voltage (uV)",
+                value=40.0
+            )
+        with col1:
+            components.html(
+                animate_2d_head(plot_epoch, 1, colormap),
+                height=600,
+                width=700
+            )
 
     with st.beta_expander("3D Head Map", expanded=True):
         col1, col2 = st.beta_columns((3, 1))
 
         with col2:
             vmin_3d_head = st.number_input(
-                "Minimum Voltage (uV)",
+                "Minimum Voltage (uV) ",
                 value=-40.0
             )
             vmax_3d_head = st.number_input(
-                "Maximum Voltage (uV)",
+                "Maximum Voltage (uV) ",
                 value=40.0
             )
         with col1:
@@ -178,11 +188,6 @@ def main():
         col1, col2 = st.beta_columns((3, 1))
 
         with col2:
-            pair_selection = st.selectbox(
-                "Pairs",
-                list(connectivity.PAIR_OPTIONS.keys()),
-                index=2
-            )
 
             connectivity_methods = [
                 "correlation",
@@ -199,8 +204,7 @@ def main():
             default_cmin = -1.0
             default_cmax = 1.0
             if(connection_type == "envelope_correlation"):
-                default_cmin = -0.000005
-                default_cmax = 0.000005
+                default_cmin = 0
 
             cmin = st.number_input(
                 "Minimum Value",
@@ -226,20 +230,6 @@ def main():
                 )
 
         with col1:
-            components.html(
-                animate_ui_connectivity(
-                    epoch,
-                    connection_type,
-                    frame_steps,
-                    pair_selection,
-                    colormap,
-                    cmin,
-                    cmax,
-                    line_width
-                ),
-                height=600,
-                width=600
-            )
 
             components.html(
                 animate_ui_connectivity_circle(
@@ -254,6 +244,39 @@ def main():
                 height=600,
                 width=600
             )
+
+        node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
+
+        pair_selection = st.selectbox(
+            "Select node pair template",
+            node_pair_options,
+            index=1
+        )
+
+        selected_pairs = []
+        if pair_selection == "all_pairs":
+            selected_pairs = connectivity.PAIR_OPTIONS[pair_selection]
+        else:
+            custom_pair_selection = st.text_input(
+                "Enter comma separated pairs below in format Node1-Node2, Node3-Node4 to customize",
+                connectivity.PAIR_OPTIONS[pair_selection]
+            )
+            selected_pairs = custom_pair_selection
+
+        components.html(
+            animate_ui_connectivity(
+                epoch,
+                connection_type,
+                frame_steps,
+                selected_pairs,
+                colormap,
+                cmin,
+                cmax,
+                line_width
+            ),
+            height=600,
+            width=600
+        )
 
 if __name__ == "__main__":
     main()
