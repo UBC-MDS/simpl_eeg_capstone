@@ -39,15 +39,31 @@ def animate_3d_brain(epoch):
 
 
 @st.cache(show_spinner=False)
-def animate_connectivity(epoch, connection_type, steps, pair_selection, colormap):
-    pair_list = connectivity.PAIR_OPTIONS[pair_selection]
-    anim = connectivity.animate_connectivity(epoch, connection_type, steps=steps, pair_list=pair_list, colormap=colormap)
+def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, cmin, cmax, line_width):
+    anim = connectivity.animate_connectivity(
+        epoch,
+        connection_type,
+        steps=steps,
+        pair_list=pair_list,
+        colormap=colormap,
+        cmin=cmin,
+        cmax=cmax,
+        line_width=line_width
+    )
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_connectivity_circle(epoch, connection_type, steps, colormap):
-    anim = connectivity.animate_connectivity_circle(epoch, connection_type, steps=steps, colormap=colormap)
+def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, cmin, cmax, line_width):
+    anim = connectivity.animate_connectivity_circle(
+        epoch,
+        connection_type,
+        steps=steps,
+        colormap=colormap,
+        cmin=cmin,
+        cmax=cmax,
+        line_width=line_width
+    )
     return anim.to_jshtml()
 
 
@@ -110,10 +126,11 @@ def main():
         tmax=tmax,
         start_second=start_second
     )
+    epoch_obj.set_nth_epoch(epoch_num)
 
     events = epoch_obj.data.events
-    epoch = epoch_obj.get_nth_epoch(epoch_num)
-    plot_epoch = epoch.copy().decimate(frame_steps)
+    epoch = epoch_obj.epoch
+    plot_epoch = epoch_obj.skip_n_steps(frame_steps)
 
     with st.beta_expander("Raw Voltage Values", expanded=True):
         kwargs = {
@@ -126,17 +143,41 @@ def main():
         )
 
     with st.beta_expander("2D Head Map", expanded=True):
-        components.html(
-            animate_2d_head(plot_epoch, 1, colormap),
-            height=600,
-            width=600
-        )
+        col1, col2 = st.beta_columns((3, 1))
+
+        with col2:
+            vmin_2d_head = st.number_input(
+                "Minimum Voltage (uV)",
+                value=-40.0
+            )
+            vmax_2d_head = st.number_input(
+                "Maximum Voltage (uV)",
+                value=40.0
+            )
+        with col1:
+            components.html(
+                animate_2d_head(plot_epoch, 1, colormap),
+                height=600,
+                width=700
+            )
 
     with st.beta_expander("3D Head Map", expanded=True):
-        st.plotly_chart(
-            animate_3d_head(plot_epoch, colormap),
-            use_container_width=True
-        )
+        col1, col2 = st.beta_columns((3, 1))
+
+        with col2:
+            vmin_3d_head = st.number_input(
+                "Minimum Voltage (uV) ",
+                value=-40.0
+            )
+            vmax_3d_head = st.number_input(
+                "Maximum Voltage (uV) ",
+                value=40.0
+            )
+        with col1:
+            st.plotly_chart(
+                animate_3d_head(plot_epoch, colormap),
+                use_container_width=True
+            )
 
     with st.beta_expander("3D Brain Map", expanded=False):
         st.pyplot(
@@ -147,34 +188,95 @@ def main():
         col1, col2 = st.beta_columns((3, 1))
 
         with col2:
-            pair_selection = st.selectbox(
-                "Pairs",
-                list(connectivity.PAIR_OPTIONS.keys()),
-                index=2
-            )
+
+            connectivity_methods = [
+                "correlation",
+                "spectral_connectivity",
+                "envelope_correlation",
+            ]
+            if (len(epoch.times)//frame_steps) >= 100:
+                connectivity_methods.append("covariance")
 
             connection_type = st.selectbox(
-                "Selection connection calculation",
-                [
-                    "correlation",
-                    "covariance",
-                    "spectral_connectivity",
-                    "envelope_correlation",
-                ]
+                "Select connection calculation",
+                connectivity_methods
             )
+            default_cmin = -1.0
+            default_cmax = 1.0
+            if(connection_type == "envelope_correlation"):
+                default_cmin = 0
+
+            cmin = st.number_input(
+                "Minimum Value",
+                value=default_cmin
+            )
+            cmax = st.number_input(
+                "Maximum Value",
+                value=default_cmax
+            )
+
+            line_width_type = st.checkbox(
+                "Set line width",
+                False
+            )
+
+            line_width = None
+            if line_width_type is True:
+                line_width = st.slider(
+                    "Select line width",
+                    min_value=1,
+                    max_value=5,
+                    value=2
+                )
 
         with col1:
+
             components.html(
-                animate_connectivity(epoch, connection_type, frame_steps, pair_selection, colormap),
+                animate_ui_connectivity_circle(
+                    epoch,
+                    connection_type,
+                    frame_steps,
+                    colormap,
+                    cmin,
+                    cmax,
+                    line_width
+                ),
                 height=600,
                 width=600
             )
 
-            components.html(
-                animate_connectivity_circle(epoch, connection_type, frame_steps, colormap),
-                height=600,
-                width=600
+        node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
+
+        pair_selection = st.selectbox(
+            "Select node pair template",
+            node_pair_options,
+            index=1
+        )
+
+        selected_pairs = []
+        if pair_selection == "all_pairs":
+            selected_pairs = connectivity.PAIR_OPTIONS[pair_selection]
+        else:
+            custom_pair_selection = st.text_input(
+                "Enter comma separated pairs below in format Node1-Node2, Node3-Node4 to customize",
+                connectivity.PAIR_OPTIONS[pair_selection]
             )
+            selected_pairs = custom_pair_selection
+
+        components.html(
+            animate_ui_connectivity(
+                epoch,
+                connection_type,
+                frame_steps,
+                selected_pairs,
+                colormap,
+                cmin,
+                cmax,
+                line_width
+            ),
+            height=600,
+            width=600
+        )
 
 if __name__ == "__main__":
     main()
