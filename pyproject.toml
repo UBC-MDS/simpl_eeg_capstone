@@ -22,6 +22,7 @@ streamlit = "0.82.0"
 ipywidgets = "^7.5"
 kaleido = "0.2.1"
 gif = "3.0.0"
+moviepy = "1.0.3"
 
 
 [tool.poetry.dev-dependencies]
