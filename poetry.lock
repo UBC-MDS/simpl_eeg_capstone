@@ -184,11 +184,11 @@ six = "*"
 
 [[package]]
 name = "decorator"
-version = "5.0.9"
+version = "4.4.2"
 description = "Decorators for Humans"
 category = "main"
 optional = false
-python-versions = ">=3.5"
+python-versions = ">=2.6, !=3.0.*, !=3.1.*"
 
 [[package]]
 name = "defusedxml"
@@ -265,6 +265,33 @@ description = "Internationalized Domain Names in Applications (IDNA)"
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+
+[[package]]
+name = "imageio"
+version = "2.9.0"
+description = "Library for reading and writing a wide range of image, video, scientific, and volumetric data formats."
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+numpy = "*"
+pillow = "*"
+
+[package.extras]
+ffmpeg = ["imageio-ffmpeg"]
+fits = ["astropy"]
+full = ["astropy", "gdal", "imageio-ffmpeg", "itk"]
+gdal = ["gdal"]
+itk = ["itk"]
+
+[[package]]
+name = "imageio-ffmpeg"
+version = "0.4.4"
+description = "FFMPEG wrapper for Python"
+category = "main"
+optional = false
+python-versions = ">=3.4"
 
 [[package]]
 name = "iniconfig"
@@ -528,6 +555,31 @@ numpy = ">=1.15.4"
 scipy = ">=1.1.0"
 
 [[package]]
+name = "moviepy"
+version = "1.0.3"
+description = "Video editing with Python"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+decorator = ">=4.0.2,<5.0"
+imageio = {version = ">=2.5,<3.0", markers = "python_version >= \"3.4\""}
+imageio_ffmpeg = {version = ">=0.2.0", markers = "python_version >= \"3.4\""}
+numpy = [
+    {version = ">=1.17.3", markers = "python_version != \"2.7\""},
+    {version = "*", markers = "python_version >= \"2.7\""},
+]
+proglog = "<=1.0.0"
+requests = ">=2.8.1,<3.0"
+tqdm = ">=4.11.2,<5.0"
+
+[package.extras]
+doc = ["numpydoc (>=0.6.0,<1.0)", "sphinx_rtd_theme (>=0.1.10b0,<1.0)", "Sphinx (>=1.5.2,<2.0)", "pygame (>=1.9.3,<2.0)"]
+optional = ["youtube-dl", "opencv-python (>=3.0,<4.0)", "scipy (>=0.19.0,<1.5)", "scikit-image (>=0.13.0,<1.0)", "scikit-learn", "matplotlib (>=2.0.0,<3.0)"]
+test = ["coverage (<5.0)", "coveralls (>=1.1,<2.0)", "pytest-cov (>=2.5.1,<3.0)", "pytest (>=3.0.0,<4.0)", "requests (>=2.8.1,<3.0)"]
+
+[[package]]
 name = "nbclient"
 version = "0.5.3"
 description = "A client library for executing notebooks. Formerly nbconvert's ExecutePreprocessor."
@@ -736,6 +788,17 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 
 [package.extras]
 dev = ["pre-commit", "tox"]
+
+[[package]]
+name = "proglog"
+version = "0.1.9"
+description = "Log and progress bar manager for console, notebooks, web..."
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+tqdm = "*"
 
 [[package]]
 name = "prometheus-client"
@@ -1078,6 +1141,19 @@ optional = false
 python-versions = ">= 3.5"
 
 [[package]]
+name = "tqdm"
+version = "4.61.0"
+description = "Fast, Extensible Progress Meter"
+category = "main"
+optional = false
+python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,>=2.7"
+
+[package.extras]
+dev = ["py-make (>=0.1.0)", "twine", "wheel"]
+notebook = ["ipywidgets (>=6)"]
+telegram = ["requests"]
+
+[[package]]
 name = "traitlets"
 version = "5.0.5"
 description = "Traitlets Python configuration system"
@@ -1171,7 +1247,7 @@ notebook = ">=4.4.1"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "1c68ce1b10dc983d894235b4dd502f28ecc2d94aa2e77f7fbf5c71172e86f92b"
+content-hash = "8ebc1328aebd003722c19d4755e3fa29ef14e3389e28d512b1a42ea10f390cbc"
 
 [metadata.files]
 altair = [
@@ -1313,8 +1389,8 @@ cycler = [
     {file = "cycler-0.10.0.tar.gz", hash = "sha256:cd7b2d1018258d7247a71425e9f26463dfb444d411c39569972f4ce586b0c9d8"},
 ]
 decorator = [
-    {file = "decorator-5.0.9-py3-none-any.whl", hash = "sha256:6e5c199c16f7a9f0e3a61a4a54b3d27e7dad0dbdde92b944426cb20914376323"},
-    {file = "decorator-5.0.9.tar.gz", hash = "sha256:72ecfba4320a893c53f9706bebb2d55c270c1e51a28789361aa93e4a21319ed5"},
+    {file = "decorator-4.4.2-py2.py3-none-any.whl", hash = "sha256:41fa54c2a0cc4ba648be4fd43cff00aedf5b9465c9bf18d64325bc225f08f760"},
+    {file = "decorator-4.4.2.tar.gz", hash = "sha256:e3a62f0520172440ca0dcc823749319382e377f37f140a0b99ef45fecb84bfe7"},
 ]
 defusedxml = [
     {file = "defusedxml-0.7.1-py2.py3-none-any.whl", hash = "sha256:a352e7e428770286cc899e2542b6cdaedb2b4953ff269a210103ec58f6198a61"},
@@ -1342,6 +1418,18 @@ gitpython = [
 idna = [
     {file = "idna-2.10-py2.py3-none-any.whl", hash = "sha256:b97d804b1e9b523befed77c48dacec60e6dcb0b5391d57af6a65a312a90648c0"},
     {file = "idna-2.10.tar.gz", hash = "sha256:b307872f855b18632ce0c21c5e45be78c0ea7ae4c15c828c20788b26921eb3f6"},
+]
+imageio = [
+    {file = "imageio-2.9.0-py3-none-any.whl", hash = "sha256:3604d751f03002e8e0e7650aa71d8d9148144a87daf17cb1f3228e80747f2e6b"},
+    {file = "imageio-2.9.0.tar.gz", hash = "sha256:52ddbaeca2dccf53ba2d6dec5676ca7bc3b2403ef8b37f7da78b7654bb3e10f0"},
+]
+imageio-ffmpeg = [
+    {file = "imageio-ffmpeg-0.4.4.tar.gz", hash = "sha256:73640a7a54f95e607addd637c766d56be31d975a64ddb97d14df012575ef1a5d"},
+    {file = "imageio_ffmpeg-0.4.4-py3-none-macosx_10_9_intel.macosx_10_9_x86_64.macosx_10_10_intel.macosx_10_10_x86_64.whl", hash = "sha256:7d94d74e54c6157fbadf3a41210001b9e20e7deee5cfb6e093aa4df4bec7acaa"},
+    {file = "imageio_ffmpeg-0.4.4-py3-none-manylinux2010_x86_64.whl", hash = "sha256:951f32ee877af354a45959ed04912dcd220f15b15bc2ee1d6672f31b19a687d7"},
+    {file = "imageio_ffmpeg-0.4.4-py3-none-manylinux2014_aarch64.whl", hash = "sha256:e9be7d28a72ebd5968dd69199482237f931fb045b1a3fcb7f1ef7d0bc58e3389"},
+    {file = "imageio_ffmpeg-0.4.4-py3-none-win32.whl", hash = "sha256:4aa1edf6e7ff83c904e1fa2887e8ba32b560da66b0852e2292378827d72db542"},
+    {file = "imageio_ffmpeg-0.4.4-py3-none-win_amd64.whl", hash = "sha256:fd2d9f0c8b1939709a70cfe46e79811e4e1b4a897672482b74ce3d1aea9ef7e1"},
 ]
 iniconfig = [
     {file = "iniconfig-1.1.1-py2.py3-none-any.whl", hash = "sha256:011e24c64b7f47f6ebd835bb12a743f2fbe9a26d4cecaa7f53bc4f35ee9da8b3"},
@@ -1506,6 +1594,9 @@ mne = [
     {file = "mne-0.23.0-py3-none-any.whl", hash = "sha256:49a9763d394bdb8c66c919d54f132c207b6dad2a9c030000e5443826642ea193"},
     {file = "mne-0.23.0.tar.gz", hash = "sha256:159cac597f0243519c85ef851ce302c7edd04189648ce659ce537e129d64c5c1"},
 ]
+moviepy = [
+    {file = "moviepy-1.0.3.tar.gz", hash = "sha256:2884e35d1788077db3ff89e763c5ba7bfddbd7ae9108c9bc809e7ba58fa433f5"},
+]
 nbclient = [
     {file = "nbclient-0.5.3-py3-none-any.whl", hash = "sha256:e79437364a2376892b3f46bedbf9b444e5396cfb1bc366a472c37b48e9551500"},
     {file = "nbclient-0.5.3.tar.gz", hash = "sha256:db17271330c68c8c88d46d72349e24c147bb6f34ec82d8481a8f025c4d26589c"},
@@ -1632,6 +1723,9 @@ plotly = [
 pluggy = [
     {file = "pluggy-0.13.1-py2.py3-none-any.whl", hash = "sha256:966c145cd83c96502c3c3868f50408687b38434af77734af1e9ca461a4081d2d"},
     {file = "pluggy-0.13.1.tar.gz", hash = "sha256:15b2acde666561e1298d71b523007ed7364de07029219b604cf808bfa1c765b0"},
+]
+proglog = [
+    {file = "proglog-0.1.9.tar.gz", hash = "sha256:d8c4ccbf2138e0c5e3f3fc0d80dc51d7e69dcfe8bfde4cacb566725092a5b18d"},
 ]
 prometheus-client = [
     {file = "prometheus_client-0.11.0-py2.py3-none-any.whl", hash = "sha256:b014bc76815eb1399da8ce5fc84b7717a3e63652b0c0f8804092c9363acab1b2"},
@@ -1895,6 +1989,10 @@ tornado = [
     {file = "tornado-6.1-cp39-cp39-win32.whl", hash = "sha256:d3d20ea5782ba63ed13bc2b8c291a053c8d807a8fa927d941bd718468f7b950c"},
     {file = "tornado-6.1-cp39-cp39-win_amd64.whl", hash = "sha256:548430be2740e327b3fe0201abe471f314741efcb0067ec4f2d7dcfb4825f3e4"},
     {file = "tornado-6.1.tar.gz", hash = "sha256:33c6e81d7bd55b468d2e793517c909b139960b6c790a60b7991b9b6b76fb9791"},
+]
+tqdm = [
+    {file = "tqdm-4.61.0-py2.py3-none-any.whl", hash = "sha256:736524215c690621b06fc89d0310a49822d75e599fcd0feb7cc742b98d692493"},
+    {file = "tqdm-4.61.0.tar.gz", hash = "sha256:cd5791b5d7c3f2f1819efc81d36eb719a38e0906a7380365c556779f585ea042"},
 ]
 traitlets = [
     {file = "traitlets-5.0.5-py3-none-any.whl", hash = "sha256:69ff3f9d5351f31a7ad80443c2674b7099df13cc41fc5fa6e2f6d3b0330b0426"},
