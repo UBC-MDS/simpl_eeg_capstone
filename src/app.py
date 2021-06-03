@@ -43,9 +43,9 @@ def animate_3d_head(epoch, colormap, vmin, vmax):
 
 
 @st.cache(show_spinner=False)
-def animate_3d_brain(epoch):
-    #topomap_3d_brain.plot_topomap_3d_brain(epoch)
-    return plt.figure()
+def animate_3d_brain(epoch,view_selection):
+    anim = topomap_3d_brain.animate_matplot_brain(epoch, views=view_selection, background="w")
+    return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
@@ -191,10 +191,28 @@ def main():
                 use_container_width=True
             )
 
-    with st.beta_expander("3D Brain Map", expanded=False):
-        st.pyplot(
-            animate_3d_brain(plot_epoch)
+    with st.beta_expander("3D Brain Map", expanded=True):
+        show_brain = st.button(
+            "CLICK HERE to render the 3D brain map (this may take a while...)"
         )
+        view_options = [
+            "lat",
+            "dor",
+            "fro"
+        ]
+        view_selection = st.multiselect(
+            "Select view",
+            view_options,
+            default=["lat"]
+        )
+
+        if show_brain:
+            with st.spinner("Rendering..."):
+                components.html(
+                    animate_3d_brain(plot_epoch, view_selection),
+                    height=600,
+                    width=600
+                )
 
     with st.beta_expander("Connectivity", expanded=True):
         col1, col2 = st.beta_columns((3, 1))
@@ -216,7 +234,7 @@ def main():
             default_cmin = -1.0
             default_cmax = 1.0
             if(connection_type == "envelope_correlation"):
-                default_cmin = 0
+                default_cmin = 0.0
 
             cmin = st.number_input(
                 "Minimum Value",
