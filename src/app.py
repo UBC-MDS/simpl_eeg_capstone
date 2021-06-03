@@ -13,6 +13,7 @@ from simpl_eeg import (
     topomap_2d,
     topomap_3d_brain,
     topomap_3d_head
+    #topomap_3d_head
 )
 
 import matplotlib.pyplot as plt
@@ -110,10 +111,11 @@ def main():
         tmax=tmax,
         start_second=start_second
     )
+    epoch_obj.set_nth_epoch(epoch_num)
 
     events = epoch_obj.data.events
-    epoch = epoch_obj.get_nth_epoch(epoch_num)
-    plot_epoch = epoch.copy().decimate(frame_steps)
+    epoch = epoch_obj.epoch
+    plot_epoch = epoch_obj.skip_n_steps(frame_steps)
 
     with st.beta_expander("Raw Voltage Values", expanded=True):
         kwargs = {

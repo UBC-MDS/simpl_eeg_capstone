@@ -48,7 +48,7 @@ class Epochs:
     def __init__(self, experiment, tmin=-0.3, tmax=0.7, start_second=None):
         self.eeg_file = EEG_File(experiment)
         self.data = self.generate_epochs(tmin, tmax, start_second)
-        self.epoch = self.get_nth_epoch(0)
+        self.epoch = self.set_nth_epoch(0)
 
     def generate_epochs(self, tmin, tmax, start_second):
         freq = int(self.eeg_file.raw.info["sfreq"])
@@ -70,13 +70,35 @@ class Epochs:
 
         return epochs
 
-    def get_nth_epoch(self, n):
+    def set_nth_epoch(self, n):
         """
-        Return the nth epoch from the raw data
+        Set the nth epoch from the raw data
 
         Args:
         n (int): The epoch to select
         """
 
-        return self.data[n]
+        self.epoch = self.data[n]
+
+    def get_nth_epoch(self):
+        """
+        Return the nth epoch from the raw data
+
+        Returns:
+            mne: The epoch of interest
+        """
+        return self.epoch
+
+    def skip_n_steps(self, num_steps):
+        """
+        Return new epoch containing every nth frame
+
+        Args:
+        n (int): The number of time steps to skip
+
+        Returns:
+            mne.Epochs: The reduced epoch
+        """
+
+        return self.epoch.copy().decimate(num_steps)
 

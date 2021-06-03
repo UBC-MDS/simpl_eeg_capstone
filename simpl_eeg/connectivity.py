@@ -164,7 +164,7 @@ def plot_connectivity(data, fig=None, locations=None, calc_type="correlation", p
     return fig
 
 
-def animate_connectivity(epoch, calc_type, steps=20, pair_list=[], colormap="RdBlu_r"):
+def animate_connectivity(epoch, calc_type, steps=20, pair_list=[], colormap="RdBu_r"):
     """Animate 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
@@ -172,7 +172,7 @@ def animate_connectivity(epoch, calc_type, steps=20, pair_list=[], colormap="RdB
         calc_type (str: Connectivity calculation type
         pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
         steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20. 
-        colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
+        colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
@@ -214,7 +214,7 @@ def plot_conn_circle(epoch, fig, calc_type, max_connections=20, ch_names=[], col
         calc_type (str): Connectivity calculation type
         max_connections (int, optional): Maximum connections to plot. Defaults to 50.
         ch_names ([str], optional): List of channel names to display. Defaults to [], which indicates all channels.
-        colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
+        colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
         colormap (bool, optional): Whether to plot the colorbar. Defaults to True.
 
     Returns:
@@ -259,7 +259,7 @@ def animate_connectivity_circle(epoch, calc_type, steps=20, colormap="RdBu_r"):
         epoch (mne.epochs.Epochs): Epoch to visualize
         calc_type (str: Connectivity calculation type
         steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20. 
-        colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
+        colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
