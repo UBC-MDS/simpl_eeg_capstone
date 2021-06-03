@@ -40,15 +40,30 @@ def animate_3d_brain(epoch):
 
 
 @st.cache(show_spinner=False)
-def animate_connectivity(epoch, connection_type, steps, pair_selection, colormap):
+def animate_ui_connectivity(epoch, connection_type, steps, pair_selection, colormap, cmin, cmax):
     pair_list = connectivity.PAIR_OPTIONS[pair_selection]
-    anim = connectivity.animate_connectivity(epoch, connection_type, steps=steps, pair_list=pair_list, colormap=colormap)
+    anim = connectivity.animate_connectivity(
+        epoch,
+        connection_type,
+        steps=steps,
+        pair_list=pair_list,
+        colormap=colormap,
+        cmin=cmin,
+        cmax=cmax
+    )
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_connectivity_circle(epoch, connection_type, steps, colormap):
-    anim = connectivity.animate_connectivity_circle(epoch, connection_type, steps=steps, colormap=colormap)
+def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, cmin, cmax):
+    anim = connectivity.animate_connectivity_circle(
+        epoch,
+        connection_type,
+        steps=steps,
+        colormap=colormap,
+        cmin=cmin,
+        cmax=cmax
+    )
     return anim.to_jshtml()
 
 
@@ -135,10 +150,22 @@ def main():
         )
 
     with st.beta_expander("3D Head Map", expanded=True):
-        st.plotly_chart(
-            animate_3d_head(plot_epoch, colormap),
-            use_container_width=True
-        )
+        col1, col2 = st.beta_columns((3, 1))
+
+        with col2:
+            vmin_3d_head = st.number_input(
+                "Minimum Voltage (uV)",
+                value=-40.0
+            )
+            vmax_3d_head = st.number_input(
+                "Maximum Voltage (uV)",
+                value=40.0
+            )
+        with col1:
+            st.plotly_chart(
+                animate_3d_head(plot_epoch, colormap),
+                use_container_width=True
+            )
 
     with st.beta_expander("3D Brain Map", expanded=False):
         st.pyplot(
@@ -165,15 +192,40 @@ def main():
                 ]
             )
 
+            cmin = st.number_input(
+                "Minimum Value",
+                value=-1.0
+            )
+            cmax = st.number_input(
+                "Maximum Value",
+                value=1.0
+            )
+
+
         with col1:
             components.html(
-                animate_connectivity(epoch, connection_type, frame_steps, pair_selection, colormap),
+                animate_ui_connectivity(
+                    epoch,
+                    connection_type,
+                    frame_steps,
+                    pair_selection,
+                    colormap,
+                    cmin,
+                    cmax
+                ),
                 height=600,
                 width=600
             )
 
             components.html(
-                animate_connectivity_circle(epoch, connection_type, frame_steps, colormap),
+                animate_ui_connectivity_circle(
+                    epoch,
+                    connection_type,
+                    frame_steps,
+                    colormap,
+                    cmin,
+                    cmax
+                ),
                 height=600,
                 width=600
             )

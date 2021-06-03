@@ -96,7 +96,16 @@ def get_frame(epoch, step_size, frame_number):
     )
 
 
-def plot_connectivity(data, fig=None, locations=None, calc_type="correlation", pair_list=[], threshold=0, colormap="RdBu_r"):
+def plot_connectivity(
+    data,
+    fig=None,
+    locations=None,
+    calc_type="correlation",
+    pair_list=[],
+    threshold=0,
+    colormap="RdBu_r",
+    cmin=None,
+    cmax=None):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
@@ -107,6 +116,8 @@ def plot_connectivity(data, fig=None, locations=None, calc_type="correlation", p
         pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
         threshold (int, optional): Connectivity threshold to display connection. Defaults to 0.
         colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
+        cmin (int, optional): The minimum for the scale. Defaults to None.
+        cmin (int, optional): The maximum for the scale. Defaults to None.
 
     Returns:
         matplotlib.pyplot.figure: Connectivity figure
@@ -164,15 +175,24 @@ def plot_connectivity(data, fig=None, locations=None, calc_type="correlation", p
     return fig
 
 
-def animate_connectivity(epoch, calc_type, steps=20, pair_list=[], colormap="RdBu_r"):
+def animate_connectivity(
+    epoch,
+    calc_type="correlation",
+    steps=20,
+    pair_list=[],
+    colormap="RdBu_r",
+    cmin=None,
+    cmax=None):
     """Animate 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
         epochs (mne.epochs.Epochs): Epoch to visualize
-        calc_type (str: Connectivity calculation type
+        calc_type (str: Connectivity calculation type. Defaults to "correlation".
         pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
         steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20. 
-        colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
+        colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r"
+        cmin (int, optional): The minimum for the scale. Defaults to None.
+        cmin (int, optional): The maximum for the scale. Defaults to None.
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
@@ -205,21 +225,34 @@ def animate_connectivity(epoch, calc_type, steps=20, pair_list=[], colormap="RdB
     return anim
 
 
-def plot_conn_circle(epoch, fig, calc_type, max_connections=20, ch_names=[], colormap="RdBu_r", colorbar=True):
+def plot_conn_circle(
+    epoch,
+    fig=None,
+    calc_type="correlation",
+    max_connections=20,
+    ch_names=[],
+    colormap="RdBu_r",
+    cmin=None,
+    cmax=None,
+    colorbar=True):
     """Plot connectivity circle
 
     Args:
         epoch (mne.epochs.Epochs): Epoch to visualize
-        fig (matplotlib.pyplot.figure): Figure to plot on
-        calc_type (str): Connectivity calculation type
+        fig (matplotlib.pyplot.figure, optional): Figure to plot on. Defaults to None.
+        calc_type (str, optional): Connectivity calculation type. Defaults to "correlation"
         max_connections (int, optional): Maximum connections to plot. Defaults to 50.
         ch_names ([str], optional): List of channel names to display. Defaults to [], which indicates all channels.
+        cmin (int, optional): The minimum for the scale. Defaults to None.
+        cmin (int, optional): The maximum for the scale. Defaults to None.
         colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
         colormap (bool, optional): Whether to plot the colorbar. Defaults to True.
 
     Returns:
         matplotlib.pyplot.figure: Connectivity circle figure
     """
+    if not fig:
+        fig = plt.figure()
     if not ch_names:
         ch_names = epoch.ch_names
 
@@ -252,14 +285,22 @@ def plot_conn_circle(epoch, fig, calc_type, max_connections=20, ch_names=[], col
     return fig
 
 
-def animate_connectivity_circle(epoch, calc_type, steps=20, colormap="RdBu_r"):
+def animate_connectivity_circle(
+    epoch,
+    calc_type="correlation",
+    steps=20,
+    cmin=None,
+    cmax=None,
+    colormap="RdBu_r"):
     """Animate connectivity circle
 
     Args:
         epoch (mne.epochs.Epochs): Epoch to visualize
-        calc_type (str: Connectivity calculation type
+        calc_type (str, optional): Connectivity calculation type. Defaults to "correlation".
         steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20. 
         colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
+        cmin (int, optional): The minimum for the scale. Defaults to None.
+        cmin (int, optional): The maximum for the scale. Defaults to None.
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
