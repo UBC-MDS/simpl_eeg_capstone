@@ -101,10 +101,12 @@ def plot_connectivity(
     calc_type="correlation",
     pair_list=[],
     threshold=0,
+    show_sphere=True,
     colormap="RdBu_r",
-    cmin=None,
-    cmax=None,
-    line_width=None
+    vmin=None,
+    vmax=None,
+    line_width=None,
+    title=None
 ):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
 
@@ -114,17 +116,19 @@ def plot_connectivity(
         locations ([matplotlib.text.Text]): List of node locations
         calc_type (str): Connectivity calculation type
         pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
-        threshold (int, optional): Connectivity threshold to display connection. Defaults to 0.
+        threshold (int, optional): Unsigned connectivity threshold to display connection. Defaults to 0.
+        show_sphere (bool, optional): Whether to show the cartoon head or not. Defaults to True.
         colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
-        cmin (int, optional): The minimum for the scale. Defaults to None.
-        cmin (int, optional): The maximum for the scale. Defaults to None.
+        vmin (int, optional): The minimum for the scale. Defaults to None.
+        vmin (int, optional): The maximum for the scale. Defaults to None.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
+        title (str, optional): The title to display on the plot. Defaults to None for no title.
 
     Returns:
         matplotlib.pyplot.figure: Connectivity figure
     """
     if locations is None:
-        sensor_locations = data.plot_sensors(show_names=True, show=False);
+        sensor_locations = data.plot_sensors(show_names=True, show=False)
         locations = sensor_locations.findobj(
             match=lambda x: type(x) == plt.Text and x.get_text() != ""
         )
@@ -135,11 +139,11 @@ def plot_connectivity(
 
     cmap = plt.cm.ScalarMappable(cmap=colormap)
 
-    if cmin is None or cmax is None:
+    if vmin is None or vmax is None:
         cmap.set_array(correlation_df)
         cmap.autoscale()
     else:
-        cmap.set_clim(cmin, cmax)
+        cmap.set_clim(vmin, vmax)
 
     colour_array = cmap.cmap(correlation_df)
 
@@ -176,8 +180,13 @@ def plot_connectivity(
         axes=ax,
         show_names=True,
         kind="topomap",
-        sphere=(9, -12, 0, 100)
+        sphere=(9, -15, 0, 100) if show_sphere else None,
+        show=False
     )
+
+    if title:
+        plt.title(title)
+
     return fig
 
 
@@ -186,10 +195,13 @@ def animate_connectivity(
     calc_type="correlation",
     steps=20,
     pair_list=[],
+    threshold=0,
+    show_sphere=True,
     colormap="RdBu_r",
-    cmin=None,
-    cmax=None,
-    line_width=None
+    vmin=None,
+    vmax=None,
+    line_width=None,
+    title=None
 ):
     """Animate 2d EEG nodes on scalp with lines representing connectivity
 
@@ -197,11 +209,14 @@ def animate_connectivity(
         epochs (mne.epochs.Epochs): Epoch to visualize
         calc_type (str: Connectivity calculation type. Defaults to "correlation".
         pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
-        steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20. 
+        threshold (int, optional): Unsigned connectivity threshold to display connection. Defaults to 0.
+        show_sphere (bool, optional): Whether to show the cartoon head or not. Defaults to True.
+        steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20.
         colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r"
-        cmin (int, optional): The minimum for the scale. Defaults to None.
-        cmin (int, optional): The maximum for the scale. Defaults to None.
+        vmin (int, optional): The minimum for the scale. Defaults to None.
+        vmin (int, optional): The maximum for the scale. Defaults to None.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
+        title (str, optional): The title to display on the plot. Defaults to None for no title.
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
@@ -225,11 +240,13 @@ def animate_connectivity(
                 locations,
                 calc_type,
                 pair_list=pair_list,
-                threshold=0,
+                threshold=threshold,
+                show_sphere=show_sphere,
                 colormap=colormap,
-                cmin=cmin,
-                cmax=cmax,
-                line_width=line_width
+                vmin=vmin,
+                vmax=vmax,
+                line_width=line_width,
+                title=title
             )
         ]
     anim = animation.FuncAnimation(fig, animate, num_steps, blit=True)
@@ -240,12 +257,13 @@ def plot_conn_circle(
     epoch,
     fig=None,
     calc_type="correlation",
-    max_connections=20,
+    max_connections=50,
     ch_names=[],
     colormap="RdBu_r",
-    cmin=None,
-    cmax=None,
-    line_width=None
+    vmin=None,
+    vmax=None,
+    line_width=None,
+    title=None
 ):
     """Plot connectivity circle
 
@@ -255,11 +273,12 @@ def plot_conn_circle(
         calc_type (str, optional): Connectivity calculation type. Defaults to "correlation"
         max_connections (int, optional): Maximum connections to plot. Defaults to 50.
         ch_names ([str], optional): List of channel names to display. Defaults to [], which indicates all channels.
-        cmin (int, optional): The minimum for the scale. Defaults to None.
-        cmin (int, optional): The maximum for the scale. Defaults to None.
+        vmin (int, optional): The minimum for the scale. Defaults to None.
+        vmin (int, optional): The maximum for the scale. Defaults to None.
         colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
         colormap (bool, optional): Whether to plot the colorbar. Defaults to True.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
+        title (str, optional): The title to display on the plot. Defaults to None for no title.
 
     Returns:
         matplotlib.pyplot.figure: Connectivity circle figure
@@ -294,9 +313,10 @@ def plot_conn_circle(
         textcolor="black",
         colormap=colormap,
         node_colors=[tuple(i) for i in node_colors],
-        vmin=cmin,
-        vmax=cmax,
-        linewidth=line_width
+        vmin=vmin,
+        vmax=vmax,
+        linewidth=line_width,
+        title=title
     )[0]
     return fig
 
@@ -304,22 +324,26 @@ def plot_conn_circle(
 def animate_connectivity_circle(
     epoch,
     calc_type="correlation",
+    max_connections=50,
     steps=20,
     colormap="RdBu_r",
-    cmin=None,
-    cmax=None,
-    line_width=None
+    vmin=None,
+    vmax=None,
+    line_width=None,
+    title=None
 ):
     """Animate connectivity circle
 
     Args:
         epoch (mne.epochs.Epochs): Epoch to visualize
         calc_type (str, optional): Connectivity calculation type. Defaults to "correlation".
-        steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20. 
+        max_connections (int, optional): Number of connections to display. Defaults to 50.
+        steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20.
         colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
-        cmin (int, optional): The minimum for the scale. Defaults to None.
-        cmin (int, optional): The maximum for the scale. Defaults to None.
+        vmin (int, optional): The minimum for the scale. Defaults to None.
+        vmin (int, optional): The maximum for the scale. Defaults to None.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
+        title (str, optional): The title to display on the plot. Defaults to None for no title.
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
@@ -335,10 +359,12 @@ def animate_connectivity_circle(
                 get_frame(epoch, steps, frame_number),
                 fig,
                 calc_type=calc_type,
+                max_connections=max_connections,
                 colormap=colormap,
-                cmin=cmin,
-                cmax=cmax,
-                line_width=line_width
+                vmin=vmin,
+                vmax=vmax,
+                line_width=line_width,
+                title=title
             )
         ]
 

@@ -21,7 +21,7 @@ st.set_page_config(layout="wide")
 
 
 @st.cache(show_spinner=False)
-def animate_2d_head(epoch, frame_steps, colormap, vmin, vmax):
+def animate_ui_2d_head(epoch, frame_steps, colormap, vmin, vmax):
     steps = epoch.time_as_index(epoch.times[-1])[0]//frame_steps
     anim = topomap_2d.animate_topomap_2d(
         epoch,
@@ -33,7 +33,7 @@ def animate_2d_head(epoch, frame_steps, colormap, vmin, vmax):
 
 
 @st.cache(show_spinner=False)
-def animate_3d_head(epoch, colormap, vmin, vmax):
+def animate_ui_3d_head(epoch, colormap, vmin, vmax):
     return topomap_3d_head.animate_3d_head(
         epoch,
         colormap=colormap,
@@ -43,38 +43,80 @@ def animate_3d_head(epoch, colormap, vmin, vmax):
 
 
 @st.cache(show_spinner=False)
-def animate_3d_brain(epoch,view_selection):
+def animate_ui_3d_brain(epoch,view_selection):
     anim = topomap_3d_brain.animate_matplot_brain(epoch, views=view_selection, background="w")
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, cmin, cmax, line_width):
+def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, vmin, vmax, line_width):
     anim = connectivity.animate_connectivity(
         epoch,
         connection_type,
         steps=steps,
         pair_list=pair_list,
         colormap=colormap,
-        cmin=cmin,
-        cmax=cmax,
+        vmin=vmin,
+        vmax=vmax,
         line_width=line_width
     )
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, cmin, cmax, line_width):
+def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin, vmax, line_width, max_connections):
     anim = connectivity.animate_connectivity_circle(
         epoch,
         connection_type,
         steps=steps,
         colormap=colormap,
-        cmin=cmin,
-        cmax=cmax,
-        line_width=line_width
+        vmin=vmin,
+        vmax=vmax,
+        line_width=line_width,
+        max_connections=max_connections
     )
     return anim.to_jshtml()
+
+
+def get_shared_conn_widgets(epoch, frame_steps, key):
+
+    key = str(key)
+
+    connectivity_methods = [
+        "correlation",
+        "spectral_connectivity",
+        "envelope_correlation",
+    ]
+    if (len(epoch.times)//frame_steps) >= 100:
+        connectivity_methods.append("covariance")
+
+    label = "Select connection calculation"
+    connection_type = st.selectbox(
+        label,
+        connectivity_methods,
+        key=label+key
+    )
+    default_cmin = -1.0
+    default_cmax = 1.0
+    if(connection_type == "envelope_correlation"):
+        default_cmin = 0.0
+
+    label = "Minimum Value"
+    cmin = st.number_input(
+        label,
+        value=default_cmin,
+        key=label+key
+    )
+
+    label = "Maximum Value"
+    cmax = st.number_input(
+        label,
+        value=default_cmax,
+        min_value=cmin,
+        key=label+key
+    )
+
+    return connection_type, cmin, cmax
 
 
 def main():
@@ -167,7 +209,7 @@ def main():
             )
         with col1:
             components.html(
-                animate_2d_head(plot_epoch, 1, colormap, vmin_2d_head, vmax_2d_head),
+                animate_ui_2d_head(plot_epoch, 1, colormap, vmin_2d_head, vmax_2d_head),
                 height=600,
                 width=700
             )
@@ -187,7 +229,7 @@ def main():
             )
         with col1:
             st.plotly_chart(
-                animate_3d_head(plot_epoch, colormap, vmin_3d_head, vmax_3d_head),
+                animate_ui_3d_head(plot_epoch, colormap, vmin_3d_head, vmax_3d_head),
                 use_container_width=True
             )
 
@@ -221,75 +263,19 @@ def main():
         if show_brain:
             with st.spinner("Rendering..."):
                 components.html(
-                    animate_3d_brain(plot_epoch, view_selection),
+                    animate_ui_3d_brain(plot_epoch, view_selection),
                     height=600,
                     width=600
                 )
-
     with st.beta_expander("Connectivity", expanded=True):
-        col1, col2 = st.beta_columns((3, 1))
-
-        with col2:
-
-            connectivity_methods = [
-                "correlation",
-                "spectral_connectivity",
-                "envelope_correlation",
-            ]
-            if (len(epoch.times)//frame_steps) >= 100:
-                connectivity_methods.append("covariance")
-
-            connection_type = st.selectbox(
-                "Select connection calculation",
-                connectivity_methods
-            )
-            default_cmin = -1.0
-            default_cmax = 1.0
-            if(connection_type == "envelope_correlation"):
-                default_cmin = 0.0
-
-            cmin = st.number_input(
-                "Minimum Value",
-                value=default_cmin
-            )
-            cmax = st.number_input(
-                "Maximum Value",
-                value=default_cmax,
-                min_value=cmin
-            )
-
-            line_width_type = st.checkbox(
-                "Set line width",
-                False
-            )
-
-            line_width = None
-            if line_width_type is True:
-                line_width = st.slider(
-                    "Select line width",
-                    min_value=1,
-                    max_value=5,
-                    value=2
-                )
-
-        with col1:
-
-            components.html(
-                animate_ui_connectivity_circle(
-                    epoch,
-                    connection_type,
-                    frame_steps,
-                    colormap,
-                    cmin,
-                    cmax,
-                    line_width
-                ),
-                height=600,
-                width=600
-            )
 
         col1, col2 = st.beta_columns((3, 1))
         with col2:
+
+            # Connection type and min/max value widgets
+            connection_type, cmin, cmax = get_shared_conn_widgets(epoch, frame_steps, "conn")
+
+            # Node pair widgets
             node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
 
             pair_selection = st.selectbox(
@@ -303,10 +289,28 @@ def main():
                 selected_pairs = connectivity.PAIR_OPTIONS[pair_selection]
             else:
                 custom_pair_selection = st.text_area(
-                    "Enter comma separated pairs below in format Node1-Node2, Node3-Node4 to customize",
+                    """
+                    Enter comma separated pairs below in format
+                    Node1-Node2, Node3-Node4 to customize
+                    """,
                     connectivity.PAIR_OPTIONS[pair_selection]
                 )
                 selected_pairs = custom_pair_selection
+
+            # Line width widgets
+            line_width_type = st.checkbox(
+                "Set static line width",
+                False
+            )
+
+            conn_line_width = None
+            if line_width_type is True:
+                conn_line_width = st.slider(
+                    "Select line width",
+                    min_value=1,
+                    max_value=5,
+                    value=2
+                )
 
         with col1:
             components.html(
@@ -318,11 +322,54 @@ def main():
                     colormap,
                     cmin,
                     cmax,
-                    line_width
+                    conn_line_width
                 ),
                 height=600,
                 width=600
             )
+
+    with st.beta_expander("Connectivity Circle", expanded=True):
+
+        col1, col2 = st.beta_columns((3, 1))
+
+        with col2:
+
+            # Connection type and min/max value widgets
+            connection_type, cmin, cmax = get_shared_conn_widgets(epoch, frame_steps, "circle")
+
+            # Line width widget
+            conn_circle_line_width = st.slider(
+                "Select line width ",
+                min_value=1,
+                max_value=5,
+                value=2
+            )
+
+            # Maximum connections widget
+            max_connections = st.number_input(
+                "Maximum connections to display",
+                min_value=0,
+                max_value=len(epoch.ch_names)*len(epoch.ch_names),
+                value=20
+            )
+
+
+        with col1:
+            components.html(
+                animate_ui_connectivity_circle(
+                    epoch,
+                    connection_type,
+                    frame_steps,
+                    colormap,
+                    cmin,
+                    cmax,
+                    conn_circle_line_width,
+                    max_connections
+                ),
+                height=600,
+                width=600
+            )
+
 
 if __name__ == "__main__":
     main()
