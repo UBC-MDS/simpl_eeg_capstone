@@ -179,7 +179,6 @@ def animate_topomap_2d(epochs,
                        mask=None,
                        mask_params=None,
                        colorbar=True,
-                       steps=3,
                        frame_rate=12):
     """
     Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
@@ -243,11 +242,6 @@ def animate_topomap_2d(epochs,
     colorbar: bool
         Specifies whether or not to include a colorbar in the animation.
 
-    steps: int
-        Specifies how many recorded datapoint in the data to include in the animation. For example,
-        1 will show every recorded obervation in the dataset, 2 will show every second recorded
-        observation, etc.
-
     frame_rate: int
         The frame rate to genearte the final animation with.
 
@@ -262,10 +256,10 @@ def animate_topomap_2d(epochs,
     # and convert it to the same format as evoked data
 
     if isinstance(epochs, mne.epochs.Epochs):
-        frames_to_show = np.arange(0, epochs[0].get_data()[0].shape[1], steps)
+        frames_to_show = np.arange(0, epochs[0].get_data()[0].shape[1], 1)
         plotting_data = epochs[epoch_number].get_data()[0]
     elif isinstance(epochs, mne.evoked.EvokedArray):
-        frames_to_show = np.arange(0, evoked.data.shape[1], steps)
+        frames_to_show = np.arange(0, evoked.data.shape[1], 1)
         plotting_data = epochs
 
     ms_between_frames = 1000 / frame_rate
