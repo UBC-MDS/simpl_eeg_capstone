@@ -6,6 +6,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from mne.datasets import fetch_fsaverage
 from mne.minimum_norm import make_inverse_operator
+from mne.minimum_norm import apply_inverse_epochs
+from mne.minimum_norm import apply_inverse
+import matplotlib.gridspec as gridspec
+from matplotlib.transforms import Bbox
+import matplotlib.animation as animation
 
 
 def create_fsaverage_forward(epochs, **kwargs):
@@ -57,7 +62,6 @@ def create_fsaverage_forward(epochs, **kwargs):
 def create_inverse_solution(
         epochs,
         forward,
-        epoch_num=0,
         covariance_method=[
             'empirical',
             'shrunk'],
@@ -116,13 +120,9 @@ def create_inverse_solution(
 
     lambda2 = 1.0 / snr ** 2
 
-    if isinstance(epoch_num, int):
-        epochs = epochs[epoch_num]
-
     # If epoch_num is any string other than "all" return false
 
     if isinstance(epochs, mne.epochs.Epochs):
-        from mne.minimum_norm import apply_inverse_epochs
         stc = apply_inverse_epochs(epochs,
                                    inverse_operator=inverse_operator,
                                    lambda2=lambda2,
@@ -131,7 +131,6 @@ def create_inverse_solution(
         stc = stc[0]
 
     elif isinstance(epochs, mne.evoked.EvokedArray):
-        from mne.minimum_norm import apply_inverse
         stc = apply_inverse(epochs,
                             inverse_operator=inverse_operator,
                             lambda2=lambda2,
@@ -331,8 +330,6 @@ def plot_topomap_3d_brain(
         background='black'
         foreground = 'white'
 
-        import matplotlib.gridspec as gridspec
-
         def move_axes(ax, fig):
             # get a reference to the old figure context so we can release it
             old_fig = ax.figure
@@ -410,8 +407,6 @@ def plot_topomap_3d_brain(
         return (make_plot(views=views[0]))
 
     else:
-
-        from matplotlib.transforms import Bbox
 
         if hemi == 'both' or hemi == 'split':
             brain_hemi = ['lh', 'rh']
@@ -571,7 +566,6 @@ def animate_matplot_brain(
     cmax=None,
     spacing='oct5',
     smoothing_steps=2,
-    steps=3,
     frame_rate=12,
     **kwargs):
     
@@ -579,13 +573,11 @@ def animate_matplot_brain(
                  'subject': None, 'time_label': None, 'time_unit': 's', 'volume_options': None,
                  'subjects_dir': None, 'title': None, 'show_traces': 'auto', 'src': None, 'verbose': None }
     kwargs = { **defaultKwargs, **kwargs }
-    
-    import matplotlib.animation as animation
 
     if isinstance(views, str):
         views = [views]
 
-    frames_to_show = round(user_epoch.times.shape[0] / steps)
+    frames_to_show = user_epoch.times.shape[0]
     times_to_show = np.linspace(
         user_epoch.tmin,
         user_epoch.tmax,

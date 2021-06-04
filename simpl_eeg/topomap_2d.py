@@ -11,7 +11,8 @@ def plot_topomap_2d(epochs,
                     recording_number=0,
                     colormap='RdBu_r',
                     colorbar=True,
-                    color_lims=[-30, 30],
+                    cmin = -30, 
+                    cmax = 30,
                     mark='dot',
                     contours='6',
                     sphere=100,
@@ -46,10 +47,15 @@ def plot_topomap_2d(epochs,
     colorbar: bool
         Specifies whether to include a colorbar or not. Removing it will improve performance.
     
-    color_lims: list
-        Specifies the 'vmin' and 'vmax' parameters in the mne.viz.plot_topomap() function.
-        Sets the limits for the colors which will be used on the topomap. Both values are
-        in μV.
+    cmin: float
+        Specifies the 'vmin' parameter in the mne.viz.plot_topomap() function.
+        Sets the limits for the colors which will be used on the topomap. Value is
+        in μV. Defaults to -10.
+        
+    cmax: float
+        Specifies the 'vmax' parameter in the mne.viz.plot_topomap() function.
+        Sets the limits for the colors which will be used on the topomap. Value is
+        in μV. Defaults to +10.
 
     mark: str
         Specifies what kind of marker should be shown for each node on the topomap. Can be one of
@@ -122,8 +128,8 @@ def plot_topomap_2d(epochs,
         data=plotting_data,
         pos=epochs.info,  # Location info for data points
         show=False,
-        vmin=color_lims[0] / 1e6,  # Convert back to volts
-        vmax=color_lims[1] / 1e6,
+        vmin=cmin / 1e6,  # Convert back to volts
+        vmax=cmax / 1e6,
         sphere=sphere,  # Causes head to appear, see documentation, not sure what value should be here so 100 is placeholder
         outlines=outlines,
         # 'head' keeps signals within head space, 'skirt' extrapolates beyond
@@ -142,7 +148,8 @@ def plot_topomap_2d(epochs,
     if colorbar:
         ax_divider = make_axes_locatable(ax)
         cax = ax_divider.append_axes("right", size="3%", pad="0%")
-        clim = dict(kind='value', lims=[color_lims[0], 0, color_lims[1]])
+        cmid = (cmin+cmax)/2
+        clim = dict(kind='value', lims=[cmin, cmid, cmax])
         # https://mne.tools/stable/generated/mne.viz.plot_brain_colorbar.html
         mne.viz.plot_brain_colorbar(
             cax,
@@ -163,8 +170,8 @@ def animate_topomap_2d(epochs,
                        mark='dot',
                        contours='6',
                        sphere=100,
-                       color_lims=[-10,
-                                      10],
+                       cmin=-30,
+                       cmax = 30,
                        res=100,
                        extrapolate='head',
                        outlines='head',
@@ -172,7 +179,6 @@ def animate_topomap_2d(epochs,
                        mask=None,
                        mask_params=None,
                        colorbar=True,
-                       steps=3,
                        frame_rate=12):
     """
     Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
@@ -185,9 +191,6 @@ def animate_topomap_2d(epochs,
 
     colormap: matplotlib colormap or None
         Specifies the 'colormap' parameter in the mne.viz.plot_topomap() function.
-
-    epoch_number: int
-        The epoch in the epochs data to plot.
 
     mark: str
         Specifies what kind of marker should be shown for each node on the topomap. Can be one of
@@ -206,10 +209,15 @@ def animate_topomap_2d(epochs,
         assumed 0, 0, 0). Can also be a spherical ConductorModel, which will use the origin
         and radius. Can also be None (default) which is an alias for 0.095"
 
-    color_lims: list
-        Specifies the 'vmin' and 'vmax' parameters in the mne.viz.plot_topomap() function.
-        Sets the limits for the colors which will be used on the topomap. Both values are
-        in μV.
+    cmin: float
+        Specifies the 'vmin' parameter in the mne.viz.plot_topomap() function.
+        Sets the limits for the colors which will be used on the topomap. Value is
+        in μV. Defaults to -10.
+        
+    cmax: float
+        Specifies the 'vmax' parameter in the mne.viz.plot_topomap() function.
+        Sets the limits for the colors which will be used on the topomap. Value is
+        in μV. Defaults to +10.
 
     res: int
         Specifies the 'res' and parameters in the mne.viz.plot_topomap() function. "The
@@ -234,11 +242,6 @@ def animate_topomap_2d(epochs,
     colorbar: bool
         Specifies whether or not to include a colorbar in the animation.
 
-    steps: int
-        Specifies how many recorded datapoint in the data to include in the animation. For example,
-        1 will show every recorded obervation in the dataset, 2 will show every second recorded
-        observation, etc.
-
     frame_rate: int
         The frame rate to genearte the final animation with.
 
@@ -253,10 +256,10 @@ def animate_topomap_2d(epochs,
     # and convert it to the same format as evoked data
 
     if isinstance(epochs, mne.epochs.Epochs):
-        frames_to_show = np.arange(0, epochs[0].get_data()[0].shape[1], steps)
+        frames_to_show = np.arange(0, epochs[0].get_data()[0].shape[1], 1)
         plotting_data = epochs[epoch_number].get_data()[0]
     elif isinstance(epochs, mne.evoked.EvokedArray):
-        frames_to_show = np.arange(0, evoked.data.shape[1], steps)
+        frames_to_show = np.arange(0, evoked.data.shape[1], 1)
         plotting_data = epochs
 
     ms_between_frames = 1000 / frame_rate
@@ -264,7 +267,10 @@ def animate_topomap_2d(epochs,
     if colorbar:
         fig, ax = plt.subplots()
         ax_divider = make_axes_locatable(ax)
-        clim = dict(kind='value', lims=[color_lims[0], 0, color_lims[1]])
+        
+        cmid = (cmin+cmax)/2
+        
+        clim = dict(kind='value', lims=[cmin, cmid, cmax])
 
     def animate(frame_number):
         fig.clear()
@@ -277,7 +283,8 @@ def animate_topomap_2d(epochs,
             contours=contours,
             sphere=sphere,
             colorbar=False,
-            color_lims=color_lims,
+            cmin = cmin,
+            cmax = cmax,
             res=res,
             extrapolate=extrapolate,
             outlines=outlines,
