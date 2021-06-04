@@ -106,7 +106,8 @@ def plot_connectivity(
     vmin=None,
     vmax=None,
     line_width=None,
-    title=None
+    title=None,
+    **kwargs
 ):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
 
@@ -123,6 +124,7 @@ def plot_connectivity(
         vmin (int, optional): The maximum for the scale. Defaults to None.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
         title (str, optional): The title to display on the plot. Defaults to None for no title.
+        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_sensors().
 
     Returns:
         matplotlib.pyplot.figure: Connectivity figure
@@ -181,7 +183,8 @@ def plot_connectivity(
         show_names=True,
         kind="topomap",
         sphere=(9, -15, 0, 100) if show_sphere else None,
-        show=False
+        show=False,
+        **kwargs
     )
 
     if title:
@@ -201,7 +204,8 @@ def animate_connectivity(
     vmin=None,
     vmax=None,
     line_width=None,
-    title=None
+    title=None,
+    **kwargs
 ):
     """Animate 2d EEG nodes on scalp with lines representing connectivity
 
@@ -217,6 +221,7 @@ def animate_connectivity(
         vmin (int, optional): The maximum for the scale. Defaults to None.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
         title (str, optional): The title to display on the plot. Defaults to None for no title.
+        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_sensors().
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
@@ -246,7 +251,8 @@ def animate_connectivity(
                 vmin=vmin,
                 vmax=vmax,
                 line_width=line_width,
-                title=title
+                title=title,
+                **kwargs
             )
         ]
     anim = animation.FuncAnimation(fig, animate, num_steps, blit=True)
@@ -263,7 +269,8 @@ def plot_conn_circle(
     vmin=None,
     vmax=None,
     line_width=None,
-    title=None
+    title=None,
+    **kwargs
 ):
     """Plot connectivity circle
 
@@ -279,6 +286,7 @@ def plot_conn_circle(
         colormap (bool, optional): Whether to plot the colorbar. Defaults to True.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
         title (str, optional): The title to display on the plot. Defaults to None for no title.
+        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_connectivity_circle().
 
     Returns:
         matplotlib.pyplot.figure: Connectivity circle figure
@@ -316,7 +324,8 @@ def plot_conn_circle(
         vmin=vmin,
         vmax=vmax,
         linewidth=line_width,
-        title=title
+        title=title,
+        **kwargs
     )[0]
     return fig
 
@@ -330,7 +339,8 @@ def animate_connectivity_circle(
     vmin=None,
     vmax=None,
     line_width=None,
-    title=None
+    title=None,
+    **kwargs
 ):
     """Animate connectivity circle
 
@@ -344,6 +354,7 @@ def animate_connectivity_circle(
         vmin (int, optional): The maximum for the scale. Defaults to None.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
         title (str, optional): The title to display on the plot. Defaults to None for no title.
+        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_connectivity_circle().
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
@@ -364,7 +375,8 @@ def animate_connectivity_circle(
                 vmin=vmin,
                 vmax=vmax,
                 line_width=line_width,
-                title=title
+                title=title,
+                **kwargs
             )
         ]
 

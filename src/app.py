@@ -44,7 +44,7 @@ def animate_ui_3d_head(epoch, colormap, vmin, vmax):
 
 @st.cache(show_spinner=False)
 def animate_ui_3d_brain(epoch,view_selection):
-    anim = topomap_3d_brain.animate_matplot_brain(epoch, views=view_selection, background="w")
+    anim = topomap_3d_brain.animate_matplot_brain(epoch, views=view_selection)
     return anim.to_jshtml()
 
 
@@ -58,7 +58,7 @@ def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, 
         colormap=colormap,
         vmin=vmin,
         vmax=vmax,
-        line_width=line_width
+        line_width=line_width,
     )
     return anim.to_jshtml()
 
