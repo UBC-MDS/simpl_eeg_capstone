@@ -28,5 +28,5 @@ jobs:
         poetry install
     - name: Check style
       run: poetry run flake8 --exit-zero --exclude=docs*
-    - name: Test with pytest
-      run: poetry run pytest
+    # - name: Test with pytest
+    #  run: poetry run pytest
