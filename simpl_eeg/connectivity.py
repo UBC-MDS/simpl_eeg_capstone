@@ -134,6 +134,7 @@ def plot_connectivity(
     correlation_df = calculate_connectivity(data, calc_type)
 
     cmap = plt.cm.ScalarMappable(cmap=colormap)
+
     if cmin is None or cmax is None:
         cmap.set_array(correlation_df)
         cmap.autoscale()

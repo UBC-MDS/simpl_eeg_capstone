@@ -21,21 +21,31 @@ st.set_page_config(layout="wide")
 
 
 @st.cache(show_spinner=False)
-def animate_2d_head(epoch, frame_steps, colormap):
+def animate_2d_head(epoch, frame_steps, colormap, vmin, vmax):
     steps = epoch.time_as_index(epoch.times[-1])[0]//frame_steps
-    anim = topomap_2d.animate_topomap_2d(epoch, steps=steps, colormap=colormap)
+    anim = topomap_2d.animate_topomap_2d(
+        epoch,
+        steps=steps,
+        colormap=colormap,
+        color_lims=[vmin, vmax]
+    )
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_3d_head(epoch, colormap):
-    return topomap_3d_head.animate_3d_head(epoch, colormap=colormap)
+def animate_3d_head(epoch, colormap, vmin, vmax):
+    return topomap_3d_head.animate_3d_head(
+        epoch,
+        colormap=colormap,
+        color_min=vmin,
+        color_max=vmax
+    )
 
 
 @st.cache(show_spinner=False)
-def animate_3d_brain(epoch):
-    #topomap_3d_brain.plot_topomap_3d_brain(epoch)
-    return plt.figure()
+def animate_3d_brain(epoch,view_selection):
+    anim = topomap_3d_brain.animate_matplot_brain(epoch, views=view_selection, background="w")
+    return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
@@ -106,7 +116,7 @@ def main():
         "Seconds before impact",
         value=0.3,
         min_value=0.0,
-        max_value=10.0
+        max_value=min(float(start_second), 10.0) if start_second else 10.0
     )
     tmax = st.sidebar.number_input(
         "Seconds after impact",
@@ -152,11 +162,12 @@ def main():
             )
             vmax_2d_head = st.number_input(
                 "Maximum Voltage (uV)",
-                value=40.0
+                value=40.0,
+                min_value=vmin_2d_head
             )
         with col1:
             components.html(
-                animate_2d_head(plot_epoch, 1, colormap),
+                animate_2d_head(plot_epoch, 1, colormap, vmin_2d_head, vmax_2d_head),
                 height=600,
                 width=700
             )
@@ -171,18 +182,49 @@ def main():
             )
             vmax_3d_head = st.number_input(
                 "Maximum Voltage (uV) ",
-                value=40.0
+                value=40.0,
+                min_value=vmin_3d_head
             )
         with col1:
             st.plotly_chart(
-                animate_3d_head(plot_epoch, colormap),
+                animate_3d_head(plot_epoch, colormap, vmin_3d_head, vmax_3d_head),
                 use_container_width=True
             )
 
-    with st.beta_expander("3D Brain Map", expanded=False):
-        st.pyplot(
-            animate_3d_brain(plot_epoch)
+    with st.beta_expander("3D Brain Map", expanded=True):
+        st.markdown(
+            """
+            \n
+            Select your customizations, 
+            then click the *Run* button below to render the 3D brain map.
+            \n
+            **WARNING: rendering may take a while...**
+            \n
+            """
         )
+        col1, col2 = st.beta_columns((3, 1))
+        with col1:
+            view_options = [
+                "lat",
+                "dor",
+                "fro"
+            ]
+            view_selection = st.multiselect(
+                "Select view",
+                view_options,
+                default=["lat"]
+            )
+        with col2:
+            st.header("")
+            show_brain = st.button("Run")
+
+        if show_brain:
+            with st.spinner("Rendering..."):
+                components.html(
+                    animate_3d_brain(plot_epoch, view_selection),
+                    height=600,
+                    width=600
+                )
 
     with st.beta_expander("Connectivity", expanded=True):
         col1, col2 = st.beta_columns((3, 1))
@@ -204,7 +246,7 @@ def main():
             default_cmin = -1.0
             default_cmax = 1.0
             if(connection_type == "envelope_correlation"):
-                default_cmin = 0
+                default_cmin = 0.0
 
             cmin = st.number_input(
                 "Minimum Value",
@@ -212,7 +254,8 @@ def main():
             )
             cmax = st.number_input(
                 "Maximum Value",
-                value=default_cmax
+                value=default_cmax,
+                min_value=cmin
             )
 
             line_width_type = st.checkbox(
@@ -245,38 +288,41 @@ def main():
                 width=600
             )
 
-        node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
+        col1, col2 = st.beta_columns((3, 1))
+        with col2:
+            node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
 
-        pair_selection = st.selectbox(
-            "Select node pair template",
-            node_pair_options,
-            index=1
-        )
-
-        selected_pairs = []
-        if pair_selection == "all_pairs":
-            selected_pairs = connectivity.PAIR_OPTIONS[pair_selection]
-        else:
-            custom_pair_selection = st.text_input(
-                "Enter comma separated pairs below in format Node1-Node2, Node3-Node4 to customize",
-                connectivity.PAIR_OPTIONS[pair_selection]
+            pair_selection = st.selectbox(
+                "Select node pair template",
+                node_pair_options,
+                index=1
             )
-            selected_pairs = custom_pair_selection
 
-        components.html(
-            animate_ui_connectivity(
-                epoch,
-                connection_type,
-                frame_steps,
-                selected_pairs,
-                colormap,
-                cmin,
-                cmax,
-                line_width
-            ),
-            height=600,
-            width=600
-        )
+            selected_pairs = []
+            if pair_selection == "all_pairs":
+                selected_pairs = connectivity.PAIR_OPTIONS[pair_selection]
+            else:
+                custom_pair_selection = st.text_area(
+                    "Enter comma separated pairs below in format Node1-Node2, Node3-Node4 to customize",
+                    connectivity.PAIR_OPTIONS[pair_selection]
+                )
+                selected_pairs = custom_pair_selection
+
+        with col1:
+            components.html(
+                animate_ui_connectivity(
+                    epoch,
+                    connection_type,
+                    frame_steps,
+                    selected_pairs,
+                    colormap,
+                    cmin,
+                    cmax,
+                    line_width
+                ),
+                height=600,
+                width=600
+            )
 
 if __name__ == "__main__":
     main()
