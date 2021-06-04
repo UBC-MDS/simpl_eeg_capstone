@@ -45,22 +45,18 @@ class Epochs:
         Calculates a subset of the epoch based on the step size and frame
     """
 
-    def __init__(self, experiment, duration=2, start_second=None):
+    def __init__(self, experiment, tmin=-0.3, tmax=0.7, start_second=None):
         self.eeg_file = EEG_File(experiment)
-        self.data = self.generate_epochs(duration, start_second)
-        self.epoch = self.get_nth_epoch(0)
+        self.data = self.generate_epochs(tmin, tmax, start_second)
+        self.epoch = self.set_nth_epoch(0)
 
-    def generate_epochs(self, duration, start_second):
+    def generate_epochs(self, tmin, tmax, start_second):
         freq = int(self.eeg_file.raw.info["sfreq"])
         if start_second:
             start_time = start_second*freq
             stim_mock = [[start_time]]
-            tmin = 0
-            tmax = duration
         else:
             stim_mock = self.eeg_file.mat["elecmax1"]
-            tmin = -0.3
-            tmax = tmin + duration
 
         events = [[ts, 0, ts//freq] for i, ts in enumerate(stim_mock[0])]
         epochs = mne.Epochs(
@@ -74,19 +70,35 @@ class Epochs:
 
         return epochs
 
-    def get_nth_epoch(self, n):
+    def set_nth_epoch(self, n):
         """
-        Return the nth epoch from the raw data
+        Set the nth epoch from the raw data
 
         Args:
         n (int): The epoch to select
         """
 
-        return self.data[n]
+        self.epoch = self.data[n]
 
-    def get_frame(self, tmin, step_size, frame_number):
-        return self.epoch.copy().crop(
-            tmin=tmin+step_size*frame_number,
-            tmax=tmin+step_size*(frame_number+1),
-            include_tmax=False
-        )
+    def get_nth_epoch(self):
+        """
+        Return the nth epoch from the raw data
+
+        Returns:
+            mne: The epoch of interest
+        """
+        return self.epoch
+
+    def skip_n_steps(self, num_steps):
+        """
+        Return new epoch containing every nth frame
+
+        Args:
+        n (int): The number of time steps to skip
+
+        Returns:
+            mne.Epochs: The reduced epoch
+        """
+
+        return self.epoch.copy().decimate(num_steps)
+

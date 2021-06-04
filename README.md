@@ -11,15 +11,31 @@ Python package and web application for visualizing EEG data
 
 # Installation Instructions
 Clone the repository:
+```bash
+git clone https://github.com/UBC-MDS/simpl_eeg_capstone.git
+cd simpl_eeg_capstone
 ```
-$ git clone https://github.com/UBC-MDS/simpl_eeg_capstone.git
-$ cd simpl_eeg_capstone
+
+# Package Installation Instructions
+Run the following command from the root folder of the project:
+```bash
+pip install -e .
+```
+
+The package contains 6 modules, which can be imported with the following commands:
+```python
+from simpl_eeg import eeg_objects
+from simpl_eeg import raw_voltage
+from simpl_eeg import connectivity
+from simpl_eeg import topomap_2d
+from simpl_eeg import topomap_3d_brain
+from simpl_eeg import topomap_3d_head
 ```
 
 # Running the Web Application
 Run the following command from the root folder of the project: 
-```
-$ streamlit run src/app.py
+```bash
+streamlit run src/app.py
 ```
 
 # Group Members
