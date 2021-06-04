@@ -561,7 +561,7 @@ def animate_matplot_brain(
     steps=3,
     frame_rate=12
 ):
-    user_epoch=epochs
+
     import matplotlib.animation as animation
 
     if isinstance(views, str):
