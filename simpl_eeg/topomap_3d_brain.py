@@ -8,7 +8,7 @@ from mne.datasets import fetch_fsaverage
 from mne.minimum_norm import make_inverse_operator
 
 
-def create_fsaverage_forward(epochs, mindist=5.0, n_jobs=1):
+def create_fsaverage_forward(epochs, **kwargs):
     """
     A forward model is an estimation of the potential or field distribution for a known source
     and for a known model of the head. Returns EEG forward operator with a downloaded template
@@ -18,18 +18,18 @@ def create_fsaverage_forward(epochs, mindist=5.0, n_jobs=1):
         ----------
         epochs : mne.epochs.Epochs
                 MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
-
-        mindist: float
-                Specifies the 'mindist' parameter in the mne.make_forward_solution() function. Defaults to 5.0
-
-    n_jobs: int
-                Specifies the 'n_jobs' parameter in the mne.make_forward_solution() function Defaults to 1
+                
+        kwargs: arguments
+                Specify any of the following arguments for the mne.make_forward_solution() function. These include midist=5.0, n_jobs=1.
 
         Returns
         -------
         fwd: mne.forward.forward.Forward
         Forward operator built from the user_input epochs and the fsaverage brain.
     """
+    
+    defaultKwargs = { 'n_jobs': 1, 'mindist': 5.0 }
+    kwargs = { **defaultKwargs, **kwargs }
 
     # Download fsaverage files
     fs_dir = fetch_fsaverage(verbose=True)
@@ -41,14 +41,15 @@ def create_fsaverage_forward(epochs, mindist=5.0, n_jobs=1):
     trans = 'fsaverage'  # MNE has a built-in fsaverage transformation
     src = op.join(fs_dir, 'bem', 'fsaverage-ico-5-src.fif')
     bem = op.join(fs_dir, 'bem', 'fsaverage-5120-5120-5120-bem-sol.fif')
+    
+
 
     fwd = mne.make_forward_solution(epochs.info,
                                     trans=trans,
                                     src=src,
                                     bem=bem,
                                     eeg=True,
-                                    mindist=mindist,
-                                    n_jobs=n_jobs)
+                                    **kwargs)
 
     return fwd
 
@@ -282,7 +283,7 @@ def plot_topomap_3d_brain(
     else:
         colorbar_font_size = None
         time_label_size = None
-        figsize = round(size / 100)
+        img_figsize = round(size / 100)
         if isinstance(views, str):
             views = [views]
         auto_plot_size = [size, size]
@@ -326,34 +327,13 @@ def plot_topomap_3d_brain(
             )
 
     def make_plot(
-        epoch=epochs,
-        stc=stc,
         views=views,
         hemi=hemi,
-        colormap=colormap,
-        surface=surface,
         size=auto_plot_size,
-        subject=None,
-        initial_time=display_time,
-        clim=clim_values,
-        time_viewer=False,  # Use to open up interactive version
-        show_traces=False,
-        colorbar=colorbar,
-        transparent=transparent,
-        alpha=alpha,
-        figure=figure,
-        cortex=cortex,
-        background=background,
-        foreground=foreground,
-        spacing=spacing,
-        backend=backend,
-        view_layout=view_layout,
-        smoothing_steps=smoothing_steps,
-        time_label_size=time_label_size,
-        label_font_size=colorbar_font_size,
+        colorbar = colorbar,
+        figure=figure
     ):
         plt.show(block=True)
-
         brain = stc.plot(
             views=views,
             surface=surface,
@@ -361,7 +341,7 @@ def plot_topomap_3d_brain(
             colormap=colormap,
             size=size,
             subject=None,
-            initial_time=initial_time,
+            initial_time=display_time,
             clim=clim_values,
             time_viewer=False,
             show_traces=False,
@@ -405,7 +385,7 @@ def plot_topomap_3d_brain(
         img_height = len(brain_hemi)
 
         base_fig, ax = plt.subplots(
-            figsize=(img_width * figsize, img_width * figsize), facecolor="black")
+            figsize=(img_width * img_figsize, img_width * img_figsize), facecolor="black")
         plt.axis('off')
 
         add_colorbar = False
@@ -428,7 +408,7 @@ def plot_topomap_3d_brain(
             for h in range(len(brain_hemi)):
 
                 plt.show(block=True)
-                fig = plt.figure(figsize=(figsize, figsize))
+                fig = plt.figure(figsize=(img_figsize, img_figsize))
                 make_plot(
                     figure=fig,
                     hemi=brain_hemi[h],
@@ -458,33 +438,33 @@ def plot_topomap_3d_brain(
         if add_colorbar:
             #cbar_size = base_fig.get_size_inches()[0]/2
 
-            cbar_width = img_width * figsize * 0.65
+            cbar_width = img_width * img_figsize * 0.65
 
             if img_height == 2:
-                cbar_height = img_height * figsize * 0.65
+                cbar_height = img_height * img_figsize * 0.65
             else:
-                cbar_height = img_height * 2 * figsize * 0.65
+                cbar_height = img_height * 2 * img_figsize * 0.65
 
             if img_width >= 3:
                 cbar_height = cbar_height * (img_width * 0.5)
-                cbar_width = img_width * figsize * 0.85
+                cbar_width = img_width * img_figsize * 0.85
 
             elif img_width >= 5:
                 cbar_height = cbar_height * (img_width * 0.30)
-                cbar_width = img_width * figsize * 0.4
+                cbar_width = img_width * img_figsize * 0.4
 
-            fig = plt.figure(figsize=(img_width * figsize * 0.65, cbar_height))
+            fig = plt.figure(figsize=(img_width * img_figsize * 0.65, cbar_height))
             make_plot(figure=fig, hemi='lh', views='fro', colorbar=True)
             move_axes(fig.axes[1], base_fig)
 
             pos2 = [pos1.x0 + 0, pos1.y0 + 1, pos1.width, pos1.height]
 
-            print("axes_pos is " + str(axes_pos))
             base_fig.axes[axes_pos].set_position(pos2)
 
         base_fig.subplots_adjust(top=0.1, bottom=0, right=0.1, left=0,
                                  hspace=0, wspace=0)
 
+    plt.close(base_fig)
     return(base_fig)
 
 
@@ -546,6 +526,7 @@ def animate_matplot_brain(
     size=200,
     hemi='both',
     colormap='mne',
+    colorbar = True,
     colorbar_limit_type='lims',
     cmin=None,
     cmid=None,
@@ -554,7 +535,6 @@ def animate_matplot_brain(
     alpha=1.0,
     surface='inflated',
     cortex='classic',
-    background='black',
     foreground='white',
     spacing='oct6',
     smoothing_steps=2,
@@ -572,25 +552,29 @@ def animate_matplot_brain(
         user_epoch.tmin,
         user_epoch.tmax,
         frames_to_show)
-
+    
     # FOR TESTING ONLY DELETE LATER
-    times_to_show = times_to_show[0:20]  # FOR TESTING ONLY DELETE LATER
+    times_to_show = times_to_show[0:2]  # FOR TESTING ONLY DELETE LATER
 
     ms_between_frames = 1000 / frame_rate
 
-    #fig = plt.figure(figsize = (3,3))
-
     fig, ax = plt.subplots()
+    
+    if colorbar:
+        add_colorbar = 1
+        colorbar = False
+    else:
+        add_colorbar = 0
 
-    def plotting(figure=None, display_time=0):
+    def plotting(figure=None, display_time=0, cbar = False, hemi = hemi, views = views):
         return (plot_topomap_3d_brain(epochs,
                                       stc=stc,
                                       backend='matplotlib',
                                       hemi=hemi,
                                       views=views,
                                       colormap=colormap,
-                                      background=background,
-                                      foreground=foreground,
+                                      colorbar = cbar,
+                                      background='black',
                                       spacing=spacing,
                                       smoothing_steps=smoothing_steps,
                                       colorbar_limit_type='lims',
@@ -636,8 +620,38 @@ def animate_matplot_brain(
             img_height = 1
         else:
             img_height = 2
-
+            
         img_width = len(views)
+        img_figsize = round(size / 100)
+        
+        # Generate dummy colorbar to move to the main figure
+        if add_colorbar:
+            #cbar_size = base_fig.get_size_inches()[0]/2
+
+            cbar_width = img_width * img_figsize * 0.65
+
+            if img_height == 2:
+                cbar_height = img_height * img_figsize * 0.65
+            else:
+                cbar_height = img_height * 2 * img_figsize * 0.65
+
+            if img_width >= 3:
+                cbar_height = cbar_height * (img_width * 0.5)
+                cbar_width = img_width * img_figsize * 0.85
+
+            elif img_width >= 5:
+                cbar_height = cbar_height * (img_width * 0.30)
+                cbar_width = img_width * img_figsize * 0.4
+                
+            def copy_axes(ax, fig):
+                old_fig = ax.figure
+                ax.figure = fig
+                fig.axes.append(ax)
+                fig.add_axes(ax)
+            
+
+            cbar_fig = plt.figure(figsize=(img_width * img_figsize * 0.65, cbar_height))
+            plotting(figure=cbar_fig, hemi='lh', views='fro', cbar=True)
 
         def animate(frame):
             # remove previous image
@@ -645,10 +659,15 @@ def animate_matplot_brain(
 
             plt.show(block=True)
 
-            brain = plotting(  # figure = fig,
-                display_time=frame
+            brain = plotting( 
+                display_time=frame,
+                cbar = False
             )
+            
+            if add_colorbar:
+                copy_axes(cbar_fig.axes[1], brain)
 
+            # Convert plot to image/frame
             brain.canvas.draw()
             plot_image = np.frombuffer(
                 brain.canvas.tostring_rgb(), dtype=np.uint8)
@@ -669,7 +688,7 @@ def animate_matplot_brain(
             animate,
             frames=times_to_show,
             interval=ms_between_frames,  # Time between frames in ms
-            blit=False
+            blit=True
         )
 
     return ani
