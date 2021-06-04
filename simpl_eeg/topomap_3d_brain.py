@@ -14,18 +14,18 @@ def create_fsaverage_forward(epochs, **kwargs):
     and for a known model of the head. Returns EEG forward operator with a downloaded template
     MRI (fsaverage).
 
-        Parameters
-        ----------
-        epochs : mne.epochs.Epochs
-                MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
-                
-        kwargs: arguments
-                Specify any of the following arguments for the mne.make_forward_solution() function. These include midist=5.0, n_jobs=1.
+    Parameters
+    ----------
+    epochs : mne.epochs.Epochs
+            MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
 
-        Returns
-        -------
-        fwd: mne.forward.forward.Forward
-        Forward operator built from the user_input epochs and the fsaverage brain.
+    kwargs: arguments
+            Specify any of the following arguments for the mne.make_forward_solution() function. These include midist=5.0, n_jobs=1.
+
+    Returns
+    -------
+    fwd: mne.forward.forward.Forward
+    Forward operator built from the user_input epochs and the fsaverage brain.
     """
     
     defaultKwargs = { 'n_jobs': 1, 'mindist': 5.0 }
@@ -61,31 +61,31 @@ def create_inverse_solution(
         covariance_method=[
             'empirical',
             'shrunk'],
+        apply_inverse_method="dSPM",
         loose=0.2,
         depth=0.8,
         snr=3.0,
-        inverse_epochs_method="dSPM",
         pick_ori='normal'):
     """
     Calculates the inverse solution, which is an Estimation of the unknown sources
     corresponding to the measured EEG or MEG.
 
-        Parameters
-        ----------
-        epochs : mne.epochs.Epochs or mne.evoked.EvokedArray
-                MNE epochs or evoked object containing portions of raw EEG data built around specified
-                timestamp(s). The inverse solution will be built based on the data in the specified epoch.
+    Parameters
+    ----------
+    epochs : mne.epochs.Epochs or mne.evoked.EvokedArray
+            MNE epochs or evoked object containing portions of raw EEG data built around specified
+            timestamp(s). The inverse solution will be built based on the data in the specified epoch.
 
     forward: mne.forward.forward.Forward
         Specifies the 'forward' parameter in the mne.minimum_norm.make_inverse_operator() function.
 
-        epoch_num: int or str
-                If input is an 'int' then this specifies which epoch in the 'epochs' number to build an
-                inverse solution from. If input is "all" then an inverse solution will be built from all
-                epochs.
+    epoch_num: int or str
+        If input is an 'int' then this specifies which epoch in the 'epochs' number to build an
+        inverse solution from. If input is "all" then an inverse solution will be built from all
+        epochs.
 
-        covariance_method: list
-                Specifies the 'method' parameter in the mne.compute_covariance() function.
+    covariance_method: list
+        Specifies the 'method' parameter in the mne.compute_covariance() function.
 
     loose: float
         Specifies the 'loose' parameter in the mne.minimum_norm.make_inverse_operator() function
@@ -104,10 +104,10 @@ def create_inverse_solution(
         Specifies the 'pick_ori' parameter in mne.minimum_norm.apply_inverse_epochs() (if using epochs)
         or mne.minimum_norm.apply_inverse() (if using evoked data).
 
-        Returns
-        -------
-        stc: mne.source_estimate.SourceEstimate
-                Forward operator built from the user_input epochs and the fsaverage brain.
+    Returns
+    -------
+    stc: mne.source_estimate.SourceEstimate
+            Forward operator built from the user_input epochs and the fsaverage brain.
     """
     noise_cov = mne.compute_covariance(epochs, method=covariance_method)
 
@@ -126,7 +126,7 @@ def create_inverse_solution(
         stc = apply_inverse_epochs(epochs,
                                    inverse_operator=inverse_operator,
                                    lambda2=lambda2,
-                                   method=inverse_epochs_method,
+                                   method=apply_inverse_method,
                                    pick_ori=pick_ori)
         stc = stc[0]
 
@@ -135,7 +135,7 @@ def create_inverse_solution(
         stc = apply_inverse(epochs,
                             inverse_operator=inverse_operator,
                             lambda2=lambda2,
-                            method=inverse_epochs_method,
+                            method=apply_inverse_method,
                             pick_ori=pick_ori)
 
     return stc
@@ -154,104 +154,140 @@ def plot_topomap_3d_brain(
         size=300,
         hemi='both',
         colormap='mne',
-        colorbar_limit_type='lims',
+        colormap_limit_type='lims',
         cmin=None,
         cmid=None,
         cmax=None,
         colorbar=True,
-        transparent=False,
-        alpha=1.0,
-        surface='inflated',
-        cortex='classic',
+        time_viewer = 'auto',
         background='black',
         foreground='white',
         spacing='oct6',
         smoothing_steps=3,
-        figure=None):
+        figure=None,
+        **kwargs):
     """
     Creates a still image of the epochs or stc data mapped to the brain using the mne.SourceEstimate.plot
-    function.
+    function. Written to work with either a 'pyvista' or 'matplotlib' backend. Pyvista will be faster but
+    at the expense of the returned object being less compatible with other functions. The 'matplotlib' backend
+    will return a matplotlib figure which is widely used in python.
 
-        Parameters
-        ----------
-        epochs : mne.epochs.Epochs or mne.evoked.EvokedArray
-                MNE epochs or evoked object containing portions of raw EEG data built around specified
-                timestamp(s) The inverse solution will be built based on the data in the specified epoch.
+    Parameters
+    ----------
+    epochs : mne.epochs.Epochs or mne.evoked.EvokedArray
+            MNE epochs or evoked object containing portions of raw EEG data built around specified
+            timestamp(s) The inverse solution will be built based on the data in the specified epoch.
 
-    stc: mne.source_estimate.SourceEstimate or str
-                'inverse_solution' to generate the plot from. If set to "auto" then an stc will be
-                automatically generated however, this will significantly increase running time.
+    stc: mne.source_estimate.SourceEstimate or 'auto'
+            'inverse_solution' to generate the plot from. If set to "auto" (default) then an stc will be
+            automatically generated however, this will significantly increase running time.
 
-        display_time: float or None
-                Specifies the 'initial_time' parameter in the mne.SourceEstimate.plot() function to show
-                a plot at a specific time.
+    display_time: float or None
+            Specifies the 'initial_time' parameter in the mne.SourceEstimate.plot() function to show
+            a plot at a specific time. Defaults to 0.
 
-        views: str or list
-                Specifies the 'view' parameter in the mne.SourceEstimate.plot() function. FOR ANY BACKEND
-        can be any combination of 'lat' (lateral), 'med' (medial), 'ros' (rostral), 'cau' (caudal),
-        'dor' (dorsal), 'ven'(ventral), 'fro'(frontal), 'par' (parietal). The following arguments
-        are also accepted but ARE NOT COPATIBLE WITH THE MATPLOTLIB BACKEND 'axi' (axial), 'sag'
-        (sagittal), and 'cor'(coronal).
+    backend: ‘auto’ or ‘mayavi’ or ‘pyvista’ or ‘matplotlib’
+            Specifies the 'initial_time' parameter in the mne.SourceEstimate.plot() function. "Which backend
+            to use. If 'auto' (default), tries to plot with pyvista, but resorts to matplotlib if no 3d
+            backend is available." Note that mayavi has not been tested for this function. Using matplotlib
+            as a backend will lead to some functionality breaking (look at the documentation on a function-by-function
+            basis to know how) but it is the most widely compatable backend. Multiplotting and multi-views for the matplotlib backend
+            was built by hand for this function.
 
-        view_layout: str
-                Specifies the 'view_layout' parameter in the mne.SourceEstimate.plot() function. Should be
-                'vertical' or 'horizontal'. Using 'horizontal' with hemi set to 'split' might cause issues.
+    views: str or list
+            Specifies the 'view' parameter in the mne.SourceEstimate.plot() function. For any backend
+            can be any combination of 'lat' (lateral), 'med' (medial), 'ros' (rostral), 'cau' (caudal),
+            'dor' (dorsal), 'ven'(ventral), 'fro'(frontal), 'par' (parietal). The following arguments
+            are also accepted but are NOT compatible with the matplotlib backend 'axi' (axial), 'sag'
+            (sagittal), and 'cor'(coronal). Defaults to ['lat', 'fro', 'dor'].
 
-        height: int
-                Specifies how many pixels tall each "view" of the brian will be. Height is automatically
-                calculated based on the number of figures to ensure the dimensions always make all figures
-                visible. If using a matplotlib backend then the height will divided by 100 and rounded to
-        the closest inch. For example, entering 100 will result in 1 inch per view.
+    view_layout: str
+            Specifies the 'view_layout' parameter in the mne.SourceEstimate.plot() function. Should be
+            'vertical' or 'horizontal'. Using 'horizontal' with hemi set to 'split' might cause issues.
+            NOTE that this argument has no effect when using the 'matplotlib' backend. Defaults to 'horizontal'
 
-        hemi: str
-                Specifies the 'initial_time' parameter in the mne.SourceEstimate.plot() function. Can be
-                one of ‘lh’, ‘rh’, ‘both’, or ‘split’. Defaults to 'both'.
+    size: int
+            If using a non-matplotlib backend then specifies how many pixels tall EACH "view" of the brian will be.
+            If using matplotlib as a backend then the height will be divided by 100 and rounded the closest inch.
+            For example, entering 100 will result in 1 inch per view. If plotting multiple views overall size of
+            the multiplot is automatically calculated to fit all views. Defaults to 300.              
 
-        colormap: str or np.ndarray of float, shape(n_colors, 3 | 4)
-                Specifies the 'colormap' parameter in the mne.SourceEstimate.plot() function. Can use a
-                matplotlib colormap by name or take a custom look up table as input.
+    hemi: 'lh’ or ‘rh’ or ‘both’ or ‘split’
+            Specifies the 'initial_time' parameter in the mne.SourceEstimate.plot() function. Can be
+            one of ‘lh’, ‘rh’, ‘both’, or ‘split’. Defaults to 'both'. Note that when using the matplotlib
+            backend that 'split' and 'both' will return a 'split' view since both is not avalible.
+            Defaults to 'both'
 
-        colorbar_limit_type: str
-                Can be one of "auto", "lims_value", "pos_lims_value", "lims_percent", or "pos_lims_percent".
-                If set to "auto" then colorbar limits will be automatically calculated. If set to any of the
-                other options a combination of "lims"/"pos_lims" and "value"/"percent" will be used to specify
-                the colorbar type in the 'colorbar_lims' parameter.
+    colormap: str or np.ndarray of float, shape(n_colors, 3 | 4)
+            Specifies the 'colormap' parameter in the mne.SourceEstimate.plot() function. Can use a
+            matplotlib colormap by name or take a custom look up table as input. Defaults to "mne"
 
-        colorbar_lims: list, 3 elements
-                Only used if colorbar_limit_type is set to anything other than "auto". Specifies the lower, middle,
-                and upper bounds for colormap will be specified. If a "pos_lims" option was used then positive values
-                will be mirrored directly across zero during colormap construction to obtain negative control points.
+    colormap_limit_type: str
+            Can be either "lims" or "pos_lims". "lims" means that your cmin, cmid, and cmax values will specify the
+            "Lower, middle, and upper bounds for colormap". Using "pos_lims" will lead to cmin, cmid, and cmax representing
+            the "Lower, middle, and upper bound for colormap. Positive values will be mirrored directly across
+            zero during colormap construction to obtain negative control points." Defaults to "lims"
 
-        colorbar: bool
-                Specifies  the 'initial_time' parameter in the mne.SourceEstimate.plot() function. Determines
-                whether to include a colorbar on the plot not.
+    cmin: float
+            Specifies the lower value of the colormap limit. If no value is specified then
+            limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
+            will be the negative value of cmax if only that is provided.
 
-        transparent: bool or None
-                Specifies the 'transparent' parameter in the mne.SourceEstimate.plot() function
+    cmid: float
+            Specifies the middle value of the colormap limit. If no value is specified then
+            limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
+            will be the value between cmin and cmax if one/both of them is provided.
 
-        alpha: str or list
-                Specifies the 'alpha' parameter in the mne.SourceEstimate.plot() function
+    cmax: float
+            Specifies the middle value of the colormap limit. If no value is specified then
+            limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
+            will be the negative value of cmin if only that is provided.
 
-        cortex: str or tuple
-                Specifies the 'cortex' parameter in the mne.SourceEstimate.plot() function
+    colorbar: bool
+            Determines whether to include a colorbar on the plot not. Defaults to True.
 
-        background: matplotlib color
-                Specifies the 'background' parameter in the mne.SourceEstimate.plot() function
+    time_viewer: bool or str
+            Specifies the 'time_viewer' parameter in the mne.SourceEstimate.plot() function. 'auto' by default. With a
+            PyVista backend this will allow for the user to interact with the genreated plot. Has no effect on figures
+            generated with the matplotlib backend. 
 
-        foreground: matplotlib color
-                Specifies the 'foreground' parameter in the mne.SourceEstimate.plot() function
+    background: matplotlib color
+            Specifies the 'background' parameter in the mne.SourceEstimate.plot() function. Does not work with plots
+            made with the matplotlib backend. 'black' by default.
 
-        spacing: str
-                Specifies the 'spacing' parameter in the mne.SourceEstimate.plot() function
+    foreground: matplotlib color
+            Specifies the 'foreground' parameter in the mne.SourceEstimate.plot() function. Does not work with plots
+            made with the matplotlib backend. 'white' by default.
 
-        smoothing_steps: int
-                Specifies the 'smoothing_steps' parameter in the mne.SourceEstimate.plot() function
+    spacing: str
+            Specifies the 'spacing' parameter in the mne.SourceEstimate.plot() function. "The spacing to use for the
+            source space. Can be 'ico#' for a recursively subdivided icosahedron, 'oct#' for a recursively subdivided
+            octahedron, or 'all' for all points. In general, you can speed up the plotting by selecting a sparser source
+            space. Has no effect with mayavi backend. Defaults to ‘oct6’".
 
-        Returns
-        -------
-        brain: mne.viz._brain._brain.Brain
-        mne.viz figure of brain with input epoch or stc data mapped to it.
+    smoothing_steps: int
+            Specifies the 'smoothing_steps' parameter in the mne.SourceEstimate.plot() function. "The amount of smoothing".
+            3 by default.
+
+    figure: instance of mayavi.core.api.Scene or instance of matplotlib.figure.Figure or list or int or None
+            Specifies the 'figure' parameter in the mne.SourceEstimate.plot() function. "If None, a new figure
+            will be created. If multiple views or a split view is requested, this must be a list of the appropriate
+            length. If int is provided it will be used to identify the Mayavi figure by it’s id or create a new figure
+            with the given id. If an instance of matplotlib figure, mpl backend is used for plotting." NOTE that if plotting
+            multiple views OR a split/both hemi with the matplotlib backend then this argument will not work. None by default.
+
+    Returns
+    -------
+    brain: mne.viz._brain._brain.Brain OR matplotlib.figure.Figure
+            If using 'pyvista' then returns a mne.viz figure of brain with input epoch or stc data mapped to it. If
+            using 'matplotlib' backend then returns a matplotlib.figure.Figure.
     """
+    
+    defaultKwargs = { 'transparent': False, 'alpha': 1.0, 'surface': 'inflated', 'cortex': 'classic',
+                     'subject': None, 'time_label': 'auto', 'time_unit': 's', 'volume_options': None,
+                     'subjects_dir': None, 'title': None, 'show_traces': 'auto', 'src': None, 'verbose': None }
+    kwargs = { **defaultKwargs, **kwargs }    
+    
 
     # if hemi == "split" and view_layout == 'horizontal':
     #     # Return warning that the horizontal with split isn't reccomended
@@ -286,7 +322,14 @@ def plot_topomap_3d_brain(
         img_figsize = round(size / 100)
         if isinstance(views, str):
             views = [views]
-        auto_plot_size = [size, size]
+        
+        # Size input for plotting function does nothing with matplotlib backend
+        auto_plot_size = None
+        
+        # Layout MUST be horizontal and foreground/background colors cannot be changed
+        view_layout == "horizontal"
+        background='black'
+        foreground = 'white'
 
         import matplotlib.gridspec as gridspec
 
@@ -313,13 +356,13 @@ def plot_topomap_3d_brain(
         if cmid is None:
             cmid = (cmin + cmax) / 2
 
-        if colorbar_limit_type == 'lims':
+        if colormap_limit_type == 'lims':
             clim_values = dict(kind='value', lims=[
                 cmin,
                 cmid,
                 cmax]
             )
-        elif colorbar_limit_type == 'pos_lims':
+        elif colormap_limit_type == 'pos_lims':
             clim_values = dict(kind='value', pos_lims=[
                 cmin,
                 cmid,
@@ -336,25 +379,18 @@ def plot_topomap_3d_brain(
         plt.show(block=True)
         brain = stc.plot(
             views=views,
-            surface=surface,
             hemi=hemi,
             colormap=colormap,
             size=size,
-            subject=None,
             initial_time=display_time,
             clim=clim_values,
-            time_viewer=False,
-            show_traces=False,
             colorbar=colorbar,
-            transparent=transparent,
-            alpha=alpha,
             figure=figure,
-            cortex=cortex,
             background=background,
             foreground=foreground,
-            spacing=spacing,
             backend=backend,
             view_layout=view_layout,
+            spacing = spacing,
             smoothing_steps=smoothing_steps,
             brain_kwargs=dict(
                 show=False),
@@ -362,9 +398,11 @@ def plot_topomap_3d_brain(
                 time_label_size=time_label_size,
                 colorbar_kwargs=dict(
                     label_font_size=colorbar_font_size)),
+            **kwargs
         )
         return brain
-
+    
+    
     if backend != 'matplotlib':
         return (make_plot())
 
@@ -464,7 +502,7 @@ def plot_topomap_3d_brain(
         base_fig.subplots_adjust(top=0.1, bottom=0, right=0.1, left=0,
                                  hspace=0, wspace=0)
 
-    plt.close(base_fig)
+    #plt.close(base_fig)
     return(base_fig)
 
 
@@ -479,8 +517,8 @@ def save_animated_topomap_3d_brain(
     Saves an animated mne.viz._brain._brain.Brain object as a gif using the mne.viz.Brain.save_movie()
     function. Saves animation of the entire figure.
 
-        Parameters
-        ----------
+    Parameters
+    ----------
     brain : brain: mne.viz._brain._brain.Brain
                 mne.viz figure of brain which will be saved as a gif
 
@@ -489,22 +527,22 @@ def save_animated_topomap_3d_brain(
                 The extension determines the format (e.g., '*.mov', '*.gif', …; see the imageio documentation
                 for available formats)".
 
-        time_dilation: float
-                'time_dilation' parameter in mne.viz.Brain.save_movie() function. "Factor by which to stretch time
-                (default 4). For example, an epoch from -100 to 600 ms lasts 700 ms. With time_dilation=4 this
-                would result in a 2.8 s long movie."
+    time_dilation: float
+            'time_dilation' parameter in mne.viz.Brain.save_movie() function. "Factor by which to stretch time
+            (default 4). For example, an epoch from -100 to 600 ms lasts 700 ms. With time_dilation=4 this
+            would result in a 2.8 s long movie."
 
-        interpolation: str or None
-                'interpolation' parameter in mne.viz.Brain.save_movie() function. "Interpolation method
-                (scipy.interpolate.interp1d parameter). Must be one of ‘linear’, ‘nearest’, ‘zero’, ‘slinear’,
-                ‘quadratic’, or ‘cubic’."
+    interpolation: str or None
+            'interpolation' parameter in mne.viz.Brain.save_movie() function. "Interpolation method
+            (scipy.interpolate.interp1d parameter). Must be one of ‘linear’, ‘nearest’, ‘zero’, ‘slinear’,
+            ‘quadratic’, or ‘cubic’."
 
     time_viewer: bool
                 'time_dilation' parameter in mne.viz.Brain.save_movie() function. "If True, include time viewer
                 traces".
 
-        Returns
-        -------
+    Returns
+    -------
     """
 
     brain.save_movie(filename,
@@ -527,21 +565,21 @@ def animate_matplot_brain(
     hemi='both',
     colormap='mne',
     colorbar = True,
-    colorbar_limit_type='lims',
+    colormap_limit_type='lims',
     cmin=None,
     cmid=None,
     cmax=None,
-    transparent=False,
-    alpha=1.0,
-    surface='inflated',
-    cortex='classic',
-    foreground='white',
-    spacing='oct6',
+    spacing='oct5',
     smoothing_steps=2,
     steps=3,
-    frame_rate=12
-):
-
+    frame_rate=12,
+    **kwargs):
+    
+    defaultKwargs = { 'transparent': False, 'alpha': 1.0, 'surface': 'inflated', 'cortex': 'classic',
+                 'subject': None, 'time_label': None, 'time_unit': 's', 'volume_options': None,
+                 'subjects_dir': None, 'title': None, 'show_traces': 'auto', 'src': None, 'verbose': None }
+    kwargs = { **defaultKwargs, **kwargs }
+    
     import matplotlib.animation as animation
 
     if isinstance(views, str):
@@ -559,12 +597,6 @@ def animate_matplot_brain(
     ms_between_frames = 1000 / frame_rate
 
     fig, ax = plt.subplots()
-    
-    if colorbar:
-        add_colorbar = 1
-        colorbar = False
-    else:
-        add_colorbar = 0
 
     def plotting(figure=None, display_time=0, cbar = False, hemi = hemi, views = views):
         return (plot_topomap_3d_brain(epochs,
@@ -575,18 +607,18 @@ def animate_matplot_brain(
                                       colormap=colormap,
                                       colorbar = cbar,
                                       background='black',
+                                      foreground = 'white',
                                       spacing=spacing,
                                       smoothing_steps=smoothing_steps,
-                                      colorbar_limit_type='lims',
+                                      colormap_limit_type='lims',
                                       cmin=cmin,
                                       cmid=cmid,
                                       cmax=cmax,
                                       size=size,
                                       display_time=display_time,
                                       figure=figure,
-                                      transparent=transparent,
-                                      alpha=alpha,
-                                      surface=surface
+                                      time_viewer = False,
+                                      **kwargs
                                       )
                 )
 
@@ -598,13 +630,14 @@ def animate_matplot_brain(
             fig.clear()
             # get new image from list
             plotting(figure=fig,
-                     display_time=frame
+                     display_time=frame,
+                     cbar = colorbar
                      )
 
             return[fig]
 
         ani = animation.FuncAnimation(
-            brain,
+            fig,
             animate,
             frames=times_to_show,
             interval=ms_between_frames,  # Time between frames in ms
@@ -613,8 +646,16 @@ def animate_matplot_brain(
 
     else:
         # Plotting for multi view/hemi matplotlib.image.AxesImage
-        fig = plt.figure()
-        ax = plt.gca()
+#         fig = plt.figure()
+#         ax = plt.gca()
+
+        fig, ax = plt.subplots()
+        
+        if colorbar:
+            add_colorbar = 1
+            colorbar = False
+        else:
+            add_colorbar = 0
 
         if views == 'lh' or views == 'rh':
             img_height = 1
@@ -688,7 +729,7 @@ def animate_matplot_brain(
             animate,
             frames=times_to_show,
             interval=ms_between_frames,  # Time between frames in ms
-            blit=True
+            blit=False
         )
 
     return ani
