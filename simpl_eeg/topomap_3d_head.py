@@ -171,6 +171,7 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
     )
 
     # add data to be displayed before animation starts
+    time0 = df.loc[0, "time"]
     fig.add_trace(
         go.Mesh3d(
             x=np.array(standard_coord)[:, 0],
@@ -180,7 +181,7 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
             colorbar_title=color_title,
             cmin=color_min,
             cmax=color_max,
-            intensity=interpolated_time(df, channel_names, node_coord, x, y, z, 0),
+            intensity=interpolated_time(df, channel_names, node_coord, x, y, z, time0),
             intensitymode="vertex",
             alphahull=1,
             opacity=1,
