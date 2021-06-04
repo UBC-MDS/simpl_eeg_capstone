@@ -21,7 +21,7 @@ st.set_page_config(layout="wide")
 
 
 @st.cache(show_spinner=False)
-def animate_2d_head(epoch, frame_steps, colormap, vmin, vmax):
+def animate_ui_2d_head(epoch, frame_steps, colormap, vmin, vmax):
     steps = epoch.time_as_index(epoch.times[-1])[0]//frame_steps
     anim = topomap_2d.animate_topomap_2d(
         epoch,
@@ -33,7 +33,7 @@ def animate_2d_head(epoch, frame_steps, colormap, vmin, vmax):
 
 
 @st.cache(show_spinner=False)
-def animate_3d_head(epoch, colormap, vmin, vmax):
+def animate_ui_3d_head(epoch, colormap, vmin, vmax):
     return topomap_3d_head.animate_3d_head(
         epoch,
         colormap=colormap,
@@ -43,35 +43,35 @@ def animate_3d_head(epoch, colormap, vmin, vmax):
 
 
 @st.cache(show_spinner=False)
-def animate_3d_brain(epoch,view_selection):
+def animate_ui_3d_brain(epoch,view_selection):
     anim = topomap_3d_brain.animate_matplot_brain(epoch, views=view_selection, background="w")
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, cmin, cmax, line_width):
+def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, vmin, vmax, line_width):
     anim = connectivity.animate_connectivity(
         epoch,
         connection_type,
         steps=steps,
         pair_list=pair_list,
         colormap=colormap,
-        cmin=cmin,
-        cmax=cmax,
+        vmin=vmin,
+        vmax=vmax,
         line_width=line_width
     )
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, cmin, cmax, line_width):
+def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin, vmax, line_width):
     anim = connectivity.animate_connectivity_circle(
         epoch,
         connection_type,
         steps=steps,
         colormap=colormap,
-        cmin=cmin,
-        cmax=cmax,
+        vmin=vmin,
+        vmax=vmax,
         line_width=line_width
     )
     return anim.to_jshtml()
@@ -167,7 +167,7 @@ def main():
             )
         with col1:
             components.html(
-                animate_2d_head(plot_epoch, 1, colormap, vmin_2d_head, vmax_2d_head),
+                animate_ui_2d_head(plot_epoch, 1, colormap, vmin_2d_head, vmax_2d_head),
                 height=600,
                 width=700
             )
@@ -187,7 +187,7 @@ def main():
             )
         with col1:
             st.plotly_chart(
-                animate_3d_head(plot_epoch, colormap, vmin_3d_head, vmax_3d_head),
+                animate_ui_3d_head(plot_epoch, colormap, vmin_3d_head, vmax_3d_head),
                 use_container_width=True
             )
 
@@ -221,7 +221,7 @@ def main():
         if show_brain:
             with st.spinner("Rendering..."):
                 components.html(
-                    animate_3d_brain(plot_epoch, view_selection),
+                    animate_ui_3d_brain(plot_epoch, view_selection),
                     height=600,
                     width=600
                 )
