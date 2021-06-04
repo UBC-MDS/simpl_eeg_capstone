@@ -257,7 +257,7 @@ def plot_conn_circle(
     epoch,
     fig=None,
     calc_type="correlation",
-    max_connections=20,
+    max_connections=50,
     ch_names=[],
     colormap="RdBu_r",
     vmin=None,
@@ -324,6 +324,7 @@ def plot_conn_circle(
 def animate_connectivity_circle(
     epoch,
     calc_type="correlation",
+    max_connections=50,
     steps=20,
     colormap="RdBu_r",
     vmin=None,
@@ -336,7 +337,8 @@ def animate_connectivity_circle(
     Args:
         epoch (mne.epochs.Epochs): Epoch to visualize
         calc_type (str, optional): Connectivity calculation type. Defaults to "correlation".
-        steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20. 
+        max_connections (int, optional): Number of connections to display. Defaults to 50.
+        steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20.
         colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
         vmin (int, optional): The minimum for the scale. Defaults to None.
         vmin (int, optional): The maximum for the scale. Defaults to None.
@@ -357,6 +359,7 @@ def animate_connectivity_circle(
                 get_frame(epoch, steps, frame_number),
                 fig,
                 calc_type=calc_type,
+                max_connections=max_connections,
                 colormap=colormap,
                 vmin=vmin,
                 vmax=vmax,

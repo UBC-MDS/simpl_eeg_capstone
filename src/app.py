@@ -64,7 +64,7 @@ def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, 
 
 
 @st.cache(show_spinner=False)
-def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin, vmax, line_width):
+def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin, vmax, line_width, max_connections):
     anim = connectivity.animate_connectivity_circle(
         epoch,
         connection_type,
@@ -72,9 +72,11 @@ def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin
         colormap=colormap,
         vmin=vmin,
         vmax=vmax,
-        line_width=line_width
+        line_width=line_width,
+        max_connections=max_connections
     )
     return anim.to_jshtml()
+
 
 def get_shared_conn_widgets(epoch, frame_steps, key):
 
@@ -331,14 +333,26 @@ def main():
         col1, col2 = st.beta_columns((3, 1))
 
         with col2:
+
+            # Connection type and min/max value widgets
             connection_type, cmin, cmax = get_shared_conn_widgets(epoch, frame_steps, "circle")
 
+            # Line width widget
             conn_circle_line_width = st.slider(
                 "Select line width ",
                 min_value=1,
                 max_value=5,
                 value=2
             )
+
+            # Maximum connections widget
+            max_connections = st.number_input(
+                "Maximum connections to display",
+                min_value=0,
+                max_value=len(epoch.ch_names)*len(epoch.ch_names),
+                value=20
+            )
+
 
         with col1:
             components.html(
@@ -349,7 +363,8 @@ def main():
                     colormap,
                     cmin,
                     cmax,
-                    conn_circle_line_width
+                    conn_circle_line_width,
+                    max_connections
                 ),
                 height=600,
                 width=600
