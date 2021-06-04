@@ -327,6 +327,11 @@ def plot_conn_circle(
         title=title,
         **kwargs
     )[0]
+
+    cmap = plt.cm.ScalarMappable(cmap=colormap)
+    cmap.set_clim(vmin, vmax)
+    fig.colorbar(cmap)
+
     return fig
 
 
