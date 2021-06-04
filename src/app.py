@@ -59,7 +59,6 @@ def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, 
         vmin=vmin,
         vmax=vmax,
         line_width=line_width,
-        verbose=True
     )
     return anim.to_jshtml()
 
