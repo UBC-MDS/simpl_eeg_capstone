@@ -8,6 +8,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from scipy.interpolate import NearestNDInterpolator
 import gif
+from simpl_eeg import eeg_objects
 
 # define the frame arguments for the animated plot
 def frame_args(duration):
@@ -125,6 +126,25 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
     Returns:
         figure: An animated topographic map in a 3D head shape
     """
+    if type(epoch) is not eeg_objects.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+    
+    if type(plot_title) is not str:
+        raise TypeError("plot_title has to be a string")
+
+    if type(color_title) is not str:
+        raise TypeError("color_title has to be a string")
+
+    if type(colormap) is not str:
+        raise TypeError("colormap has to be a string")
+
+    if type(color_min) is not int:
+        raise TypeError("color_min has to be an integer")
+    
+    if type(color_max) is not int:
+        raise TypeError("color_max has to be an integer")
+    
+    
 
     # find out the channel names
     channel_names = epoch.ch_names

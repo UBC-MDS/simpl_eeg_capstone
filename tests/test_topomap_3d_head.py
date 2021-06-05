@@ -2,7 +2,7 @@ import pytest
 #from simpl_eeg_capstone import topomap_3d_head
 
 
-def test_connectivity_circle():
+def test_animate_3d_head():
     """Test cases for plotting the topographic map in a 3D head shape"""
 
 
