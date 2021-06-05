@@ -5,9 +5,8 @@ import numpy as np
 from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 
 
-def plot_topomap_2d(epochs,
+def plot_topomap_2d(epoch,
                     plotting_data=None,
-                    epoch_number=0,
                     recording_number=0,
                     colormap='RdBu_r',
                     colorbar=True,
@@ -29,14 +28,11 @@ def plot_topomap_2d(epochs,
 
     Parameters
     ----------
-    epochs : mne.epochs.Epochs
+    epoch : mne.epochs.Epochs
         MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
 
     plotting_data: numpy.ndarray
         array of the EEG data from a measurement (not a time interval) to be plotted
-
-    epoch_number: int
-        The epoch in the epochs data to plot.
     
     recording_number: int
         The "frame" of the epoch to show in the plot.
@@ -103,11 +99,11 @@ def plot_topomap_2d(epochs,
     # Need to decide whether to keep plotting_data as a parameter or not
 
     if not isinstance(plotting_data, np.ndarray):
-        if isinstance(epochs, mne.epochs.Epochs):
-            plotting_data = epochs[epoch_number].get_data()[
+        if isinstance(epoch, mne.epochs.Epochs):
+            plotting_data = epoch[0].get_data()[
                 0][:, recording_number]
-        elif isinstance(epochs, mne.evoked.EvokedArray):
-            plotting_data = epochs.data[:, recording_number]
+        elif isinstance(epoch, mne.evoked.EvokedArray):
+            plotting_data = epoch.data[:, recording_number]
 
     names_value = False
     sensor_value = True
@@ -116,7 +112,7 @@ def plot_topomap_2d(epochs,
     if mark == 'r+':
         sensor_value = 'r+'
     if mark == 'channel_name':
-        names_value = epochs.ch_names
+        names_value = epoch.ch_names
         show_names_value = True
     if mark == 'none':
         sensor_value = False
@@ -126,7 +122,7 @@ def plot_topomap_2d(epochs,
 
     topo_2d_fig = mne.viz.plot_topomap(
         data=plotting_data,
-        pos=epochs.info,  # Location info for data points
+        pos=epoch.info,  # Location info for data points
         show=False,
         vmin=cmin / 1e6,  # Convert back to volts
         vmax=cmax / 1e6,
@@ -164,9 +160,8 @@ def plot_topomap_2d(epochs,
     return topo_2d_fig
 
 
-def animate_topomap_2d(epochs,
+def animate_topomap_2d(epoch,
                        colormap='RdBu_r',
-                       epoch_number=0,
                        mark='dot',
                        contours='6',
                        sphere=100,
@@ -255,28 +250,27 @@ def animate_topomap_2d(epochs,
     # if epoch data is passed then extract a specific epoch number
     # and convert it to the same format as evoked data
 
-    if isinstance(epochs, mne.epochs.Epochs):
-        frames_to_show = np.arange(0, epochs[0].get_data()[0].shape[1], 1)
-        plotting_data = epochs[epoch_number].get_data()[0]
-    elif isinstance(epochs, mne.evoked.EvokedArray):
+    if isinstance(epoch, mne.epochs.Epochs):
+        frames_to_show = np.arange(0, epoch[0].get_data()[0].shape[1], 1)
+        plotting_data = epoch[0].get_data()[0]
+    elif isinstance(epoch, mne.evoked.EvokedArray):
         frames_to_show = np.arange(0, evoked.data.shape[1], 1)
-        plotting_data = epochs
+        plotting_data = epoch
 
     ms_between_frames = 1000 / frame_rate
 
     if colorbar:
         fig, ax = plt.subplots()
         ax_divider = make_axes_locatable(ax)
-        
         cmid = (cmin+cmax)/2
-        
         clim = dict(kind='value', lims=[cmin, cmid, cmax])
 
     def animate(frame_number):
         fig.clear()
+        ax.clear()
         # https://mne.tools/dev/generated/mne.viz.plot_topomap.html
         topomap_2d = plot_topomap_2d(
-            epochs=epochs,
+            epoch=epoch,
             plotting_data=plotting_data[:, frame_number],
             colormap=colormap,
             mark=mark,
@@ -292,6 +286,8 @@ def animate_topomap_2d(epochs,
             mask=mask,
             mask_params=mask_params
         )
+        
+        topomap_2d = plt.plot(1,2)
 
         if colorbar:
             cax = ax_divider.append_axes("right", size="3%", pad="0%")
@@ -312,7 +308,7 @@ def animate_topomap_2d(epochs,
         fig,
         animate,
         frames=frames_to_show,
-        interval=ms_between_frames,  # Time between frames in ms
+        interval=ms_between_frames,
         blit=True
     )
 
