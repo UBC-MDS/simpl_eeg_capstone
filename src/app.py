@@ -21,13 +21,12 @@ st.set_page_config(layout="wide")
 
 
 @st.cache(show_spinner=False)
-def animate_ui_2d_head(epoch, frame_steps, colormap, vmin, vmax):
-    steps = epoch.time_as_index(epoch.times[-1])[0]//frame_steps
+def animate_ui_2d_head(epoch, colormap, vmin, vmax):
     anim = topomap_2d.animate_topomap_2d(
         epoch,
-        steps=steps,
         colormap=colormap,
-        color_lims=[vmin, vmax]
+        cmin=vmin,
+        cmax=vmax
     )
     return anim.to_jshtml()
 
@@ -43,7 +42,7 @@ def animate_ui_3d_head(epoch, colormap, vmin, vmax):
 
 
 @st.cache(show_spinner=False)
-def animate_ui_3d_brain(epoch,view_selection):
+def animate_ui_3d_brain(epoch, view_selection):
     anim = topomap_3d_brain.animate_matplot_brain(epoch, views=view_selection)
     return anim.to_jshtml()
 
@@ -184,7 +183,7 @@ def main():
     epoch = epoch_obj.epoch
     plot_epoch = epoch_obj.skip_n_steps(frame_steps)
 
-    with st.beta_expander("Raw Voltage Values", expanded=True):
+    with st.beta_expander("Raw Voltage Values", expanded=False):
         kwargs = {
             "show_scrollbars": False,
             "events": np.array(events)
@@ -194,7 +193,7 @@ def main():
             raw_voltage.plot_voltage(epoch, **kwargs)
         )
 
-    with st.beta_expander("2D Head Map", expanded=True):
+    with st.beta_expander("2D Head Map", expanded=False):
         col1, col2 = st.beta_columns((3, 1))
 
         with col2:
@@ -209,12 +208,12 @@ def main():
             )
         with col1:
             components.html(
-                animate_ui_2d_head(plot_epoch, 1, colormap, vmin_2d_head, vmax_2d_head),
+                animate_ui_2d_head(plot_epoch, colormap, vmin_2d_head, vmax_2d_head),
                 height=600,
                 width=700
             )
 
-    with st.beta_expander("3D Head Map", expanded=True):
+    with st.beta_expander("3D Head Map", expanded=False):
         col1, col2 = st.beta_columns((3, 1))
 
         with col2:
@@ -233,7 +232,7 @@ def main():
                 use_container_width=True
             )
 
-    with st.beta_expander("3D Brain Map", expanded=True):
+    with st.beta_expander("3D Brain Map", expanded=False):
         st.markdown(
             """
             \n
@@ -267,7 +266,7 @@ def main():
                     height=600,
                     width=600
                 )
-    with st.beta_expander("Connectivity", expanded=True):
+    with st.beta_expander("Connectivity", expanded=False):
 
         col1, col2 = st.beta_columns((3, 1))
         with col2:
@@ -328,7 +327,7 @@ def main():
                 width=600
             )
 
-    with st.beta_expander("Connectivity Circle", expanded=True):
+    with st.beta_expander("Connectivity Circle", expanded=False):
 
         col1, col2 = st.beta_columns((3, 1))
 
