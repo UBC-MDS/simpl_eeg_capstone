@@ -2,6 +2,7 @@ from simpl_eeg import eeg_objects, topomap_3d_head
 import pandas as pd
 import pickle
 import plotly
+import pytest
 
 # import the test data
 with open('test_data/test_data.pkl', 'rb') as input:
@@ -27,7 +28,7 @@ def test_animate_3d_head():
 
     # check all outpus are as expected
     ani = topomap_3d_head.animate_3d_head(raw)
-    ani2 = topomap_3d_head.animate_3d_head(raw, cmin=-30, cmax=40)
+    ani2 = topomap_3d_head.animate_3d_head(raw, color_min=-30, color_max=40)
     assert isinstance(ani, plotly.graph_objs._figure.Figure)
     assert ani2.data[0]['cmin'] == -30 and ani2.data[0]['cmax'] == 40
 
@@ -51,16 +52,13 @@ def test_topo_3d_map():
 
     # check all outpus are as expected
     ani = topomap_3d_head.topo_3d_map(raw, time_stamp=0)
-    ani2 = topomap_3d_head.topo_3d_map(raw, time_stamp=0, cmin=-30, cmax=40)
+    ani2 = topomap_3d_head.topo_3d_map(raw, time_stamp=0, color_min=-30, color_max=40)
     assert isinstance(ani, plotly.graph_objs._figure.Figure)
     assert ani2.data[0]['cmin'] == -30 and ani2.data[0]['cmax'] == 40
 
-    
-def test_nonexistent_input_path():
-    '''
-    Testing input path
-    '''
-    with pytest.raises(FileNotFoundError):
-        animate_3d_head("./srcc/999.fixica.set")
 
-print("All tests passed")
+
+if __name__ == '__main__':
+    test_animate_3d_head()
+    test_topo_3d_map()
+    print("All tests passed!")

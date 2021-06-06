@@ -136,8 +136,8 @@ def plot_connectivity(
     Returns:
         matplotlib.pyplot.figure: Connectivity figure
     """
-    if type(epoch) is not mne.epochs.Epochs:
-        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+    if type(data) is not mne.epochs.Epochs:
+        raise TypeError("data is not an epoched data, please refer to eeg_objects to create an epoched data")
 
     if locations is None:
         sensor_locations = data.plot_sensors(show_names=True, show=False)
@@ -236,6 +236,8 @@ def animate_connectivity(
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
 
     sensor_locations = epoch.plot_sensors(show_names=True, show=False)
     locations = sensor_locations.findobj(
@@ -301,6 +303,8 @@ def plot_conn_circle(
     Returns:
         matplotlib.pyplot.figure: Connectivity circle figure
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
     if not fig:
         fig = plt.figure()
     if not ch_names:
@@ -374,6 +378,8 @@ def animate_connectivity_circle(
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
 
     fig = plt.figure()
 
