@@ -1,5 +1,41 @@
 import pytest
-#from simpl_eeg_capstone import connectivity
+from simpl_eeg import eeg_objects, connectivity
+import pandas as pd
+import pickle
+import matplotlib
+
+
+# import the test data
+with open('test_data/test_data.pkl', 'rb') as input:
+    raw = pickle.load(input)
+
+def test_calculate_connectivity():
+    """Test cases for plotting the animated topographic map in a 3D head shape"""
+    test_df = pd.DataFrame({"x":[1]})
+    # check all inputs should be the correct format
+    with pytest.raises(TypeError):
+        connectivity.calculate_connectivity(test_df)
+    with pytest.raises(TypeError):
+        connectivity.calculate_connectivity(raw, calc_type=0)
+    with pytest.raises(Exception):
+        connectivity.calculate_connectivity(raw, calc_type="corr")
+    
+    # check all outpus are as expected
+    output_df = connectivity.calculate_connectivity(raw)
+    assert isinstance(output_df, pandas.core.frame.DataFrame)
+
+def test_plot_connectivity():
+    test_df = pd.DataFrame({"x":[1]})
+
+    # check all inputs should be the correct format
+    with pytest.raises(TypeError):
+        connectivity.plot_connectivity(test_df)
+
+    # check all outpus are as expected
+    output_fig = connectivity.plot_connectivity(raw)
+    assert isinstance(output_fig, matplotlib.figure.Figure)
+
+    
 
 def test_connectivity_circle():
     """
@@ -23,14 +59,6 @@ def test_nonexistent_input_path():
     with pytest.raises(FileNotFoundError):
         plot_connectivity("./srcc/999.fixica.set")
         
-# def test_convert_pairs_1():
-#     '''
-#     Test on convert_pairs
-#     Tests input bad format
-#     '''
-#     with pytest.raises(BadFormatError) #This is a custom error there might be a python exception similar to this
-#         convert_pairs("something")
-
 
 def test_convert_pairs_2():
     '''
@@ -52,3 +80,5 @@ def test_convert_pairs_3():
     exp_out = [("mds", "jk"), ("mds","simpl")]
     assert convert_pairs(in_string) == exp_out
     # this test matches the function spec. Yet, within our context if the spec only accepted input from PAIR_OPTIONS then this test should check on a raised exception
+
+print("All tests passed")

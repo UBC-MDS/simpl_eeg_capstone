@@ -49,6 +49,13 @@ def calculate_connectivity(epoch, calc_type="correlation"):
     Returns:
         pandas.core.frame.DataFrame: Data frame containing connectivity values
     """
+
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+    
+    if type(calc_type) is not str:
+        raise TypeError("calc_type has to be a string")
+
     ch_names = epoch.ch_names
 
     # only return channel data
@@ -68,7 +75,7 @@ def calculate_connectivity(epoch, calc_type="correlation"):
             conn = mne.compute_covariance(epoch, verbose=False).data
 
         else:
-            raise Exception("Invalid calculation type")
+            raise Exception("Invalid calculation type, calc_type could only be one of [correlation, spectral_connectivity, envelope_correlation, covariance]")
 
         conn_df.iloc[-conn.shape[0]:, -conn.shape[1]:] = conn
 
@@ -113,8 +120,8 @@ def plot_connectivity(
 
     Args:
         data (mne.epochs.Epochs): Epoch to visualize
-        fig (matplotlib.pyplot.figure): Figure to plot on
-        locations ([matplotlib.text.Text]): List of node locations
+        fig (matplotlib.pyplot.figure, optional): Figure to plot on. Defaults to None.
+        locations ([matplotlib.text.Text], optional): List of node locations. Defaults to None.
         calc_type (str): Connectivity calculation type
         pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
         threshold (int, optional): Unsigned connectivity threshold to display connection. Defaults to 0.
@@ -129,6 +136,9 @@ def plot_connectivity(
     Returns:
         matplotlib.pyplot.figure: Connectivity figure
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+
     if locations is None:
         sensor_locations = data.plot_sensors(show_names=True, show=False)
         locations = sensor_locations.findobj(

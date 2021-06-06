@@ -1,6 +1,7 @@
 from simpl_eeg import eeg_objects, topomap_3d_head
 import pandas as pd
 import pickle
+import plotly
 
 # import the test data
 with open('test_data/test_data.pkl', 'rb') as input:
@@ -61,3 +62,5 @@ def test_nonexistent_input_path():
     '''
     with pytest.raises(FileNotFoundError):
         animate_3d_head("./srcc/999.fixica.set")
+
+print("All tests passed")
