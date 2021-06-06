@@ -56,9 +56,7 @@ def test_animate_connectivity():
 
 def test_connectivity_circle():
     """
-    Test on: plot_conn_circle
-    data is a DataFrame
-    Test cases for the connectivity circle functions
+    Test cases for the animated connectivity circle plot
     """
     test_df = pd.DataFrame({"x":[1]})
 
@@ -71,6 +69,7 @@ def test_connectivity_circle():
     assert isinstance(output_ani, matplotlib.animation.FuncAnimation)
     
 def test_plot_conn_circle():
+    """Test cases for connectivity circle plot"""
     test_df = pd.DataFrame({"x":[1]})
 
     # check all inputs should be the correct format
