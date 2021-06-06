@@ -126,7 +126,7 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
     Returns:
         figure: An animated topographic map in a 3D head shape
     """
-    if type(epoch) is not eeg_objects.Epochs:
+    if type(epoch) is not mne.epochs.Epochs:
         raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
     
     if type(plot_title) is not str:
@@ -291,6 +291,24 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
     Returns:
         figure: A topographic map in a 3D head shape
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+    
+    if type(plot_title) is not str:
+        raise TypeError("plot_title has to be a string")
+
+    if type(color_title) is not str:
+        raise TypeError("color_title has to be a string")
+
+    if type(colormap) is not str:
+        raise TypeError("colormap has to be a string")
+
+    if type(color_min) is not int:
+        raise TypeError("color_min has to be an integer")
+    
+    if type(color_max) is not int:
+        raise TypeError("color_max has to be an integer")
+
     # find out the channel names
     channel_names = epoch.ch_names
 
@@ -353,7 +371,7 @@ def topo3dhead_plot(epoch, i):
     fig = topo_3d_map(epoch, i, plot_title = f"Time stamp: {i}")
     return fig
 
-def save_gif(epoch, starting, ending, gifname, duration):
+def save_gif(epoch, gifname, duration):
     """Save the animated plot as gif file
 
     Args:
@@ -363,6 +381,8 @@ def save_gif(epoch, starting, ending, gifname, duration):
         duration (int): The duration (milliseconds) between each frame
     """
     frames = []
+    starting = epoch.to_data_frame()['time'].min()
+    ending = epoch.to_data_frame()['time'].max()
     for i in range(starting, ending, 1):
         frame = topo3dhead_plot(epoch, i)
         frames.append(frame)
