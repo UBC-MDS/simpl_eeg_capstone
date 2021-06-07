@@ -100,7 +100,7 @@ def plot_topomap_2d(epoch,
 
     if not isinstance(plotting_data, np.ndarray):
         if isinstance(epoch, mne.epochs.Epochs):
-            plotting_data = epoch[0].get_data()[
+            plotting_data = epoch.get_data()[
                 0][:, recording_number]
         elif isinstance(epoch, mne.evoked.EvokedArray):
             plotting_data = epoch.data[:, recording_number]
@@ -251,8 +251,8 @@ def animate_topomap_2d(epoch,
     # and convert it to the same format as evoked data
 
     if isinstance(epoch, mne.epochs.Epochs):
-        frames_to_show = np.arange(0, epoch[0].get_data()[0].shape[1], 1)
-        plotting_data = epoch[0].get_data()[0]
+        frames_to_show = np.arange(0, epoch.get_data()[0].shape[1], 1)
+        plotting_data = epoch.get_data()[0]
     elif isinstance(epoch, mne.evoked.EvokedArray):
         frames_to_show = np.arange(0, evoked.data.shape[1], 1)
         plotting_data = epoch
