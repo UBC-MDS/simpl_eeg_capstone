@@ -339,6 +339,7 @@ def plot_conn_circle(
         vmax=vmax,
         linewidth=line_width,
         title=title,
+        colorbar=False,
         **kwargs
     )[0]
 
