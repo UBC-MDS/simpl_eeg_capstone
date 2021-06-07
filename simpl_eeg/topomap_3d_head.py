@@ -8,6 +8,7 @@ import pandas as pd
 import plotly.graph_objects as go
 from scipy.interpolate import NearestNDInterpolator
 import gif
+from simpl_eeg import eeg_objects
 
 # define the frame arguments for the animated plot
 def frame_args(duration):
@@ -115,7 +116,7 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
     """Plot an animated topographic map in a 3D head shape
 
     Args:
-        epoch (epoch): An epoched file for the EEGLab data
+        epoch (mne.epochs.Epochs): An epoched file for the EEGLab data
         plot_title (str, optionl): The title of the plot. Defaults to "".
         color_title (str,  optional): The title of the color bar. Defaults to "EEG MicroVolt".
         color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
@@ -125,6 +126,25 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
     Returns:
         figure: An animated topographic map in a 3D head shape
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+    
+    if type(plot_title) is not str:
+        raise TypeError("plot_title has to be a string")
+
+    if type(color_title) is not str:
+        raise TypeError("color_title has to be a string")
+
+    if type(colormap) is not str:
+        raise TypeError("colormap has to be a string")
+
+    if type(color_min) is not int:
+        raise TypeError("color_min has to be an integer")
+    
+    if type(color_max) is not int:
+        raise TypeError("color_max has to be an integer")
+    
+    
 
     # find out the channel names
     channel_names = epoch.ch_names
@@ -260,7 +280,7 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
     """Plot a topographic map in a 3D head shape for a single time stamp
 
     Args:
-        epoch (epoch): An epoched file for the EEGLab data
+        epoch (mne.epochs.Epochs): An epoched file for the EEGLab data
         time_stamp (int): The time stamp that is of interest
         plot_title (str, optionl): The title of the plot. Defaults to "".
         color_title (str,  optional): The title of the color bar. Defaults to "EEG MicroVolt".
@@ -271,6 +291,24 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
     Returns:
         figure: A topographic map in a 3D head shape
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+    
+    if type(plot_title) is not str:
+        raise TypeError("plot_title has to be a string")
+
+    if type(color_title) is not str:
+        raise TypeError("color_title has to be a string")
+
+    if type(colormap) is not str:
+        raise TypeError("colormap has to be a string")
+
+    if type(color_min) is not int:
+        raise TypeError("color_min has to be an integer")
+    
+    if type(color_max) is not int:
+        raise TypeError("color_max has to be an integer")
+
     # find out the channel names
     channel_names = epoch.ch_names
 
@@ -333,16 +371,17 @@ def topo3dhead_plot(epoch, i):
     fig = topo_3d_map(epoch, i, plot_title = f"Time stamp: {i}")
     return fig
 
-def save_gif(epoch, starting, ending, gifname, duration):
+def save_gif(epoch, gifname, duration):
     """Save the animated plot as gif file
 
     Args:
-        starting (int): The starting time of the animated plot.
-        ending (int): The ending time of the animated plot.
+        epoch(mne.epochs.Epochs): The epoch file for creating gif
         gifname (str): The file name.
         duration (int): The duration (milliseconds) between each frame
     """
     frames = []
+    starting = epoch.to_data_frame()['time'].min()
+    ending = epoch.to_data_frame()['time'].max()
     for i in range(starting, ending, 1):
         frame = topo3dhead_plot(epoch, i)
         frames.append(frame)
