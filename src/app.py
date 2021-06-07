@@ -27,6 +27,8 @@ SECTION_NAMES = {
     "connectivity_circle": "Connectivity Circle"
 }
 
+SPINNER_MESSAGE = "Rendering..."
+
 st.set_page_config(layout="wide")
 
 
@@ -247,16 +249,17 @@ def main():
             )
         with col1:
             if expander_2d_head.render:
-                components.html(
-                    animate_ui_2d_head(
-                        plot_epoch,
-                        colormap,
-                        vmin_2d_head,
-                        vmax_2d_head
-                    ),
-                    height=600,
-                    width=700
-                )
+                with st.spinner(SPINNER_MESSAGE):
+                    components.html(
+                        animate_ui_2d_head(
+                            plot_epoch,
+                            colormap,
+                            vmin_2d_head,
+                            vmax_2d_head
+                        ),
+                        height=600,
+                        width=700
+                    )
 
     with expander_3d_head.expander:
         col1, col2 = st.beta_columns((3, 1))
@@ -273,10 +276,16 @@ def main():
             )
         with col1:
             if expander_3d_head.render:
-                st.plotly_chart(
-                    animate_ui_3d_head(plot_epoch, colormap, vmin_3d_head, vmax_3d_head),
-                    use_container_width=True
-                )
+                with st.spinner(SPINNER_MESSAGE):
+                    st.plotly_chart(
+                        animate_ui_3d_head(
+                            plot_epoch,
+                            colormap,
+                            vmin_3d_head,
+                            vmax_3d_head
+                        ),
+                        use_container_width=True
+                    )
 
     with expander_3d_brain.expander:
         st.markdown(
@@ -306,14 +315,14 @@ def main():
             show_brain = st.button("Run")
 
         if show_brain:
-            with st.spinner("Rendering..."):
+            with st.spinner(SPINNER_MESSAGE):
                 components.html(
                     animate_ui_3d_brain(plot_epoch, view_selection),
                     height=600,
                     width=600
                 )
-    with expander_connectivity.expander:
 
+    with expander_connectivity.expander:
         col1, col2 = st.beta_columns((3, 1))
         with col2:
 
@@ -359,20 +368,21 @@ def main():
 
         with col1:
             if expander_connectivity.render:
-                components.html(
-                    animate_ui_connectivity(
-                        epoch,
-                        connection_type,
-                        frame_steps,
-                        selected_pairs,
-                        colormap,
-                        cmin,
-                        cmax,
-                        conn_line_width
-                    ),
-                    height=600,
-                    width=600
-                )
+                with st.spinner(SPINNER_MESSAGE):
+                    components.html(
+                        animate_ui_connectivity(
+                            epoch,
+                            connection_type,
+                            frame_steps,
+                            selected_pairs,
+                            colormap,
+                            cmin,
+                            cmax,
+                            conn_line_width
+                        ),
+                        height=600,
+                        width=600
+                    )
 
     with expander_connectivity_circle.expander:
 
@@ -401,20 +411,21 @@ def main():
 
         with col1:
             if expander_connectivity_circle.render:
-                components.html(
-                    animate_ui_connectivity_circle(
-                        epoch,
-                        connection_type,
-                        frame_steps,
-                        colormap,
-                        cmin,
-                        cmax,
-                        conn_circle_line_width,
-                        max_connections
-                    ),
-                    height=600,
-                    width=600
-                )
+                with st.spinner(SPINNER_MESSAGE):
+                    components.html(
+                        animate_ui_connectivity_circle(
+                            epoch,
+                            connection_type,
+                            frame_steps,
+                            colormap,
+                            cmin,
+                            cmax,
+                            conn_circle_line_width,
+                            max_connections
+                        ),
+                        height=600,
+                        width=600
+                    )
 
 
 if __name__ == "__main__":
