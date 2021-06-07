@@ -212,9 +212,16 @@ def main():
             self.section_name = SECTION_NAMES[name]
             self.render = self.check_render()
             self.expander = st.beta_expander(self.section_name, expanded=self.render)
+            with self.expander:
+                self.col1, self.col2 = st.beta_columns((3, 1))
+                with self.col1:
+                    self.render = st.button("Render", key=name)
 
         def check_render(self):
             return self.section_name in render_list
+
+        def get_columns(self):
+            return self.col1, self.col2
 
     expander_raw = Section("raw")
     expander_2d_head = Section("2d_head")
@@ -235,7 +242,7 @@ def main():
             )
 
     with expander_2d_head.expander:
-        col1, col2 = st.beta_columns((3, 1))
+        col1, col2 = expander_2d_head.get_columns()
 
         with col2:
             vmin_2d_head = st.number_input(
@@ -262,7 +269,7 @@ def main():
                     )
 
     with expander_3d_head.expander:
-        col1, col2 = st.beta_columns((3, 1))
+        col1, col2 = expander_3d_head.get_columns()
 
         with col2:
             vmin_3d_head = st.number_input(
@@ -298,7 +305,7 @@ def main():
             \n
             """
         )
-        col1, col2 = st.beta_columns((3, 1))
+        col1, col2 = expander_3d_brain.get_columns()
         with col1:
             view_options = [
                 "lat",
@@ -323,7 +330,7 @@ def main():
                 )
 
     with expander_connectivity.expander:
-        col1, col2 = st.beta_columns((3, 1))
+        col1, col2 = expander_connectivity.get_columns()
         with col2:
 
             # Connection type and min/max value widgets
@@ -386,8 +393,8 @@ def main():
 
     with expander_connectivity_circle.expander:
 
-        col1, col2 = st.beta_columns((3, 1))
-
+        col1, col2 = expander_connectivity_circle.get_columns()
+        
         with col2:
 
             # Connection type and min/max value widgets
