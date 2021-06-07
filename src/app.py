@@ -197,33 +197,32 @@ def main():
     plot_epoch = epoch_obj.skip_n_steps(frame_steps)
 
     # Create sections
-    render_options = list(SECTION_NAMES.values())
+    # render_options = list(SECTION_NAMES.values())
 
-    render_list = st.multiselect(
-        "Select figures to render",
-        render_options,
-        default=[
-            render_options[0]
-        ]
-    )
+    # render_list = st.multiselect(
+    #     "Select figures to render",
+    #     render_options,
+    #     default=[
+    #         render_options[0]
+    #     ]
+    # )
 
     class Section:
-        def __init__(self, name):
+        def __init__(self, name, render=False, expand=False):
             self.section_name = SECTION_NAMES[name]
-            self.render = self.check_render()
-            self.expander = st.beta_expander(self.section_name, expanded=self.render)
+            self.render = render
+            self.expander = st.beta_expander(self.section_name, expanded=expand)
             with self.expander:
                 self.col1, self.col2 = st.beta_columns((3, 1))
-                with self.col1:
-                    self.render = st.button("Render", key=name)
-
-        def check_render(self):
-            return self.section_name in render_list
 
         def get_columns(self):
             return self.col1, self.col2
 
-    expander_raw = Section("raw")
+        def run_button(self):
+            with self.col1:
+                self.render = st.button("Render", key=self.section_name)
+
+    expander_raw = Section("raw", render=True)
     expander_2d_head = Section("2d_head")
     expander_3d_head = Section("3d_head")
     expander_3d_brain = Section("3d_brain")
@@ -231,7 +230,6 @@ def main():
     expander_connectivity_circle = Section("connectivity_circle")
 
     with expander_raw.expander:
-
         if expander_raw.render:
             st.pyplot(
                 raw_voltage.plot_voltage(
@@ -254,6 +252,8 @@ def main():
                 value=40.0,
                 min_value=vmin_2d_head
             )
+            expander_2d_head.run_button()
+
         with col1:
             if expander_2d_head.render:
                 with st.spinner(SPINNER_MESSAGE):
@@ -281,6 +281,8 @@ def main():
                 value=40.0,
                 min_value=vmin_3d_head
             )
+            expander_3d_head.run_button()
+
         with col1:
             if expander_3d_head.render:
                 with st.spinner(SPINNER_MESSAGE):
@@ -295,18 +297,9 @@ def main():
                     )
 
     with expander_3d_brain.expander:
-        st.markdown(
-            """
-            \n
-            Select your customizations, 
-            then click the *Run* button below to render the 3D brain map.
-            \n
-            **WARNING: rendering may take a while...**
-            \n
-            """
-        )
+
         col1, col2 = expander_3d_brain.get_columns()
-        with col1:
+        with col2:
             view_options = [
                 "lat",
                 "dor",
@@ -317,17 +310,26 @@ def main():
                 view_options,
                 default=["lat"]
             )
-        with col2:
-            st.header("")
-            show_brain = st.button("Run")
+            st.markdown(
+                """
+                \n
+                Select your customizations, 
+                then click the *Run* button below to render the 3D brain map.
+                \n
+                **WARNING: rendering may take a while...**
+                \n
+                """
+            )
+            expander_3d_brain.run_button()
 
-        if show_brain:
-            with st.spinner(SPINNER_MESSAGE):
-                components.html(
-                    animate_ui_3d_brain(plot_epoch, view_selection),
-                    height=600,
-                    width=600
-                )
+        with col1:
+            if expander_3d_brain.render:
+                with st.spinner(SPINNER_MESSAGE):
+                    components.html(
+                        animate_ui_3d_brain(plot_epoch, view_selection),
+                        height=600,
+                        width=600
+                    )
 
     with expander_connectivity.expander:
         col1, col2 = expander_connectivity.get_columns()
@@ -372,6 +374,7 @@ def main():
                     max_value=5,
                     value=2
                 )
+            expander_connectivity.run_button()
 
         with col1:
             if expander_connectivity.render:
@@ -394,7 +397,7 @@ def main():
     with expander_connectivity_circle.expander:
 
         col1, col2 = expander_connectivity_circle.get_columns()
-        
+
         with col2:
 
             # Connection type and min/max value widgets
@@ -415,6 +418,7 @@ def main():
                 max_value=len(epoch.ch_names)*len(epoch.ch_names),
                 value=20
             )
+            expander_connectivity_circle.run_button()
 
         with col1:
             if expander_connectivity_circle.render:
