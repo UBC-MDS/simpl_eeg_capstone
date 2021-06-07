@@ -206,7 +206,6 @@ def main():
             render_options[0]
         ]
     )
-
     class Section:
         def __init__(self, name, render=False, expand=False):
             self.section_name = SECTION_NAMES[name]
@@ -229,6 +228,7 @@ def main():
     expander_connectivity = Section("connectivity")
     expander_connectivity_circle = Section("connectivity_circle")
 
+    #### WIDGETS ####
     with expander_2d_head.widget_col:
         vmin_2d_head = st.number_input(
             "Minimum Voltage (uV)",
@@ -239,7 +239,7 @@ def main():
             value=40.0,
             min_value=vmin_2d_head
         )
-    
+
     with expander_3d_head.widget_col:
         vmin_3d_head = st.number_input(
             "Minimum Voltage (uV) ",
@@ -277,7 +277,11 @@ def main():
     with expander_connectivity.widget_col:
 
         # Connection type and min/max value widgets
-        connection_type, cmin, cmax = get_shared_conn_widgets(epoch, frame_steps, "conn")
+        connection_type, cmin, cmax = get_shared_conn_widgets(
+            epoch,
+            frame_steps,
+            "conn"
+        )
 
         # Node pair widgets
         node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
@@ -337,6 +341,12 @@ def main():
             value=20
         )
 
+    #### PLOTS ####
+
+    default_message = lambda: st.markdown(
+        "Please select the plot on the sidebar to view it"
+    )
+
     with expander_raw.plot_col:
         if expander_raw.render:
             expander_raw.plot = st.pyplot(
@@ -346,6 +356,8 @@ def main():
                     events=np.array(events)
                 )
             )
+        else:
+            default_message()
 
     with expander_2d_head.plot_col:
         if expander_2d_head.render:
@@ -360,6 +372,8 @@ def main():
                     height=600,
                     width=700
                 )
+        else:
+            default_message()
 
     with expander_3d_head.plot_col:
         if expander_3d_head.render:
@@ -373,6 +387,8 @@ def main():
                     ),
                     use_container_width=True
                 )
+        else:
+            default_message()
 
     with expander_3d_brain.plot_col:
         if expander_3d_brain.render:
@@ -382,6 +398,8 @@ def main():
                     height=600,
                     width=600
                 )
+        else:
+            default_message()
 
     with expander_connectivity.plot_col:
         if expander_connectivity.render:
@@ -400,6 +418,8 @@ def main():
                     height=600,
                     width=600
                 )
+        else:
+            default_message()
 
     with expander_connectivity_circle.plot_col:
         if expander_connectivity_circle.render:
@@ -418,6 +438,8 @@ def main():
                     height=600,
                     width=600
                 )
+        else:
+            default_message()
 
 
 if __name__ == "__main__":
