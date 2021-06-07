@@ -1,3 +1,5 @@
+import mne
+
 def plot_voltage(epoch, **kwargs):
     """
     Return interactive raw voltage plot
@@ -11,4 +13,7 @@ def plot_voltage(epoch, **kwargs):
                filtorder=4, clipping=1.5, show_first_samp=False, proj=True, group_by='type', butterfly=False, decim='auto', noise_cov=None, 
                event_id=None, show_scrollbars=True, show_scalebars=True, verbose=None)
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+    
     return epoch.plot(**kwargs)
