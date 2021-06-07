@@ -139,10 +139,10 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
         raise TypeError("colormap has to be a string")
 
     if type(color_min) is not int and type(color_min) is not float:
-        raise TypeError("color_min has to be an integer")
+        raise TypeError("color_min has to be a number")
     
     if type(color_max) is not int and type(color_max) is not float:
-        raise TypeError("color_max has to be an integer")
+        raise TypeError("color_max has to be a number")
     
     
 
@@ -304,10 +304,10 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
         raise TypeError("colormap has to be a string")
 
     if type(color_min) is not int and type(color_min) is not float:
-        raise TypeError("color_min has to be an integer")
+        raise TypeError("color_min has to be a number")
     
     if type(color_max) is not int and type(color_max) is not float:
-        raise TypeError("color_max has to be an integer")
+        raise TypeError("color_max has to be a number")
 
     # find out the channel names
     channel_names = epoch.ch_names
