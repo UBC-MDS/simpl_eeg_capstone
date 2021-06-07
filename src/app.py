@@ -217,10 +217,6 @@ def main():
             with self.expander:
                 self.plot_col, self.widget_col = st.beta_columns((3, 1))
 
-        def run_button(self):
-            with self.widget_col:
-                self.render = st.button("Render", key=self.section_name)
-
     expander_raw = Section("raw", render=False)
     expander_2d_head = Section("2d_head")
     expander_3d_head = Section("3d_head")
@@ -262,17 +258,6 @@ def main():
             view_options,
             default=["lat"]
         )
-        st.markdown(
-            """
-            \n
-            Select your customizations, 
-            then click the *Run* button below to render the 3D brain map.
-            \n
-            **WARNING: rendering may take a while...**
-            \n
-            """
-        )
-        expander_3d_brain.run_button()
 
     with expander_connectivity.widget_col:
 
@@ -343,9 +328,16 @@ def main():
 
     #### PLOTS ####
 
-    default_message = lambda: st.markdown(
-        "Please select the plot on the sidebar to view it"
-    )
+    default_message = lambda name: st.markdown(
+            """
+                \n
+                Select your customizations, 
+                then add "%s" to the list of figures to render on the sidebar.
+                \n
+                **WARNING: depending on your settings, rendering may take a while...**
+                \n
+            """ % name
+        )
 
     with expander_raw.plot_col:
         if expander_raw.render:
@@ -357,7 +349,7 @@ def main():
                 )
             )
         else:
-            default_message()
+            default_message(expander_raw.section_name)
 
     with expander_2d_head.plot_col:
         if expander_2d_head.render:
@@ -373,7 +365,7 @@ def main():
                     width=700
                 )
         else:
-            default_message()
+            default_message(expander_2d_head.section_name)
 
     with expander_3d_head.plot_col:
         if expander_3d_head.render:
@@ -388,18 +380,26 @@ def main():
                     use_container_width=True
                 )
         else:
-            default_message()
+            default_message(expander_3d_head.section_name)
 
     with expander_3d_brain.plot_col:
         if expander_3d_brain.render:
             with st.spinner(SPINNER_MESSAGE):
-                components.html(
-                    animate_ui_3d_brain(plot_epoch, view_selection),
-                    height=600,
-                    width=600
+                st.markdown(
+                    """
+                    **WARNING:**
+                    The 3D brain map animation takes a long time to compute. 
+                    Are you sure you want to run it?
+                    """
                 )
+                if st.button("Bomb's away!"):
+                    components.html(
+                        animate_ui_3d_brain(plot_epoch, view_selection),
+                        height=600,
+                        width=600
+                    )
         else:
-            default_message()
+            default_message(expander_3d_brain.section_name)
 
     with expander_connectivity.plot_col:
         if expander_connectivity.render:
@@ -419,7 +419,7 @@ def main():
                     width=600
                 )
         else:
-            default_message()
+            default_message(expander_connectivity.section_name)
 
     with expander_connectivity_circle.plot_col:
         if expander_connectivity_circle.render:
@@ -439,7 +439,7 @@ def main():
                     width=600
                 )
         else:
-            default_message()
+            default_message(expander_connectivity_circle.section_name)
 
 
 if __name__ == "__main__":
