@@ -1,4 +1,5 @@
 
+from os import PRIO_PGRP
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -16,6 +17,15 @@ from simpl_eeg import (
 )
 
 import matplotlib.pyplot as plt
+
+SECTION_NAMES = {
+    "raw": "Raw Voltage Values",
+    "2d_head": "2D Head Map",
+    "3d_head": "3D Head Map",
+    "3d_brain": "3D Brain Map",
+    "connectivity": "Connectivity",
+    "connectivity_circle": "Connectivity Circle"
+}
 
 st.set_page_config(layout="wide")
 
@@ -171,6 +181,7 @@ def main():
         ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
     )
 
+    # Create epoch
     epoch_obj = eeg_objects.Epochs(
         experiment_num,
         tmin=-tmin,
@@ -183,17 +194,45 @@ def main():
     epoch = epoch_obj.epoch
     plot_epoch = epoch_obj.skip_n_steps(frame_steps)
 
-    with st.beta_expander("Raw Voltage Values", expanded=False):
-        kwargs = {
-            "show_scrollbars": False,
-            "events": np.array(events)
-        }
+    # Create sections
+    render_options = list(SECTION_NAMES.values())
 
-        st.pyplot(
-            raw_voltage.plot_voltage(epoch, **kwargs)
-        )
+    render_list = st.multiselect(
+        "Select figures to render",
+        render_options,
+        default=[
+            render_options[0]
+        ]
+    )
 
-    with st.beta_expander("2D Head Map", expanded=False):
+    class Section:
+        def __init__(self, name):
+            self.section_name = SECTION_NAMES[name]
+            self.render = self.check_render()
+            self.expander = st.beta_expander(self.section_name, expanded=self.render)
+
+        def check_render(self):
+            return self.section_name in render_list
+
+    expander_raw = Section("raw")
+    expander_2d_head = Section("2d_head")
+    expander_3d_head = Section("3d_head")
+    expander_3d_brain = Section("3d_brain")
+    expander_connectivity = Section("connectivity")
+    expander_connectivity_circle = Section("connectivity_circle")
+
+    with expander_raw.expander:
+
+        if expander_raw.render:
+            st.pyplot(
+                raw_voltage.plot_voltage(
+                    epoch,
+                    show_scrollbars=False,
+                    events=np.array(events)
+                )
+            )
+
+    with expander_2d_head.expander:
         col1, col2 = st.beta_columns((3, 1))
 
         with col2:
@@ -207,13 +246,19 @@ def main():
                 min_value=vmin_2d_head
             )
         with col1:
-            components.html(
-                animate_ui_2d_head(plot_epoch, colormap, vmin_2d_head, vmax_2d_head),
-                height=600,
-                width=700
-            )
+            if expander_2d_head.render:
+                components.html(
+                    animate_ui_2d_head(
+                        plot_epoch,
+                        colormap,
+                        vmin_2d_head,
+                        vmax_2d_head
+                    ),
+                    height=600,
+                    width=700
+                )
 
-    with st.beta_expander("3D Head Map", expanded=False):
+    with expander_3d_head.expander:
         col1, col2 = st.beta_columns((3, 1))
 
         with col2:
@@ -227,12 +272,13 @@ def main():
                 min_value=vmin_3d_head
             )
         with col1:
-            st.plotly_chart(
-                animate_ui_3d_head(plot_epoch, colormap, vmin_3d_head, vmax_3d_head),
-                use_container_width=True
-            )
+            if expander_3d_head.render:
+                st.plotly_chart(
+                    animate_ui_3d_head(plot_epoch, colormap, vmin_3d_head, vmax_3d_head),
+                    use_container_width=True
+                )
 
-    with st.beta_expander("3D Brain Map", expanded=False):
+    with expander_3d_brain.expander:
         st.markdown(
             """
             \n
@@ -266,7 +312,7 @@ def main():
                     height=600,
                     width=600
                 )
-    with st.beta_expander("Connectivity", expanded=False):
+    with expander_connectivity.expander:
 
         col1, col2 = st.beta_columns((3, 1))
         with col2:
@@ -312,22 +358,23 @@ def main():
                 )
 
         with col1:
-            components.html(
-                animate_ui_connectivity(
-                    epoch,
-                    connection_type,
-                    frame_steps,
-                    selected_pairs,
-                    colormap,
-                    cmin,
-                    cmax,
-                    conn_line_width
-                ),
-                height=600,
-                width=600
-            )
+            if expander_connectivity.render:
+                components.html(
+                    animate_ui_connectivity(
+                        epoch,
+                        connection_type,
+                        frame_steps,
+                        selected_pairs,
+                        colormap,
+                        cmin,
+                        cmax,
+                        conn_line_width
+                    ),
+                    height=600,
+                    width=600
+                )
 
-    with st.beta_expander("Connectivity Circle", expanded=False):
+    with expander_connectivity_circle.expander:
 
         col1, col2 = st.beta_columns((3, 1))
 
@@ -352,22 +399,22 @@ def main():
                 value=20
             )
 
-
         with col1:
-            components.html(
-                animate_ui_connectivity_circle(
-                    epoch,
-                    connection_type,
-                    frame_steps,
-                    colormap,
-                    cmin,
-                    cmax,
-                    conn_circle_line_width,
-                    max_connections
-                ),
-                height=600,
-                width=600
-            )
+            if expander_connectivity_circle.render:
+                components.html(
+                    animate_ui_connectivity_circle(
+                        epoch,
+                        connection_type,
+                        frame_steps,
+                        colormap,
+                        cmin,
+                        cmax,
+                        conn_circle_line_width,
+                        max_connections
+                    ),
+                    height=600,
+                    width=600
+                )
 
 
 if __name__ == "__main__":
