@@ -8,9 +8,9 @@ warnings.filterwarnings('ignore')
 
 
 # import the test data
-with open('test_data/test_data.pkl', 'rb') as input:
+with open('data/test_data/test_data.pkl', 'rb') as input:
     raw = pickle.load(input)
-with open('test_data/test_data1.pkl', 'rb') as input:
+with open('data/test_data/test_data1.pkl', 'rb') as input:
     raw1 = pickle.load(input)
 
 

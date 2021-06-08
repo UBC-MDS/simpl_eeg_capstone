@@ -12,6 +12,9 @@ ui :
 install : 
 	python -m pip install -e .
 
+test :
+	poetry run pytest
+
 clean :
 	rm -f reports/images/viz_example.png
 	rm -f reports/Proposal.pdf
