@@ -12,6 +12,30 @@ import matplotlib.gridspec as gridspec
 from matplotlib.transforms import Bbox
 import matplotlib.animation as animation
 
+# def add_timestamp(frame, xpos, ypos):
+#     """
+#     Adds a timestamp to a matplotlib.image.AxesImage object
+    
+#     Parameters
+#     ----------
+#     frame: int
+#         The time to plot as a timestamp.
+    
+#     xpos: float
+#         The matplotlib x coordinate of the timestamp.
+
+#     ypos: float
+#         The matplotlib y coordinate of the timestamp.
+        
+#     Returns
+#     -------
+#     """
+#     tstamp = format(frame, '.4f')
+#     if frame >= 0:
+#         plt.text(-35, -130, 'time:  {}'.format(tstamp) + 's', fontsize=10, color = 'white')
+#     else:
+#         plt.text(-35, -130, 'time: {}'.format(tstamp) + 's', fontsize=10, color = 'white')
+        
 
 def create_fsaverage_forward(epoch, **kwargs):
     """
@@ -496,8 +520,7 @@ def plot_topomap_3d_brain(
 
         base_fig.subplots_adjust(top=0.1, bottom=0, right=0.1, left=0,
                                  hspace=0, wspace=0)
-
-    #plt.close(base_fig)
+        
     return(base_fig)
 
 
@@ -566,6 +589,7 @@ def animate_matplot_brain(
     cmax=None,
     spacing='oct5',
     smoothing_steps=2,
+    timestamp = True,
     frame_rate=12,
     **kwargs
 ):
@@ -640,6 +664,11 @@ def animate_matplot_brain(
             Specifies the 'smoothing_steps' parameter in the mne.SourceEstimate.plot() function. "The amount of smoothing".
             3 by default.
             
+    timestamp: 'auto' or bool
+        Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+        is being shown. Only works with 'matplotlib' set to the backend. Defaults to 'auto' which be True
+        if a matplotlib backend is being used and False otherwise.
+            
     frame_rate: int
             The frame rate to render the animation at. Defautls to 12.
 
@@ -661,6 +690,8 @@ def animate_matplot_brain(
         epoch.tmin,
         epoch.tmax,
         frames_to_show)
+    
+    #times_to_show = times_to_show[0:2]
 
     ms_between_frames = 1000 / frame_rate
 
@@ -690,8 +721,7 @@ def animate_matplot_brain(
                                       )
                 )
 
-    if (hemi == 'lh' and len(views) == 1) or (
-            hemi == 'rh' and len(views) == 1):
+    if (hemi == 'lh' and len(views) == 1) or (hemi == 'rh' and len(views) == 1):
         # Plotting for single view/hemi matplotlib.figure.Figure
         def animate(frame):
 
@@ -701,9 +731,12 @@ def animate_matplot_brain(
                      display_time=frame,
                      cbar = colorbar
                      )
+            
+            if timestamp:
+                add_timestamp(frame, 0, 0)
 
             return[fig]
-
+        
         ani = animation.FuncAnimation(
             fig,
             animate,
@@ -755,7 +788,6 @@ def animate_matplot_brain(
                 fig.axes.append(ax)
                 fig.add_axes(ax)
             
-
             cbar_fig = plt.figure(figsize=(img_width * img_figsize * 0.65, cbar_height))
             plotting(figure=cbar_fig, hemi='lh', views='fro', cbar=True)
 
@@ -772,6 +804,9 @@ def animate_matplot_brain(
             
             if add_colorbar:
                 copy_axes(cbar_fig.axes[1], brain)
+            
+#             if timestamp:
+#                 add_timestamp(frame, 0, 0)
 
             # Convert plot to image/frame
             brain.canvas.draw()
@@ -788,7 +823,7 @@ def animate_matplot_brain(
 
             # display new image
             ax.imshow(plot_image)
-
+        
         ani = animation.FuncAnimation(
             fig,
             animate,

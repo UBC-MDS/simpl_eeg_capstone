@@ -5,6 +5,36 @@ import numpy as np
 from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
 
 
+def add_timestamp(epoch, frame_number, xpos, ypos):
+    """
+    Adds a timestamp to a matplotlib.image.AxesImage object
+    
+    Parameters
+    ----------
+    epoch : mne.epochs.Epochs
+        MNE epochs object containing the timestamps.
+
+    frame_number: int
+        The timestamp to plot.
+    
+    xpos: float
+        The matplotlib x coordinate of the timestamp.
+
+    ypos: float
+        The matplotlib y coordinate of the timestamp.
+        
+    Returns
+    -------
+    """
+    
+    time = epoch.times[frame_number]
+    tstamp = format(time, '.4f')
+    if time >= 0:
+        plt.text(-35, -130, 'time:  {}'.format(tstamp) + 's', fontsize=10)
+    else:
+        plt.text(-35, -130, 'time: {}'.format(tstamp) + 's', fontsize=10)
+
+
 def plot_topomap_2d(epoch,
                     plotting_data=None,
                     recording_number=0,
@@ -21,6 +51,7 @@ def plot_topomap_2d(epoch,
                     axes=None,
                     mask=None,
                     mask_params=None,
+                    timestamp = True,
                     ):
     """
     Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
@@ -89,6 +120,10 @@ def plot_topomap_2d(epoch,
 
     mask_params: dict
         Specifies the 'mask_params' parameter in the mne.viz.plot_topomap() function.
+        
+    timestamp: bool
+        Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+        is being shown. Defaults to true.
 
     Returns
     -------
@@ -140,6 +175,9 @@ def plot_topomap_2d(epoch,
         mask_params=None,  
         contours=contours,  # Number of lines that divide up sections to be drawn
     )[0]
+    
+    if timestamp:
+        add_timestamp(epoch, recording_number, -130, 120)
 
     if colorbar:
         ax_divider = make_axes_locatable(ax)
@@ -156,6 +194,8 @@ def plot_topomap_2d(epoch,
             label='µV',
             bgcolor='0'
         )
+        
+
 
     return topo_2d_fig
 
@@ -174,6 +214,7 @@ def animate_topomap_2d(epoch,
                        mask=None,
                        mask_params=None,
                        colorbar=True,
+                       timestamp = True,
                        frame_rate=12):
     """
     Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
@@ -236,6 +277,10 @@ def animate_topomap_2d(epoch,
 
     colorbar: bool
         Specifies whether or not to include a colorbar in the animation.
+    
+    timestamp: bool
+        Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+        is being shown. Defaults to True.
 
     frame_rate: int
         The frame rate to genearte the final animation with.
@@ -284,8 +329,12 @@ def animate_topomap_2d(epoch,
             outlines=outlines,
             axes=axes,
             mask=mask,
-            mask_params=mask_params
+            mask_params=mask_params,
+            timestamp = False
         )
+        
+        if timestamp:
+            add_timestamp(epoch, frame_number, -35, -130)
         
         topomap_2d = plt.plot(1,2)
 
@@ -301,6 +350,8 @@ def animate_topomap_2d(epoch,
                 label='µV',
                 bgcolor='0'
             )
+        
+        
 
         return [fig]
 
