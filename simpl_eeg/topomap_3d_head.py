@@ -61,9 +61,7 @@ def interpolated_time(df, channel_names, node_coord, x, y, z, t):
         array: A numpy array of interpolated EEG voltages
     """
     # get the EEG data for a specific time stamp
-    now = df[df["time"] == t]
-    # slice the dataframe to only include EEG signals of each electrodes
-    eeg = now.loc[:, channel_names].mean().values
+    eeg = df.loc[t, channel_names].values
     # build the interpolation model using NearestNDInterpolator
     interpolate_model = NearestNDInterpolator(node_coord, eeg)
     return interpolate_model(np.array(list(zip(x, y, z))))
@@ -151,6 +149,7 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
 
     # change the raw epoched data to a dataframe
     df = epoch.to_data_frame().groupby("time").mean().reset_index()
+    nb_frame=len(df)
 
     # get the standard montage coordinates
     standard_montage, standard_coord = get_standard_coord()
@@ -184,7 +183,7 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
                 ,
                 name=epoch.times[k],  # you need to name the frame for the animation to behave properly
             )
-            for k in df["time"]
+            for k in range(nb_frame)
         ]
     )
 
