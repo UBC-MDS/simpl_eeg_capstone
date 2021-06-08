@@ -691,7 +691,7 @@ def animate_matplot_brain(
         epoch.tmax,
         frames_to_show)
     
-    times_to_show = times_to_show[0:2]
+    #times_to_show = times_to_show[0:2]
 
     ms_between_frames = 1000 / frame_rate
 
