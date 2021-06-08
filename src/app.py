@@ -154,7 +154,7 @@ def main():
     if time_select == "Time":
         start_second = st.sidebar.number_input(
             "Custom impact second",
-            value=1,
+            value=5,
             min_value=1
         )
         epoch_num = 0
@@ -206,7 +206,6 @@ def main():
             render_options[0]
         ]
     )
-
     class Section:
         def __init__(self, name, render=False, expand=False):
             self.section_name = SECTION_NAMES[name]
@@ -218,16 +217,36 @@ def main():
             with self.expander:
                 self.plot_col, self.widget_col = st.beta_columns((3, 1))
 
-        def run_button(self):
-            with self.widget_col:
-                self.render = st.button("Render", key=self.section_name)
-
     expander_raw = Section("raw", render=False)
     expander_2d_head = Section("2d_head")
     expander_3d_head = Section("3d_head")
     expander_3d_brain = Section("3d_brain")
     expander_connectivity = Section("connectivity")
     expander_connectivity_circle = Section("connectivity_circle")
+
+    #### WIDGETS ####
+    with expander_raw.widget_col:
+        st.title("")
+        noise_select = st.checkbox("Whiten with noise covarience")
+        noise_cov = mne.compute_covariance(
+            epoch,
+            tmax=tmax
+        ) if noise_select else None
+
+        auto_scale = st.checkbox("Use automatic scaling", value=True)
+        if auto_scale:
+            scaling = "auto"
+        else:
+            scaling = st.slider(
+                "Adjust scale",
+                min_value=1,
+                max_value=100,
+                value=20,
+            )
+            if noise_select:
+                scaling = scaling * 1e-1
+            else:
+                scaling = scaling * 1e-6
 
     with expander_2d_head.widget_col:
         vmin_2d_head = st.number_input(
@@ -239,7 +258,7 @@ def main():
             value=40.0,
             min_value=vmin_2d_head
         )
-    
+
     with expander_3d_head.widget_col:
         vmin_3d_head = st.number_input(
             "Minimum Voltage (uV) ",
@@ -262,22 +281,15 @@ def main():
             view_options,
             default=["lat"]
         )
-        st.markdown(
-            """
-            \n
-            Select your customizations, 
-            then click the *Run* button below to render the 3D brain map.
-            \n
-            **WARNING: rendering may take a while...**
-            \n
-            """
-        )
-        expander_3d_brain.run_button()
 
     with expander_connectivity.widget_col:
 
         # Connection type and min/max value widgets
-        connection_type, cmin, cmax = get_shared_conn_widgets(epoch, frame_steps, "conn")
+        connection_type, cmin, cmax = get_shared_conn_widgets(
+            epoch,
+            frame_steps,
+            "conn"
+        )
 
         # Node pair widgets
         node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
@@ -337,15 +349,32 @@ def main():
             value=20
         )
 
+    #### PLOTS ####
+    default_message = lambda name: st.markdown(
+            """
+                \n
+                Select your customizations, 
+                then add "%s" to the list of figures to render on the sidebar.
+                \n
+                **WARNING: depending on your settings, rendering may take a while...**
+                \n
+            """ % name
+        )
+
     with expander_raw.plot_col:
         if expander_raw.render:
             expander_raw.plot = st.pyplot(
                 raw_voltage.plot_voltage(
                     epoch,
                     show_scrollbars=False,
-                    events=np.array(events)
+                    events=np.array(events),
+                    scalings=scaling,
+                    noise_cov=noise_cov,
+                    event_id=epoch.event_id,
                 )
             )
+        else:
+            default_message(expander_raw.section_name)
 
     with expander_2d_head.plot_col:
         if expander_2d_head.render:
@@ -360,6 +389,8 @@ def main():
                     height=600,
                     width=700
                 )
+        else:
+            default_message(expander_2d_head.section_name)
 
     with expander_3d_head.plot_col:
         if expander_3d_head.render:
@@ -373,15 +404,27 @@ def main():
                     ),
                     use_container_width=True
                 )
+        else:
+            default_message(expander_3d_head.section_name)
 
     with expander_3d_brain.plot_col:
         if expander_3d_brain.render:
             with st.spinner(SPINNER_MESSAGE):
-                components.html(
-                    animate_ui_3d_brain(plot_epoch, view_selection),
-                    height=600,
-                    width=600
+                st.markdown(
+                    """
+                    **WARNING:**
+                    The 3D brain map animation takes a long time to compute. 
+                    Are you sure you want to run it?
+                    """
                 )
+                if st.button("Bombs away!"):
+                    components.html(
+                        animate_ui_3d_brain(plot_epoch, view_selection),
+                        height=600,
+                        width=600
+                    )
+        else:
+            default_message(expander_3d_brain.section_name)
 
     with expander_connectivity.plot_col:
         if expander_connectivity.render:
@@ -400,6 +443,8 @@ def main():
                     height=600,
                     width=600
                 )
+        else:
+            default_message(expander_connectivity.section_name)
 
     with expander_connectivity_circle.plot_col:
         if expander_connectivity_circle.render:
@@ -418,6 +463,8 @@ def main():
                     height=600,
                     width=600
                 )
+        else:
+            default_message(expander_connectivity_circle.section_name)
 
 
 if __name__ == "__main__":
