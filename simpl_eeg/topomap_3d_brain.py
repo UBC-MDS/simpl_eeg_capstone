@@ -732,8 +732,8 @@ def animate_matplot_brain(
                      cbar = colorbar
                      )
             
-            if timestamp:
-                add_timestamp(frame, 0, 0)
+            # if timestamp:
+            #     add_timestamp(frame, 0, 0)
 
             return[fig]
         
