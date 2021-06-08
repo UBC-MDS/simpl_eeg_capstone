@@ -404,3 +404,4 @@ def animate_connectivity_circle(
 
     anim = animation.FuncAnimation(fig, animate, steps, blit=True)
     return anim
+

@@ -5,7 +5,7 @@ import plotly
 import pytest
 
 # import the test data
-with open('test_data/test_data.pkl', 'rb') as input:
+with open('data/test_data/test_data.pkl', 'rb') as input:
     raw = pickle.load(input)
 
 # test the animate_3d_head function
