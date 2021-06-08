@@ -154,7 +154,7 @@ def main():
     if time_select == "Time":
         start_second = st.sidebar.number_input(
             "Custom impact second",
-            value=1,
+            value=5,
             min_value=1
         )
         epoch_num = 0
