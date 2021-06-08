@@ -49,6 +49,13 @@ def calculate_connectivity(epoch, calc_type="correlation"):
     Returns:
         pandas.core.frame.DataFrame: Data frame containing connectivity values
     """
+
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+    
+    if type(calc_type) is not str:
+        raise TypeError("calc_type has to be a string")
+
     ch_names = epoch.ch_names
 
     # only return channel data
@@ -68,7 +75,7 @@ def calculate_connectivity(epoch, calc_type="correlation"):
             conn = mne.compute_covariance(epoch, verbose=False).data
 
         else:
-            raise Exception("Invalid calculation type")
+            raise Exception("Invalid calculation type, calc_type could only be one of [correlation, spectral_connectivity, envelope_correlation, covariance]")
 
         conn_df.iloc[-conn.shape[0]:, -conn.shape[1]:] = conn
 
@@ -106,14 +113,15 @@ def plot_connectivity(
     vmin=None,
     vmax=None,
     line_width=None,
-    title=None
+    title=None,
+    **kwargs
 ):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
         data (mne.epochs.Epochs): Epoch to visualize
-        fig (matplotlib.pyplot.figure): Figure to plot on
-        locations ([matplotlib.text.Text]): List of node locations
+        fig (matplotlib.pyplot.figure, optional): Figure to plot on. Defaults to None.
+        locations ([matplotlib.text.Text], optional): List of node locations. Defaults to None.
         calc_type (str): Connectivity calculation type
         pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
         threshold (int, optional): Unsigned connectivity threshold to display connection. Defaults to 0.
@@ -123,10 +131,14 @@ def plot_connectivity(
         vmin (int, optional): The maximum for the scale. Defaults to None.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
         title (str, optional): The title to display on the plot. Defaults to None for no title.
+        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_sensors().
 
     Returns:
         matplotlib.pyplot.figure: Connectivity figure
     """
+    if type(data) is not mne.epochs.Epochs:
+        raise TypeError("data is not an epoched data, please refer to eeg_objects to create an epoched data")
+
     if locations is None:
         sensor_locations = data.plot_sensors(show_names=True, show=False)
         locations = sensor_locations.findobj(
@@ -181,7 +193,8 @@ def plot_connectivity(
         show_names=True,
         kind="topomap",
         sphere=(9, -15, 0, 100) if show_sphere else None,
-        show=False
+        show=False,
+        **kwargs
     )
 
     if title:
@@ -201,7 +214,8 @@ def animate_connectivity(
     vmin=None,
     vmax=None,
     line_width=None,
-    title=None
+    title=None,
+    **kwargs
 ):
     """Animate 2d EEG nodes on scalp with lines representing connectivity
 
@@ -217,10 +231,13 @@ def animate_connectivity(
         vmin (int, optional): The maximum for the scale. Defaults to None.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
         title (str, optional): The title to display on the plot. Defaults to None for no title.
+        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_sensors().
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
 
     sensor_locations = epoch.plot_sensors(show_names=True, show=False)
     locations = sensor_locations.findobj(
@@ -246,7 +263,8 @@ def animate_connectivity(
                 vmin=vmin,
                 vmax=vmax,
                 line_width=line_width,
-                title=title
+                title=title,
+                **kwargs
             )
         ]
     anim = animation.FuncAnimation(fig, animate, num_steps, blit=True)
@@ -263,7 +281,8 @@ def plot_conn_circle(
     vmin=None,
     vmax=None,
     line_width=None,
-    title=None
+    title=None,
+    **kwargs
 ):
     """Plot connectivity circle
 
@@ -279,10 +298,13 @@ def plot_conn_circle(
         colormap (bool, optional): Whether to plot the colorbar. Defaults to True.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
         title (str, optional): The title to display on the plot. Defaults to None for no title.
+        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_connectivity_circle().
 
     Returns:
         matplotlib.pyplot.figure: Connectivity circle figure
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
     if not fig:
         fig = plt.figure()
     if not ch_names:
@@ -316,8 +338,15 @@ def plot_conn_circle(
         vmin=vmin,
         vmax=vmax,
         linewidth=line_width,
-        title=title
+        title=title,
+        colorbar=False,
+        **kwargs
     )[0]
+
+    cmap = plt.cm.ScalarMappable(cmap=colormap)
+    cmap.set_clim(vmin, vmax)
+    fig.colorbar(cmap)
+
     return fig
 
 
@@ -330,7 +359,8 @@ def animate_connectivity_circle(
     vmin=None,
     vmax=None,
     line_width=None,
-    title=None
+    title=None,
+    **kwargs
 ):
     """Animate connectivity circle
 
@@ -344,10 +374,13 @@ def animate_connectivity_circle(
         vmin (int, optional): The maximum for the scale. Defaults to None.
         line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
         title (str, optional): The title to display on the plot. Defaults to None for no title.
+        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_connectivity_circle().
 
     Returns:
         matplotlib.animation.Animation: Animation of connectivity plot
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
 
     fig = plt.figure()
 
@@ -364,9 +397,11 @@ def animate_connectivity_circle(
                 vmin=vmin,
                 vmax=vmax,
                 line_width=line_width,
-                title=title
+                title=title,
+                **kwargs
             )
         ]
 
     anim = animation.FuncAnimation(fig, animate, steps, blit=True)
     return anim
+

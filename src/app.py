@@ -1,4 +1,5 @@
 
+from os import PRIO_PGRP
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -16,18 +17,56 @@ from simpl_eeg import (
 )
 
 import matplotlib.pyplot as plt
+import re
+import datetime
+
+SECTION_NAMES = {
+    "raw": "Raw Voltage Values",
+    "2d_head": "2D Head Map",
+    "3d_head": "3D Head Map",
+    "3d_brain": "3D Brain Map",
+    "connectivity": "Connectivity",
+    "connectivity_circle": "Connectivity Circle"
+}
+
+SPINNER_MESSAGE = "Rendering..."
 
 st.set_page_config(layout="wide")
 
+@st.cache(show_spinner=False)
+def calculate_timeframe(start_time):
+    if re.match('^[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$', start_time):
+        start_time = start_time + ".00"
+    elif re.match('^[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$', start_time) == False:
+        if i == 0:
+            # change to throw error
+            print('start_time is in wrong format please use %H:%M:%S.%f or %H:%M:%S')
+        elif i == 1:
+            # change to throw error
+            print('end_time is in wrong format please use %H:%M:%S.%f or %H:%M:%S')
+
+    start = datetime.datetime.strptime(start_time, '%H:%M:%S.%f')
+    zero = datetime.datetime.strptime('00:00:00.00', '%H:%M:%S.%f')
+    
+    return (start-zero).total_seconds()
 
 @st.cache(show_spinner=False)
-def animate_ui_2d_head(epoch, frame_steps, colormap, vmin, vmax):
-    steps = epoch.time_as_index(epoch.times[-1])[0]//frame_steps
+def animate_ui_3d_head(epoch, colormap, vmin, vmax):
+    return topomap_3d_head.animate_3d_head(
+        epoch,
+        colormap=colormap,
+        color_min=vmin,
+        color_max=vmax
+    )
+
+
+@st.cache(show_spinner=False)
+def animate_ui_2d_head(epoch, colormap, vmin, vmax):
     anim = topomap_2d.animate_topomap_2d(
         epoch,
-        steps=steps,
         colormap=colormap,
-        color_lims=[vmin, vmax]
+        cmin=vmin,
+        cmax=vmax
     )
     return anim.to_jshtml()
 
@@ -43,8 +82,19 @@ def animate_ui_3d_head(epoch, colormap, vmin, vmax):
 
 
 @st.cache(show_spinner=False)
-def animate_ui_3d_brain(epoch,view_selection):
-    anim = topomap_3d_brain.animate_matplot_brain(epoch, views=view_selection, background="w")
+def generate_stc(epoch):
+    fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
+    return (topomap_3d_brain.create_inverse_solution(epoch, fwd))
+
+
+@st.cache(show_spinner=False)
+def animate_ui_3d_brain(epoch, view_selection, stc, hemi, cmin, cmax):
+    anim = topomap_3d_brain.animate_matplot_brain(epoch,
+                                                  views=view_selection,
+                                                  stc = stc,
+                                                  hemi = hemi,
+                                                  cmin = cmin,
+                                                  cmax = cmax)
     return anim.to_jshtml()
 
 
@@ -58,7 +108,7 @@ def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, 
         colormap=colormap,
         vmin=vmin,
         vmax=vmax,
-        line_width=line_width
+        line_width=line_width,
     )
     return anim.to_jshtml()
 
@@ -124,6 +174,13 @@ def main():
     Populate and display the streamlit user interface
     """
 
+    # Should retrieve contents of folder but is currently broken
+    # directory_contents = os.listdir("data")
+    # experiment_list = []
+    # for item in directory_contents:
+    #     if os.path.isdir(item):
+    #         experiment_list.append(item)
+
     st.sidebar.header("Visualize your EEG data based on the following options")
     experiment_num = st.sidebar.selectbox(
         "Select experiment",
@@ -141,11 +198,12 @@ def main():
         ["Epoch", "Time"]
     )
     if time_select == "Time":
-        start_second = st.sidebar.number_input(
-            "Custom impact second",
-            value=1,
-            min_value=1
+        start_time = st.sidebar.text_input(
+            "Custom impact time",
+            value="00:00:05.00",
+            max_chars=11
         )
+        start_second = int(calculate_timeframe(start_time))
         epoch_num = 0
     else:
         start_second = None
@@ -172,6 +230,7 @@ def main():
         ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
     )
 
+    # Create epoch
     epoch_obj = eeg_objects.Epochs(
         experiment_num,
         tmin=-tmin,
@@ -180,195 +239,318 @@ def main():
     )
     epoch_obj.set_nth_epoch(epoch_num)
 
+    stc_genearted = False
+
     events = epoch_obj.data.events
     epoch = epoch_obj.epoch
     plot_epoch = epoch_obj.skip_n_steps(frame_steps)
 
-    with st.beta_expander("Raw Voltage Values", expanded=True):
-        kwargs = {
-            "show_scrollbars": False,
-            "events": np.array(events)
-        }
+    # Create sections
+    render_options = list(SECTION_NAMES.values())
 
-        st.pyplot(
-            raw_voltage.plot_voltage(epoch, **kwargs)
-        )
-
-    with st.beta_expander("2D Head Map", expanded=True):
-        col1, col2 = st.beta_columns((3, 1))
-
-        with col2:
-            vmin_2d_head = st.number_input(
-                "Minimum Voltage (uV)",
-                value=-40.0
+    render_list = st.sidebar.multiselect(
+        "Select figures to render",
+        render_options,
+        default=[
+            render_options[0]
+        ]
+    )
+    class Section:
+        def __init__(self, name, render=False, expand=False):
+            self.section_name = SECTION_NAMES[name]
+            self.render = self.section_name in render_list
+            self.expander = st.beta_expander(
+                self.section_name,
+                expanded=self.render
             )
-            vmax_2d_head = st.number_input(
-                "Maximum Voltage (uV)",
-                value=40.0,
-                min_value=vmin_2d_head
+            with self.expander:
+                self.plot_col, self.widget_col = st.beta_columns((3, 1))
+
+    expander_raw = Section("raw", render=False)
+    expander_2d_head = Section("2d_head")
+    expander_3d_head = Section("3d_head")
+    expander_3d_brain = Section("3d_brain")
+    expander_connectivity = Section("connectivity")
+    expander_connectivity_circle = Section("connectivity_circle")
+
+    #### WIDGETS ####
+    with expander_raw.widget_col:
+        st.title("")
+        noise_select = st.checkbox("Whiten with noise covarience")
+        noise_cov = mne.compute_covariance(
+            epoch,
+            tmax=tmax
+        ) if noise_select else None
+
+        auto_scale = st.checkbox("Use automatic scaling", value=True)
+        if auto_scale:
+            scaling = "auto"
+        else:
+            scaling = st.slider(
+                "Adjust scale",
+                min_value=1,
+                max_value=100,
+                value=20,
             )
-        with col1:
-            components.html(
-                animate_ui_2d_head(plot_epoch, 1, colormap, vmin_2d_head, vmax_2d_head),
-                height=600,
-                width=700
-            )
-
-    with st.beta_expander("3D Head Map", expanded=True):
-        col1, col2 = st.beta_columns((3, 1))
-
-        with col2:
-            vmin_3d_head = st.number_input(
-                "Minimum Voltage (uV) ",
-                value=-40.0
-            )
-            vmax_3d_head = st.number_input(
-                "Maximum Voltage (uV) ",
-                value=40.0,
-                min_value=vmin_3d_head
-            )
-        with col1:
-            st.plotly_chart(
-                animate_ui_3d_head(plot_epoch, colormap, vmin_3d_head, vmax_3d_head),
-                use_container_width=True
-            )
-
-    with st.beta_expander("3D Brain Map", expanded=True):
-        st.markdown(
-            """
-            \n
-            Select your customizations, 
-            then click the *Run* button below to render the 3D brain map.
-            \n
-            **WARNING: rendering may take a while...**
-            \n
-            """
-        )
-        col1, col2 = st.beta_columns((3, 1))
-        with col1:
-            view_options = [
-                "lat",
-                "dor",
-                "fro"
-            ]
-            view_selection = st.multiselect(
-                "Select view",
-                view_options,
-                default=["lat"]
-            )
-        with col2:
-            st.header("")
-            show_brain = st.button("Run")
-
-        if show_brain:
-            with st.spinner("Rendering..."):
-                components.html(
-                    animate_ui_3d_brain(plot_epoch, view_selection),
-                    height=600,
-                    width=600
-                )
-    with st.beta_expander("Connectivity", expanded=True):
-
-        col1, col2 = st.beta_columns((3, 1))
-        with col2:
-
-            # Connection type and min/max value widgets
-            connection_type, cmin, cmax = get_shared_conn_widgets(epoch, frame_steps, "conn")
-
-            # Node pair widgets
-            node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
-
-            pair_selection = st.selectbox(
-                "Select node pair template",
-                node_pair_options,
-                index=1
-            )
-
-            selected_pairs = []
-            if pair_selection == "all_pairs":
-                selected_pairs = connectivity.PAIR_OPTIONS[pair_selection]
+            if noise_select:
+                scaling = scaling * 1e-1
             else:
-                custom_pair_selection = st.text_area(
-                    """
-                    Enter comma separated pairs below in format
-                    Node1-Node2, Node3-Node4 to customize
-                    """,
-                    connectivity.PAIR_OPTIONS[pair_selection]
-                )
-                selected_pairs = custom_pair_selection
+                scaling = scaling * 1e-6
 
-            # Line width widgets
-            line_width_type = st.checkbox(
-                "Set static line width",
-                False
+    with expander_2d_head.widget_col:
+        vmin_2d_head = st.number_input(
+            "Minimum Voltage (uV)",
+            value=-40.0
+        )
+        vmax_2d_head = st.number_input(
+            "Maximum Voltage (uV)",
+            value=40.0,
+            min_value=vmin_2d_head
+        )
+
+    with expander_3d_head.widget_col:
+        vmin_3d_head = st.number_input(
+            "Minimum Voltage (uV) ",
+            value=-40.0
+        )
+        vmax_3d_head = st.number_input(
+            "Maximum Voltage (uV) ",
+            value=40.0,
+            min_value=vmin_3d_head
+        )
+
+    with expander_3d_brain.widget_col:
+        view_options = [
+            "lat",
+            "dor",
+            "fro",
+            "med",
+            "ros",
+            "cau",
+            "ven",
+            "par",
+        ]
+        view_selection = st.multiselect(
+            "Select view",
+            view_options,
+            default=["lat"]
+        )
+        hemi_options = [
+            "lh",
+            "rh",
+            "both"
+        ]
+        hemi_selection = st.selectbox(
+            "Select brain hemi",
+            hemi_options,
+            index = 0
+        )
+        vmin_3d_brain = st.number_input(
+            "Minimum Voltage (uV)",
+            value=-5.0
+        )
+        vmax_3d_brain = st.number_input(
+            "Maximum Voltage (uV)",
+            value=5.0,
+            min_value=vmin_3d_brain
+        )
+
+
+    with expander_connectivity.widget_col:
+
+        # Connection type and min/max value widgets
+        connection_type, cmin, cmax = get_shared_conn_widgets(
+            epoch,
+            frame_steps,
+            "conn"
+        )
+
+        # Node pair widgets
+        node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
+
+        pair_selection = st.selectbox(
+            "Select node pair template",
+            node_pair_options,
+            index=1
+        )
+
+        selected_pairs = []
+        if pair_selection == "all_pairs":
+            selected_pairs = connectivity.PAIR_OPTIONS[pair_selection]
+        else:
+            custom_pair_selection = st.text_area(
+                """
+                Enter comma separated pairs below in format
+                Node1-Node2, Node3-Node4 to customize
+                """,
+                connectivity.PAIR_OPTIONS[pair_selection]
             )
+            selected_pairs = custom_pair_selection
 
-            conn_line_width = None
-            if line_width_type is True:
-                conn_line_width = st.slider(
-                    "Select line width",
-                    min_value=1,
-                    max_value=5,
-                    value=2
-                )
+        # Line width widgets
+        line_width_type = st.checkbox(
+            "Set static line width",
+            False
+        )
 
-        with col1:
-            components.html(
-                animate_ui_connectivity(
-                    epoch,
-                    connection_type,
-                    frame_steps,
-                    selected_pairs,
-                    colormap,
-                    cmin,
-                    cmax,
-                    conn_line_width
-                ),
-                height=600,
-                width=600
-            )
-
-    with st.beta_expander("Connectivity Circle", expanded=True):
-
-        col1, col2 = st.beta_columns((3, 1))
-
-        with col2:
-
-            # Connection type and min/max value widgets
-            connection_type, cmin, cmax = get_shared_conn_widgets(epoch, frame_steps, "circle")
-
-            # Line width widget
-            conn_circle_line_width = st.slider(
-                "Select line width ",
+        conn_line_width = None
+        if line_width_type is True:
+            conn_line_width = st.slider(
+                "Select line width",
                 min_value=1,
                 max_value=5,
                 value=2
             )
 
-            # Maximum connections widget
-            max_connections = st.number_input(
-                "Maximum connections to display",
-                min_value=0,
-                max_value=len(epoch.ch_names)*len(epoch.ch_names),
-                value=20
-            )
+    with expander_connectivity_circle.widget_col:
 
+        # Connection type and min/max value widgets
+        connection_type, cmin, cmax = get_shared_conn_widgets(epoch, frame_steps, "circle")
 
-        with col1:
-            components.html(
-                animate_ui_connectivity_circle(
+        # Line width widget
+        conn_circle_line_width = st.slider(
+            "Select line width ",
+            min_value=1,
+            max_value=5,
+            value=2
+        )
+
+        # Maximum connections widget
+        max_connections = st.number_input(
+            "Maximum connections to display",
+            min_value=0,
+            max_value=len(epoch.ch_names)*len(epoch.ch_names),
+            value=20
+        )
+
+    #### PLOTS ####
+    default_message = lambda name: st.markdown(
+            """
+                \n
+                Select your customizations, 
+                then add "%s" to the list of figures to render on the sidebar.
+                \n
+                **WARNING: depending on your settings, rendering may take a while...**
+                \n
+            """ % name
+        )
+
+    with expander_raw.plot_col:
+        if expander_raw.render:
+            expander_raw.plot = st.pyplot(
+                raw_voltage.plot_voltage(
                     epoch,
-                    connection_type,
-                    frame_steps,
-                    colormap,
-                    cmin,
-                    cmax,
-                    conn_circle_line_width,
-                    max_connections
-                ),
-                height=600,
-                width=600
+                    show_scrollbars=False,
+                    events=np.array(events),
+                    scalings=scaling,
+                    noise_cov=noise_cov,
+                    event_id=epoch.event_id,
+                )
             )
+        else:
+            default_message(expander_raw.section_name)
+
+    with expander_2d_head.plot_col:
+        if expander_2d_head.render:
+            with st.spinner(SPINNER_MESSAGE):
+                components.html(
+                    animate_ui_2d_head(
+                        plot_epoch,
+                        colormap,
+                        vmin_2d_head,
+                        vmax_2d_head
+                    ),
+                    height=600,
+                    width=700
+                )
+        else:
+            default_message(expander_2d_head.section_name)
+
+    with expander_3d_head.plot_col:
+        if expander_3d_head.render:
+            with st.spinner(SPINNER_MESSAGE):
+                st.plotly_chart(
+                    animate_ui_3d_head(
+                        plot_epoch,
+                        colormap,
+                        vmin_3d_head,
+                        vmax_3d_head
+                    ),
+                    use_container_width=True
+                )
+        else:
+            default_message(expander_3d_head.section_name)
+
+    with expander_3d_brain.plot_col:
+        if expander_3d_brain.render:
+            with st.spinner(SPINNER_MESSAGE):
+                st.markdown(
+                    """
+                    **WARNING:**
+                    The 3D brain map animation takes a long time to compute. 
+                    The first time you run will take longer than subsequent runs
+                    (some preprocessing must occur).
+                    NOTE: Selecting "lh" or "rh" and "both" is currently broken.
+                    """
+                )
+                if st.button("Bombs away!"):
+
+                    if stc_genearted == False:
+                        stc = generate_stc(plot_epoch)
+                        stc_genearted = True
+
+                    components.html(
+                        animate_ui_3d_brain(plot_epoch,
+                                            view_selection,
+                                            stc,
+                                            hemi_selection,
+                                            vmin_3d_brain,
+                                            vmax_3d_brain),
+                        height=600,
+                        width=600
+                    )
+        else:
+            default_message(expander_3d_brain.section_name)
+
+    with expander_connectivity.plot_col:
+        if expander_connectivity.render:
+            with st.spinner(SPINNER_MESSAGE):
+                components.html(
+                    animate_ui_connectivity(
+                        epoch,
+                        connection_type,
+                        frame_steps,
+                        selected_pairs,
+                        colormap,
+                        cmin,
+                        cmax,
+                        conn_line_width
+                    ),
+                    height=600,
+                    width=600
+                )
+        else:
+            default_message(expander_connectivity.section_name)
+
+    with expander_connectivity_circle.plot_col:
+        if expander_connectivity_circle.render:
+            with st.spinner(SPINNER_MESSAGE):
+                components.html(
+                    animate_ui_connectivity_circle(
+                        epoch,
+                        connection_type,
+                        frame_steps,
+                        colormap,
+                        cmin,
+                        cmax,
+                        conn_circle_line_width,
+                        max_connections
+                    ),
+                    height=600,
+                    width=600
+                )
+        else:
+            default_message(expander_connectivity_circle.section_name)
 
 
 if __name__ == "__main__":
