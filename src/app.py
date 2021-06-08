@@ -7,6 +7,8 @@ import numpy as np
 import mne
 import scipy.io
 
+import os
+
 from simpl_eeg import (
     eeg_objects,
     raw_voltage,
