@@ -17,6 +17,8 @@ from simpl_eeg import (
 )
 
 import matplotlib.pyplot as plt
+import re
+import datetime
 
 SECTION_NAMES = {
     "raw": "Raw Voltage Values",
@@ -30,6 +32,32 @@ SECTION_NAMES = {
 SPINNER_MESSAGE = "Rendering..."
 
 st.set_page_config(layout="wide")
+
+@st.cache(show_spinner=False)
+def calculate_timeframe(start_time):
+    if re.match('^[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$', start_time):
+        start_time = start_time + ".00"
+    elif re.match('^[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$', start_time) == False:
+        if i == 0:
+            # change to throw error
+            print('start_time is in wrong format please use %H:%M:%S.%f or %H:%M:%S')
+        elif i == 1:
+            # change to throw error
+            print('end_time is in wrong format please use %H:%M:%S.%f or %H:%M:%S')
+
+    start = datetime.datetime.strptime(start_time, '%H:%M:%S.%f')
+    zero = datetime.datetime.strptime('00:00:00.00', '%H:%M:%S.%f')
+    
+    return (start-zero).total_seconds()
+
+@st.cache(show_spinner=False)
+def animate_ui_3d_head(epoch, colormap, vmin, vmax):
+    return topomap_3d_head.animate_3d_head(
+        epoch,
+        colormap=colormap,
+        color_min=vmin,
+        color_max=vmax
+    )
 
 
 @st.cache(show_spinner=False)
@@ -54,8 +82,19 @@ def animate_ui_3d_head(epoch, colormap, vmin, vmax):
 
 
 @st.cache(show_spinner=False)
-def animate_ui_3d_brain(epoch, view_selection):
-    anim = topomap_3d_brain.animate_matplot_brain(epoch, views=view_selection)
+def generate_stc(epoch):
+    fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
+    return (topomap_3d_brain.create_inverse_solution(epoch, fwd))
+
+
+@st.cache(show_spinner=False)
+def animate_ui_3d_brain(epoch, view_selection, stc, hemi, cmin, cmax):
+    anim = topomap_3d_brain.animate_matplot_brain(epoch,
+                                                  views=view_selection,
+                                                  stc = stc,
+                                                  hemi = hemi,
+                                                  cmin = cmin,
+                                                  cmax = cmax)
     return anim.to_jshtml()
 
 
@@ -135,6 +174,13 @@ def main():
     Populate and display the streamlit user interface
     """
 
+    # Should retrieve contents of folder but is currently broken
+    # directory_contents = os.listdir("data")
+    # experiment_list = []
+    # for item in directory_contents:
+    #     if os.path.isdir(item):
+    #         experiment_list.append(item)
+
     st.sidebar.header("Visualize your EEG data based on the following options")
     experiment_num = st.sidebar.selectbox(
         "Select experiment",
@@ -152,11 +198,12 @@ def main():
         ["Epoch", "Time"]
     )
     if time_select == "Time":
-        start_second = st.sidebar.number_input(
-            "Custom impact second",
-            value=5,
-            min_value=1
+        start_time = st.sidebar.text_input(
+            "Custom impact time",
+            value="00:00:05.00",
+            max_chars=11
         )
+        start_second = int(calculate_timeframe(start_time))
         epoch_num = 0
     else:
         start_second = None
@@ -191,6 +238,8 @@ def main():
         start_second=start_second
     )
     epoch_obj.set_nth_epoch(epoch_num)
+
+    stc_genearted = False
 
     events = epoch_obj.data.events
     epoch = epoch_obj.epoch
@@ -274,13 +323,38 @@ def main():
         view_options = [
             "lat",
             "dor",
-            "fro"
+            "fro",
+            "med",
+            "ros",
+            "cau",
+            "ven",
+            "par",
         ]
         view_selection = st.multiselect(
             "Select view",
             view_options,
             default=["lat"]
         )
+        hemi_options = [
+            "lh",
+            "rh",
+            "both"
+        ]
+        hemi_selection = st.selectbox(
+            "Select brain hemi",
+            hemi_options,
+            index = 0
+        )
+        vmin_3d_brain = st.number_input(
+            "Minimum Voltage (uV)",
+            value=-5.0
+        )
+        vmax_3d_brain = st.number_input(
+            "Maximum Voltage (uV)",
+            value=5.0,
+            min_value=vmin_3d_brain
+        )
+
 
     with expander_connectivity.widget_col:
 
@@ -414,12 +488,24 @@ def main():
                     """
                     **WARNING:**
                     The 3D brain map animation takes a long time to compute. 
-                    Are you sure you want to run it?
+                    The first time you run will take longer than subsequent runs
+                    (some preprocessing must occur).
+                    NOTE: Selecting "lh" or "rh" and "both" is currently broken.
                     """
                 )
                 if st.button("Bombs away!"):
+
+                    if stc_genearted == False:
+                        stc = generate_stc(plot_epoch)
+                        stc_genearted = True
+
                     components.html(
-                        animate_ui_3d_brain(plot_epoch, view_selection),
+                        animate_ui_3d_brain(plot_epoch,
+                                            view_selection,
+                                            stc,
+                                            hemi_selection,
+                                            vmin_3d_brain,
+                                            vmax_3d_brain),
                         height=600,
                         width=600
                     )
