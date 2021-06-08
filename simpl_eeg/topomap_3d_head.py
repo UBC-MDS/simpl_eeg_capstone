@@ -182,9 +182,7 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
                     opacity=1,
                 )
                 ,
-                name=str(
-                    k
-                ),  # you need to name the frame for the animation to behave properly
+                name=epoch.times[k],  # you need to name the frame for the animation to behave properly
             )
             for k in df["time"]
         ]
@@ -233,7 +231,7 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
             "steps": [
                 {
                     "args": [[f.name], frame_args(0)],
-                    "label": f.name,
+                    "label": f.name + "(s)",
                     "method": "animate",
                 }
                 for k, f in enumerate(fig.frames)
