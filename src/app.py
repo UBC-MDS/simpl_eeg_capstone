@@ -369,7 +369,8 @@ def main():
                     show_scrollbars=False,
                     events=np.array(events),
                     scalings=scaling,
-                    noise_cov=noise_cov
+                    noise_cov=noise_cov,
+                    event_id=epoch.event_id,
                 )
             )
         else:
