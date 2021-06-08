@@ -227,6 +227,12 @@ def main():
     #### WIDGETS ####
     with expander_raw.widget_col:
         st.title("")
+        noise_select = st.checkbox("Whiten with noise covarience")
+        noise_cov = mne.compute_covariance(
+            epoch,
+            tmax=tmax
+        ) if noise_select else None
+
         auto_scale = st.checkbox("Use automatic scaling", value=True)
         if auto_scale:
             scaling = "auto"
@@ -237,7 +243,10 @@ def main():
                 max_value=100,
                 value=20,
             )
-            scaling = scaling * 1e-6
+            if noise_select:
+                scaling = scaling * 1e-1
+            else:
+                scaling = scaling * 1e-6
 
     with expander_2d_head.widget_col:
         vmin_2d_head = st.number_input(
@@ -341,7 +350,6 @@ def main():
         )
 
     #### PLOTS ####
-
     default_message = lambda name: st.markdown(
             """
                 \n
@@ -360,7 +368,8 @@ def main():
                     epoch,
                     show_scrollbars=False,
                     events=np.array(events),
-                    scalings=scaling
+                    scalings=scaling,
+                    noise_cov=noise_cov
                 )
             )
         else:
