@@ -62,6 +62,7 @@ class Epochs:
         epochs = mne.Epochs(
             self.eeg_file.raw,
             events,
+            event_id={str(i[2])+" seconds": i[2] for i in events},
             tmin=tmin,
             tmax=tmax,
             preload=True,
