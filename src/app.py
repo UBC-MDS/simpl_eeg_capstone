@@ -174,18 +174,30 @@ def main():
     Populate and display the streamlit user interface
     """
 
-    # Should retrieve contents of folder but is currently broken
-    # directory_contents = os.listdir("data")
-    # experiment_list = []
-    # for item in directory_contents:
-    #     if os.path.isdir(item):
-    #         experiment_list.append(item)
+    st.header("Visualize your EEG data")
+    st.markdown("""
+    Select the figures you wish to see in the sidebar to the left and they will render in the dropdowns below. 
+    Settings that will be applied to each of the plots such as the timeframe to plot and color scheme can be specified in the sidebar.
+    Individual settings for each of the plots can be changed in their respective dropdowns.
+    """)
 
-    st.sidebar.header("Visualize your EEG data based on the following options")
+    st.sidebar.header("Global Settings")
+
+    render_options = list(SECTION_NAMES.values())
+
+    render_list = st.sidebar.multiselect(
+        "Select figures to render",
+        render_options,
+        default=[
+            render_options[0]
+        ]
+    )
+
     experiment_num = st.sidebar.selectbox(
         "Select experiment",
-        ["109", "927", "1122"]
+        [ name for name in os.listdir("data/") if os.path.isdir(os.path.join("data", name)) ]
     )
+
 
     frame_steps = st.sidebar.number_input(
         "Number of timesteps per frame",
@@ -246,15 +258,6 @@ def main():
     plot_epoch = epoch_obj.skip_n_steps(frame_steps)
 
     # Create sections
-    render_options = list(SECTION_NAMES.values())
-
-    render_list = st.sidebar.multiselect(
-        "Select figures to render",
-        render_options,
-        default=[
-            render_options[0]
-        ]
-    )
     class Section:
         def __init__(self, name, render=False, expand=False):
             self.section_name = SECTION_NAMES[name]
