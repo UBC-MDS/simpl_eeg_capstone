@@ -225,6 +225,20 @@ def main():
     expander_connectivity_circle = Section("connectivity_circle")
 
     #### WIDGETS ####
+    with expander_raw.widget_col:
+        st.title("")
+        auto_scale = st.checkbox("Use automatic scaling", value=True)
+        if auto_scale:
+            scaling = "auto"
+        else:
+            scaling = st.slider(
+                "Adjust scale",
+                min_value=1,
+                max_value=100,
+                value=20,
+            )
+            scaling = scaling * 1e-6
+
     with expander_2d_head.widget_col:
         vmin_2d_head = st.number_input(
             "Minimum Voltage (uV)",
@@ -345,7 +359,8 @@ def main():
                 raw_voltage.plot_voltage(
                     epoch,
                     show_scrollbars=False,
-                    events=np.array(events)
+                    events=np.array(events),
+                    scalings=scaling
                 )
             )
         else:
@@ -392,7 +407,7 @@ def main():
                     Are you sure you want to run it?
                     """
                 )
-                if st.button("Bomb's away!"):
+                if st.button("Bombs away!"):
                     components.html(
                         animate_ui_3d_brain(plot_epoch, view_selection),
                         height=600,
