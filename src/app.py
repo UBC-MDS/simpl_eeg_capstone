@@ -277,9 +277,10 @@ def main():
                 self.plot_col, self.widget_col = st.beta_columns((3, 1))
 
             self.button = False
+            self.plot = self.plot_col.empty()
 
         def export_button(self, file_type="mp4"):
-            self.export = st.button(
+            self.export = self.widget_col.button(
                 "Export",
                 key=self.section_name,
                 help="Export "+file_type+" to the `simpl_eeg/exports` folder"
@@ -288,6 +289,45 @@ def main():
             folder = "exports"
             file_name = self.section_name.replace(" ", "_")+"_"+timestamp
             self.file_name = folder+"/"+file_name+"."+file_type
+
+        def save_svg(self):
+            self.plot.savefig(self.file_name)
+
+        def save_matplotlib_mp4(self):
+            FFwriter = animation.FFMpegWriter()
+            self.plot.save(self.file_name, writer = FFwriter, fps=10)
+
+        def save_pyplot_mp4(self):
+            return None
+
+        def pyplot_plot(self):
+            self.plot_col.pyplot(self.plot)
+        
+        def component_plot(self):
+            with self.plot_col:
+                components.html(self.plot.to_jshtml(), height=600, width=700)
+        
+        def plotly_plot(self):
+            self.plot_col.plotly_chart(self.plot)
+        
+        def render_plot(self, plot_fun):
+            self.plot = plot_fun()
+        
+        def export(self):
+            return None
+
+        def default_message(self):
+            self.plot = st.empty()
+            with self.plot_col:
+                st.markdown(
+                    """
+                    \n
+                    **Instructions**
+                    \n
+                    Select your customizations,
+                    then add "%s" to the list of figures to render on the sidebar**
+                    """ % self.section_name
+                )
 
     expander_raw = Section("raw", render=False)
     expander_2d_head = Section("2d_head")
@@ -447,154 +487,138 @@ def main():
         )
 
     #### PLOTS ####
-    default_message = lambda name: st.markdown(
-        """
-            \n
-            **Instructions**
-            \n
-            Select your customizations,
-            then add "%s" to the list of figures to render on the sidebar**
-        """ % name
-    )
 
-
-    def render_plot(section, render_fun, export_fun, format="mp4", **kwargs):
-
-        if section.render:
-
-            # add plot
-            with section.plot_col:
-                with st.spinner(SPINNER_MESSAGE):
-                    plot = render_fun()
-
-            # add export button
-            with section.widget_col:
-                section.export_button(format)
-
-            # export plot
-            if section.export:
-                with section.expander:
-                    export_fun(plot, section.file_name)
-                    message = st.success("Your file was saved: "+section.file_name)
-                    time.sleep(10)
-                    message.empty()
-        else:
-
-            # write default message if plot not selected to render
-            with section.plot_col:
-                default_message(section.section_name)
-
-    def save_svg(plot, file_name):
-        plot.savefig(file_name)
-
-    def save_matplotlib_mp4(plot, file_name):
-        FFwriter = animation.FFMpegWriter()
-        plot.save(file_name, writer = FFwriter, fps=10)
-
-    def save_pyplot_mp4(plot, file_name):
-        return None
-
-    pyplot_plot = lambda plot: st.pyplot(plot)
-    component_plot = lambda plot: components.html(plot.to_jshtml(), height=600, width=700)
-    plotly_plot = lambda plot: st.plotly_chart(plot)
-
-    def render_raw():
-        plot = raw_voltage.plot_voltage(
-                    epoch,
-                    show_scrollbars=False,
-                    events=np.array(events),
-                    scalings=scaling,
-                    noise_cov=noise_cov,
-                    event_id=epoch.event_id,
-        )
-        pyplot_plot(plot)
-        return plot
-
-    render_plot(expander_raw, render_raw, save_svg, format="svg")
-
-    def render_2d_head():
-        plot = animate_ui_2d_head(
-            plot_epoch,
-            colormap,
-            vmin_2d_head,
-            vmax_2d_head
-        )
-        component_plot(plot)
-        return plot
-
-    render_plot(expander_2d_head, render_2d_head, save_matplotlib_mp4, format="mp4")
-
-    def render_3d_head():
-        plot = animate_ui_3d_head(
-                plot_epoch,
-                colormap,
-                vmin_3d_head,
-                vmax_3d_head
+    if expander_raw.render:
+        expander_raw.render_plot(
+            lambda: raw_voltage.plot_voltage(
+                        epoch,
+                        show_scrollbars=False,
+                        events=np.array(events),
+                        scalings=scaling,
+                        noise_cov=noise_cov,
+                        event_id=epoch.event_id,
             )
-        plotly_plot(plot)
-        return plot
-
-    render_plot(expander_3d_head, render_3d_head, save_pyplot_mp4, format="mp4")
-
-    def render_brain():
-        plot = st.empty()
-        st.markdown(
-            """
-            **WARNING:**
-            The 3D brain map animation takes a long time to compute. 
-            The first time you run will take longer than subsequent runs
-            (some preprocessing must occur).
-            NOTE: Selecting "lh" or "rh" and "both" is currently broken.
-            """
         )
-        if st.button("Bombs away!"):
-            if stc_generated is False:
-                stc = generate_stc(plot_epoch)
-                stc_generated = True
+        expander_raw.pyplot_plot()
 
-            plot = animate_ui_3d_brain(plot_epoch,
-                                    view_selection,
-                                    stc,
-                                    hemi_selection,
-                                    vmin_3d_brain,
-                                    vmax_3d_brain),
-            component_plot(plot)
-        return plot
+        # add export button
+        expander_raw.export_button("svg")
 
-    render_plot(expander_3d_brain, render_brain, save_matplotlib_mp4, format="mp4")
+        # export plot
+        if expander_raw.export:
+            expander_raw.save_svg()
+    else:
+        expander_raw.default_message()
 
-    def render_connectivity():
-        plot =  animate_ui_connectivity(
-            epoch,
-            connection_type,
-            frame_steps,
-            selected_pairs,
-            colormap,
-            cmin,
-            cmax,
-            conn_line_width
-        )
-        component_plot(plot)
-        return plot
+    # if expander_2d_head.render:
+    #     # add plot
+    #     with expander_2d_head.plot_col:
+    #         plot = animate_ui_2d_head(
+    #             plot_epoch,
+    #             colormap,
+    #             vmin_2d_head,
+    #             vmax_2d_head
+    #         )
+    #         component_plot(plot)
+    #
+    #     # add export button
+    #     with expander_2d_head.widget_col:
+    #         expander_2d_head.export_button("mp4")
+    #
+    #     # export plot
+    #     if expander_2d_head.export:
+    #         with expander_2d_head.expander:
+    #             save_svg(plot, expander_2d_head.file_name)
+    #             message = st.success("Your file was saved: "+expander_2d_head.file_name)
+    #             time.sleep(5)
+    #             message.empty()
+    #     else:
+    #         expander_2d_head.default_message()
 
-    render_plot(expander_connectivity, render_connectivity, save_matplotlib_mp4, format="mp4")
+    # def render_2d_head():
+    #     plot = animate_ui_2d_head(
+    #         plot_epoch,
+    #         colormap,
+    #         vmin_2d_head,
+    #         vmax_2d_head
+    #     )
+    #     component_plot(plot)
+    #     return plot
 
-    def render_connectivity_circle():
-        plot = animate_ui_connectivity_circle(
-            epoch,
-            connection_type,
-            frame_steps,
-            colormap,
-            cmin,
-            cmax,
-            conn_circle_line_width,
-            max_connections
-        )
-        components.html(plot.to_jshtml(), height=600, width=700)
-        return plot
+    # render_plot(expander_2d_head, render_2d_head, save_matplotlib_mp4, format="mp4")
 
-    render_plot(expander_connectivity_circle, render_connectivity_circle, save_matplotlib_mp4, format="mp4")
+    # def render_3d_head():
+    #     plot = animate_ui_3d_head(
+    #             plot_epoch,
+    #             colormap,
+    #             vmin_3d_head,
+    #             vmax_3d_head
+    #         )
+    #     plotly_plot(plot)
+    #     return plot
 
+    # render_plot(expander_3d_head, render_3d_head, save_pyplot_mp4, format="mp4")
+
+    # def render_brain():
+    #     plot = st.empty()
+    #     st.markdown(
+    #         """
+    #         **WARNING:**
+    #         The 3D brain map animation takes a long time to compute. 
+    #         The first time you run will take longer than subsequent runs
+    #         (some preprocessing must occur).
+    #         NOTE: Selecting "lh" or "rh" and "both" is currently broken.
+    #         """
+    #     )
+    #     if st.button("Bombs away!"):
+    #         if stc_generated is False:
+    #             stc = generate_stc(plot_epoch)
+    #             stc_generated = True
+
+    #         plot = animate_ui_3d_brain(plot_epoch,
+    #                                 view_selection,
+    #                                 stc,
+    #                                 hemi_selection,
+    #                                 vmin_3d_brain,
+    #                                 vmax_3d_brain),
+    #         component_plot(plot)
+    #     return plot
+
+    # render_plot(expander_3d_brain, render_brain, save_matplotlib_mp4, format="mp4")
+
+    # def render_connectivity():
+    #     plot =  animate_ui_connectivity(
+    #         epoch,
+    #         connection_type,
+    #         frame_steps,
+    #         selected_pairs,
+    #         colormap,
+    #         cmin,
+    #         cmax,
+    #         conn_line_width
+    #     )
+    #     component_plot(plot)
+    #     return plot
+
+    # render_plot(expander_connectivity, render_connectivity, save_matplotlib_mp4, format="mp4")
+
+    # def render_connectivity_circle():
+    #     plot = animate_ui_connectivity_circle(
+    #         epoch,
+    #         connection_type,
+    #         frame_steps,
+    #         colormap,
+    #         cmin,
+    #         cmax,
+    #         conn_circle_line_width,
+    #         max_connections
+    #     )
+    #     components.html(plot.to_jshtml(), height=600, width=700)
+    #     return plot
+
+    # render_plot(expander_connectivity_circle, render_connectivity_circle, save_matplotlib_mp4, format="mp4")
+
+            
 
 if __name__ == "__main__":
     main()
