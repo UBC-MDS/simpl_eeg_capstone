@@ -64,12 +64,20 @@ def animate_ui_3d_head(epoch, colormap, vmin, vmax):
 
 
 @st.cache(show_spinner=False)
-def animate_ui_2d_head(epoch, colormap, vmin, vmax):
+def animate_ui_2d_head(epoch, colormap, vmin, vmax, mark,
+                       colorbar, timestamp, extrapolate, contours, sphere, res):
     anim = topomap_2d.animate_topomap_2d(
         epoch,
         colormap=colormap,
         cmin=vmin,
-        cmax=vmax
+        cmax=vmax,
+        mark=mark,
+        colorbar=colorbar,
+        timestamp=timestamp,
+        extrapolate=extrapolate,
+        contours=contours,
+        sphere = sphere,
+        res = res
     )
     return anim.to_jshtml()
 
@@ -324,6 +332,47 @@ def main():
             value=40.0,
             min_value=vmin_2d_head
         )
+        mark_options = [
+            "dot",
+            "r+",
+            "channel_name",
+            "none"
+        ]
+        mark_selection_2d = st.selectbox(
+            "Select view",
+            mark_options,
+            index = 0
+        )
+        colorbar_2d_headmap = st.checkbox("Include colorbar", value=True)
+        timestamps_2d_headmap = st.checkbox("Include timestamps", value=True)
+        extrapolate_options_2d = [
+            "head",
+            "local",
+            "box",
+        ]
+        extrapolate_2d = st.selectbox(
+            "Select extrapolation",
+            extrapolate_options_2d,
+            index = 0
+        )
+        contours_2d = st.number_input(
+            "Number of contours",
+            value=0,
+            min_value=0,
+            max_value=50
+        )
+        sphere_2d = st.number_input(
+            "Sphere size",
+            value=100,
+            min_value=80,
+            max_value=120
+        )
+        heat_res_2d = st.number_input(
+            "Heatmap resolution",
+            value=100,
+            min_value=1,
+            max_value=1000
+        )
 
     with expander_3d_head.widget_col:
         vmin_3d_head = st.number_input(
@@ -488,7 +537,14 @@ def main():
                         plot_epoch,
                         colormap,
                         vmin_2d_head,
-                        vmax_2d_head
+                        vmax_2d_head,
+                        mark_selection_2d,
+                        colorbar_2d_headmap,
+                        timestamps_2d_headmap,
+                        extrapolate_2d,
+                        contours_2d,
+                        sphere_2d,
+                        heat_res_2d
                     ),
                     height=600,
                     width=700
