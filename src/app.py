@@ -21,6 +21,7 @@ from simpl_eeg import (
 import matplotlib.pyplot as plt
 import re
 import datetime
+import time
 
 SECTION_NAMES = {
     "raw": "Raw Voltage Values",
@@ -451,20 +452,33 @@ def main():
             """ % name
         )
 
-    with expander_raw.plot_col:
-        if expander_raw.render:
-            expander_raw.plot = st.pyplot(
-                raw_voltage.plot_voltage(
-                    epoch,
-                    show_scrollbars=False,
-                    events=np.array(events),
-                    scalings=scaling,
-                    noise_cov=noise_cov,
-                    event_id=epoch.event_id,
-                )
-            )
-        else:
-            default_message(expander_raw.section_name)
+    if expander_raw.render:
+        plot = raw_voltage.plot_voltage(
+                epoch,
+                show_scrollbars=False,
+                events=np.array(events),
+                scalings=scaling,
+                noise_cov=noise_cov,
+                event_id=epoch.event_id,
+        )
+        expander_raw.plot_col.pyplot(plot)
+
+        download = expander_raw.widget_col.button(
+            "Export",
+            key=expander_raw.section_name,
+            help="Export svg to the `simpl_eeg/exports` folder"
+        )
+        if download:
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M%S")
+            folder = "exports"
+            file_name = expander_raw.section_name.replace(" ", "_")+"_"+timestamp
+            file_name = folder+"/"+file_name+".svg"
+            plot.savefig(file_name)
+            message = expander_raw.expander.success("Your file was saved: "+file_name)
+            time.sleep(2)
+            message.empty()
+    else:
+        default_message(expander_raw.section_name)
 
     with expander_2d_head.plot_col:
         if expander_2d_head.render:
