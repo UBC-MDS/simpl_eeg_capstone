@@ -36,7 +36,29 @@ import matplotlib.animation as animation
 #     else:
 #         plt.text(-35, -130, 'time: {}'.format(tstamp) + 's', fontsize=10, color = 'white')
         
+def calculate_cbar_dims(img_width, img_figsize, img_height):
+    cbar_width = img_width * img_figsize * 0.65
 
+    if img_height == 2:
+        cbar_height = img_height * img_figsize * 0.65
+    else:
+        cbar_height = img_height * 2 * img_figsize * 0.65
+
+    if img_width == 1:
+        cbar_height = cbar_height * (img_width * 1)
+        cbar_width = img_width * img_figsize * 1.2
+    elif img_width >= 3 and img_width < 5:
+        cbar_height = cbar_height * (img_width * 0.5)
+        cbar_width = img_width * img_figsize * 0.57
+    elif img_width >= 5:
+        cbar_height = cbar_height * (img_width * 0.4)
+        cbar_width = img_width * img_figsize * 0.45
+    
+    return cbar_width, cbar_height
+    
+    
+    
+    
 def create_fsaverage_forward(epoch, **kwargs):
     """
     A forward model is an estimation of the potential or field distribution for a known source
@@ -440,9 +462,14 @@ def plot_topomap_3d_brain(
 
         img_width = len(views)
         img_height = len(brain_hemi)
+        
+        if img_width == 1:
+            fig_dims = img_height * img_figsize
+        else:
+            fig_dims = img_width * img_figsize
 
         base_fig, ax = plt.subplots(
-            figsize=(img_width * img_figsize, img_width * img_figsize), facecolor="black")
+            figsize=(fig_dims, fig_dims), facecolor="black")
         plt.axis('off')
 
         add_colorbar = False
@@ -493,24 +520,10 @@ def plot_topomap_3d_brain(
 
         # Generate dummy colorbar to move to the main figure
         if add_colorbar:
-            #cbar_size = base_fig.get_size_inches()[0]/2
+            
+            cbar_width, cbar_height = calculate_cbar_dims(img_width, img_figsize, img_height)
 
-            cbar_width = img_width * img_figsize * 0.65
-
-            if img_height == 2:
-                cbar_height = img_height * img_figsize * 0.65
-            else:
-                cbar_height = img_height * 2 * img_figsize * 0.65
-
-            if img_width >= 3:
-                cbar_height = cbar_height * (img_width * 0.5)
-                cbar_width = img_width * img_figsize * 0.85
-
-            elif img_width >= 5:
-                cbar_height = cbar_height * (img_width * 0.30)
-                cbar_width = img_width * img_figsize * 0.4
-
-            fig = plt.figure(figsize=(img_width * img_figsize * 0.65, cbar_height))
+            fig = plt.figure(figsize=(cbar_width, cbar_height))
             make_plot(figure=fig, hemi='lh', views='fro', colorbar=True)
             move_axes(fig.axes[1], base_fig)
 
@@ -732,8 +745,8 @@ def animate_matplot_brain(
                      cbar = colorbar
                      )
             
-            # if timestamp:
-            #     add_timestamp(frame, 0, 0)
+            if timestamp:
+                add_timestamp(frame, 0, 0)
 
             return[fig]
         
@@ -755,7 +768,7 @@ def animate_matplot_brain(
         else:
             add_colorbar = 0
 
-        if views == 'lh' or views == 'rh':
+        if hemi == 'lh' or hemi == 'rh':
             img_height = 1
         else:
             img_height = 2
@@ -767,20 +780,7 @@ def animate_matplot_brain(
         if add_colorbar:
             #cbar_size = base_fig.get_size_inches()[0]/2
 
-            cbar_width = img_width * img_figsize * 0.65
-
-            if img_height == 2:
-                cbar_height = img_height * img_figsize * 0.65
-            else:
-                cbar_height = img_height * 2 * img_figsize * 0.65
-
-            if img_width >= 3:
-                cbar_height = cbar_height * (img_width * 0.5)
-                cbar_width = img_width * img_figsize * 0.85
-
-            elif img_width >= 5:
-                cbar_height = cbar_height * (img_width * 0.30)
-                cbar_width = img_width * img_figsize * 0.4
+            cbar_width, cbar_height = calculate_cbar_dims(img_width, img_figsize, img_height)
                 
             def copy_axes(ax, fig):
                 old_fig = ax.figure
@@ -788,7 +788,7 @@ def animate_matplot_brain(
                 fig.axes.append(ax)
                 fig.add_axes(ax)
             
-            cbar_fig = plt.figure(figsize=(img_width * img_figsize * 0.65, cbar_height))
+            cbar_fig = plt.figure(figsize=(cbar_width, cbar_height))
             plotting(figure=cbar_fig, hemi='lh', views='fro', cbar=True)
 
         def animate(frame):
@@ -804,9 +804,6 @@ def animate_matplot_brain(
             
             if add_colorbar:
                 copy_axes(cbar_fig.axes[1], brain)
-            
-#             if timestamp:
-#                 add_timestamp(frame, 0, 0)
 
             # Convert plot to image/frame
             brain.canvas.draw()
@@ -815,11 +812,15 @@ def animate_matplot_brain(
             plot_image = plot_image.reshape(
                 brain.canvas.get_width_height()[::-1] + (3,))
 
-            if (img_width > 2):
-                cropped_height = round(
-                    plot_image.shape[0] * (img_height / img_width) + plot_image.shape[0] * 0.07)
-                cropped_height = plot_image.shape[1] - cropped_height
+            cropped_height = round(
+                plot_image.shape[0] * (img_height / img_width))
+            cropped_height = plot_image.shape[1] - cropped_height
+
+            if img_width == 1:
+                plot_image = plot_image[cropped_height:, 0:round(plot_image.shape[1]*0.5), :]
+            else:
                 plot_image = plot_image[cropped_height:, :, :]
+
 
             # display new image
             ax.imshow(plot_image)
