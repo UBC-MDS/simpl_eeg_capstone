@@ -251,10 +251,21 @@ def main():
         max_value=10.0
     )
 
-    colormap = st.sidebar.selectbox(
+    col1, col2 = st.sidebar.beta_columns((2,1))
+    colormap = col1.selectbox(
         "Select Colour Scheme",
-        ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
+        ["RdBu_r", "PiYG", "PuOr", "BrBG", "Spectral", "turbo"],
+        format_func=lambda name: name.capitalize()
     )
+
+    with col2:
+        fig = plt.figure()
+        ax = fig.add_subplot(1, 1, 1)
+        mat = np.arange(100).reshape((10, 10))
+        ax.imshow(mat, cmap=colormap)
+        fig.patch.set_alpha(0)
+        plt.axis("off")
+        st.pyplot(fig)
 
     # Create epoch
     epoch_obj = generate_epoch(
