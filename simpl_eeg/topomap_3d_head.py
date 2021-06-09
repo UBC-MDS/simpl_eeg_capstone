@@ -310,7 +310,7 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
 
     # change the raw epoched data to a dataframe
     df = epoch.to_data_frame().groupby("time").mean().reset_index()
-    df = df[df["time"] == time_stamp]
+    nb_frame=len(df)
 
     # get the standard montage coordinates
     standard_montage, standard_coord = get_standard_coord()
@@ -321,7 +321,8 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
     # get the coordinated of the electrodes in the raw data
     node_coord = get_eeg_node(epoch, standard_montage)
     node_df = get_node_dataframe(epoch, standard_montage)
-    
+
+    # generate the animated plot
     fig = go.Figure(
                 data=go.Mesh3d(
                     x=np.array(standard_coord)[:, 0],
@@ -332,14 +333,16 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
                     cmin=color_min,
                     cmax=color_max,
                     intensity=interpolated_time(
-                        df, channel_names, node_coord, x, y, z, time_stamp
+                        df, channel_names, node_coord, x, y, z, k
                     ),
                     intensitymode="vertex",
                     alphahull=1,
                     opacity=1,
                 )
+                
     )
-    
+
+    # add the 3D scatter plot for the electrodes of the raw data
     fig.add_scatter3d(
         connectgaps=True,
         x=node_df["X"],
@@ -352,14 +355,15 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
         textfont=dict(family="sans serif", size=18),
     )
     
+
     fig.update_layout(
         title=plot_title,
         width=1000,
         height=600,
         scene=dict(
             aspectratio=dict(x=1.5, y=1.5, z=1),
-        ),)
-    
+        ),
+    )
     return fig
 
 @gif.frame
