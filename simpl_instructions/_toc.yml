@@ -1,4 +1,10 @@
 # Table of content
 # Learn more at https://jupyterbook.org/customize/toc.html
 #
-- file: instructions
+- file: installation
+- file: introduction
+- file: raw_voltage
+- file: connectivity
+- file: topo_2d
+- file: topo_3d_brain
+- file: topo_3d_head
