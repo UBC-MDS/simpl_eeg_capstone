@@ -149,6 +149,7 @@ def plot_topomap_2d(epoch,
     if mark == 'channel_name':
         names_value = epoch.ch_names
         show_names_value = True
+        sensor_value = False
     if mark == 'none':
         sensor_value = False
 
