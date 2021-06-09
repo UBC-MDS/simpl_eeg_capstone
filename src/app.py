@@ -21,6 +21,7 @@ from simpl_eeg import (
 import matplotlib.pyplot as plt
 import re
 import datetime
+import time
 
 SECTION_NAMES = {
     "raw": "Raw Voltage Values",
@@ -269,7 +270,19 @@ def main():
             )
             with self.expander:
                 self.plot_col, self.widget_col = st.beta_columns((3, 1))
-            self.save_button = self.widget_col.button("test", key=self.section_name)
+
+            self.button = False
+
+        def download_button(self, file_type="mp4"):
+            self.download = st.button(
+                "Download",
+                key=self.section_name,
+                help="Download "+file_type+" to the `simpl_eeg/exports` folder"
+            )
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M%S")
+            folder = "exports"
+            file_name = self.section_name.replace(" ", "_")+"_"+timestamp
+            self.file_name = folder+"/"+file_name+"."+file_type
 
     expander_raw = Section("raw", render=False)
     expander_2d_head = Section("2d_head")
@@ -302,6 +315,8 @@ def main():
             else:
                 scaling = scaling * 1e-6
 
+        expander_raw.download_button("svg")
+
     with expander_2d_head.widget_col:
         vmin_2d_head = st.number_input(
             "Minimum Voltage (uV)",
@@ -312,6 +327,7 @@ def main():
             value=40.0,
             min_value=vmin_2d_head
         )
+        expander_2d_head.download_button()
 
     with expander_3d_head.widget_col:
         vmin_3d_head = st.number_input(
@@ -323,6 +339,7 @@ def main():
             value=40.0,
             min_value=vmin_3d_head
         )
+        expander_3d_head.download_button()
 
     with expander_3d_brain.widget_col:
         view_options = [
@@ -359,6 +376,7 @@ def main():
             value=5.0,
             min_value=vmin_3d_brain
         )
+        expander_3d_brain.download_button()
 
 
     with expander_connectivity.widget_col:
@@ -407,6 +425,8 @@ def main():
                 value=2
             )
 
+        expander_connectivity.download_button()
+
     with expander_connectivity_circle.widget_col:
 
         # Connection type and min/max value widgets
@@ -427,6 +447,7 @@ def main():
             max_value=len(epoch.ch_names)*len(epoch.ch_names),
             value=20
         )
+        expander_connectivity_circle.download_button()
 
     #### PLOTS ####
     default_message = lambda name: st.markdown(
@@ -440,20 +461,31 @@ def main():
             """ % name
         )
 
-    with expander_raw.plot_col:
-        if expander_raw.render:
-            expander_raw.plot = st.pyplot(
-                raw_voltage.plot_voltage(
+    expander_raw.plot = raw_voltage.plot_voltage(
                     epoch,
                     show_scrollbars=False,
                     events=np.array(events),
                     scalings=scaling,
                     noise_cov=noise_cov,
                     event_id=epoch.event_id,
-                )
             )
+
+    def render_plot(section, render_fun):
+        if section.render:
+            with section.plot_col:
+                render_fun(section.plot)
+            if section.download:
+                with section.expander:
+                    section.plot.savefig(section.file_name)
+                    st.balloons()
+                    message = st.success("Your file was saved: "+section.file_name)
+                    time.sleep(10)
+                    message.empty()
         else:
-            default_message(expander_raw.section_name)
+            with section.plot_col:
+                default_message(section.section_name)
+
+    render_plot(expander_raw, st.pyplot)
 
     with expander_2d_head.plot_col:
         if expander_2d_head.render:
