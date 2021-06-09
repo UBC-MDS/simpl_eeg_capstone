@@ -35,6 +35,14 @@ SECTION_NAMES = {
 SPINNER_MESSAGE = "Rendering..."
 
 st.set_page_config(layout="wide")
+st.markdown(
+    """
+    <style>
+        .streamlit-expanderHeader{font-size:120%;}
+        div[aria-expanded="true"]{
+            color: red;
+        }
+    </style>""", unsafe_allow_html=True)
 
 @st.cache(show_spinner=False)
 def calculate_timeframe(start_time):
@@ -50,8 +58,9 @@ def calculate_timeframe(start_time):
 
     start = datetime.datetime.strptime(start_time, '%H:%M:%S.%f')
     zero = datetime.datetime.strptime('00:00:00.00', '%H:%M:%S.%f')
-    
+
     return (start-zero).total_seconds()
+
 
 @st.cache(show_spinner=False)
 def animate_ui_3d_head(epoch, colormap, vmin, vmax):
@@ -224,6 +233,7 @@ def main():
         "Time selection type",
         ["Epoch", "Time"]
     )
+
     if time_select == "Time":
         start_time = col2.text_input(
             "Custom impact time",
