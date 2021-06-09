@@ -277,6 +277,7 @@ def main():
         format_func=lambda name: name.capitalize()
     )
 
+
     with col2:
         fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
@@ -312,6 +313,25 @@ def main():
             )
             with self.expander:
                 self.plot_col, self.widget_col = st.beta_columns((3, 1))
+
+        def export_button(self):
+            return self.widget_col.button(
+                "Export",
+                key=expander_raw.section_name,
+                help="Export to the `simpl_eeg/exports` folder"
+            )
+
+        def generate_file_name(self, file_type="html"):
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M%S")
+            folder = "exports"
+            file_name = self.section_name.replace(" ", "_")+"_"+timestamp
+            file_name = folder+"/"+file_name+"."+file_type
+
+            def success_message():
+                message = self.expander.success("Your file was saved: "+file_name)
+                time.sleep(2)
+                message.empty()
+            return file_name, success_message
 
     expander_raw = Section("raw", render=False)
     expander_2d_head = Section("2d_head")
@@ -517,15 +537,15 @@ def main():
 
     #### PLOTS ####
     default_message = lambda name: st.markdown(
-            """
-                \n
-                Select your customizations, 
-                then add "%s" to the list of figures to render on the sidebar.
-                \n
-                **WARNING: depending on your settings, rendering may take a while...**
-                \n
-            """ % name
-        )
+        """
+            \n
+            Select your customizations, 
+            then add "%s" to the list of figures to render on the sidebar.
+            \n
+            **WARNING: depending on your settings, rendering may take a while...**
+            \n
+        """ % name
+    )
 
     if expander_raw.render:
         plot = raw_voltage.plot_voltage(
@@ -538,28 +558,18 @@ def main():
         )
         expander_raw.plot_col.pyplot(plot)
 
-        download = expander_raw.widget_col.button(
-            "Export",
-            key=expander_raw.section_name,
-            help="Export svg to the `simpl_eeg/exports` folder"
-        )
-        if download:
-            timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M%S")
-            folder = "exports"
-            file_name = expander_raw.section_name.replace(" ", "_")+"_"+timestamp
-            file_name = folder+"/"+file_name+".svg"
+        export = expander_raw.export_button()
+        if export:
+            file_name, send_message = expander_raw.generate_file_name("svg")
             plot.savefig(file_name)
-            message = expander_raw.expander.success("Your file was saved: "+file_name)
-            time.sleep(2)
-            message.empty()
+            send_message()
     else:
         default_message(expander_raw.section_name)
 
     with expander_2d_head.plot_col:
         if expander_2d_head.render:
             with st.spinner(SPINNER_MESSAGE):
-                components.html(
-                    animate_ui_2d_head(
+                html_plot = animate_ui_2d_head(
                         plot_epoch,
                         colormap,
                         vmin_2d_head,
@@ -571,10 +581,15 @@ def main():
                         contours_2d,
                         sphere_2d,
                         heat_res_2d
-                    ),
+                    )
+                components.html(
+                    html_plot,
                     height=600,
                     width=700
                 )
+                Html_file= open("exports/test.html","w")
+                Html_file.write(html_plot)
+                Html_file.close()
         else:
             default_message(expander_2d_head.section_name)
 
