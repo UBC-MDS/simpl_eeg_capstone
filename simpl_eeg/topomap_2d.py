@@ -149,7 +149,6 @@ def plot_topomap_2d(epoch,
     if mark == 'channel_name':
         names_value = epoch.ch_names
         show_names_value = True
-        sensor_value = False
     if mark == 'none':
         sensor_value = False
 
@@ -305,11 +304,13 @@ def animate_topomap_2d(epoch,
 
     ms_between_frames = 1000 / frame_rate
 
+    fig, ax = plt.subplots()
+    
     if colorbar:
-        fig, ax = plt.subplots()
         ax_divider = make_axes_locatable(ax)
         cmid = (cmin+cmax)/2
         clim = dict(kind='value', lims=[cmin, cmid, cmax])
+        
 
     def animate(frame_number):
         fig.clear()
