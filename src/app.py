@@ -235,8 +235,8 @@ def main():
     if time_select == "Time":
         start_time = col2.text_input(
             "Custom impact time",
-            value="00:00:05.00",
-            max_chars=11
+            value="00:00:05",
+            max_chars=8
         )
         start_second = int(calculate_timeframe(start_time))
         epoch_num = 0
@@ -351,7 +351,7 @@ def main():
             "none"
         ]
         mark_selection_2d = st.selectbox(
-            "Select view",
+            "Select mark",
             mark_options,
             index = 0
         )
@@ -398,15 +398,24 @@ def main():
         )
 
     with expander_3d_brain.widget_col:
+        vmin_3d_brain = st.number_input(
+            "Minimum Voltage (uV)",
+            value=-5.0
+        )
+        vmax_3d_brain = st.number_input(
+            "Maximum Voltage (uV)",
+            value=5.0,
+            min_value=vmin_3d_brain
+        )
         view_option_dict = {
             "lat": "Lateral",
             "dor": "Dorsal",
             "fro": "Frontal",
-            "med": "med__",
-            "ros": "Ros__",
-            "cau": "Cau__",
-            "ven": "Ven__",
-            "par": "Par__",
+            "med": "Medial",
+            "ros": "Rostral",
+            "cau": "Caudal",
+            "ven": "Ventral",
+            "par": "Parietal",
         }
         view_selection = st.multiselect(
             "Select view",
@@ -414,7 +423,6 @@ def main():
             format_func=lambda key: view_option_dict[key],
             default=["lat"]
         )
-
         hemi_options_dict = {
             "lh": "Left",
             "rh": "Right",
@@ -425,17 +433,19 @@ def main():
             options=list(hemi_options_dict.keys()),
             format_func=lambda key: hemi_options_dict[key],
         )
-
-        vmin_3d_brain = st.number_input(
-            "Minimum Voltage (uV)",
-            value=-5.0
+        spacing_option = st.radio(
+            "Spacing type",
+            ["oct", "fro", "all"]
         )
-
-        vmax_3d_brain = st.number_input(
-            "Maximum Voltage (uV)",
-            value=5.0,
-            min_value=vmin_3d_brain
-        )
+        if spacing_option != "all":
+            spacing_amount = st.number_input(
+                "spacing amount",
+                value=5,
+                min_value=1
+            )
+            spacing_value = spacing_option + str(spacing_amount)
+        else:
+            spacing_value = spacing_option
 
     with expander_connectivity.widget_col:
 
@@ -592,7 +602,6 @@ def main():
                     The 3D brain map animation takes a long time to compute. 
                     The first time you run will take longer than subsequent runs
                     (some preprocessing must occur).
-                    NOTE: Selecting "lh" or "rh" and "both" is currently broken.
                     """
                 )
                 if st.button("Bombs away!"):
