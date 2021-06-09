@@ -21,6 +21,7 @@ from simpl_eeg import (
 import matplotlib.pyplot as plt
 import re
 import datetime
+import time
 
 SECTION_NAMES = {
     "raw": "Raw Voltage Values",
@@ -129,6 +130,16 @@ def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin
     )
     return anim.to_jshtml()
 
+@st.cache(show_spinner=False)
+def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
+    epoch_obj = eeg_objects.Epochs(
+        experiment_num,
+        tmin=-tmin,
+        tmax=tmax,
+        start_second=start_second
+    )
+    epoch_obj.set_nth_epoch(epoch_num)
+    return epoch_obj
 
 def get_shared_conn_widgets(epoch, frame_steps, key):
 
@@ -207,12 +218,13 @@ def main():
         min_value=0
     )
 
-    time_select = st.sidebar.radio(
+    col1, col2 = st.sidebar.beta_columns((1, 1))
+    time_select = col1.radio(
         "Time selection type",
         ["Epoch", "Time"]
     )
     if time_select == "Time":
-        start_time = st.sidebar.text_input(
+        start_time = col2.text_input(
             "Custom impact time",
             value="00:00:05.00",
             max_chars=11
@@ -221,7 +233,7 @@ def main():
         epoch_num = 0
     else:
         start_second = None
-        epoch_num = st.sidebar.selectbox(
+        epoch_num = col2.selectbox(
             "Epoch",
             [i for i in range(33)]
         )
@@ -229,13 +241,13 @@ def main():
     tmin = st.sidebar.number_input(
         "Seconds before impact",
         value=0.3,
-        min_value=0.0,
+        min_value=0.01,
         max_value=min(float(start_second), 10.0) if start_second else 10.0
     )
     tmax = st.sidebar.number_input(
         "Seconds after impact",
         value=0.7,
-        min_value=0.5,
+        min_value=0.01,
         max_value=10.0
     )
 
@@ -245,15 +257,15 @@ def main():
     )
 
     # Create epoch
-    epoch_obj = eeg_objects.Epochs(
+    epoch_obj = generate_epoch(
         experiment_num,
-        tmin=-tmin,
-        tmax=tmax,
-        start_second=start_second
+        tmin,
+        tmax,
+        start_second,
+        epoch_num
     )
-    epoch_obj.set_nth_epoch(epoch_num)
 
-    stc_genearted = False
+    stc_generated = False
 
     events = epoch_obj.data.events
     epoch = epoch_obj.epoch
@@ -440,20 +452,33 @@ def main():
             """ % name
         )
 
-    with expander_raw.plot_col:
-        if expander_raw.render:
-            expander_raw.plot = st.pyplot(
-                raw_voltage.plot_voltage(
-                    epoch,
-                    show_scrollbars=False,
-                    events=np.array(events),
-                    scalings=scaling,
-                    noise_cov=noise_cov,
-                    event_id=epoch.event_id,
-                )
-            )
-        else:
-            default_message(expander_raw.section_name)
+    if expander_raw.render:
+        plot = raw_voltage.plot_voltage(
+                epoch,
+                show_scrollbars=False,
+                events=np.array(events),
+                scalings=scaling,
+                noise_cov=noise_cov,
+                event_id=epoch.event_id,
+        )
+        expander_raw.plot_col.pyplot(plot)
+
+        download = expander_raw.widget_col.button(
+            "Export",
+            key=expander_raw.section_name,
+            help="Export svg to the `simpl_eeg/exports` folder"
+        )
+        if download:
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M%S")
+            folder = "exports"
+            file_name = expander_raw.section_name.replace(" ", "_")+"_"+timestamp
+            file_name = folder+"/"+file_name+".svg"
+            plot.savefig(file_name)
+            message = expander_raw.expander.success("Your file was saved: "+file_name)
+            time.sleep(2)
+            message.empty()
+    else:
+        default_message(expander_raw.section_name)
 
     with expander_2d_head.plot_col:
         if expander_2d_head.render:
@@ -500,9 +525,9 @@ def main():
                 )
                 if st.button("Bombs away!"):
 
-                    if stc_genearted == False:
+                    if stc_generated == False:
                         stc = generate_stc(plot_epoch)
-                        stc_genearted = True
+                        stc_generated = True
 
                     components.html(
                         animate_ui_3d_brain(plot_epoch,
