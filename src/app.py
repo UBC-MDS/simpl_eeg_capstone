@@ -200,19 +200,18 @@ def main():
         [ name for name in os.listdir("data/") if os.path.isdir(os.path.join("data", name)) ]
     )
 
-
     frame_steps = st.sidebar.number_input(
         "Number of timesteps per frame",
         value=50,
         min_value=0
     )
-
-    time_select = st.sidebar.radio(
+    col1, col2 = st.sidebar.beta_columns((1, 1))
+    time_select = col1.radio(
         "Time selection type",
         ["Epoch", "Time"]
     )
     if time_select == "Time":
-        start_time = st.sidebar.text_input(
+        start_time = col2.text_input(
             "Custom impact time",
             value="00:00:05.00",
             max_chars=11
@@ -221,7 +220,7 @@ def main():
         epoch_num = 0
     else:
         start_second = None
-        epoch_num = st.sidebar.selectbox(
+        epoch_num = col2.selectbox(
             "Epoch",
             [i for i in range(33)]
         )
@@ -270,6 +269,7 @@ def main():
             )
             with self.expander:
                 self.plot_col, self.widget_col = st.beta_columns((3, 1))
+            self.save_button = self.widget_col.button("test", key=self.section_name)
 
     expander_raw = Section("raw", render=False)
     expander_2d_head = Section("2d_head")
