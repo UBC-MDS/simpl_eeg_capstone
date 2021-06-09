@@ -157,7 +157,8 @@ def get_shared_conn_widgets(epoch, frame_steps, key):
     connection_type = st.selectbox(
         label,
         connectivity_methods,
-        key=label+key
+        key=label+key,
+        format_func=lambda name: name.replace("_", " ").capitalize()
     )
     default_cmin = -1.0
     default_cmax = 1.0
@@ -251,7 +252,7 @@ def main():
         max_value=10.0
     )
 
-    col1, col2 = st.sidebar.beta_columns((2,1))
+    col1, col2 = st.sidebar.beta_columns((2, 1))
     colormap = col1.selectbox(
         "Select Colour Scheme",
         ["RdBu_r", "PiYG", "PuOr", "BrBG", "Spectral", "turbo"],
@@ -348,41 +349,44 @@ def main():
         )
 
     with expander_3d_brain.widget_col:
-        view_options = [
-            "lat",
-            "dor",
-            "fro",
-            "med",
-            "ros",
-            "cau",
-            "ven",
-            "par",
-        ]
+        view_option_dict = {
+            "lat": "Lateral",
+            "dor": "Dorsal",
+            "fro": "Frontal",
+            "med": "med__",
+            "ros": "Ros__",
+            "cau": "Cau__",
+            "ven": "Ven__",
+            "par": "Par__",
+        }
         view_selection = st.multiselect(
             "Select view",
-            view_options,
+            options=list(view_option_dict.keys()),
+            format_func=lambda key: view_option_dict[key],
             default=["lat"]
         )
-        hemi_options = [
-            "lh",
-            "rh",
-            "both"
-        ]
+
+        hemi_options_dict = {
+            "lh": "Left",
+            "rh": "Right",
+            "both": "Both"
+        }
         hemi_selection = st.selectbox(
             "Select brain hemi",
-            hemi_options,
-            index = 0
+            options=list(hemi_options_dict.keys()),
+            format_func=lambda key: hemi_options_dict[key],
         )
+
         vmin_3d_brain = st.number_input(
             "Minimum Voltage (uV)",
             value=-5.0
         )
+
         vmax_3d_brain = st.number_input(
             "Maximum Voltage (uV)",
             value=5.0,
             min_value=vmin_3d_brain
         )
-
 
     with expander_connectivity.widget_col:
 
@@ -399,7 +403,8 @@ def main():
         pair_selection = st.selectbox(
             "Select node pair template",
             node_pair_options,
-            index=1
+            index=1,
+            format_func=lambda name: name.replace("_", " ").capitalize()
         )
 
         selected_pairs = []
