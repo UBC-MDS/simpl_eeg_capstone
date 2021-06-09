@@ -1,6 +1,5 @@
 
 from os import PRIO_PGRP
-import matplotlib
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -20,10 +19,8 @@ from simpl_eeg import (
 )
 
 import matplotlib.pyplot as plt
-import matplotlib.animation as animation
 import re
 import datetime
-import time
 
 SECTION_NAMES = {
     "raw": "Raw Voltage Values",
@@ -52,9 +49,8 @@ def calculate_timeframe(start_time):
 
     start = datetime.datetime.strptime(start_time, '%H:%M:%S.%f')
     zero = datetime.datetime.strptime('00:00:00.00', '%H:%M:%S.%f')
-
+    
     return (start-zero).total_seconds()
-
 
 @st.cache(show_spinner=False)
 def animate_ui_3d_head(epoch, colormap, vmin, vmax):
@@ -68,12 +64,13 @@ def animate_ui_3d_head(epoch, colormap, vmin, vmax):
 
 @st.cache(show_spinner=False)
 def animate_ui_2d_head(epoch, colormap, vmin, vmax):
-    return topomap_2d.animate_topomap_2d(
+    anim = topomap_2d.animate_topomap_2d(
         epoch,
         colormap=colormap,
         cmin=vmin,
         cmax=vmax
     )
+    return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
@@ -94,19 +91,18 @@ def generate_stc(epoch):
 
 @st.cache(show_spinner=False)
 def animate_ui_3d_brain(epoch, view_selection, stc, hemi, cmin, cmax):
-    return topomap_3d_brain.animate_matplot_brain(
-        epoch,
-        views=view_selection,
-        stc = stc,
-        hemi = hemi,
-        cmin = cmin,
-        cmax = cmax
-    )
+    anim = topomap_3d_brain.animate_matplot_brain(epoch,
+                                                  views=view_selection,
+                                                  stc = stc,
+                                                  hemi = hemi,
+                                                  cmin = cmin,
+                                                  cmax = cmax)
+    return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
 def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, vmin, vmax, line_width):
-    return connectivity.animate_connectivity(
+    anim = connectivity.animate_connectivity(
         epoch,
         connection_type,
         steps=steps,
@@ -116,11 +112,12 @@ def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, 
         vmax=vmax,
         line_width=line_width,
     )
+    return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
 def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin, vmax, line_width, max_connections):
-    return connectivity.animate_connectivity_circle(
+    anim = connectivity.animate_connectivity_circle(
         epoch,
         connection_type,
         steps=steps,
@@ -130,6 +127,7 @@ def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin
         line_width=line_width,
         max_connections=max_connections
     )
+    return anim.to_jshtml()
 
 @st.cache(show_spinner=False)
 def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
@@ -141,7 +139,6 @@ def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
     )
     epoch_obj.set_nth_epoch(epoch_num)
     return epoch_obj
-
 
 def get_shared_conn_widgets(epoch, frame_steps, key):
 
@@ -213,11 +210,13 @@ def main():
         [ name for name in os.listdir("data/") if os.path.isdir(os.path.join("data", name)) ]
     )
 
+
     frame_steps = st.sidebar.number_input(
         "Number of timesteps per frame",
         value=50,
         min_value=0
     )
+
     col1, col2 = st.sidebar.beta_columns((1, 1))
     time_select = col1.radio(
         "Time selection type",
@@ -241,13 +240,13 @@ def main():
     tmin = st.sidebar.number_input(
         "Seconds before impact",
         value=0.3,
-        min_value=0.1,
+        min_value=0.01,
         max_value=min(float(start_second), 10.0) if start_second else 10.0
     )
     tmax = st.sidebar.number_input(
         "Seconds after impact",
         value=0.7,
-        min_value=0.1,
+        min_value=0.01,
         max_value=10.0
     )
 
@@ -256,10 +255,17 @@ def main():
         ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
     )
 
+    # Create epoch
+    epoch_obj = generate_epoch(
+        experiment_num,
+        tmin,
+        tmax,
+        start_second,
+        epoch_num
+    )
+
     stc_generated = False
 
-    # Create epoch
-    epoch_obj = generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num)
     events = epoch_obj.data.events
     epoch = epoch_obj.epoch
     plot_epoch = epoch_obj.skip_n_steps(frame_steps)
@@ -275,59 +281,6 @@ def main():
             )
             with self.expander:
                 self.plot_col, self.widget_col = st.beta_columns((3, 1))
-
-            self.button = False
-            self.plot = self.plot_col.empty()
-
-        def export_button(self, file_type="mp4"):
-            self.export = self.widget_col.button(
-                "Export",
-                key=self.section_name,
-                help="Export "+file_type+" to the `simpl_eeg/exports` folder"
-            )
-            timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M%S")
-            folder = "exports"
-            file_name = self.section_name.replace(" ", "_")+"_"+timestamp
-            self.file_name = folder+"/"+file_name+"."+file_type
-
-        def save_svg(self):
-            self.plot.savefig(self.file_name)
-
-        def save_matplotlib_mp4(self):
-            FFwriter = animation.FFMpegWriter()
-            self.plot.save(self.file_name, writer = FFwriter, fps=10)
-
-        def save_pyplot_mp4(self):
-            return None
-
-        def pyplot_plot(self):
-            self.plot_col.pyplot(self.plot)
-        
-        def component_plot(self):
-            with self.plot_col:
-                components.html(self.plot.to_jshtml(), height=600, width=700)
-        
-        def plotly_plot(self):
-            self.plot_col.plotly_chart(self.plot)
-        
-        def render_plot(self, plot_fun):
-            self.plot = plot_fun()
-        
-        def export(self):
-            return None
-
-        def default_message(self):
-            self.plot = st.empty()
-            with self.plot_col:
-                st.markdown(
-                    """
-                    \n
-                    **Instructions**
-                    \n
-                    Select your customizations,
-                    then add "%s" to the list of figures to render on the sidebar**
-                    """ % self.section_name
-                )
 
     expander_raw = Section("raw", render=False)
     expander_2d_head = Section("2d_head")
@@ -487,138 +440,134 @@ def main():
         )
 
     #### PLOTS ####
-
-    if expander_raw.render:
-        expander_raw.render_plot(
-            lambda: raw_voltage.plot_voltage(
-                        epoch,
-                        show_scrollbars=False,
-                        events=np.array(events),
-                        scalings=scaling,
-                        noise_cov=noise_cov,
-                        event_id=epoch.event_id,
-            )
+    default_message = lambda name: st.markdown(
+            """
+                \n
+                Select your customizations, 
+                then add "%s" to the list of figures to render on the sidebar.
+                \n
+                **WARNING: depending on your settings, rendering may take a while...**
+                \n
+            """ % name
         )
-        expander_raw.pyplot_plot()
 
-        # add export button
-        expander_raw.export_button("svg")
+    with expander_raw.plot_col:
+        if expander_raw.render:
+            expander_raw.plot = st.pyplot(
+                raw_voltage.plot_voltage(
+                    epoch,
+                    show_scrollbars=False,
+                    events=np.array(events),
+                    scalings=scaling,
+                    noise_cov=noise_cov,
+                    event_id=epoch.event_id,
+                )
+            )
+        else:
+            default_message(expander_raw.section_name)
 
-        # export plot
-        if expander_raw.export:
-            expander_raw.save_svg()
-    else:
-        expander_raw.default_message()
+    with expander_2d_head.plot_col:
+        if expander_2d_head.render:
+            with st.spinner(SPINNER_MESSAGE):
+                components.html(
+                    animate_ui_2d_head(
+                        plot_epoch,
+                        colormap,
+                        vmin_2d_head,
+                        vmax_2d_head
+                    ),
+                    height=600,
+                    width=700
+                )
+        else:
+            default_message(expander_2d_head.section_name)
 
-    # if expander_2d_head.render:
-    #     # add plot
-    #     with expander_2d_head.plot_col:
-    #         plot = animate_ui_2d_head(
-    #             plot_epoch,
-    #             colormap,
-    #             vmin_2d_head,
-    #             vmax_2d_head
-    #         )
-    #         component_plot(plot)
-    #
-    #     # add export button
-    #     with expander_2d_head.widget_col:
-    #         expander_2d_head.export_button("mp4")
-    #
-    #     # export plot
-    #     if expander_2d_head.export:
-    #         with expander_2d_head.expander:
-    #             save_svg(plot, expander_2d_head.file_name)
-    #             message = st.success("Your file was saved: "+expander_2d_head.file_name)
-    #             time.sleep(5)
-    #             message.empty()
-    #     else:
-    #         expander_2d_head.default_message()
+    with expander_3d_head.plot_col:
+        if expander_3d_head.render:
+            with st.spinner(SPINNER_MESSAGE):
+                st.plotly_chart(
+                    animate_ui_3d_head(
+                        plot_epoch,
+                        colormap,
+                        vmin_3d_head,
+                        vmax_3d_head
+                    ),
+                    use_container_width=True
+                )
+        else:
+            default_message(expander_3d_head.section_name)
 
-    # def render_2d_head():
-    #     plot = animate_ui_2d_head(
-    #         plot_epoch,
-    #         colormap,
-    #         vmin_2d_head,
-    #         vmax_2d_head
-    #     )
-    #     component_plot(plot)
-    #     return plot
+    with expander_3d_brain.plot_col:
+        if expander_3d_brain.render:
+            with st.spinner(SPINNER_MESSAGE):
+                st.markdown(
+                    """
+                    **WARNING:**
+                    The 3D brain map animation takes a long time to compute. 
+                    The first time you run will take longer than subsequent runs
+                    (some preprocessing must occur).
+                    NOTE: Selecting "lh" or "rh" and "both" is currently broken.
+                    """
+                )
+                if st.button("Bombs away!"):
 
-    # render_plot(expander_2d_head, render_2d_head, save_matplotlib_mp4, format="mp4")
+                    if stc_generated == False:
+                        stc = generate_stc(plot_epoch)
+                        stc_generated = True
 
-    # def render_3d_head():
-    #     plot = animate_ui_3d_head(
-    #             plot_epoch,
-    #             colormap,
-    #             vmin_3d_head,
-    #             vmax_3d_head
-    #         )
-    #     plotly_plot(plot)
-    #     return plot
+                    components.html(
+                        animate_ui_3d_brain(plot_epoch,
+                                            view_selection,
+                                            stc,
+                                            hemi_selection,
+                                            vmin_3d_brain,
+                                            vmax_3d_brain),
+                        height=600,
+                        width=600
+                    )
+        else:
+            default_message(expander_3d_brain.section_name)
 
-    # render_plot(expander_3d_head, render_3d_head, save_pyplot_mp4, format="mp4")
+    with expander_connectivity.plot_col:
+        if expander_connectivity.render:
+            with st.spinner(SPINNER_MESSAGE):
+                components.html(
+                    animate_ui_connectivity(
+                        epoch,
+                        connection_type,
+                        frame_steps,
+                        selected_pairs,
+                        colormap,
+                        cmin,
+                        cmax,
+                        conn_line_width
+                    ),
+                    height=600,
+                    width=600
+                )
+        else:
+            default_message(expander_connectivity.section_name)
 
-    # def render_brain():
-    #     plot = st.empty()
-    #     st.markdown(
-    #         """
-    #         **WARNING:**
-    #         The 3D brain map animation takes a long time to compute. 
-    #         The first time you run will take longer than subsequent runs
-    #         (some preprocessing must occur).
-    #         NOTE: Selecting "lh" or "rh" and "both" is currently broken.
-    #         """
-    #     )
-    #     if st.button("Bombs away!"):
-    #         if stc_generated is False:
-    #             stc = generate_stc(plot_epoch)
-    #             stc_generated = True
+    with expander_connectivity_circle.plot_col:
+        if expander_connectivity_circle.render:
+            with st.spinner(SPINNER_MESSAGE):
+                components.html(
+                    animate_ui_connectivity_circle(
+                        epoch,
+                        connection_type,
+                        frame_steps,
+                        colormap,
+                        cmin,
+                        cmax,
+                        conn_circle_line_width,
+                        max_connections
+                    ),
+                    height=600,
+                    width=600
+                )
+        else:
+            default_message(expander_connectivity_circle.section_name)
 
-    #         plot = animate_ui_3d_brain(plot_epoch,
-    #                                 view_selection,
-    #                                 stc,
-    #                                 hemi_selection,
-    #                                 vmin_3d_brain,
-    #                                 vmax_3d_brain),
-    #         component_plot(plot)
-    #     return plot
-
-    # render_plot(expander_3d_brain, render_brain, save_matplotlib_mp4, format="mp4")
-
-    # def render_connectivity():
-    #     plot =  animate_ui_connectivity(
-    #         epoch,
-    #         connection_type,
-    #         frame_steps,
-    #         selected_pairs,
-    #         colormap,
-    #         cmin,
-    #         cmax,
-    #         conn_line_width
-    #     )
-    #     component_plot(plot)
-    #     return plot
-
-    # render_plot(expander_connectivity, render_connectivity, save_matplotlib_mp4, format="mp4")
-
-    # def render_connectivity_circle():
-    #     plot = animate_ui_connectivity_circle(
-    #         epoch,
-    #         connection_type,
-    #         frame_steps,
-    #         colormap,
-    #         cmin,
-    #         cmax,
-    #         conn_circle_line_width,
-    #         max_connections
-    #     )
-    #     components.html(plot.to_jshtml(), height=600, width=700)
-    #     return plot
-
-    # render_plot(expander_connectivity_circle, render_connectivity_circle, save_matplotlib_mp4, format="mp4")
-
-            
 
 if __name__ == "__main__":
     main()
