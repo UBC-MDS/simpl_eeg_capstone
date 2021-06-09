@@ -358,9 +358,11 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
         textfont=dict(family="sans serif", size=18),
     )
     
+    # time stamp
+    title_time = format(epoch.times[time_index], '.4f')
 
     fig.update_layout(
-        title=plot_title,
+        title="Time stamp: " + str(title_time),
         width=1000,
         height=600,
         scene=dict(
@@ -371,7 +373,7 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
 
 @gif.frame
 def topo3dhead_plot(epoch, i):
-    fig = topo_3d_map(epoch, i, plot_title = f"Time stamp: {i}")
+    fig = topo_3d_map(epoch, i)
     return fig
 
 def save_gif(epoch, gifname, duration):

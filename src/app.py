@@ -35,6 +35,14 @@ SECTION_NAMES = {
 SPINNER_MESSAGE = "Rendering..."
 
 st.set_page_config(layout="wide")
+st.markdown(
+    """
+    <style>
+        .streamlit-expanderHeader{font-size:120%;}
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 @st.cache(show_spinner=False)
 def calculate_timeframe(start_time):
@@ -50,8 +58,9 @@ def calculate_timeframe(start_time):
 
     start = datetime.datetime.strptime(start_time, '%H:%M:%S.%f')
     zero = datetime.datetime.strptime('00:00:00.00', '%H:%M:%S.%f')
-    
+
     return (start-zero).total_seconds()
+
 
 @st.cache(show_spinner=False)
 def animate_ui_3d_head(epoch, colormap, vmin, vmax):
@@ -232,6 +241,7 @@ def main():
         "Time selection type",
         ["Epoch", "Time"]
     )
+
     if time_select == "Time":
         start_time = col2.text_input(
             "Custom impact time",
@@ -266,6 +276,7 @@ def main():
         ["RdBu_r", "PiYG", "PuOr", "BrBG", "Spectral", "turbo"],
         format_func=lambda name: name.capitalize()
     )
+
 
     with col2:
         fig = plt.figure()
@@ -302,6 +313,32 @@ def main():
             )
             with self.expander:
                 self.plot_col, self.widget_col = st.beta_columns((3, 1))
+
+        def export_button(self):
+            return self.widget_col.button(
+                "Export",
+                key=self.section_name,
+                help="Export to the `simpl_eeg/exports` folder"
+            )
+
+        def generate_file_name(self, file_type="html"):
+            timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M%S")
+            folder = "exports"
+            file_name = self.section_name.replace(" ", "_")+"_"+timestamp
+            file_name = folder+"/"+file_name+"."+file_type
+
+            def success_message():
+                message = self.expander.success("Your file was saved: "+file_name)
+                time.sleep(2)
+                message.empty()
+            return file_name, success_message
+
+        def html_export(self, html_plot):
+            file_name, send_message = self.generate_file_name()
+            Html_file = open(file_name,"w")
+            Html_file.write(html_plot)
+            Html_file.close()
+            send_message()
 
     expander_raw = Section("raw", render=False)
     expander_2d_head = Section("2d_head")
@@ -517,15 +554,15 @@ def main():
 
     #### PLOTS ####
     default_message = lambda name: st.markdown(
-            """
-                \n
-                Select your customizations, 
-                then add "%s" to the list of figures to render on the sidebar.
-                \n
-                **WARNING: depending on your settings, rendering may take a while...**
-                \n
-            """ % name
-        )
+        """
+            \n
+            Select your customizations, 
+            then add "%s" to the list of figures to render on the sidebar.
+            \n
+            **WARNING: depending on your settings, rendering may take a while...**
+            \n
+        """ % name
+    )
 
     if expander_raw.render:
         plot = raw_voltage.plot_voltage(
@@ -538,28 +575,18 @@ def main():
         )
         expander_raw.plot_col.pyplot(plot)
 
-        download = expander_raw.widget_col.button(
-            "Export",
-            key=expander_raw.section_name,
-            help="Export svg to the `simpl_eeg/exports` folder"
-        )
-        if download:
-            timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M%S")
-            folder = "exports"
-            file_name = expander_raw.section_name.replace(" ", "_")+"_"+timestamp
-            file_name = folder+"/"+file_name+".svg"
+        export = expander_raw.export_button()
+        if export:
+            file_name, send_message = expander_raw.generate_file_name("svg")
             plot.savefig(file_name)
-            message = expander_raw.expander.success("Your file was saved: "+file_name)
-            time.sleep(2)
-            message.empty()
+            send_message()
     else:
         default_message(expander_raw.section_name)
 
     with expander_2d_head.plot_col:
         if expander_2d_head.render:
             with st.spinner(SPINNER_MESSAGE):
-                components.html(
-                    animate_ui_2d_head(
+                html_plot = animate_ui_2d_head(
                         plot_epoch,
                         colormap,
                         vmin_2d_head,
@@ -571,10 +598,16 @@ def main():
                         contours_2d,
                         sphere_2d,
                         heat_res_2d
-                    ),
+                    )
+                components.html(
+                    html_plot,
                     height=600,
                     width=700
                 )
+
+            export = expander_2d_head.export_button()
+            if export:
+                expander_2d_head.html_export(html_plot)
         else:
             default_message(expander_2d_head.section_name)
 
@@ -602,64 +635,78 @@ def main():
                     The 3D brain map animation takes a long time to compute. 
                     The first time you run will take longer than subsequent runs
                     (some preprocessing must occur).
+                    Are you sure you want to generate this plot?
                     """
                 )
-                if st.button("Bombs away!"):
+                if st.checkbox("Yes I'm sure, bombs away!", value=False):
 
                     if stc_generated == False:
                         stc = generate_stc(plot_epoch)
                         stc_generated = True
-
+                    html_plot = animate_ui_3d_brain(
+                        plot_epoch,
+                        view_selection,
+                        stc,
+                        hemi_selection,
+                        vmin_3d_brain,
+                        vmax_3d_brain
+                    )
                     components.html(
-                        animate_ui_3d_brain(plot_epoch,
-                                            view_selection,
-                                            stc,
-                                            hemi_selection,
-                                            vmin_3d_brain,
-                                            vmax_3d_brain),
+                        html_plot,
                         height=600,
                         width=600
                     )
+                    export = expander_3d_brain.export_button()
+                    if export:
+                        expander_3d_brain.html_export(html_plot)
         else:
             default_message(expander_3d_brain.section_name)
 
     with expander_connectivity.plot_col:
         if expander_connectivity.render:
             with st.spinner(SPINNER_MESSAGE):
+                html_plot = animate_ui_connectivity(
+                    epoch,
+                    connection_type,
+                    frame_steps,
+                    selected_pairs,
+                    colormap,
+                    cmin,
+                    cmax,
+                    conn_line_width
+                )
                 components.html(
-                    animate_ui_connectivity(
-                        epoch,
-                        connection_type,
-                        frame_steps,
-                        selected_pairs,
-                        colormap,
-                        cmin,
-                        cmax,
-                        conn_line_width
-                    ),
+                    html_plot,
                     height=600,
                     width=600
                 )
+                export = expander_connectivity.export_button()
+                if export:
+                    expander_connectivity.html_export(html_plot)
         else:
             default_message(expander_connectivity.section_name)
 
     with expander_connectivity_circle.plot_col:
         if expander_connectivity_circle.render:
+            html_plot = animate_ui_connectivity_circle(
+                epoch,
+                connection_type,
+                frame_steps,
+                colormap,
+                cmin,
+                cmax,
+                conn_circle_line_width,
+                max_connections
+            )
             with st.spinner(SPINNER_MESSAGE):
                 components.html(
-                    animate_ui_connectivity_circle(
-                        epoch,
-                        connection_type,
-                        frame_steps,
-                        colormap,
-                        cmin,
-                        cmax,
-                        conn_circle_line_width,
-                        max_connections
-                    ),
+                    html_plot,
                     height=600,
                     width=600
                 )
+            export = expander_connectivity_circle.export_button()
+            if export:
+                expander_connectivity_circle.html_export(html_plot)
         else:
             default_message(expander_connectivity_circle.section_name)
 
