@@ -55,6 +55,7 @@ def calculate_timeframe(start_time):
 
     return (start-zero).total_seconds()
 
+
 @st.cache(show_spinner=False)
 def animate_ui_3d_head(epoch, colormap, vmin, vmax):
     return topomap_3d_head.animate_3d_head(
@@ -93,12 +94,14 @@ def generate_stc(epoch):
 
 @st.cache(show_spinner=False)
 def animate_ui_3d_brain(epoch, view_selection, stc, hemi, cmin, cmax):
-    return topomap_3d_brain.animate_matplot_brain(epoch,
-                                                  views=view_selection,
-                                                  stc = stc,
-                                                  hemi = hemi,
-                                                  cmin = cmin,
-                                                  cmax = cmax)
+    return topomap_3d_brain.animate_matplot_brain(
+        epoch,
+        views=view_selection,
+        stc = stc,
+        hemi = hemi,
+        cmin = cmin,
+        cmax = cmax
+    )
 
 
 @st.cache(show_spinner=False)
@@ -127,6 +130,17 @@ def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin
         line_width=line_width,
         max_connections=max_connections
     )
+
+@st.cache(show_spinner=False)
+def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
+    epoch_obj = eeg_objects.Epochs(
+        experiment_num,
+        tmin=-tmin,
+        tmax=tmax,
+        start_second=start_second
+    )
+    epoch_obj.set_nth_epoch(epoch_num)
+    return epoch_obj
 
 
 def get_shared_conn_widgets(epoch, frame_steps, key):
@@ -227,13 +241,13 @@ def main():
     tmin = st.sidebar.number_input(
         "Seconds before impact",
         value=0.3,
-        min_value=0.0,
+        min_value=0.1,
         max_value=min(float(start_second), 10.0) if start_second else 10.0
     )
     tmax = st.sidebar.number_input(
         "Seconds after impact",
         value=0.7,
-        min_value=0.5,
+        min_value=0.1,
         max_value=10.0
     )
 
@@ -242,17 +256,10 @@ def main():
         ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
     )
 
+    stc_generated = False
+
     # Create epoch
-    epoch_obj = eeg_objects.Epochs(
-        experiment_num,
-        tmin=-tmin,
-        tmax=tmax,
-        start_second=start_second
-    )
-    epoch_obj.set_nth_epoch(epoch_num)
-
-    stc_genearted = False
-
+    epoch_obj = generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num)
     events = epoch_obj.data.events
     epoch = epoch_obj.epoch
     plot_epoch = epoch_obj.skip_n_steps(frame_steps)
@@ -452,7 +459,7 @@ def main():
 
 
     def render_plot(section, render_fun, export_fun, format="mp4", **kwargs):
-        
+
         if section.render:
 
             # add plot
@@ -541,9 +548,9 @@ def main():
             """
         )
         if st.button("Bombs away!"):
-            if stc_genearted == False:
+            if stc_generated is False:
                 stc = generate_stc(plot_epoch)
-                stc_genearted = True
+                stc_generated = True
 
             plot = animate_ui_3d_brain(plot_epoch,
                                     view_selection,
@@ -551,16 +558,12 @@ def main():
                                     hemi_selection,
                                     vmin_3d_brain,
                                     vmax_3d_brain),
-            components.html(
-                plot,
-                height=600,
-                width=600
-            )
+            component_plot(plot)
         return plot
 
     render_plot(expander_3d_brain, render_brain, save_matplotlib_mp4, format="mp4")
 
-    def render_expander_connectivity():
+    def render_connectivity():
         plot =  animate_ui_connectivity(
             epoch,
             connection_type,
@@ -574,9 +577,9 @@ def main():
         component_plot(plot)
         return plot
 
-    render_plot(expander_connectivity, render_expander_connectivity, save_matplotlib_mp4, format="mp4")
+    render_plot(expander_connectivity, render_connectivity, save_matplotlib_mp4, format="mp4")
 
-    def render_expander_connectivity_circle():
+    def render_connectivity_circle():
         plot = animate_ui_connectivity_circle(
             epoch,
             connection_type,
@@ -590,7 +593,7 @@ def main():
         components.html(plot.to_jshtml(), height=600, width=700)
         return plot
 
-    render_plot(expander_connectivity_circle, render_expander_connectivity_circle, save_matplotlib_mp4, format="mp4")
+    render_plot(expander_connectivity_circle, render_connectivity_circle, save_matplotlib_mp4, format="mp4")
 
 
 if __name__ == "__main__":
