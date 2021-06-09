@@ -181,7 +181,7 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
                     opacity=1,
                 )
                 ,
-                name=epoch.times[k],  # you need to name the frame for the animation to behave properly
+                name=format(epoch.times[k], '.4f'),  # you need to name the frame for the animation to behave properly
             )
             for k in range(nb_frame)
         ]
@@ -322,6 +322,9 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
     node_coord = get_eeg_node(epoch, standard_montage)
     node_df = get_node_dataframe(epoch, standard_montage)
 
+    # get the index 
+    time_index = df[df["time"] == time_stamp].index.values[0]
+
     # generate the animated plot
     fig = go.Figure(
                 data=go.Mesh3d(
@@ -333,7 +336,7 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
                     cmin=color_min,
                     cmax=color_max,
                     intensity=interpolated_time(
-                        df, channel_names, node_coord, x, y, z, k
+                        df, channel_names, node_coord, x, y, z, time_index
                     ),
                     intensitymode="vertex",
                     alphahull=1,
