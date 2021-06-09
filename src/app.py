@@ -39,10 +39,10 @@ st.markdown(
     """
     <style>
         .streamlit-expanderHeader{font-size:120%;}
-        div[aria-expanded="true"]{
-            color: red;
-        }
-    </style>""", unsafe_allow_html=True)
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 @st.cache(show_spinner=False)
 def calculate_timeframe(start_time):
