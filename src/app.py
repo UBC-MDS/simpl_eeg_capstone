@@ -197,7 +197,9 @@ def get_shared_conn_widgets(epoch, frame_steps, key):
     cmin = st.number_input(
         label,
         value=default_cmin,
-        key=label+key
+        key=label+key,
+        help = """The minimum for the scale. 
+        """
     )
 
     label = "Maximum Value"
@@ -205,7 +207,9 @@ def get_shared_conn_widgets(epoch, frame_steps, key):
         label,
         value=default_cmax,
         min_value=cmin,
-        key=label+key
+        key=label+key,
+        help = """The maximum for the scale
+        """
     )
 
     return connection_type, cmin, cmax
@@ -393,13 +397,21 @@ def main():
     #### WIDGETS ####
     with expander_raw.widget_col:
         st.title("")
-        noise_select = st.checkbox("Whiten with noise covarience")
+        noise_select = st.checkbox(
+            "Whiten with noise covarience",
+            help="""Check to estimate noise covariance matrix from the currently loaded epoch."""
+        )
         noise_cov = mne.compute_covariance(
             epoch,
-            tmax=tmax
+            tmax=tmax,
         ) if noise_select else None
 
-        auto_scale = st.checkbox("Use automatic scaling", value=True)
+        auto_scale = st.checkbox(
+            "Use automatic scaling",
+            value=True,
+            help = """Whether or not to use the automatic MNE scaling. Checking this causes the scaling
+            factor to match the 99.5th percentile of a subset of the corresponding data."""
+        )
         if auto_scale:
             scaling = "auto"
         else:
@@ -426,6 +438,12 @@ def main():
             min_value=vmin_2d_head,
             help = max_voltage_message
         )
+
+        # Doesn't currently work for whatever reason.
+        # Can't compair two number inputs.
+        if vmax_2d_head < vmin_2d_head:
+            st.error("ERROR: Minimum Voltage Set higher than Maximum Voltage. Please enter a valid input")
+
         mark_options = [
             "dot",
             "r+",
@@ -583,7 +601,8 @@ def main():
             "Select node pair template",
             node_pair_options,
             index=1,
-            format_func=lambda name: name.replace("_", " ").capitalize()
+            format_func=lambda name: name.replace("_", " ").capitalize(),
+            help="""Node pairs"""
         )
 
         selected_pairs = []
