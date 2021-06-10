@@ -45,11 +45,11 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # change None to values of interest
 
-experiment = None # has to be a string
-nth_epoch = None
-vmin = None # The minimum for the scale. Defaults to None.
-vmax = None # The minimum for the scale. Defaults to None.
-colormap = None # select from ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
+experiment_folder = "../../data/109" # has to be a string
+nth_epoch = 0
+vmin = -40 # The minimum for the scale. Defaults to None.
+vmax = 40 # The minimum for the scale. Defaults to None.
+colormap = "Spectral" # select any matplotlib colormap
 
 
 # <br>
@@ -59,86 +59,86 @@ colormap = None # select from ["RdBu_r", "hot", "cool", "inferno", "turbo", "rai
 # In[6]:
 
 
-tmin = None # number of seconds before the impact
-tmax = None # number of seconds after the impact
-start_second = None # starting time of the epoch
+tmin = -0.5 # number of seconds before the impact
+tmax = 0.5 # number of seconds after the impact
+start_second = 5 # starting time of the epoch
 
-raw = eeg_objects.Epochs(experiment, tmin, tmax, start_second)
-
-
-# #### To select the epoch
-
-# In[ ]:
+epochs = eeg_objects.Epochs(experiment_folder, tmin, tmax, start_second)
 
 
-raw.set_nth_epoch(nth_epoch)
+# #### Select a specific epoch
+
+# In[7]:
 
 
-# #### To select the number of time steps to skip (optional step)
-
-# In[ ]:
+epochs.set_nth_epoch(nth_epoch)
 
 
-raw.skip_n_steps(num_steps)
+# #### Select the number of time steps to skip (optional step)
+
+# In[8]:
 
 
-# #### To get the selected epoch
+num_steps = 50
+shortened_epoch = epochs.skip_n_steps(num_steps)
+shortened_epoch
 
-# In[ ]:
+
+# #### Retrieve the selected epoch
+
+# In[9]:
 
 
-epoch = raw.get_nth_epoch()
+full_epoch = epochs.get_nth_epoch()
+full_epoch
 
 
 # <br>
 
 # ### Create the 2D topographic map
 
-# #### To generate the animation
+# #### Generating the animation
 
-# In[ ]:
-
-
-get_ipython().run_cell_magic('capture', '', "topo_2d = topomap_2d.animate_topomap_2d(epoch,\n                       colormap=colormap,\n                       mark='dot',\n                       contours='6',\n                       sphere=100,\n                       cmin= vmin,\n                       cmax = vmin,\n                       res=100,\n                       extrapolate='head',\n                       outlines='head',\n                       axes=None,\n                       mask=None,\n                       mask_params=None,\n                       colorbar=True,\n                       timestamp = True,\n                       frame_rate=12)")
+# In[10]:
 
 
-# In[ ]:
+get_ipython().run_cell_magic('capture', '', "\nanim = topomap_2d.animate_topomap_2d(\n    shortened_epoch,\n    colormap=colormap,\n    mark='dot',\n    contours='6',\n    sphere=100,\n    cmin=vmin,\n    cmax=vmax,\n    res=100,\n    extrapolate='head',\n    outlines='head',\n    axes=None,\n    mask=None,\n    mask_params=None,\n    colorbar=True,\n    timestamp = True,\n    frame_rate=12\n)\n\nfrom IPython.core.display import HTML\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)")
 
 
-from IPython.display import HTML
-
-HTML(topo_2d.to_jshtml())
+# In[11]:
 
 
-# #### To save the animation
-
-# ##### To save the animation as gif
-
-# In[ ]:
+video
 
 
-from matplotlib.animation import PillowWriter
-writergif = PillowWriter(fps=30)
-topo_2d.save("topo_2d.gif", writer=writergif)
+# #### Saving the animation
+
+# ##### Save as html
+
+# In[12]:
 
 
-# ##### To save the animation as mp4
+html_file_path = "instruction_imgs/topo_2d.html"
 
-# You would need to save it as gif file first and then convert it into mp4 file.
+html_file = open(html_file_path,"w")
+html_file.write(html_plot)
+html_file.close()
 
-# In[ ]:
+
+# ##### Save as gif
+
+# In[13]:
 
 
-import moviepy.editor as mp
+get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(shortened_epoch)\n\n# use a writer if you want to specify frames per second\nfrom matplotlib.animation import PillowWriter\nwriter = PillowWriter(fps=5)  \n\ngif_file_path = "instruction_imgs/topo_2d.gif"\nanim.save(gif_file_path, writer=writer)')
 
-clip = mp.VideoFileClip("topo_2d.gif")
-clip.write_videofile("topo_2d.mp4") 
+
+# ##### Save as mp4
+
+# In[14]:
+
+
+get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(shortened_epoch)\n\nmp4_file_path = "instruction_imgs/topo_2d.mp4"\nanim.save(mp4_file_path)')
 
 
 # <br>
-
-# In[ ]:
-
-
-
-

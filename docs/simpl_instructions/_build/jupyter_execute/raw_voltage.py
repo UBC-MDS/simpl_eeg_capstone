@@ -112,9 +112,3 @@ voltage_plot.savefig("voltage_plot.svg", format= 'svg')
 
 
 # <br>
-
-# In[ ]:
-
-
-
-
