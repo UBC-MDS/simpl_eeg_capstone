@@ -45,11 +45,11 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # change None to values of interest
 
-experiment_folder = "../../data/109" # has to be a string
+experiment_folder = "../../data/109" # path to the experiment folder.
 nth_epoch = 0
 vmin = -40 # The minimum for the scale. Defaults to None.
 vmax = 40 # The minimum for the scale. Defaults to None.
-colormap = "Spectral" # select any matplotlib colormap
+colormap = "Spectral" # select any matplotlib colormap. Defaults to RdBu_r (Red-Blue).
 
 
 # <br>
@@ -118,7 +118,7 @@ video
 # In[12]:
 
 
-html_file_path = "instruction_imgs/topo_2d.html"
+html_file_path = "../../exports/examples/topo_2d.html"
 
 html_file = open(html_file_path,"w")
 html_file.write(html_plot)
@@ -130,7 +130,7 @@ html_file.close()
 # In[13]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(shortened_epoch)\n\n# use a writer if you want to specify frames per second\nfrom matplotlib.animation import PillowWriter\nwriter = PillowWriter(fps=5)  \n\ngif_file_path = "instruction_imgs/topo_2d.gif"\nanim.save(gif_file_path, writer=writer)')
+get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(shortened_epoch)\n\n# use a writer if you want to specify frames per second\nfrom matplotlib.animation import PillowWriter\nwriter = PillowWriter(fps=5)  \n\ngif_file_path = "../../exports/examples/topo_2d.gif"\nanim.save(gif_file_path, writer=writer)')
 
 
 # ##### Save as mp4
@@ -138,7 +138,7 @@ get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap
 # In[14]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(shortened_epoch)\n\nmp4_file_path = "instruction_imgs/topo_2d.mp4"\nanim.save(mp4_file_path)')
+get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(shortened_epoch)\n\nmp4_file_path = "../../exports/examples/topo_2d.mp4"\nanim.save(mp4_file_path)')
 
 
 # <br>
