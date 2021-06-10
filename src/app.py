@@ -5,7 +5,6 @@ import streamlit.components.v1 as components
 
 import numpy as np
 import mne
-import scipy.io
 
 import os
 
@@ -648,12 +647,13 @@ def main():
 
     if expander_raw.render:
         plot = raw_voltage.plot_voltage(
-                epoch,
-                show_scrollbars=False,
-                events=np.array(events),
-                scalings=scaling,
-                noise_cov=noise_cov,
-                event_id=epoch.event_id,
+            epoch,
+            remove_xlabel=True,
+            show_scrollbars=False,
+            events=np.array(events),
+            scalings=scaling,
+            noise_cov=noise_cov,
+            event_id=epoch.event_id,
         )
         expander_raw.plot_col.pyplot(plot)
 
