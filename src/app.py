@@ -34,6 +34,8 @@ SECTION_NAMES = {
 
 SPINNER_MESSAGE = "Rendering..."
 
+DATA_FOLDER = "data/"
+
 st.set_page_config(layout="wide")
 st.markdown(
     """
@@ -157,7 +159,7 @@ def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin
 @st.cache(show_spinner=False)
 def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
     epoch_obj = eeg_objects.Epochs(
-        experiment_num,
+        DATA_FOLDER+experiment_num,
         tmin=-tmin,
         tmax=tmax,
         start_second=start_second

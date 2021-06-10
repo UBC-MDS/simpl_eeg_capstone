@@ -8,18 +8,18 @@ class EEG_File:
 
     Attributes
     ----------
-    experiment : str
-        experiment folder name within the data folder
+    folder_path : str
+        path to experiment folder
     mat : list(int)
         a list of integers representing impact times
     raw : mne.io.Raw
         raw experiment data in FIF format
     """
 
-    def __init__(self, experiment):
-        self.experiment = experiment
-        self.mat = scipy.io.loadmat("data/"+experiment+"/impact locations.mat")
-        self.raw = mne.io.read_raw_eeglab("data/"+experiment+"/fixica.set")
+    def __init__(self, folder_path):
+        self.experiment = folder_path.split("/")[-1]
+        self.mat = scipy.io.loadmat(folder_path+"/impact locations.mat")
+        self.raw = mne.io.read_raw_eeglab(folder_path+"/fixica.set")
 
 
 class Epochs:
@@ -45,8 +45,8 @@ class Epochs:
         Calculates a subset of the epoch based on the step size and frame
     """
 
-    def __init__(self, experiment, tmin=-0.3, tmax=0.7, start_second=None):
-        self.eeg_file = EEG_File(experiment)
+    def __init__(self, folder_path, tmin=-0.3, tmax=0.7, start_second=None):
+        self.eeg_file = EEG_File(folder_path)
         self.data = self.generate_epochs(tmin, tmax, start_second)
         self.epoch = self.set_nth_epoch(0)
 
