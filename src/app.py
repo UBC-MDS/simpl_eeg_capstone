@@ -46,21 +46,23 @@ st.markdown(
 )
 
 @st.cache(show_spinner=False)
-def calculate_timeframe(start_time):
-    if re.match('^[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$', start_time):
-        start_time = start_time + ".00"
-    elif re.match('^[0-9][0-9]:[0-9][0-9]:[0-9][0-9]$', start_time) == False:
-        if i == 0:
-            # change to throw error
-            print('start_time is in wrong format please use %H:%M:%S.%f or %H:%M:%S')
-        elif i == 1:
-            # change to throw error
-            print('end_time is in wrong format please use %H:%M:%S.%f or %H:%M:%S')
+def calculate_timeframe(start_time, raw):
+    if re.match('^0{1,}:0{1,}:0{1,}$', start_time):
+        return True, -1
+    if re.match('^[0-9]{1,}:[0-9]{1,}:[0-9]{1,}$', start_time):
+        start = datetime.datetime.strptime(start_time, '%H:%M:%S')
+        zero = datetime.datetime.strptime('0:00:00', '%H:%M:%S')
+        seconds = (start-zero).total_seconds()
+        if seconds >= raw.times[-1]:
+            in_timeframe = 0
+        else:
+            in_timeframe = 1
+        return int(seconds), in_timeframe
+    else:
+        return None, 1
+        
 
-    start = datetime.datetime.strptime(start_time, '%H:%M:%S.%f')
-    zero = datetime.datetime.strptime('00:00:00.00', '%H:%M:%S.%f')
 
-    return (start-zero).total_seconds()
 
 
 @st.cache(show_spinner=False)
@@ -156,6 +158,13 @@ def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin
     return anim.to_jshtml()
 
 @st.cache(show_spinner=False)
+def generate_eeg_file(experiment_num):
+    gen_eeg_file = eeg_objects.EEG_File(
+        DATA_FOLDER+experiment_num
+    )
+    return gen_eeg_file
+
+@st.cache(show_spinner=False)
 def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
     epoch_obj = eeg_objects.Epochs(
         DATA_FOLDER+experiment_num,
@@ -165,6 +174,10 @@ def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
     )
     epoch_obj.set_nth_epoch(epoch_num)
     return epoch_obj
+
+# @st.cache(show_spinner=False)
+# def generate_raw(experiment_num):
+#     return (mne.io.read_raw_eeglab(DATA_FOLDER+experiment_num))
 
 def get_shared_conn_widgets(epoch, frame_steps, key):
 
@@ -218,7 +231,6 @@ def main():
     """
     Populate and display the streamlit user interface
     """
-
     st.header("Visualize your EEG data")
     st.markdown("""
     Select the figures you wish to see in the sidebar to the left and they will render in the dropdowns below. 
@@ -242,13 +254,34 @@ def main():
         """
     )
 
-    experiment_num = st.sidebar.selectbox(
+    col1b, col2b = st.sidebar.beta_columns((2, 1))
+    # experiment_num = st.sidebar.selectbox(
+    #     "Select experiment",
+    #     [ name for name in os.listdir("data/") if os.path.isdir(os.path.join("data", name)) ],
+    #     help ="""List of folders contained in the "data" folder. Each folder should represent one
+    #     experiment and contain files labelled "fixica.fdt", "fixica.set", and "impact locations.mat".
+    #     The selected experiment will have its data used to render the figures.
+    #     """
+    # )
+    experiment_num = col1b.selectbox(
         "Select experiment",
         [ name for name in os.listdir("data/") if os.path.isdir(os.path.join("data", name)) ],
         help ="""List of folders contained in the "data" folder. Each folder should represent one
         experiment and contain files labelled "fixica.fdt", "fixica.set", and "impact locations.mat".
         The selected experiment will have its data used to render the figures.
         """
+    )
+
+    raw_epoch_obj = generate_eeg_file(
+        experiment_num
+    )
+    max_secs = raw_epoch_obj.raw.times[-1]
+    el1, el2 = str(datetime.timedelta(seconds=max_secs)).split(".")
+    exp_len = el1 + "." + el2[0:2]
+    max_time = str(datetime.timedelta(seconds=max_secs-1)).split(".")[0]
+
+    time_select = col2b.text(
+        """-----------\nExperiment\nlength:\n{}\n-----------""".format(exp_len)
     )
 
 
@@ -276,11 +309,21 @@ def main():
     if time_select == "Time":
         start_time = col2.text_input(
             "Custom impact time",
-            value="00:00:05",
-            max_chars=8,
-            help="""The timestamp to render the figures around. Must be entered in the format "HH:MM:SS"."""
+            value="0:00:05",
+            max_chars=7,
+            help="""The timestamp to render the figures around. Must be entered in the format "H:MM:SS".
+            The max time with the currently selected experiment is "{}" (one second before the total length
+            of the experiment).""".format(max_time)
         )
-        start_second = int(calculate_timeframe(start_time))
+        start_second, in_timeframe = calculate_timeframe(start_time, raw_epoch_obj.raw)
+        if start_second == None:
+            st.error('Time is in wrong format please use H:MM:SS')
+        if in_timeframe == 0:
+            st.error("Input time exceeds max timestamp of the current experiment ({}).".format(max_time))
+        if in_timeframe == -1:
+            st.error("""Specified impact time cannot be 0:00:00. If you wish to see the experiment from the
+            earliest time possible then please specify an impact time of 00:00:01 and a "Seconds before impact"
+            value of 1.0""")
         epoch_num = 0
     else:
         start_second = None
@@ -301,11 +344,18 @@ def main():
         max = 10 (also cannot be a value that will cause the timestamp to go beyond 00:00:00).
         """
     )
+
+    tmax_max_value = 10.0
+    if start_second != None:
+        seconds_to_end = round(max_secs - start_second,2)
+        if seconds_to_end < 10.0:
+            tmax_max_value = seconds_to_end
+
     tmax = st.sidebar.number_input(
         "Seconds after impact",
         value=0.7,
         min_value=0.01,
-        max_value=10.0,
+        max_value=tmax_max_value,
         help="""The number of seconds after to the specified timestamp to end the figures at. Min = 0.01,
         max = 10 (also cannot be a value that will cause the timestamp to go beyond the max time).
         """
@@ -341,6 +391,7 @@ def main():
     events = epoch_obj.data.events
     epoch = epoch_obj.epoch
     plot_epoch = epoch_obj.skip_n_steps(frame_steps)
+    raw = epoch_obj.eeg_file.raw
 
 
     stc_generated = False
