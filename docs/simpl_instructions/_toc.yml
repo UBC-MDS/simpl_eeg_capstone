@@ -2,6 +2,7 @@ format: jb-article
 root: installation
 sections:
 - file: introduction
+- file: eeg_objects
 - file: raw_voltage
 - file: connectivity
 - file: topo_2d
