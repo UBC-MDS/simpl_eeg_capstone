@@ -1,4 +1,3 @@
-
 import streamlit as st
 import streamlit.components.v1 as components
 
@@ -34,6 +33,8 @@ SECTION_NAMES = {
 SPINNER_MESSAGE = "Rendering..."
 
 DATA_FOLDER = "data/"
+HEADER_EPOCH_PATH = "src/pre_saved/epochs/header_epoch.pickle"
+HEADER_FWD_PATH = "src/pre_saved/forward/header_fwd.pickle"
 
 st.set_page_config(layout="wide")
 st.markdown(
@@ -66,42 +67,19 @@ def calculate_timeframe(start_time, raw):
 
 
 @st.cache(show_spinner=False)
-def animate_ui_3d_head(epoch, colormap, vmin, vmax):
-    return topomap_3d_head.animate_3d_head(
-        epoch,
-        colormap=colormap,
-        color_min=vmin,
-        color_max=vmax
-    )
+def animate_ui_3d_head(epoch, **kwargs):
+    return topomap_3d_head.animate_3d_head(epoch, **kwargs)
 
 
 @st.cache(show_spinner=False)
-def animate_ui_2d_head(epoch, colormap, vmin, vmax, mark,
-                       colorbar, timestamp, extrapolate, contours, sphere, res):
-    anim = topomap_2d.animate_topomap_2d(
-        epoch,
-        colormap=colormap,
-        cmin=vmin,
-        cmax=vmax,
-        mark=mark,
-        colorbar=colorbar,
-        timestamp=timestamp,
-        extrapolate=extrapolate,
-        contours=contours,
-        sphere = sphere,
-        res = res
-    )
+def animate_ui_2d_head(epoch, **kwargs):
+    anim = topomap_2d.animate_topomap_2d(epoch, **kwargs)
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_ui_3d_head(epoch, colormap, vmin, vmax):
-    return topomap_3d_head.animate_3d_head(
-        epoch,
-        colormap=colormap,
-        color_min=vmin,
-        color_max=vmax
-    )
+def animate_ui_3d_head(epoch, **kwargs):
+    return topomap_3d_head.animate_3d_head(epoch, **kwargs)
 
 
 @st.cache(show_spinner=False)
@@ -116,30 +94,14 @@ def generate_stc_fwd(epoch, fwd):
 
 
 @st.cache(show_spinner=False)
-def animate_ui_3d_brain(epoch, views, stc, hemi, cmin, cmax, spacing, smoothing_steps):
-    anim = topomap_3d_brain.animate_matplot_brain(epoch,
-                                                  views=views,
-                                                  stc = stc,
-                                                  hemi = hemi,
-                                                  cmin = cmin,
-                                                  cmax = cmax,
-                                                  spacing = spacing,
-                                                  smoothing_steps = smoothing_steps)
+def animate_ui_3d_brain(epoch, **kwargs):
+    anim = topomap_3d_brain.animate_matplot_brain(epoch, **kwargs)
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
-def animate_ui_connectivity(epoch, connection_type, steps, pair_list, colormap, vmin, vmax, line_width):
-    anim = connectivity.animate_connectivity(
-        epoch,
-        connection_type,
-        steps=steps,
-        pair_list=pair_list,
-        colormap=colormap,
-        vmin=vmin,
-        vmax=vmax,
-        line_width=line_width,
-    )
+def animate_ui_connectivity(epoch, connection_type, **kwargs):
+    anim = connectivity.animate_connectivity(epoch, connection_type, **kwargs)
     return anim.to_jshtml()
 
 
@@ -232,11 +194,16 @@ def main():
     Populate and display the streamlit user interface
     """
     st.header("Visualize your EEG data")
-    st.markdown("""
-    Select the figures you wish to see in the sidebar to the left and they will render in the dropdowns below. 
-    Settings that will be applied to each of the figures such as the timeframe to plot and color scheme can be specified in the sidebar.
-    Individual settings for each of the figures can be changed in their respective dropdowns.
-    """)
+    st.markdown(
+        """
+        Select the figures you wish to see in the sidebar to the left
+        and they will render in the dropdowns below.
+        Settings that will be applied to each of the figures such as
+        the timeframe to plot and color scheme can be specified in the sidebar.
+        Individual settings for each of the figures can be changed
+        in their respective dropdowns.
+        """
+    )
 
     st.sidebar.header("Global Settings")
 
@@ -248,25 +215,17 @@ def main():
         default=[
             render_options[0]
         ],
-        help ="""Select which figures you wish to have rendered in their respective dropdowns. Any
+        help="""Select which figures you wish to have rendered in their respective dropdowns. Any
         selected views will begin to render automatically except for the 3D brain map which must
         be activated in its dropdown due to a slow render time.
         """
     )
 
-    col1b, col2b = st.sidebar.beta_columns((2, 1))
-    # experiment_num = st.sidebar.selectbox(
-    #     "Select experiment",
-    #     [ name for name in os.listdir("data/") if os.path.isdir(os.path.join("data", name)) ],
-    #     help ="""List of folders contained in the "data" folder. Each folder should represent one
-    #     experiment and contain files labelled "fixica.fdt", "fixica.set", and "impact locations.mat".
-    #     The selected experiment will have its data used to render the figures.
-    #     """
-    # )
-    experiment_num = col1b.selectbox(
+    col1_exp, col2_exp = st.sidebar.beta_columns((2, 1))
+    experiment_num = col1_exp.selectbox(
         "Select experiment",
         [ name for name in os.listdir("data/") if os.path.isdir(os.path.join("data", name)) ],
-        help ="""List of folders contained in the "data" folder. Each folder should represent one
+        help="""List of folders contained in the "data" folder. Each folder should represent one
         experiment and contain files labelled "fixica.fdt", "fixica.set", and "impact locations.mat".
         The selected experiment will have its data used to render the figures.
         """
@@ -280,21 +239,9 @@ def main():
     exp_len = el1 + "." + el2[0:2]
     max_time = str(datetime.timedelta(seconds=max_secs-1)).split(".")[0]
 
-    time_select = col2b.text(
-        """-----------\nExperiment\nlength:\n{}\n-----------""".format(exp_len)
-    )
-
-
-    frame_steps = st.sidebar.number_input(
-        "Number of timesteps per frame",
-        value=50,
-        min_value=0,
-        help ="""The number of recordings in the data to skip between each rendered frame in the figures.
-        For example, if an experiment is recorded at 2048 Hz (2048 recordings per second) then setting
-        this value to 1 will show ever second recording in the data and 1024 frames will be rendered
-        for every second of data. A value of 0 will lead to every recorded value being rendered as a frame.
-        min = 0.
-        """
+    col2_exp.text(
+        #"""----------\nExperiment\nlength:\n{}\n----------""".format(exp_len)
+        """----------\nExperiment\nlength:\n{}""".format(exp_len)
     )
 
     col1, col2 = st.sidebar.beta_columns((1, 1))
@@ -356,10 +303,48 @@ def main():
         value=0.7,
         min_value=0.01,
         max_value=tmax_max_value,
-        help="""The number of seconds after to the specified timestamp to end the figures at. Min = 0.01,
-        max = 10 (also cannot be a value that will cause the timestamp to go beyond the max time).
+        help="""The number of seconds after to the specified timestamp to end the epoch at. Cannot be a value that will cause
+        the timestamp to go beyond the max time. Min = 0.01, max = {} (with current settings).
+        """.format(tmax_max_value)
+    )
+
+    # Create epoch
+    epoch_obj = generate_epoch(
+        experiment_num,
+        tmin,
+        tmax,
+        start_second,
+        epoch_num
+    )
+
+    col1_step, col2_step = st.sidebar.beta_columns((2, 1))
+    frame_steps = col1_step.number_input(
+        "Number of timesteps per frame",
+        value=50,
+        min_value=0,
+        help ="""The number of recordings in the data to skip between each rendered frame in the figures.
+        For example, if an experiment is recorded at 2048 Hz (2048 recordings per second) then setting
+        this value to 1 will show ever second recording in the data and 1024 frames will be rendered
+        for every second of data. A value of 0 will lead to every recorded value being rendered as a frame.
+        "Num. frames to render" represents how many frames of animation will be rendered in each figure.
+        Min = 0.
         """
     )
+
+    events = epoch_obj.data.events
+    epoch = epoch_obj.epoch
+    plot_epoch = epoch_obj.skip_n_steps(frame_steps)
+
+    stc_generated = False
+
+    min_voltage_message = "The minimum value (in μV) to show on the plot"
+    max_voltage_message = "The maximum value (in μV) to show on the plot"
+
+    col2_step.text(
+        """-----------\nNum. frames\nto render:\n{}
+        """.format(plot_epoch.times.shape[0])
+    )
+
 
     col1, col2 = st.sidebar.beta_columns((2, 1))
     colormap = col1.selectbox(
@@ -378,26 +363,6 @@ def main():
         fig.patch.set_alpha(0)
         plt.axis("off")
         st.pyplot(fig)
-
-    # Create epoch
-    epoch_obj = generate_epoch(
-        experiment_num,
-        tmin,
-        tmax,
-        start_second,
-        epoch_num
-    )
-
-    events = epoch_obj.data.events
-    epoch = epoch_obj.epoch
-    plot_epoch = epoch_obj.skip_n_steps(frame_steps)
-    raw = epoch_obj.eeg_file.raw
-
-
-    stc_generated = False
-
-    min_voltage_message = "The minimum value (in μV) to show on the plot"
-    max_voltage_message = "The maximum value (in μV) to show on the plot"
 
     # Create sections
     class Section:
@@ -506,7 +471,7 @@ def main():
             index = 0,
             help = "The type of mark to show for each electrode on the topomap"
         )
-        advanced_options_2d = st.checkbox("Show 2D Head Map advanced options", value=False)
+        advanced_options_2d = st.checkbox("Advanced Options", value=False, key="2dAO")
         if advanced_options_2d:
             colorbar_2d_headmap = st.checkbox("Include colorbar", value=True)
             timestamps_2d_headmap = st.checkbox("Include timestamps", value=True)
@@ -532,9 +497,9 @@ def main():
                 help = "The resolution of the topomap image(n pixels along each side). Min = 0, max = 1000."
             )
             extrapolate_options_2d = [
-            "head",
-            "local",
-            "box",
+                "head",
+                "local",
+                "box",
             ]
             extrapolate_2d = st.selectbox(
             "Select extrapolation",
@@ -605,7 +570,7 @@ def main():
             "both": "Both"
         }
         hemi_selection = st.selectbox(
-            "Select brain hemi",
+            "Select brain hemisphere",
             options=list(hemi_options_dict.keys()),
             format_func=lambda key: hemi_options_dict[key],
             help = """The side of the brain to render. If "both" is selected the right hemi of the brain will be rendered
@@ -613,7 +578,7 @@ def main():
             rendering method is used whenever more than one view is selected OR if brain hemi is set to "both".
             """
         )
-        advanced_options_brain = st.checkbox("Show 3D Brain Map advanced options", value=False)
+        advanced_options_brain = st.checkbox("Advanced Options", value=False, key="brainAO")
         if advanced_options_brain:
             spacing_value = st.selectbox(
                 "Spacing type",
@@ -686,7 +651,7 @@ def main():
     with expander_connectivity_circle.widget_col:
 
         # Connection type and min/max value widgets
-        connection_type, cmin, cmax = get_shared_conn_widgets(epoch, frame_steps, "circle")
+        connection_type_circle, cmin_circle, cmax_circle = get_shared_conn_widgets(epoch, frame_steps, "circle")
 
         # Line width widget
         conn_circle_line_width = st.slider(
@@ -716,42 +681,43 @@ def main():
         """ % name
     )
 
-    if expander_raw.render:
-        plot = raw_voltage.plot_voltage(
-            epoch,
-            remove_xlabel=True,
-            show_scrollbars=False,
-            events=np.array(events),
-            scalings=scaling,
-            noise_cov=noise_cov,
-            event_id=epoch.event_id,
-        )
-        expander_raw.plot_col.pyplot(plot)
+    with expander_raw.plot_col:
+        if expander_raw.render:
+            plot = raw_voltage.plot_voltage(
+                epoch,
+                remove_xlabel=True,
+                show_scrollbars=False,
+                events=np.array(events),
+                scalings=scaling,
+                noise_cov=noise_cov,
+                event_id=epoch.event_id,
+            )
+            expander_raw.plot_col.pyplot(plot)
 
-        export = expander_raw.export_button()
-        if export:
-            file_name, send_message = expander_raw.generate_file_name("svg")
-            plot.savefig(file_name)
-            send_message()
-    else:
-        default_message(expander_raw.section_name)
+            export = expander_raw.export_button()
+            if export:
+                file_name, send_message = expander_raw.generate_file_name("svg")
+                plot.savefig(file_name)
+                send_message()
+        else:
+            default_message(expander_raw.section_name)
 
     with expander_2d_head.plot_col:
         if expander_2d_head.render:
             with st.spinner(SPINNER_MESSAGE):
                 html_plot = animate_ui_2d_head(
-                        plot_epoch,
-                        colormap,
-                        vmin_2d_head,
-                        vmax_2d_head,
-                        mark_selection_2d,
-                        colorbar_2d_headmap,
-                        timestamps_2d_headmap,
-                        extrapolate_2d,
-                        contours_2d,
-                        sphere_2d,
-                        heat_res_2d
-                    )
+                    plot_epoch,
+                    colormap=colormap,
+                    cmin=vmin_2d_head,
+                    cmax=vmax_2d_head,
+                    mark=mark_selection_2d,
+                    colorbar=colorbar_2d_headmap,
+                    timestamp=timestamps_2d_headmap,
+                    extrapolate=extrapolate_2d,
+                    contours=contours_2d,
+                    sphere=sphere_2d,
+                    res=heat_res_2d
+                )
                 components.html(
                     html_plot,
                     height=600,
@@ -770,9 +736,9 @@ def main():
                 st.plotly_chart(
                     animate_ui_3d_head(
                         plot_epoch,
-                        colormap,
-                        vmin_3d_head,
-                        vmax_3d_head
+                        colormap=colormap,
+                        color_min=vmin_3d_head,
+                        color_max=vmax_3d_head
                     ),
                     use_container_width=True
                 )
@@ -790,14 +756,14 @@ def main():
                     """
                 )
                 if st.checkbox("Yes I'm sure, bombs away!", value=False):
-                    
+
                     # Loads an example epoch, checks if it matches conditions, if it does loads an
                     # accompanying forward
                     if stc_generated == False:
-                        with open('src/pre_saved/epochs/header_epoch.pickle', 'rb') as handle:
+                        with open(HEADER_EPOCH_PATH, "rb") as handle:
                             example_epoch = pickle.load(handle)
                         if plot_epoch.info.__dict__ == example_epoch.info.__dict__:
-                            with open('src/pre_saved/forward/header_fwd.pickle', 'rb') as handle:
+                            with open(HEADER_FWD_PATH, "rb") as handle:
                                 fwd = pickle.load(handle)
                                 if type(fwd) == mne.forward.forward.Forward:
                                     stc = generate_stc_fwd(plot_epoch, fwd)
@@ -807,14 +773,15 @@ def main():
                         stc = generate_stc_epoch(plot_epoch)
                         stc_generated = True
                     html_plot = animate_ui_3d_brain(
-                        epoch = plot_epoch,
-                        views = view_selection,
-                        stc = stc,
-                        hemi = hemi_selection,
-                        cmin = vmin_3d_brain,
-                        cmax = vmax_3d_brain,
-                        spacing = spacing_value,
-                        smoothing_steps = smoothing_amount
+                        epoch=plot_epoch,
+                        views=view_selection,
+                        stc=stc,
+                        hemi=hemi_selection,
+                        colormap=colormap,
+                        cmin=vmin_3d_brain,
+                        cmax=vmax_3d_brain,
+                        spacing=spacing_value,
+                        smoothing_steps=smoothing_amount
                     )
                     components.html(
                         html_plot,
@@ -833,12 +800,12 @@ def main():
                 html_plot = animate_ui_connectivity(
                     epoch,
                     connection_type,
-                    frame_steps,
-                    selected_pairs,
-                    colormap,
-                    cmin,
-                    cmax,
-                    conn_line_width
+                    steps=frame_steps,
+                    pair_list=selected_pairs,
+                    colormap=colormap,
+                    vmin=cmin,
+                    vmax=cmax,
+                    line_width=conn_line_width
                 )
                 components.html(
                     html_plot,
@@ -855,13 +822,13 @@ def main():
         if expander_connectivity_circle.render:
             html_plot = animate_ui_connectivity_circle(
                 epoch,
-                connection_type,
-                frame_steps,
-                colormap,
-                cmin,
-                cmax,
-                conn_circle_line_width,
-                max_connections
+                connection_type_circle,
+                steps=frame_steps,
+                colormap=colormap,
+                vmin=cmin_circle,
+                vmax=cmax_circle,
+                line_width=conn_circle_line_width,
+                max_connections=max_connections
             )
             with st.spinner(SPINNER_MESSAGE):
                 components.html(
@@ -878,4 +845,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

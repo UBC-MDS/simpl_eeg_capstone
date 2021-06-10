@@ -15,7 +15,6 @@ Please fully install the sections with the following headers...
 
 -   Mac
 
-    -   Bash shell
     -   Git
     -   Python and Conda
 
