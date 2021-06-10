@@ -96,6 +96,11 @@
   </a>
  </li>
  <li class="toctree-l1">
+  <a class="reference internal" href="eeg_objects.html">
+   Creating EEG Objects
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="raw_voltage.html">
    Raw Voltage Visualization
   </a>
@@ -372,27 +377,27 @@
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
 <span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">96568920970</span><span class="n">b</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># starting time of the epoch</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> 
 <span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
 
-<span class="nn">~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, experiment, tmin, tmax, start_second)</span>
-<span class="g g-Whitespace">     </span><span class="mi">47</span> 
-<span class="g g-Whitespace">     </span><span class="mi">48</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=-</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">start_second</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">49</span>         <span class="bp">self</span><span class="o">.</span><span class="n">eeg_file</span> <span class="o">=</span> <span class="n">EEG_File</span><span class="p">(</span><span class="n">experiment</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">50</span>         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_epochs</span><span class="p">(</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">51</span>         <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="nn">~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, folder_path, tmin, tmax, start_second)</span>
+<span class="g g-Whitespace">     </span><span class="mi">50</span> 
+<span class="g g-Whitespace">     </span><span class="mi">51</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=-</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">start_second</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="ne">---&gt; </span><span class="mi">52</span>         <span class="bp">self</span><span class="o">.</span><span class="n">eeg_file</span> <span class="o">=</span> <span class="n">EEG_File</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">53</span>         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_epochs</span><span class="p">(</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">54</span>         <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 
-<span class="nn">~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, experiment)</span>
-<span class="g g-Whitespace">     </span><span class="mi">19</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">experiment</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">20</span>         <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">experiment</span>
-<span class="ne">---&gt; </span><span class="mi">21</span>         <span class="bp">self</span><span class="o">.</span><span class="n">mat</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="s2">&quot;data/&quot;</span><span class="o">+</span><span class="n">experiment</span><span class="o">+</span><span class="s2">&quot;/impact locations.mat&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>         <span class="bp">self</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_eeglab</span><span class="p">(</span><span class="s2">&quot;data/&quot;</span><span class="o">+</span><span class="n">experiment</span><span class="o">+</span><span class="s2">&quot;/fixica.set&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">23</span> 
+<span class="nn">~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, folder_path)</span>
+<span class="g g-Whitespace">     </span><span class="mi">21</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">):</span>
+<span class="g g-Whitespace">     </span><span class="mi">22</span>         <span class="bp">self</span><span class="o">.</span><span class="n">folder_path</span> <span class="o">=</span> <span class="n">folder_path</span>
+<span class="ne">---&gt; </span><span class="mi">23</span>         <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">folder_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+<span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="bp">self</span><span class="o">.</span><span class="n">mat</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">folder_path</span><span class="o">+</span><span class="s2">&quot;/impact locations.mat&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">25</span>         <span class="bp">self</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_eeglab</span><span class="p">(</span><span class="n">folder_path</span><span class="o">+</span><span class="s2">&quot;/fixica.set&quot;</span><span class="p">)</span>
 
-<span class="ne">TypeError</span>: can only concatenate str (not &quot;NoneType&quot;) to str
+<span class="ne">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;split&#39;
 </pre></div>
 </div>
 </div>
