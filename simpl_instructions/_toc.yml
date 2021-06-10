@@ -1,7 +1,6 @@
-# Table of content
-# Learn more at https://jupyterbook.org/customize/toc.html
-#
-- file: installation
+format: jb-article
+root: installation
+sections:
 - file: introduction
 - file: raw_voltage
 - file: connectivity
