@@ -10,6 +10,8 @@ class EEG_File:
     ----------
     folder_path : str
         path to experiment folder
+    experiment : str
+        the experiment name (name of the folder containing experiment files)
     mat : list(int)
         a list of integers representing impact times
     raw : mne.io.Raw
@@ -17,6 +19,7 @@ class EEG_File:
     """
 
     def __init__(self, folder_path):
+        self.folder_path = folder_path
         self.experiment = folder_path.split("/")[-1]
         self.mat = scipy.io.loadmat(folder_path+"/impact locations.mat")
         self.raw = mne.io.read_raw_eeglab(folder_path+"/fixica.set")
@@ -41,7 +44,7 @@ class Epochs:
         Calculates epochs based on a duration and start second
     get_nth_epoch(duration, n):
         Returns the nth epoch
-    get_fram(tmin, step_size, frame_number):
+    get_frame(tmin, step_size, frame_number):
         Calculates a subset of the epoch based on the step size and frame
     """
 
