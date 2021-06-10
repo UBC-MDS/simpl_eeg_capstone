@@ -1,4 +1,4 @@
-# simple\_eeg\_capstone visualization tools install guide
+# Install guide
 
 ### **Pre-requisite computer setup**
 

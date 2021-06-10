@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>simpl_eeg package &#8212; My sample book</title>
+    <title>Introduction &#8212; Simpl_EEG Package</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -51,8 +51,8 @@
     <script async="async" src="_static/sphinx-thebe.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="simpl_eeg package" href="raw_voltage.html" />
-    <link rel="prev" title="simple_eeg_capstone visualization tools install guide" href="installation.html" />
+    <link rel="next" title="Raw Voltage Visualization" href="raw_voltage.html" />
+    <link rel="prev" title="Install guide" href="installation.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -74,7 +74,7 @@
       <img src="_static/logo.png" class="logo" alt="logo">
       
       
-      <h1 class="site-logo" id="site-title">My sample book</h1>
+      <h1 class="site-logo" id="site-title">Simpl_EEG Package</h1>
       
     </a>
 </div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
@@ -85,69 +85,39 @@
         <ul class="nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="installation.html">
-   simple_eeg_capstone visualization tools install guide
+   Install guide
   </a>
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     simpl_eeg
-    </span>
-   </code>
-   package
+   Introduction
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="raw_voltage.html">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     simpl_eeg
-    </span>
-   </code>
-   package
+   Raw Voltage Visualization
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="connectivity.html">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     simpl_eeg
-    </span>
-   </code>
-   package
+   Connectivity Visualizations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="topo_2d.html">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     simpl_eeg
-    </span>
-   </code>
-   package
+   2D Head Visualizations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="topo_3d_brain.html">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     simpl_eeg
-    </span>
-   </code>
-   package
+   3D Brain Visualizations
   </a>
  </li>
  <li class="toctree-l1">
   <a class="reference internal" href="topo_3d_head.html">
-   <code class="docutils literal notranslate">
-    <span class="pre">
-     simpl_eeg
-    </span>
-   </code>
-   package
+   3D Head Visualizations
   </a>
  </li>
 </ul>
@@ -207,11 +177,11 @@
         aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
     <div class="dropdown-buttons sourcebuttons">
         <a class="repository-button"
-            href="https://github.com/executablebooks/jupyter-book"><button type="button" class="btn btn-secondary topbarbtn"
+            href="https://ubc-mds.github.io/simpl_eeg_capstone/"><button type="button" class="btn btn-secondary topbarbtn"
                 data-toggle="tooltip" data-placement="left" title="Source repository"><i
                     class="fab fa-github"></i>repository</button></a>
         <a class="issues-button"
-            href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fintroduction.html&body=Your%20issue%20content%20here."><button
+            href="https://ubc-mds.github.io/simpl_eeg_capstone//issues/new?title=Issue%20on%20page%20%2Fintroduction.html&body=Your%20issue%20content%20here."><button
                 type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
                 title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
         
@@ -227,23 +197,6 @@
 
             <!-- Launch buttons -->
 
-<div class="dropdown-buttons-trigger">
-    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
-        aria-label="Launch interactive content"><i class="fas fa-rocket"></i></button>
-    <div class="dropdown-buttons">
-        
-        <a class="binder-button" href="https://mybinder.org/v2/gh/executablebooks/jupyter-book/master?urlpath=tree/docs/introduction.ipynb"><button type="button"
-                class="btn btn-secondary topbarbtn" title="Launch Binder" data-toggle="tooltip"
-                data-placement="left"><img class="binder-button-logo"
-                    src="_static/images/logo_binder.svg"
-                    alt="Interact on binder">Binder</button></a>
-        
-        
-        
-        
-    </div>
-</div>
-
         </div>
 
         <!-- Table of contents -->
@@ -255,8 +208,8 @@
             <nav id="bd-toc-nav">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#introduction">
-   Introduction
+  <a class="reference internal nav-link" href="#background">
+   Background
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -282,10 +235,10 @@
         
               <div>
                 
-  <div class="section" id="simpl-eeg-package">
-<h1><code class="docutils literal notranslate"><span class="pre">simpl_eeg</span></code> package<a class="headerlink" href="#simpl-eeg-package" title="Permalink to this headline">¶</a></h1>
-<br><div class="section" id="introduction">
-<h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="introduction">
+<h1>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="background">
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
 <p>Electroencephalograms (EEG) is an electrophysiological measurement method used to examine the electrical activity of the brain and represent it as location-based channels of waves and frequencies. EEG benefits from being inexpensive and unobtrusive, leading to its widespread use in diagnosing brain disorders such as epilepsy and brain damage from head injuries. EEG data is recorded with high dimensionality, so the use of visualizations and metrics is essential for the data to be easily interpreted by humans. Currently, the options for visualizing EEG data require the use of complicated packages or software and the functionally is often limited.</p>
 <p><code class="docutils literal notranslate"><span class="pre">simpl_eeg</span></code> package is developed by students from the Master of Data Science program of University of British Columbia to provide the ability to conveniently produce advanced visualizations and metrics for specified time ranges of EEG data.
 <br></p>
@@ -346,8 +299,8 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="installation.html" title="previous page">simple_eeg_capstone visualization tools install guide</a>
-    <a class='right-next' id="next-link" href="raw_voltage.html" title="next page"><code class="docutils literal notranslate"><span class="pre">simpl_eeg</span></code> package</a>
+    <a class='left-prev' id="prev-link" href="installation.html" title="previous page">Install guide</a>
+    <a class='right-next' id="next-link" href="raw_voltage.html" title="next page">Raw Voltage Visualization</a>
 
         </div>
         
@@ -357,7 +310,7 @@
     <div class="container">
       <p>
         
-          By The Jupyter Book Community<br/>
+          By Yiki Su, Matthew Pin, Mo Garoub, and Sasha Babicki<br/>
         
             &copy; Copyright 2021.<br/>
       </p>

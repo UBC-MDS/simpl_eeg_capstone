@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# # `simpl_eeg` package
+# # 3D Head Visualizations
 
 # ##  Topographic map in 3D head
 
