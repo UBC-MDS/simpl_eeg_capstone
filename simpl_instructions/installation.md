@@ -22,7 +22,6 @@ Please fully install the sections with the following headers...
 -   Ubuntu
 
     -   Git
-
     -   Python and Conda
 
 ### **Installing the simpl\_eeg package in a new environment**
