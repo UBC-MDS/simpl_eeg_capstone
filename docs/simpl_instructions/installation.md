@@ -76,6 +76,20 @@ This will cause the UI to open in your browser like such...
 
 You can refresh the UI to restart it or open it in another window by copying the url (<http://localhost:8502/>).
 
+## **Troubleshooting**
+
+Every subsequent time you open the UI remember to activate the simple_eeg environment and open it from the correct location (the root of the directory).
+
+You can set your current environment for the terminal tab you're in using the following command...
+
+`conda activate simpl_eeg`
+
+Being in the root of the directory means that your location in terminal should end with `simpl_eeg_capstone$`
+
+For example...
+
+`(simpl_eeg) mpin@Matthews-MacBook-Pro:~/Documents/MDS/capstone/simpl_eeg_capstone$ `
+
 ## **To use the simple\_eeg\_capstone's visualization tools in JupyterLab**
 
 Please complete the JuptyerLab setup section if you have not installed it yet (<https://ubc-mds.github.io/resources_pages/installation_instructions/>)
