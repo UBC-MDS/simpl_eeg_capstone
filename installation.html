@@ -1,0 +1,376 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Install guide &#8212; SimPL_EEG Package</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Package Introduction" href="introduction.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">SimPL_EEG Package</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1 current">
+  <a class="reference internal" href="#">
+   Install guide
+  </a>
+ </li>
+</ul>
+<ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   Package Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="raw_voltage.html">
+   Raw Voltage Visualization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="connectivity.html">
+   Connectivity Visualizations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="topo_2d.html">
+   2D Head Visualizations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="topo_3d_brain.html">
+   3D Brain Visualizations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="topo_3d_head.html">
+   3D Head Visualizations
+  </a>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/installation.md"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.md</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://ubc-mds.github.io/simpl_eeg_capstone/"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://ubc-mds.github.io/simpl_eeg_capstone//issues/new?title=Issue%20on%20page%20%2Finstallation.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#pre-requisite-computer-setup">
+   <strong>
+    Pre-requisite computer setup
+   </strong>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#installing-the-simpl-eeg-package-in-a-new-environment">
+   <strong>
+    Installing the simpl_eeg package in a new environment
+   </strong>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#to-use-the-streamlit-ui">
+   <strong>
+    To use the streamlit UI
+   </strong>
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#to-use-the-simple-eeg-capstone-s-visualization-tools-in-jupyterlab">
+   <strong>
+    To use the simple_eeg_capstone’s visualization tools in JupyterLab
+   </strong>
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="install-guide">
+<h1>Install guide<a class="headerlink" href="#install-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="pre-requisite-computer-setup">
+<h2><strong>Pre-requisite computer setup</strong><a class="headerlink" href="#pre-requisite-computer-setup" title="Permalink to this headline">¶</a></h2>
+<p>If you have never used terminal before, please consult the following instructions in order to setup up the necessary tools. These instructions will continue to be update into the future so they should remain current.</p>
+<p><a class="reference external" href="https://ubc-mds.github.io/resources_pages/installation_instructions/">https://ubc-mds.github.io/resources_pages/installation_instructions/</a></p>
+<p>Please fully install the sections with the following headers…</p>
+<ul class="simple">
+<li><p>Windows</p>
+<ul>
+<li><p>Git and Bash</p></li>
+<li><p>Python and Conda</p></li>
+</ul>
+</li>
+<li><p>Mac</p>
+<ul>
+<li><p>Bash shell</p></li>
+<li><p>Git</p></li>
+<li><p>Python and Conda</p></li>
+</ul>
+</li>
+<li><p>Ubuntu</p>
+<ul>
+<li><p>Git</p></li>
+<li><p>Python and Conda</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<div class="section" id="installing-the-simpl-eeg-package-in-a-new-environment">
+<h2><strong>Installing the simpl_eeg package in a new environment</strong><a class="headerlink" href="#installing-the-simpl-eeg-package-in-a-new-environment" title="Permalink to this headline">¶</a></h2>
+<p>Please open your Unix shell (i.e. terminal on a Mac, GitBash on Windows) and navigate to a folder you will use to store the files (if you’ve never used a terminal before please look at the following instructions <a class="reference external" href="https://swcarpentry.github.io/shell-novice/02-filedir/index.html">https://swcarpentry.github.io/shell-novice/02-filedir/index.html</a> to help you navigate). Some basic commands which might help include…</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">ls</span></code> list all files/folders in your current directory</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd</span></code> move to a different directory</p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd/folder</span></code> moves you into that folder and makes it your current directory</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cd..</span></code> moves you back out of the folder you are currently in</p></li>
+</ul>
+</li>
+</ul>
+<p><img alt="" src="_images/navigation.png" /></p>
+<p>Then clone our repo using…</p>
+<p><code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/UBC-MDS/simpl_eeg_capstone.git</span></code></p>
+<p>And enter the root of the directory using…</p>
+<p><code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">simpl_eeg_capstone</span></code></p>
+<p><img alt="" src="_images/navigation2.png" /></p>
+<p>After navigating to the root of the directory in terminal (i.e. being within the ‘simpl_eeg_capstone’ folder) Run the following commands…</p>
+<p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">create</span> <span class="pre">–name</span> <span class="pre">simpl_eeg</span></code> (then press “y” to accept when prompted)</p>
+<p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">simpl_eeg</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">ipykernel</span></code> (then press “y” to accept)</p>
+<p><code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">nb_conda_kernels</span></code> (then press “y” to accept)</p>
+<p>Finally, double check that you are in the simple_eeg_capstone directory and install the package contents using…</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code></p>
+</div>
+<div class="section" id="to-use-the-streamlit-ui">
+<h2><strong>To use the streamlit UI</strong><a class="headerlink" href="#to-use-the-streamlit-ui" title="Permalink to this headline">¶</a></h2>
+<p>Navigate to the root of the directory and run the following command…</p>
+<p>streamlit run src/app.py</p>
+<p><img alt="" src="_images/streamlit.png" /></p>
+<p>This will cause the UI to open in your browser like such…</p>
+<p><img alt="" src="_images/streamlit2.png" /></p>
+<p>You can refresh the UI to restart it or open it in another window by copying the url (<a class="reference external" href="http://localhost:8502/">http://localhost:8502/</a>).</p>
+</div>
+<div class="section" id="to-use-the-simple-eeg-capstone-s-visualization-tools-in-jupyterlab">
+<h2><strong>To use the simple_eeg_capstone’s visualization tools in JupyterLab</strong><a class="headerlink" href="#to-use-the-simple-eeg-capstone-s-visualization-tools-in-jupyterlab" title="Permalink to this headline">¶</a></h2>
+<p>Please complete the JuptyerLab setup section if you have not installed it yet (<a class="reference external" href="https://ubc-mds.github.io/resources_pages/installation_instructions/">https://ubc-mds.github.io/resources_pages/installation_instructions/</a>)</p>
+<p>The instructions for how to use the package are in a JupyterNotebook stored in <code class="docutils literal notranslate"><span class="pre">simpl_eeg_capstone/simple_instructions/instructions.ipynb</span></code>. After installing JuptyerLab you should be able to open the program by typing…</p>
+<p><code class="docutils literal notranslate"><span class="pre">jupyter</span> <span class="pre">lab</span></code></p>
+<p>In the command line which will open a new tab in your browser.</p>
+<p><img alt="" src="_images/jupyter_lab.png" /></p>
+<p><img alt="" src="_images/jupyter_lab2.png" /></p>
+</div>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='right-next' id="next-link" href="introduction.html" title="next page">Package Introduction</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Yiki Su, Matthew Pin, Mo Garoub, and Sasha Babicki<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

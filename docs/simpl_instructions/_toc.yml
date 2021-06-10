@@ -1,9 +1,0 @@
-format: jb-article
-root: installation
-sections:
-- file: introduction
-- file: raw_voltage
-- file: connectivity
-- file: topo_2d
-- file: topo_3d_brain
-- file: topo_3d_head
