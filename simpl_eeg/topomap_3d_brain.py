@@ -42,17 +42,29 @@ def calculate_cbar_dims(img_width, img_figsize, img_height):
     if img_height == 2:
         cbar_height = img_height * img_figsize * 0.65
     else:
-        cbar_height = img_height * 2 * img_figsize * 0.65
+        cbar_height = img_height * img_figsize * 1.30
 
     if img_width == 1:
-        cbar_height = cbar_height * (img_width * 1)
-        cbar_width = img_width * img_figsize * 1.2
-    elif img_width >= 3 and img_width < 5:
-        cbar_height = cbar_height * (img_width * 0.5)
+        cbar_height = cbar_height * img_width * 1.05
+        cbar_width = img_width * img_figsize * 1.43
+    elif img_width == 2:
+        cbar_height = cbar_height * img_width * 0.53
+        cbar_width = img_width * img_figsize * 0.71
+    elif img_width == 3:
+        cbar_height = cbar_height * (img_width * 0.47)
         cbar_width = img_width * img_figsize * 0.57
-    elif img_width >= 5:
-        cbar_height = cbar_height * (img_width * 0.4)
+    elif img_width == 4:
+        cbar_height = cbar_height * (img_width * 0.43)
+        cbar_width = img_width * img_figsize * 0.50
+    elif img_width == 5:
+        cbar_height = cbar_height * (img_width * 0.38)
         cbar_width = img_width * img_figsize * 0.45
+    elif img_width == 6:
+        cbar_height = cbar_height * (img_width * 0.35)
+        cbar_width = img_width * img_figsize * 0.40
+    elif img_width >= 7:
+        cbar_height = cbar_height * (img_width * 0.33)
+        cbar_width = img_width * img_figsize * 0.38
     
     return cbar_width, cbar_height
     
@@ -307,7 +319,7 @@ def plot_topomap_3d_brain(
     spacing: str
             Specifies the 'spacing' parameter in the mne.SourceEstimate.plot() function. "The spacing to use for the
             source space. Can be 'ico#' for a recursively subdivided icosahedron, 'oct#' for a recursively subdivided
-            octahedron, or 'all' for all points. In general, you can speed up the plotting by selecting a sparser source
+            octahedron. In general, you can speed up the plotting by selecting a sparser source
             space. Has no effect with mayavi backend. Defaults to ‘oct6’".
 
     smoothing_steps: int
@@ -670,7 +682,7 @@ def animate_matplot_brain(
     spacing: str
             Specifies the 'spacing' parameter in the mne.SourceEstimate.plot() function. "The spacing to use for the
             source space. Can be 'ico#' for a recursively subdivided icosahedron, 'oct#' for a recursively subdivided
-            octahedron, or 'all' for all points. In general, you can speed up the plotting by selecting a sparser source
+            octahedron. In general, you can speed up the plotting by selecting a sparser source
             space. Has no effect with mayavi backend. Defaults to ‘oct6’".
 
     smoothing_steps: int
@@ -745,8 +757,8 @@ def animate_matplot_brain(
                      cbar = colorbar
                      )
             
-            # if timestamp:
-            #     add_timestamp(frame, 0, 0)
+#             if timestamp:
+#                 add_timestamp(frame, 0, 0)
 
             return[fig]
         
