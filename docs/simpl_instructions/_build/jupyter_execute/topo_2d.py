@@ -136,4 +136,14 @@ get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap
 get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(shortened_epoch)\n\nmp4_file_path = "../../exports/examples/topo_2d.mp4"  # change the file path to where you would like to save the file\nanim.save(mp4_file_path)')
 
 
+# ```{note}
+# If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file by running the code below.
+# ```
+# ```python
+# import moviepy.editor as mp
+# 
+# clip = mp.VideoFileClip(gif_file_path)  # change the file path to where you saved the gif file
+# clip.write_videofile(mp4_file_path)  # change the file path to where you would like to save the mp4 file 
+# ```
+
 # <br>

@@ -159,7 +159,7 @@ topomap_3d_head.save_gif(epoch, gifname="topo_3d_head_ani", duration=200)
 # ##### Save animation as mp4 
 
 # ```{note}
-# You would need to save it as gif file first and then convert it into mp4 file.
+# You need to save the file as gif first and then convert it into mp4 file.
 # ```
 
 # In[ ]:
