@@ -92,7 +92,9 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="introduction.html">
-   Package Introduction
+   <strong>
+    Package Introduction
+   </strong>
   </a>
  </li>
  <li class="toctree-l1">
@@ -226,23 +228,6 @@
     <a class="reference internal nav-link" href="#create-epoched-data">
      Create epoched data
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-select-the-epoch">
-       To select the epoch
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-select-the-number-of-time-steps-to-skip-optional-step">
-       To select the number of time steps to skip (optional step)
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-get-the-selected-epoch">
-       To get the selected epoch
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#create-the-topographic-map-in-3d-brain">
@@ -260,42 +245,42 @@
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-generate-figure-with-pyvista-backend-not-currently-working">
-       To generate figure with pyvista backend (NOT CURRENTLY WORKING)
+      <a class="reference internal nav-link" href="#generate-figure-with-pyvista-backend-not-currently-working">
+       Generate figure with pyvista backend (NOT CURRENTLY WORKING)
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-save-animation-with-pyvista-backend-not-currently-working">
-       To save animation with pyvista backend (NOT CURRENTLY WORKING)
+      <a class="reference internal nav-link" href="#save-animation-with-pyvista-backend-not-currently-working">
+       Save animation with pyvista backend (NOT CURRENTLY WORKING)
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-generate-figure-with-matplotlib-backend-recommended">
-       To generate figure with matplotlib backend (recommended)
+      <a class="reference internal nav-link" href="#generate-figure-with-matplotlib-backend-recommended">
+       Generate figure with matplotlib backend (recommended)
       </a>
       <ul class="nav section-nav flex-column">
        <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#to-save-the-figure">
-         To save the figure
+        <a class="reference internal nav-link" href="#save-the-figure">
+         Save the figure
         </a>
        </li>
       </ul>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-generate-animation-with-matplotlib-backend-slow-but-recommended">
-       To generate animation with matplotlib backend (slow but recommended)
+      <a class="reference internal nav-link" href="#generate-animation-with-matplotlib-backend-slow-but-recommended">
+       Generate animation with matplotlib backend (slow but recommended)
       </a>
       <ul class="nav section-nav flex-column">
        <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#to-save-the-animation-as-gif">
-         To save the animation as gif
+        <a class="reference internal nav-link" href="#save-the-animation-as-gif">
+         Save the animation as gif
         </a>
        </li>
       </ul>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-save-the-animation-as-mp4">
-       To save the animation as mp4
+      <a class="reference internal nav-link" href="#save-the-animation-as-mp4">
+       Save the animation as mp4
       </a>
      </li>
     </ul>
@@ -317,7 +302,7 @@
 <h1>3D Brain Visualizations<a class="headerlink" href="#d-brain-visualizations" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="topographic-map-in-3d-brain">
 <h2>Topographic map in 3D brain<a class="headerlink" href="#topographic-map-in-3d-brain" title="Permalink to this headline">¶</a></h2>
-<p><img alt="" src="_images/topomap_3d_brain.svg" /></p>
+<p><img alt="" src="_images/topomap_3d_brain.gif" /></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">eeg_objects</span><span class="p">,</span> <span class="n">topomap_3d_brain</span>
@@ -333,7 +318,10 @@
 </div>
 </div>
 </div>
-<p><strong>Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
@@ -353,11 +341,11 @@
 <p>There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change None to values of interest</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values belo to values of interest</span>
 
-<span class="n">experiment</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># has to be a string</span>
-<span class="n">nth_epoch</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># select from [&quot;RdBu_r&quot;, &quot;hot&quot;, &quot;cool&quot;, &quot;inferno&quot;, &quot;turbo&quot;, &quot;rainbow&quot;]</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="s2">&quot;../../data/927&quot;</span> <span class="c1"># path to the experiment folder.</span>
+<span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;RdBu_r&quot;</span> <span class="c1"># select from [&quot;RdBu_r&quot;, &quot;hot&quot;, &quot;cool&quot;, &quot;inferno&quot;, &quot;turbo&quot;, &quot;rainbow&quot;]</span>
 </pre></div>
 </div>
 </div>
@@ -367,80 +355,52 @@
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmin</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># number of seconds before the impact</span>
-<span class="n">tmax</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># number of seconds after the impact</span>
-<span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># starting time of the epoch</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmin</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.3</span>  <span class="c1"># number of seconds before the impact. Please change it to a value of your interest</span>
+<span class="n">tmax</span> <span class="o">=</span> <span class="mf">0.7</span>  <span class="c1"># number of seconds after the impact. Please change it to a value of your interest</span>
+<span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># starting time of the epoch. Please change it to a value of your interest</span>
 
 <span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
+
+<span class="n">raw</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
+
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">96568920970</span><span class="n">b</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># starting time of the epoch</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> 
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-
-<span class="nn">~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, folder_path, tmin, tmax, start_second)</span>
-<span class="g g-Whitespace">     </span><span class="mi">50</span> 
-<span class="g g-Whitespace">     </span><span class="mi">51</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=-</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">start_second</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">52</span>         <span class="bp">self</span><span class="o">.</span><span class="n">eeg_file</span> <span class="o">=</span> <span class="n">EEG_File</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">53</span>         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_epochs</span><span class="p">(</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">54</span>         <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="nn">~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, folder_path)</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>         <span class="bp">self</span><span class="o">.</span><span class="n">folder_path</span> <span class="o">=</span> <span class="n">folder_path</span>
-<span class="ne">---&gt; </span><span class="mi">23</span>         <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">folder_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="bp">self</span><span class="o">.</span><span class="n">mat</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">folder_path</span><span class="o">+</span><span class="s2">&quot;/impact locations.mat&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">25</span>         <span class="bp">self</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_eeglab</span><span class="p">(</span><span class="n">folder_path</span><span class="o">+</span><span class="s2">&quot;/fixica.set&quot;</span><span class="p">)</span>
-
-<span class="ne">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;split&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/sasha/mds/simpl_eeg_capstone/data/927/fixica.fdt
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="to-select-the-epoch">
-<h4>To select the epoch<a class="headerlink" href="#to-select-the-epoch" title="Permalink to this headline">¶</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="to-select-the-number-of-time-steps-to-skip-optional-step">
-<h4>To select the number of time steps to skip (optional step)<a class="headerlink" href="#to-select-the-number-of-time-steps-to-skip-optional-step" title="Permalink to this headline">¶</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw</span><span class="o">.</span><span class="n">skip_n_steps</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>33 matching events found
+</pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Applying baseline correction (mode: mean)
+</pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 projection items activated
+</pre></div>
 </div>
-<div class="section" id="to-get-the-selected-epoch">
-<h4>To get the selected epoch<a class="headerlink" href="#to-get-the-selected-epoch" title="Permalink to this headline">¶</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epoch</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">()</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading data for 33 events and 2049 original time points ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 bad epochs dropped
 </pre></div>
 </div>
 </div>
 </div>
 </br></div>
-</div>
 <div class="section" id="create-the-topographic-map-in-3d-brain">
 <h3>Create the topographic map in 3D brain<a class="headerlink" href="#create-the-topographic-map-in-3d-brain" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <ul class="simple">
-<li><p>NOTE: Before an animation or plot can be generated a “forward” and “inverse” (abbreviated as “stc”) must first be generated. If they are not provided to either of the plotting animations they will be automatically generated HOWEVER this will increase the time it takes to generate the figure.</p></li>
-</ul>
-<ul class="simple">
+<li><p>Before an animation or plot can be generated a <strong>“forward”</strong> and <strong>“inverse”</strong> (abbreviated as <strong>“stc”</strong>) must first be generated. If they are not provided to either of the plotting animations they will be automatically generated <strong>HOWEVER</strong> this will increase the time it takes to generate the figure.</p></li>
 <li><p>The forward/inverse are used to retrieve a brain model to attach the EEG data to and to do some of the mapping calculations. The forward downloads ‘fsaverage’ MRI data which represents a brain averaged out from dozens of different patients.</p></li>
 </ul>
 </div>
@@ -449,6 +409,134 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fwd</span> <span class="o">=</span> <span class="n">topomap_3d_brain</span><span class="o">.</span><span class="n">create_fsaverage_forward</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 files missing from root.txt in /Users/sasha/mne_data/MNE-fsaverage-data
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 files missing from bem.txt in /Users/sasha/mne_data/MNE-fsaverage-data/fsaverage
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Source space          : /Users/sasha/mne_data/MNE-fsaverage-data/fsaverage/bem/fsaverage-ico-5-src.fif
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>MRI -&gt; head transform : /opt/miniconda3/lib/python3.8/site-packages/mne/data/fsaverage/fsaverage-trans.fif
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Measurement data      : instance of Info
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Conductor model   : /Users/sasha/mne_data/MNE-fsaverage-data/fsaverage/bem/fsaverage-5120-5120-5120-bem-sol.fif
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Accurate field computations
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Do computations in head coordinates
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Free source orientations
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/sasha/mne_data/MNE-fsaverage-data/fsaverage/bem/fsaverage-ico-5-src.fif...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Read 2 source spaces a total of 20484 active source locations
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Coordinate transformation: MRI (surface RAS) -&gt; head
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     0.999994  0.003552  0.000202      -1.76 mm
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    -0.003558  0.998389  0.056626      31.09 mm
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    -0.000001 -0.056626  0.998395      39.60 mm
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>     0.000000  0.000000  0.000000       1.00
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Read  19 EEG channels from info
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Head coordinate coil definitions created.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Source spaces are now in head coordinates.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting up the BEM model using /Users/sasha/mne_data/MNE-fsaverage-data/fsaverage/bem/fsaverage-5120-5120-5120-bem-sol.fif...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading surfaces...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading the solution matrix...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Three-layer model surfaces loaded.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loaded linear_collocation BEM solution from /Users/sasha/mne_data/MNE-fsaverage-data/fsaverage/bem/fsaverage-5120-5120-5120-bem-sol.fif
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Employing the head-&gt;MRI coordinate transform with the BEM model.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>BEM model fsaverage-5120-5120-5120-bem-sol.fif is now set up
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Source spaces are in head coordinates.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Checking that the sources are inside the surface and at least    5.0 mm away (will take a few...)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Skipping interior check for 2433 sources that fit inside a sphere of radius   47.7 mm
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Skipping solid angle check for 0 points using Qhull
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Skipping interior check for 2241 sources that fit inside a sphere of radius   47.7 mm
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Skipping solid angle check for 0 points using Qhull
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting up for EEG...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing EEG at 20484 source locations (free orientations)...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Finished.
 </pre></div>
 </div>
 </div>
@@ -462,10 +550,161 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing rank from data with rank=None
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Using tolerance 1.8e-11 (2.2e-16 eps * 19 dim * 4.3e+03  max singular value)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Estimated rank (eeg): 19
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    EEG: rank 19 computed from 19 data channels with 0 projectors
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reducing data rank from 19 -&gt; 19
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimating covariance using EMPIRICAL
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimating covariance using SHRUNK
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using cross-validation to select the best estimator.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of samples used : 2049
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>log-likelihood on unseen data (descending order):
+   shrunk: -66.294
+   empirical: -187.228
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>selecting best estimator: shrunk
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[done]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting forward solution to surface orientation
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    No patch info available. The standard source space normals will be employed in the rotation to the local surface coordinates....
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Converting to surface-based source orientations...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    [done]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing inverse operator with 19 channels.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    19 out of 19 channels remain after picking
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Selected 19 channels
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating the depth weighting matrix...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    19 EEG channels
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    limit = 20485/20484 = 9.583809
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    scale = 9.50316e+09 exp = 0.8
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Applying loose dipole orientations to surface source spaces: 0.2
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Whitening the forward solution.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing rank from covariance with rank=None
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Using tolerance 3.7e-13 (2.2e-16 eps * 19 dim * 88  max singular value)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Estimated rank (eeg): 19
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    EEG: rank 19 computed from 19 data channels with 0 projectors
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Setting small EEG eigenvalues to zero (without PCA)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating the source covariance matrix
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Adjusting source covariance matrix.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing SVD of whitened and weighted lead field matrix.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    largest singular value = 2.66383
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    scaling factor to adjust the trace = 3.61722e+24 (nchan = 19 nzero = 0)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Preparing the inverse operator for use...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Scaled noise and source covariance from nave = 1 to nave = 1
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Created the regularized inverter
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    The projection vectors do not apply to these channels.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Created the whitener using a noise covariance matrix with rank 19 (0 small eigenvalues omitted)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Computing noise-normalization factors (dSPM)...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[done]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Picked 19 channels from the data
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing inverse...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Eigenleads need to be weighted ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing epoch : 1 / 1
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[done]
+</pre></div>
 </div>
 </div>
-<div class="section" id="to-generate-figure-with-pyvista-backend-not-currently-working">
-<h4>To generate figure with pyvista backend (NOT CURRENTLY WORKING)<a class="headerlink" href="#to-generate-figure-with-pyvista-backend-not-currently-working" title="Permalink to this headline">¶</a></h4>
+</div>
+</div>
+<div class="section" id="generate-figure-with-pyvista-backend-not-currently-working">
+<h4>Generate figure with pyvista backend (NOT CURRENTLY WORKING)<a class="headerlink" href="#generate-figure-with-pyvista-backend-not-currently-working" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#pyvista_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc = stc, backend = &#39;pyvista&#39;)</span>
@@ -474,8 +713,8 @@
 </div>
 </div>
 </div>
-<div class="section" id="to-save-animation-with-pyvista-backend-not-currently-working">
-<h4>To save animation with pyvista backend (NOT CURRENTLY WORKING)<a class="headerlink" href="#to-save-animation-with-pyvista-backend-not-currently-working" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="save-animation-with-pyvista-backend-not-currently-working">
+<h4>Save animation with pyvista backend (NOT CURRENTLY WORKING)<a class="headerlink" href="#save-animation-with-pyvista-backend-not-currently-working" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1">#topomap_3d_brain.save_animated_topomap_3d_brain(pyvista_brain_fig, filename = &quot;brain_animation.gif&quot;)</span>
@@ -484,8 +723,8 @@
 </div>
 </div>
 </br></div>
-<div class="section" id="to-generate-figure-with-matplotlib-backend-recommended">
-<h4>To generate figure with matplotlib backend (recommended)<a class="headerlink" href="#to-generate-figure-with-matplotlib-backend-recommended" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="generate-figure-with-matplotlib-backend-recommended">
+<h4>Generate figure with matplotlib backend (recommended)<a class="headerlink" href="#generate-figure-with-matplotlib-backend-recommended" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
@@ -494,22 +733,78 @@
 </div>
 </div>
 </div>
-<div class="section" id="to-save-the-figure">
-<h5>To save the figure<a class="headerlink" href="#to-save-the-figure" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="save-the-figure">
+<h5>Save the figure<a class="headerlink" href="#save-the-figure" title="Permalink to this headline">¶</a></h5>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># You could change the plot to different formats by changing the format argument in the function. </span>
 <span class="c1"># It supports &#39;png&#39;, &#39;pdf&#39;, &#39;svg&#39;.</span>
 
-<span class="n">matplot_brain_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;topomap_3d_brain.svg&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span> <span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/topomap_3d_brain.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+
+<span class="n">matplot_brain_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span> <span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">54</span><span class="n">c6db6a71d3</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/topomap_3d_brain.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">matplot_brain_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span> <span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/figure.py</span> in <span class="ni">savefig</span><span class="nt">(self, fname, transparent, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3003</span>                 <span class="n">patch</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3004</span> 
+<span class="ne">-&gt; </span><span class="mi">3005</span>         <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">print_figure</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3006</span> 
+<span class="g g-Whitespace">   </span><span class="mi">3007</span>         <span class="k">if</span> <span class="n">transparent</span><span class="p">:</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/backend_bases.py</span> in <span class="ni">print_figure</span><span class="nt">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2253</span>                 <span class="c1"># force the figure dpi to 72), so we need to set it again here.</span>
+<span class="g g-Whitespace">   </span><span class="mi">2254</span>                 <span class="k">with</span> <span class="n">cbook</span><span class="o">.</span><span class="n">_setattr_cm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">2255</span>                     <span class="n">result</span> <span class="o">=</span> <span class="n">print_method</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">2256</span>                         <span class="n">filename</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">2257</span>                         <span class="n">facecolor</span><span class="o">=</span><span class="n">facecolor</span><span class="p">,</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/backends/backend_svg.py</span> in <span class="ni">print_svg</span><span class="nt">(self, filename, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1319</span>             <span class="n">__</span> <span class="n">DC_</span>
+<span class="g g-Whitespace">   </span><span class="mi">1320</span>         <span class="sd">&quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1321</span><span class="sd">         with cbook.open_file_cm(filename, &quot;w&quot;, encoding=&quot;utf-8&quot;) as fh:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1322</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">1323</span><span class="sd">             filename = getattr(fh, &#39;name&#39;, &#39;&#39;)</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/contextlib.py</span> in <span class="ni">__enter__</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">111</span><span class="sd">         del self.args, self.kwds, self.func</span>
+<span class="g g-Whitespace">    </span><span class="mi">112</span><span class="sd">         try:</span>
+<span class="ne">--&gt; </span><span class="mi">113</span><span class="sd">             return next(self.gen)</span>
+<span class="g g-Whitespace">    </span><span class="mi">114</span><span class="sd">         except StopIteration:</span>
+<span class="g g-Whitespace">    </span><span class="mi">115</span><span class="sd">             raise RuntimeError(&quot;generator didn&#39;t yield&quot;) from None</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/cbook/__init__.py</span> in <span class="ni">open_file_cm</span><span class="nt">(path_or_file, mode, encoding)</span>
+<span class="g g-Whitespace">    </span><span class="mi">475</span><span class="sd"> def open_file_cm(path_or_file, mode=&quot;r&quot;, encoding=None):</span>
+<span class="g g-Whitespace">    </span><span class="mi">476</span><span class="sd">     r&quot;&quot;&quot;</span><span class="n">Pass</span> <span class="n">through</span> <span class="n">file</span> <span class="n">objects</span> <span class="ow">and</span> <span class="n">context</span><span class="o">-</span><span class="n">manage</span> <span class="n">path</span><span class="o">-</span><span class="n">likes</span><span class="o">.</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">477</span><span class="s2">     fh, opened = to_filehandle(path_or_file, mode, True, encoding)</span>
+<span class="g g-Whitespace">    </span><span class="mi">478</span><span class="s2">     if opened:</span>
+<span class="g g-Whitespace">    </span><span class="mi">479</span><span class="s2">         with fh:</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/cbook/__init__.py</span> in <span class="ni">to_filehandle</span><span class="nt">(fname, flag, return_opened, encoding)</span>
+<span class="g g-Whitespace">    </span><span class="mi">460</span><span class="s2">             fh = bz2.BZ2File(fname, flag)</span>
+<span class="g g-Whitespace">    </span><span class="mi">461</span><span class="s2">         else:</span>
+<span class="ne">--&gt; </span><span class="mi">462</span><span class="s2">             fh = open(fname, flag, encoding=encoding)</span>
+<span class="g g-Whitespace">    </span><span class="mi">463</span><span class="s2">         opened = True</span>
+<span class="g g-Whitespace">    </span><span class="mi">464</span><span class="s2">     elif hasattr(fname, &#39;seek&#39;):</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;exports/topomap_3d_brain.svg&#39;
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="section" id="to-generate-animation-with-matplotlib-backend-slow-but-recommended">
-<h4>To generate animation with matplotlib backend (slow but recommended)<a class="headerlink" href="#to-generate-animation-with-matplotlib-backend-slow-but-recommended" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="generate-animation-with-matplotlib-backend-slow-but-recommended">
+<h4>Generate animation with matplotlib backend (slow but recommended)<a class="headerlink" href="#generate-animation-with-matplotlib-backend-slow-but-recommended" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
@@ -518,28 +813,46 @@
 </div>
 </div>
 </div>
-<div class="section" id="to-save-the-animation-as-gif">
-<h5>To save the animation as gif<a class="headerlink" href="#to-save-the-animation-as-gif" title="Permalink to this headline">¶</a></h5>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">PillowWriter</span>
-<span class="n">writergif</span> <span class="o">=</span> <span class="n">PillowWriter</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">matplotlib_animation</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;topomap_3d_brain.gif&quot;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="n">writergif</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">matplotlib_animation</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="save-the-animation-as-gif">
+<h5>Save the animation as gif<a class="headerlink" href="#save-the-animation-as-gif" title="Permalink to this headline">¶</a></h5>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+
+<span class="n">anim_brain</span> <span class="o">=</span> <span class="n">topomap_3d_brain</span><span class="o">.</span><span class="n">animate_matplot_brain</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">stc</span> <span class="o">=</span> <span class="n">stc</span><span class="p">,</span> <span class="n">views</span> <span class="o">=</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">hemi</span> <span class="o">=</span> <span class="s1">&#39;lh&#39;</span><span class="p">)</span>
+
+<span class="c1"># use a writer if you want to specify frames per second</span>
+<span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">PillowWriter</span>
+
+<span class="n">writer</span> <span class="o">=</span> <span class="n">PillowWriter</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">gif_file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/topomap_3d_brain.gif&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">anim_brain</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">gif_file_path</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="n">writer</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 </div>
-<div class="section" id="to-save-the-animation-as-mp4">
-<h4>To save the animation as mp4<a class="headerlink" href="#to-save-the-animation-as-mp4" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="save-the-animation-as-mp4">
+<h4>Save the animation as mp4<a class="headerlink" href="#save-the-animation-as-mp4" title="Permalink to this headline">¶</a></h4>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
 <p>You would need to save it as gif file first and then convert it into mp4 file.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mp</span>
 
-<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;topomap_3d_brain.gif&quot;</span><span class="p">)</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;topomap_3d_brain.mp4&quot;</span><span class="p">)</span> 
+<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;exports/topomap_3d_brain.gif&quot;</span><span class="p">)</span> <span class="c1"># change the file path to where you saved the gif file</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;exports/topomap_3d_brain.mp4&quot;</span><span class="p">)</span>  <span class="c1"># change the file path to where you would like to save the file</span>
 </pre></div>
 </div>
 </div>

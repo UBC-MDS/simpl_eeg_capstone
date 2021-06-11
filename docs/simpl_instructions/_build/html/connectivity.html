@@ -92,7 +92,9 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="introduction.html">
-   Package Introduction
+   <strong>
+    Package Introduction
+   </strong>
   </a>
  </li>
  <li class="toctree-l1">
@@ -226,23 +228,6 @@
     <a class="reference internal nav-link" href="#create-epoched-data">
      Create epoched data
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-select-the-epoch">
-       To select the epoch
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-select-the-number-of-time-steps-to-skip-optional-step">
-       To select the number of time steps to skip (optional step)
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-get-the-selected-epoch">
-       To get the selected epoch
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#create-the-connectivity-plot">
@@ -250,55 +235,65 @@
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-generate-the-animtation">
-       To generate the animtation
+      <a class="reference internal nav-link" href="#generating-the-animation">
+       Generating the animation
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-save-the-animattion">
-       To save the animattion
+      <a class="reference internal nav-link" href="#saving-the-animation">
+       Saving the animation
       </a>
       <ul class="nav section-nav flex-column">
        <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#to-save-the-animated-plot-as-gif">
-         To save the animated plot as gif
+        <a class="reference internal nav-link" href="#save-as-html">
+         Save as html
         </a>
        </li>
        <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#to-save-the-animated-plot-as-mp4">
-         To save the animated plot as mp4
+        <a class="reference internal nav-link" href="#save-as-gif">
+         Save as gif
+        </a>
+       </li>
+       <li class="toc-h5 nav-item toc-entry">
+        <a class="reference internal nav-link" href="#save-as-mp4">
+         Save as mp4
         </a>
        </li>
       </ul>
      </li>
     </ul>
    </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#connectivity-circle-plot">
+   Connectivity Circle Plot
+  </a>
+  <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#create-the-connectivity-cicle-plot">
-     Create the connectivity cicle plot
+    <a class="reference internal nav-link" href="#id1">
+     Generating the animation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id2">
+     Saving the animation
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#id1">
-       To generate the animtation
+      <a class="reference internal nav-link" href="#id3">
+       Save as html
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#id2">
-       To save the animattion
+      <a class="reference internal nav-link" href="#id4">
+       Save as gif
       </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#id3">
-         To save the animated plot as gif
-        </a>
-       </li>
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#id4">
-         To save the animated plot as mp4
-        </a>
-       </li>
-      </ul>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id5">
+       Save as mp4
+      </a>
      </li>
     </ul>
    </li>
@@ -319,10 +314,9 @@
 <h1>Connectivity Visualizations<a class="headerlink" href="#connectivity-visualizations" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="connectivity-plot">
 <h2>Connectivity Plot<a class="headerlink" href="#connectivity-plot" title="Permalink to this headline">¶</a></h2>
-<p><img alt="" src="_images/connectivity.gif" /></p>
-<div class="cell docutils container">
+<img src="instruction_imgs/connectivity.gif" align="left" style="height:30em"/><div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">eeg_objects</span><span class="p">,</span> <span class="n">connectivity</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">connectivity</span><span class="p">,</span> <span class="n">eeg_objects</span>
 </pre></div>
 </div>
 </div>
@@ -335,7 +329,10 @@
 </div>
 </div>
 </div>
-<p><strong>Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
@@ -355,22 +352,24 @@
 <p>There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change None to values of interest</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values below to values of interest</span>
 
-<span class="n">experiment</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># has to be a string</span>
-<span class="n">nth_epoch</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">vmin</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># The minimum for the scale. Defaults to None.</span>
-<span class="n">vmax</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># The minimum for the scale. Defaults to None.</span>
-<span class="n">colormap</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># select from [&quot;RdBu_r&quot;, &quot;hot&quot;, &quot;cool&quot;, &quot;inferno&quot;, &quot;turbo&quot;, &quot;rainbow&quot;]</span>
-<span class="n">calc_type</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># select from [&quot;correlation&quot;, &quot;spectral_connectivity&quot;,&quot;envelope_correlation&quot;]</span>
-<span class="n">pair_list</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># select from the PAIR_OPTIONS below</span>
+<span class="n">experiment_path</span> <span class="o">=</span> <span class="s2">&quot;../../data/927&quot;</span> <span class="c1"># path to the experiment folder.</span>
+<span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span> <span class="c1"># The minimum for the scale. Defaults to None.</span>
+<span class="n">vmax</span> <span class="o">=</span> <span class="mi">1</span> <span class="c1"># The minimum for the scale. Defaults to None.</span>
+<span class="n">colormap</span> <span class="o">=</span> <span class="s1">&#39;RdBu_r&#39;</span> <span class="c1"># select from [&quot;RdBu_r&quot;, &quot;hot&quot;, &quot;cool&quot;, &quot;inferno&quot;, &quot;turbo&quot;, &quot;rainbow&quot;]. Defaults to &#39;RdBu_r&#39;.</span>
+<span class="n">calc_type</span> <span class="o">=</span> <span class="s1">&#39;correlation&#39;</span> <span class="c1"># select from [&quot;correlation&quot;, &quot;spectral_connectivity&quot;,&quot;envelope_correlation&quot;]</span>
+<span class="n">pair_list</span> <span class="o">=</span> <span class="s2">&quot;all_pairs&quot;</span> <span class="c1"># select from the PAIR_OPTIONS below</span>
 <span class="n">line_width</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># The line width for the connections. Defaults to None for non-static width.</span>
-<span class="n">max_connections</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># Number of connections to display. Defaults to 50.</span>
+<span class="n">max_connections</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># Number of connections to display. Defaults to 50.</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">PAIR_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">PAIR_OPTIONS</span> <span class="o">=</span> <span class="p">{</span>
     <span class="s2">&quot;all_pairs&quot;</span><span class="p">:</span> <span class="p">[],</span>
     <span class="s2">&quot;local_anterior&quot;</span><span class="p">:</span> <span class="s2">&quot;Fp1-F7, Fp2-F8, F7-C3, F4-C4, C4-F8, F3-C3&quot;</span><span class="p">,</span>
     <span class="s2">&quot;local_posterior&quot;</span><span class="p">:</span> <span class="s2">&quot;T5-C3, T5-O1, C3-P3, C4-P4, C4-T6, T6-O2&quot;</span><span class="p">,</span>
@@ -383,81 +382,50 @@
 <span class="p">}</span>
 </pre></div>
 </div>
+</div>
+</div>
 <br></div>
 <div class="section" id="create-epoched-data">
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmin</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># number of seconds before the impact</span>
-<span class="n">tmax</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># number of seconds after the impact</span>
-<span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># starting time of the epoch</span>
-
-<span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">)</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">96568920970</span><span class="n">b</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># starting time of the epoch</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> 
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-
-<span class="nn">~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, folder_path, tmin, tmax, start_second)</span>
-<span class="g g-Whitespace">     </span><span class="mi">50</span> 
-<span class="g g-Whitespace">     </span><span class="mi">51</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=-</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">start_second</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">52</span>         <span class="bp">self</span><span class="o">.</span><span class="n">eeg_file</span> <span class="o">=</span> <span class="n">EEG_File</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">53</span>         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_epochs</span><span class="p">(</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">54</span>         <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="nn">~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, folder_path)</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>         <span class="bp">self</span><span class="o">.</span><span class="n">folder_path</span> <span class="o">=</span> <span class="n">folder_path</span>
-<span class="ne">---&gt; </span><span class="mi">23</span>         <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">folder_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="bp">self</span><span class="o">.</span><span class="n">mat</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">folder_path</span><span class="o">+</span><span class="s2">&quot;/impact locations.mat&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">25</span>         <span class="bp">self</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_eeglab</span><span class="p">(</span><span class="n">folder_path</span><span class="o">+</span><span class="s2">&quot;/fixica.set&quot;</span><span class="p">)</span>
-
-<span class="ne">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;split&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/sasha/mds/simpl_eeg_capstone/data/927/fixica.fdt
 </pre></div>
 </div>
-</div>
-</div>
-<div class="section" id="to-select-the-epoch">
-<h4>To select the epoch<a class="headerlink" href="#to-select-the-epoch" title="Permalink to this headline">¶</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
 </pre></div>
 </div>
-</div>
-</div>
-</div>
-<div class="section" id="to-select-the-number-of-time-steps-to-skip-optional-step">
-<h4>To select the number of time steps to skip (optional step)<a class="headerlink" href="#to-select-the-number-of-time-steps-to-skip-optional-step" title="Permalink to this headline">¶</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw</span><span class="o">.</span><span class="n">skip_n_steps</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>33 matching events found
+</pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Applying baseline correction (mode: mean)
+</pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 projection items activated
+</pre></div>
 </div>
-<div class="section" id="to-get-the-selected-epoch">
-<h4>To get the selected epoch<a class="headerlink" href="#to-get-the-selected-epoch" title="Permalink to this headline">¶</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epoch</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">()</span>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading data for 33 events and 2049 original time points ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 bad epochs dropped
 </pre></div>
 </div>
 </div>
 </div>
 <br></div>
-</div>
 <div class="section" id="create-the-connectivity-plot">
 <h3>Create the connectivity plot<a class="headerlink" href="#create-the-connectivity-plot" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="to-generate-the-animtation">
-<h4>To generate the animtation<a class="headerlink" href="#to-generate-the-animtation" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="generating-the-animation">
+<h4>Generating the animation<a class="headerlink" href="#generating-the-animation" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -468,7 +436,9 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
-<span class="n">conn_plot_animated</span> <span class="o">=</span> <span class="n">connectivity</span><span class="o">.</span><span class="n">animate_connectivity</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span>
+
+<span class="n">conn_plot_animated</span> <span class="o">=</span> <span class="n">connectivity</span><span class="o">.</span><span class="n">animate_connectivity</span><span class="p">(</span>
+    <span class="n">epoch</span><span class="p">,</span>
     <span class="n">calc_type</span><span class="o">=</span><span class="n">calc_type</span><span class="p">,</span>
     <span class="n">steps</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
     <span class="n">pair_list</span><span class="o">=</span><span class="n">pair_list</span><span class="p">,</span>
@@ -477,44 +447,142 @@
     <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
     <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
     <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
-    <span class="n">line_width</span><span class="o">=</span><span class="n">line_width</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+    <span class="n">line_width</span><span class="o">=</span><span class="n">line_width</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="n">HTML</span><span class="p">(</span><span class="n">conn_plot_animated</span><span class="o">.</span><span class="n">to_jshtml</span><span class="p">())</span>
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+
+<span class="n">conn_html</span> <span class="o">=</span> <span class="n">conn_plot_animated</span><span class="o">.</span><span class="n">to_jshtml</span><span class="p">()</span>
+<span class="n">conn_video</span> <span class="o">=</span> <span class="n">HTML</span><span class="p">(</span><span class="n">conn_html</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="section" id="to-save-the-animattion">
-<h4>To save the animattion<a class="headerlink" href="#to-save-the-animattion" title="Permalink to this headline">¶</a></h4>
-<div class="section" id="to-save-the-animated-plot-as-gif">
-<h5>To save the animated plot as gif<a class="headerlink" href="#to-save-the-animated-plot-as-gif" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="saving-the-animation">
+<h4>Saving the animation<a class="headerlink" href="#saving-the-animation" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="save-as-html">
+<h5>Save as html<a class="headerlink" href="#save-as-html" title="Permalink to this headline">¶</a></h5>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">PillowWriter</span>
-<span class="n">writergif</span> <span class="o">=</span> <span class="n">PillowWriter</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">conn_plot_animated</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;connectivity.gif&quot;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="n">writergif</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">html_file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/connectivity.html&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+
+<span class="n">html_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">html_file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">html_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">conn_html</span><span class="p">)</span>
+<span class="n">html_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-<div class="section" id="to-save-the-animated-plot-as-mp4">
-<h5>To save the animated plot as mp4<a class="headerlink" href="#to-save-the-animated-plot-as-mp4" title="Permalink to this headline">¶</a></h5>
-<p>You would need to save it as gif file first and then convert it into mp4 file.</p>
+<div class="section" id="save-as-gif">
+<h5>Save as gif<a class="headerlink" href="#save-as-gif" title="Permalink to this headline">¶</a></h5>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+
+<span class="n">anim_conn</span> <span class="o">=</span> <span class="n">connectivity</span><span class="o">.</span><span class="n">animate_connectivity</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">vmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">vmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">pair_list</span><span class="o">=</span><span class="n">PAIR_OPTIONS</span><span class="p">[</span><span class="s2">&quot;far_coherence&quot;</span><span class="p">])</span>
+
+<span class="n">conn_gif_file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/connectivity.gif&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">anim_conn</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">conn_gif_file_path</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>  <span class="c1"># set frames per second (fps) and resolution (dpi)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="save-as-mp4">
+<h5>Save as mp4<a class="headerlink" href="#save-as-mp4" title="Permalink to this headline">¶</a></h5>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">conn_mp4_file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/connectivity.mp4&quot;</span>
+<span class="n">anim_conn</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">conn_mp4_file_path</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">FFMpegWriter</span></code> does not work on your computer you can save the file as a gif first and then convert it into mp4 file.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mp</span>
 
-<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;connectivity.gif&quot;</span><span class="p">)</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;connectivity.mp4&quot;</span><span class="p">)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">conn_gif_file_path</span><span class="p">)</span> <span class="c1"># change the file path to where you saved the gif file</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="n">conn_mp4_file_path</span><span class="p">)</span> <span class="c1"># change the file path to where you would like to save the file</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:   0%|          | 0/102 [00:00&lt;?, ?it/s, now=None]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Moviepy - Building video ../../exports/examples/connectivity.mp4.
+Moviepy - Writing video ../../exports/examples/connectivity.mp4
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:   2%|▏         | 2/102 [00:00&lt;00:18,  5.55it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:   7%|▋         | 7/102 [00:00&lt;00:12,  7.50it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  13%|█▎        | 13/102 [00:00&lt;00:08, 10.08it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  19%|█▊        | 19/102 [00:00&lt;00:06, 13.34it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  25%|██▍       | 25/102 [00:00&lt;00:04, 17.26it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  29%|██▉       | 30/102 [00:00&lt;00:03, 20.79it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  34%|███▍      | 35/102 [00:01&lt;00:02, 24.68it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  39%|███▉      | 40/102 [00:01&lt;00:02, 28.61it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  44%|████▍     | 45/102 [00:01&lt;00:01, 30.84it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  49%|████▉     | 50/102 [00:01&lt;00:01, 28.54it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  55%|█████▍    | 56/102 [00:01&lt;00:01, 33.24it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  61%|██████    | 62/102 [00:01&lt;00:01, 38.18it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  67%|██████▋   | 68/102 [00:01&lt;00:00, 42.77it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  73%|███████▎  | 74/102 [00:01&lt;00:00, 45.49it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  78%|███████▊  | 80/102 [00:02&lt;00:00, 47.33it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  84%|████████▍ | 86/102 [00:02&lt;00:00, 48.39it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  90%|█████████ | 92/102 [00:02&lt;00:00, 48.09it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  96%|█████████▌| 98/102 [00:02&lt;00:00, 46.57it/s, now=None]
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                             
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Moviepy - Done !
+Moviepy - video ready ../../exports/examples/connectivity.mp4
 </pre></div>
 </div>
 </div>
@@ -522,10 +590,11 @@
 <br></div>
 </div>
 </div>
-<div class="section" id="create-the-connectivity-cicle-plot">
-<h3>Create the connectivity cicle plot<a class="headerlink" href="#create-the-connectivity-cicle-plot" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="id1">
-<h4>To generate the animtation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+</div>
+<div class="section" id="connectivity-circle-plot">
+<h2>Connectivity Circle Plot<a class="headerlink" href="#connectivity-circle-plot" title="Permalink to this headline">¶</a></h2>
+<img src="instruction_imgs/connectivity_circle.gif" align="left" style="height:30em"/><div class="section" id="id1">
+<h3>Generating the animation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
@@ -536,53 +605,88 @@
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
-<span class="n">conn_plot_cir_animated</span> <span class="o">=</span> <span class="n">connectivity</span><span class="o">.</span><span class="n">animate_connectivity_circle</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span>
+
+<span class="n">plot_cir_animated</span> <span class="o">=</span> <span class="n">connectivity</span><span class="o">.</span><span class="n">animate_connectivity_circle</span><span class="p">(</span>
+    <span class="n">epoch</span><span class="p">,</span>
     <span class="n">calc_type</span><span class="o">=</span><span class="n">calc_type</span><span class="p">,</span>
     <span class="n">max_connections</span><span class="o">=</span><span class="n">max_connections</span><span class="p">,</span>
-    <span class="n">steps</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+    <span class="n">steps</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span>
     <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
     <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
     <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
-    <span class="n">line_width</span><span class="o">=</span><span class="n">line_width</span><span class="p">)</span>
+    <span class="n">line_width</span><span class="o">=</span><span class="n">line_width</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+
+<span class="n">cir_html</span> <span class="o">=</span> <span class="n">plot_cir_animated</span><span class="o">.</span><span class="n">to_jshtml</span><span class="p">()</span>
+<span class="n">cir_video</span> <span class="o">=</span> <span class="n">HTML</span><span class="p">(</span><span class="n">cir_html</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
-
-<span class="n">HTML</span><span class="p">(</span><span class="n">conn_plot_cir_animated</span><span class="o">.</span><span class="n">to_jshtml</span><span class="p">())</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cir_video</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="section" id="id2">
-<h4>To save the animattion<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<h3>Saving the animation<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="id3">
-<h5>To save the animated plot as gif<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h5>
+<h4>Save as html<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">PillowWriter</span>
-<span class="n">writergif</span> <span class="o">=</span> <span class="n">PillowWriter</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">conn_plot_cir_animated</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="s2">&quot;connectivity_cicle.gif&quot;</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="n">writergif</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cir_html_file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/connectivity_circle.html&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+
+<span class="n">cir_html_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">cir_html_file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
+<span class="n">cir_html_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">cir_html</span><span class="p">)</span>
+<span class="n">cir_html_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
 <div class="section" id="id4">
-<h5>To save the animated plot as mp4<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h5>
-<p>You would need to save it as gif file first and then convert it into mp4 file.</p>
+<h4>Save as gif<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+
+<span class="n">anim_cir</span> <span class="o">=</span> <span class="n">connectivity</span><span class="o">.</span><span class="n">animate_connectivity_circle</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+
+<span class="n">cir_gif_file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/connectivity_circle.gif&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">anim_cir</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">cir_gif_file_path</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span> 
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id5">
+<h4>Save as mp4<a class="headerlink" href="#id5" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
+
+<span class="n">cir_mp4_file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/connectivity_cicle.mp4&quot;</span>
+<span class="n">anim_cir</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">cir_mp4_file_path</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">FFMpegWriter</span></code> does not work on your computer you can save the file as a gif first and then convert it into mp4 file.</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mp</span>
 
-<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;connectivity_cicle.gif&quot;</span><span class="p">)</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;connectivity_cicle.mp4&quot;</span><span class="p">)</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">cir_gif_file_path</span><span class="p">)</span> <span class="c1"># change the file path to where you saved the gif file</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="n">cir_mp4_file_path</span><span class="p">)</span> <span class="c1"># change the file path to where you would like to save the file </span>
 </pre></div>
-</div>
 </div>
 </div>
 </div>

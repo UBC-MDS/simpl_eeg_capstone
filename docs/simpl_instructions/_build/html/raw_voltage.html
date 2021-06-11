@@ -92,7 +92,9 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="introduction.html">
-   Package Introduction
+   <strong>
+    Package Introduction
+   </strong>
   </a>
  </li>
  <li class="toctree-l1">
@@ -226,23 +228,6 @@
     <a class="reference internal nav-link" href="#create-epoched-data">
      Create epoched data
     </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-select-the-epoch">
-       To select the epoch
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-select-the-number-of-time-steps-to-skip-optional-step">
-       To select the number of time steps to skip (optional step)
-      </a>
-     </li>
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-get-the-selected-epoch">
-       To get the selected epoch
-      </a>
-     </li>
-    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#create-the-raw-voltage-plot">
@@ -314,10 +299,10 @@
 <p>There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change None to values of interest</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values below to values of interest</span>
 
-<span class="n">experiment</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># has to be a string</span>
-<span class="n">nth_epoch</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">experiment</span> <span class="o">=</span> <span class="s2">&quot;../../data/927&quot;</span> <span class="c1"># path to the experiment folder.</span>
+<span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>
 </pre></div>
 </div>
 </div>
@@ -327,72 +312,46 @@
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmin</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># number of seconds before the impact</span>
-<span class="n">tmax</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># number of seconds after the impact</span>
-<span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># starting time of the epoch</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmin</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.3</span>  <span class="c1"># number of seconds before the impact. Please change it to a value of your interest</span>
+<span class="n">tmax</span> <span class="o">=</span> <span class="mf">0.7</span>  <span class="c1"># number of seconds after the impact. Please change it to a value of your interest</span>
+<span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># starting time of the epoch. Please change it to a value of your interest</span>
 
 <span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
+
+<span class="n">raw</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
+
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">()</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">96568920970</span><span class="n">b</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># starting time of the epoch</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> 
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-
-<span class="nn">~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, folder_path, tmin, tmax, start_second)</span>
-<span class="g g-Whitespace">     </span><span class="mi">50</span> 
-<span class="g g-Whitespace">     </span><span class="mi">51</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=-</span><span class="mf">0.3</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="mf">0.7</span><span class="p">,</span> <span class="n">start_second</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="ne">---&gt; </span><span class="mi">52</span>         <span class="bp">self</span><span class="o">.</span><span class="n">eeg_file</span> <span class="o">=</span> <span class="n">EEG_File</span><span class="p">(</span><span class="n">folder_path</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">53</span>         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_epochs</span><span class="p">(</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">54</span>         <span class="bp">self</span><span class="o">.</span><span class="n">epoch</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
-
-<span class="nn">~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, folder_path)</span>
-<span class="g g-Whitespace">     </span><span class="mi">21</span>     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">folder_path</span><span class="p">):</span>
-<span class="g g-Whitespace">     </span><span class="mi">22</span>         <span class="bp">self</span><span class="o">.</span><span class="n">folder_path</span> <span class="o">=</span> <span class="n">folder_path</span>
-<span class="ne">---&gt; </span><span class="mi">23</span>         <span class="bp">self</span><span class="o">.</span><span class="n">experiment</span> <span class="o">=</span> <span class="n">folder_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-<span class="g g-Whitespace">     </span><span class="mi">24</span>         <span class="bp">self</span><span class="o">.</span><span class="n">mat</span> <span class="o">=</span> <span class="n">scipy</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">loadmat</span><span class="p">(</span><span class="n">folder_path</span><span class="o">+</span><span class="s2">&quot;/impact locations.mat&quot;</span><span class="p">)</span>
-<span class="g g-Whitespace">     </span><span class="mi">25</span>         <span class="bp">self</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_eeglab</span><span class="p">(</span><span class="n">folder_path</span><span class="o">+</span><span class="s2">&quot;/fixica.set&quot;</span><span class="p">)</span>
-
-<span class="ne">AttributeError</span>: &#39;NoneType&#39; object has no attribute &#39;split&#39;
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/sasha/mds/simpl_eeg_capstone/data/927/fixica.fdt
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>33 matching events found
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Applying baseline correction (mode: mean)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 projection items activated
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading data for 33 events and 2049 original time points ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 bad epochs dropped
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="to-select-the-epoch">
-<h4>To select the epoch<a class="headerlink" href="#to-select-the-epoch" title="Permalink to this headline">¶</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="to-select-the-number-of-time-steps-to-skip-optional-step">
-<h4>To select the number of time steps to skip (optional step)<a class="headerlink" href="#to-select-the-number-of-time-steps-to-skip-optional-step" title="Permalink to this headline">¶</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw</span><span class="o">.</span><span class="n">skip_n_steps</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="to-get-the-selected-epoch">
-<h4>To get the selected epoch<a class="headerlink" href="#to-get-the-selected-epoch" title="Permalink to this headline">¶</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epoch</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<br></div>
-</div>
+</br></div>
 <div class="section" id="create-the-raw-voltage-plot">
 <h3>Create the raw voltage plot<a class="headerlink" href="#create-the-raw-voltage-plot" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="to-generate-the-plot">
@@ -404,6 +363,9 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/raw_voltage_18_0.png" src="_images/raw_voltage_18_0.png" />
+</div>
 </div>
 </div>
 <div class="section" id="to-save-the-plot">
@@ -413,7 +375,63 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># You could change the plot to different formats by changing the format argument in the function. </span>
 <span class="c1"># It supports &#39;png&#39;, &#39;pdf&#39;, &#39;svg&#39;.</span>
 
-<span class="n">voltage_plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;voltage_plot.svg&quot;</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span> <span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/voltage_plot.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+
+<span class="n">voltage_plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span> <span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="mi">75</span><span class="n">f0a0b8e53e</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/voltage_plot.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span> 
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">voltage_plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span> <span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/figure.py</span> in <span class="ni">savefig</span><span class="nt">(self, fname, transparent, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3003</span>                 <span class="n">patch</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3004</span> 
+<span class="ne">-&gt; </span><span class="mi">3005</span>         <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">print_figure</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">   </span><span class="mi">3006</span> 
+<span class="g g-Whitespace">   </span><span class="mi">3007</span>         <span class="k">if</span> <span class="n">transparent</span><span class="p">:</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/backend_bases.py</span> in <span class="ni">print_figure</span><span class="nt">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2253</span>                 <span class="c1"># force the figure dpi to 72), so we need to set it again here.</span>
+<span class="g g-Whitespace">   </span><span class="mi">2254</span>                 <span class="k">with</span> <span class="n">cbook</span><span class="o">.</span><span class="n">_setattr_cm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">):</span>
+<span class="ne">-&gt; </span><span class="mi">2255</span>                     <span class="n">result</span> <span class="o">=</span> <span class="n">print_method</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">2256</span>                         <span class="n">filename</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">2257</span>                         <span class="n">facecolor</span><span class="o">=</span><span class="n">facecolor</span><span class="p">,</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/backends/backend_svg.py</span> in <span class="ni">print_svg</span><span class="nt">(self, filename, *args, **kwargs)</span>
+<span class="g g-Whitespace">   </span><span class="mi">1319</span>             <span class="n">__</span> <span class="n">DC_</span>
+<span class="g g-Whitespace">   </span><span class="mi">1320</span>         <span class="sd">&quot;&quot;&quot;</span>
+<span class="ne">-&gt; </span><span class="mi">1321</span><span class="sd">         with cbook.open_file_cm(filename, &quot;w&quot;, encoding=&quot;utf-8&quot;) as fh:</span>
+<span class="g g-Whitespace">   </span><span class="mi">1322</span><span class="sd"> </span>
+<span class="g g-Whitespace">   </span><span class="mi">1323</span><span class="sd">             filename = getattr(fh, &#39;name&#39;, &#39;&#39;)</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/contextlib.py</span> in <span class="ni">__enter__</span><span class="nt">(self)</span>
+<span class="g g-Whitespace">    </span><span class="mi">111</span><span class="sd">         del self.args, self.kwds, self.func</span>
+<span class="g g-Whitespace">    </span><span class="mi">112</span><span class="sd">         try:</span>
+<span class="ne">--&gt; </span><span class="mi">113</span><span class="sd">             return next(self.gen)</span>
+<span class="g g-Whitespace">    </span><span class="mi">114</span><span class="sd">         except StopIteration:</span>
+<span class="g g-Whitespace">    </span><span class="mi">115</span><span class="sd">             raise RuntimeError(&quot;generator didn&#39;t yield&quot;) from None</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/cbook/__init__.py</span> in <span class="ni">open_file_cm</span><span class="nt">(path_or_file, mode, encoding)</span>
+<span class="g g-Whitespace">    </span><span class="mi">475</span><span class="sd"> def open_file_cm(path_or_file, mode=&quot;r&quot;, encoding=None):</span>
+<span class="g g-Whitespace">    </span><span class="mi">476</span><span class="sd">     r&quot;&quot;&quot;</span><span class="n">Pass</span> <span class="n">through</span> <span class="n">file</span> <span class="n">objects</span> <span class="ow">and</span> <span class="n">context</span><span class="o">-</span><span class="n">manage</span> <span class="n">path</span><span class="o">-</span><span class="n">likes</span><span class="o">.</span><span class="s2">&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">477</span><span class="s2">     fh, opened = to_filehandle(path_or_file, mode, True, encoding)</span>
+<span class="g g-Whitespace">    </span><span class="mi">478</span><span class="s2">     if opened:</span>
+<span class="g g-Whitespace">    </span><span class="mi">479</span><span class="s2">         with fh:</span>
+
+<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/cbook/__init__.py</span> in <span class="ni">to_filehandle</span><span class="nt">(fname, flag, return_opened, encoding)</span>
+<span class="g g-Whitespace">    </span><span class="mi">460</span><span class="s2">             fh = bz2.BZ2File(fname, flag)</span>
+<span class="g g-Whitespace">    </span><span class="mi">461</span><span class="s2">         else:</span>
+<span class="ne">--&gt; </span><span class="mi">462</span><span class="s2">             fh = open(fname, flag, encoding=encoding)</span>
+<span class="g g-Whitespace">    </span><span class="mi">463</span><span class="s2">         opened = True</span>
+<span class="g g-Whitespace">    </span><span class="mi">464</span><span class="s2">     elif hasattr(fname, &#39;seek&#39;):</span>
+
+<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;exports/voltage_plot.svg&#39;
 </pre></div>
 </div>
 </div>

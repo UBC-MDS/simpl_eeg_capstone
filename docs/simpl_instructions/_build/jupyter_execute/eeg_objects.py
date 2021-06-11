@@ -18,7 +18,9 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-# **Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**
+# ```{note}
+# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**
+# ```
 
 # In[3]:
 
@@ -59,11 +61,11 @@ get_ipython().run_line_magic('pinfo', 'eeg_objects.Epochs')
 
 # The only required parameter to create an epoch object is the `folder_path` for the experiment of interest, however additional parameters may be used to customize your epoch object. 
 # 
-# If you specify a `start_second`, a single epoch will be generated with an impact event at the specified second. 
+# - If you specify a `start_second`, a single epoch will be generated with an impact event at the specified second. 
 # 
-# If you do not specify a `start_second`, epochs will be automatically generated using the impact times found in the `impact locations.mat` file in the selected `experiment_folder`. 
+# - If you do not specify a `start_second`, epochs will be automatically generated using the impact times found in the `impact locations.mat` file in the selected `experiment_folder`. 
 # 
-# `tmin` specifies the number of seconds before the impact to use, and `tmin` specifies the number of seconds after the impact.
+# - `tmin` specifies the number of seconds before the impact to use, and `tmin` specifies the number of seconds after the impact.
 
 # In[7]:
 

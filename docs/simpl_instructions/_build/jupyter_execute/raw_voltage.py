@@ -43,10 +43,10 @@ get_ipython().run_line_magic('autoreload', '2')
 # In[5]:
 
 
-# change None to values of interest
+# change values below to values of interest
 
-experiment = None # has to be a string
-nth_epoch = None
+experiment = "../../data/927" # path to the experiment folder.
+nth_epoch = 0
 
 
 # <br>
@@ -56,44 +56,24 @@ nth_epoch = None
 # In[6]:
 
 
-tmin = None # number of seconds before the impact
-tmax = None # number of seconds after the impact
-start_second = None # starting time of the epoch
+tmin = -0.3  # number of seconds before the impact. Please change it to a value of your interest
+tmax = 0.7  # number of seconds after the impact. Please change it to a value of your interest
+start_second = None  # starting time of the epoch. Please change it to a value of your interest
 
 raw = eeg_objects.Epochs(experiment, tmin, tmax, start_second)
 
-
-# #### To select the epoch
-
-# In[ ]:
-
-
 raw.set_nth_epoch(nth_epoch)
-
-
-# #### To select the number of time steps to skip (optional step)
-
-# In[ ]:
-
-
-raw.skip_n_steps(num_steps)
-
-
-# #### To get the selected epoch
-
-# In[ ]:
-
 
 epoch = raw.get_nth_epoch()
 
 
-# <br>
+# </br>
 
 # ### Create the raw voltage plot
 
 # #### To generate the plot
 
-# In[ ]:
+# In[7]:
 
 
 voltage_plot = raw_voltage.plot_voltage(epoch)
@@ -102,13 +82,15 @@ voltage_plot;
 
 # #### To save the plot
 
-# In[ ]:
+# In[8]:
 
 
 # You could change the plot to different formats by changing the format argument in the function. 
 # It supports 'png', 'pdf', 'svg'.
 
-voltage_plot.savefig("voltage_plot.svg", format= 'svg')
+file_path = "exports/voltage_plot.svg"  # change the file path to where you would like to save the file
+
+voltage_plot.savefig(file_path, format= 'svg')
 
 
 # <br>

@@ -5,7 +5,7 @@
 
 # ## Topographic map in 3D brain
 
-# ![](instruction_imgs/topomap_3d_brain.svg)
+# ![](instruction_imgs/topomap_3d_brain.gif)
 
 # In[1]:
 
@@ -20,7 +20,9 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-# **Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**
+# ```{note}
+# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.
+# ```
 
 # In[3]:
 
@@ -43,11 +45,11 @@ get_ipython().run_line_magic('autoreload', '2')
 # In[5]:
 
 
-# change None to values of interest
+# change values belo to values of interest
 
-experiment = None # has to be a string
-nth_epoch = None
-colormap = None # select from ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
+experiment = "../../data/927" # path to the experiment folder.
+nth_epoch = 0
+colormap = "RdBu_r" # select from ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
 
 
 # <br>
@@ -57,33 +59,13 @@ colormap = None # select from ["RdBu_r", "hot", "cool", "inferno", "turbo", "rai
 # In[6]:
 
 
-tmin = None # number of seconds before the impact
-tmax = None # number of seconds after the impact
-start_second = None # starting time of the epoch
+tmin = -0.3  # number of seconds before the impact. Please change it to a value of your interest
+tmax = 0.7  # number of seconds after the impact. Please change it to a value of your interest
+start_second = None  # starting time of the epoch. Please change it to a value of your interest
 
 raw = eeg_objects.Epochs(experiment, tmin, tmax, start_second)
 
-
-# #### To select the epoch
-
-# In[ ]:
-
-
 raw.set_nth_epoch(nth_epoch)
-
-
-# #### To select the number of time steps to skip (optional step)
-
-# In[ ]:
-
-
-raw.skip_n_steps(num_steps)
-
-
-# #### To get the selected epoch
-
-# In[ ]:
-
 
 epoch = raw.get_nth_epoch()
 
@@ -93,14 +75,14 @@ epoch = raw.get_nth_epoch()
 # ### Create the topographic map in 3D brain
 
 # ```{note}
-# * NOTE: Before an animation or plot can be generated a "forward" and "inverse" (abbreviated as "stc") must first be generated. If they are not provided to either of the plotting animations they will be automatically generated HOWEVER this will increase the time it takes to generate the figure.
+# - Before an animation or plot can be generated a **"forward"** and **"inverse"** (abbreviated as **"stc"**) must first be generated. If they are not provided to either of the plotting animations they will be automatically generated **HOWEVER** this will increase the time it takes to generate the figure.
 # 
 # - The forward/inverse are used to retrieve a brain model to attach the EEG data to and to do some of the mapping calculations. The forward downloads 'fsaverage' MRI data which represents a brain averaged out from dozens of different patients.
 # ```
 
 # #### Generate Forward
 
-# In[ ]:
+# In[7]:
 
 
 fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
@@ -108,23 +90,23 @@ fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
 
 # #### Generate Inverse
 
-# In[ ]:
+# In[8]:
 
 
 stc = topomap_3d_brain.create_inverse_solution(epoch, fwd)
 
 
-# #### To generate figure with pyvista backend (NOT CURRENTLY WORKING)
+# #### Generate figure with pyvista backend (NOT CURRENTLY WORKING)
 
-# In[ ]:
+# In[9]:
 
 
 #pyvista_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc = stc, backend = 'pyvista')
 
 
-# #### To save animation with pyvista backend (NOT CURRENTLY WORKING)
+# #### Save animation with pyvista backend (NOT CURRENTLY WORKING)
 
-# In[ ]:
+# In[10]:
 
 
 #topomap_3d_brain.save_animated_topomap_3d_brain(pyvista_brain_fig, filename = "brain_animation.gif")
@@ -132,26 +114,28 @@ stc = topomap_3d_brain.create_inverse_solution(epoch, fwd)
 
 # </br>
 
-# #### To generate figure with matplotlib backend (recommended)
+# #### Generate figure with matplotlib backend (recommended)
 
-# In[ ]:
+# In[11]:
 
 
 get_ipython().run_cell_magic('capture', '', "matplot_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc = stc, backend = 'matplotlib')")
 
 
-# ##### To save the figure
+# ##### Save the figure
 
-# In[ ]:
+# In[12]:
 
 
 # You could change the plot to different formats by changing the format argument in the function. 
 # It supports 'png', 'pdf', 'svg'.
 
-matplot_brain_fig.savefig("topomap_3d_brain.svg", format= 'svg')
+file_path = "exports/topomap_3d_brain.svg"  # change the file path to where you would like to save the file
+
+matplot_brain_fig.savefig(file_path, format= 'svg')
 
 
-# #### To generate animation with matplotlib backend (slow but recommended)
+# #### Generate animation with matplotlib backend (slow but recommended)
 
 # In[ ]:
 
@@ -159,27 +143,33 @@ matplot_brain_fig.savefig("topomap_3d_brain.svg", format= 'svg')
 get_ipython().run_cell_magic('capture', '', "matplotlib_animation = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = 'lat', hemi = 'lh')")
 
 
-# ##### To save the animation as gif
+# In[ ]:
+
+
+matplotlib_animation
+
+
+# ##### Save the animation as gif
 
 # In[ ]:
 
 
-from matplotlib.animation import PillowWriter
-writergif = PillowWriter(fps=30)
-matplotlib_animation.save("topomap_3d_brain.gif", writer=writergif)
+get_ipython().run_cell_magic('capture', '', '\nanim_brain = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = \'lat\', hemi = \'lh\')\n\n# use a writer if you want to specify frames per second\nfrom matplotlib.animation import PillowWriter\n\nwriter = PillowWriter(fps=5)\n\ngif_file_path = "exports/topomap_3d_brain.gif"  # change the file path to where you would like to save the file\nanim_brain.save(gif_file_path, writer=writer)')
 
 
-# #### To save the animation as mp4
+# #### Save the animation as mp4
 
+# ```{note}
 # You would need to save it as gif file first and then convert it into mp4 file.
+# ```
 
 # In[ ]:
 
 
 import moviepy.editor as mp
 
-clip = mp.VideoFileClip("topomap_3d_brain.gif")
-clip.write_videofile("topomap_3d_brain.mp4") 
+clip = mp.VideoFileClip("exports/topomap_3d_brain.gif") # change the file path to where you saved the gif file
+clip.write_videofile("exports/topomap_3d_brain.mp4")  # change the file path to where you would like to save the file
 
 
 # <br>

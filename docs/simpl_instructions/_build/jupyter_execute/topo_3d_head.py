@@ -20,7 +20,9 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-# **Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**
+# ```{note}
+# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.
+# ```
 
 # In[3]:
 
@@ -43,13 +45,13 @@ get_ipython().run_line_magic('autoreload', '2')
 # In[5]:
 
 
-# change None to values of interest
+# change values below to values of interest
 
-experiment = None # has to be a string
-nth_epoch = None
-color_min = None
-color_max = None
-colormap = None # select from ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
+experiment = "../../data/927"  # path to the experiment folder.
+nth_epoch = 0
+color_min = -40  # the minimum voltage to show on the colorbar
+color_max = 40  # the minimum voltage to show on the colorbar
+colormap = "RdBu_r"  # select from ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
 
 
 # <br>
@@ -59,33 +61,13 @@ colormap = None # select from ["RdBu_r", "hot", "cool", "inferno", "turbo", "rai
 # In[6]:
 
 
-tmin = None # number of seconds before the impact
-tmax = None # number of seconds after the impact
-start_second = None # starting time of the epoch
+tmin = -0.3  # number of seconds before the impact. Please change it to a value of your interest
+tmax = 0.7  # number of seconds after the impact. Please change it to a value of your interest
+start_second = None  # starting time of the epoch. Please change it to a value of your interest
 
 raw = eeg_objects.Epochs(experiment, tmin, tmax, start_second)
 
-
-# #### To select the epoch
-
-# In[ ]:
-
-
 raw.set_nth_epoch(nth_epoch)
-
-
-# #### To select the number of time steps to skip (optional step)
-
-# In[ ]:
-
-
-raw.skip_n_steps(num_steps)
-
-
-# #### To get the selected epoch
-
-# In[ ]:
-
 
 epoch = raw.get_nth_epoch()
 
@@ -94,11 +76,18 @@ epoch = raw.get_nth_epoch()
 
 # ### Create the topographic map in 3D head shape
 
-# In[ ]:
+# In[7]:
 
 
-timestamp = -300 # you can change the value to the time stamp of your interest
-topo_3d__head_static = topomap_3d_head.topo_3d_map(epoch, time_stamp,  color_title="EEG MicroVolt",  color_min = color_min, color_max = color_max, colormap=colormap)
+timestamp = -300  # you can change the value to the time stamp of your interest
+topo_3d__head_static = topomap_3d_head.topo_3d_map(
+    epoch,
+    time_stamp,
+    color_title="EEG MicroVolt",
+    color_min=color_min,
+    color_max=color_max,
+    colormap=colormap,
+)
 
 
 # In[ ]:
@@ -107,12 +96,18 @@ topo_3d__head_static = topomap_3d_head.topo_3d_map(epoch, time_stamp,  color_tit
 topo_3d__head_static.show()
 
 
-# #### To generate the animnation
+# #### Generating the animnation
 
 # In[ ]:
 
 
-topo_3d_head = topomap_3d_head.animate_3d_head(epoch, color_title="EEG MicroVolt", color_min = color_min, color_max = color_max, colormap=colormap)
+topo_3d_head = topomap_3d_head.animate_3d_head(
+    epoch,
+    color_title="EEG MicroVolt",
+    color_min=color_min,
+    color_max=color_max,
+    colormap=colormap,
+)
 
 
 # In[ ]:
@@ -121,49 +116,57 @@ topo_3d_head = topomap_3d_head.animate_3d_head(epoch, color_title="EEG MicroVolt
 topo_3d_head.show()
 
 
-# #### To save the animnation
+# #### Saving the animnation
 
-# ##### To save the static plot
-
-# In[ ]:
-
-
-topo_3d__head_static.write_image("topo_3d_static.svg", engine="kaleido") 
-
+# ##### Save the static plot
 
 # In[ ]:
 
 
-topo_3d__head_static.write_image("topo_3d_static.png") # no need to specify engine if not saved as svg file
+static_file_path = "exports/topo_3d_static.svg"  # change the file path to where you would like to save the file
 
+topo_3d__head_static.write_image(static_file_path, engine="kaleido")
 
-# ##### To save the animnation as html
 
 # In[ ]:
 
 
-topo_3d_head.write_html("topo_3d.html")
+static_file_path_png = "exports/topo_3d_static.png"  # change the file path to where you would like to save the file
+
+topo_3d__head_static.write_image(static_file_path_png) # no need to specify engine if not saved as svg file
 
 
-# ##### To save the animation as gif file
+# ##### Save the animation as html
 
 # In[ ]:
 
 
-topomap_3d_head.save_gif(epoch, gifname="topo_3d_head_ani", duration=200)
+html_file_path = "exports/topo_3d.html"  # change the file path to where you would like to save the file
+
+topo_3d_head.write_html(html_file_path)
 
 
-# ##### To save the animation as mp4 file
+# ##### Save the animation as gif
 
+# In[ ]:
+
+
+topomap_3d_head.save_gif(epoch, gifname="topo_3d_head_ani", duration=200) 
+
+
+# ##### Save the animation as mp4 
+
+# ```{note}
 # You would need to save it as gif file first and then convert it into mp4 file.
+# ```
 
 # In[ ]:
 
 
 import moviepy.editor as mp
 
-clip = mp.VideoFileClip("topo_3d_head_ani.gif")
-clip.write_videofile("topo_3d_head_ani.mp4")
+clip = mp.VideoFileClip("topo_3d_head_ani.gif")  # change the file path to where you saved the gif file
+clip.write_videofile("topo_3d_head_ani.mp4")  # change the file path to where you would like to save the file
 
 
 # In[ ]:
