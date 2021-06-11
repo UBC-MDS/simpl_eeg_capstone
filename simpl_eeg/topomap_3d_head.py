@@ -362,7 +362,7 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
     title_time = format(epoch.times[time_index], '.4f')
 
     fig.update_layout(
-        title="Time stamp: " + str(title_time),
+        title="Time stamp: " + str(title_time) + "s",
         width=1000,
         height=600,
         scene=dict(
