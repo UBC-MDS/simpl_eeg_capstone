@@ -89,7 +89,7 @@ voltage_plot;
 # You could change the plot to different formats by changing the format argument in the function. 
 # It supports 'png', 'pdf', 'svg'.
 
-file_path = "exports/voltage_plot.svg"  # change the file path to where you would like to save the file
+file_path = "../../exports/examples/voltage_plot.svg"  # change the file path to where you would like to save the file
 
 voltage_plot.savefig(file_path, format="svg")
 

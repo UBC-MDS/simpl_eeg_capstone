@@ -38,7 +38,7 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # <br>
 
-# ### Define global parameters
+# ### Define parameters
 
 # A detailed description of all parameters can be found in the `topomap_3d_head.animate_3d_head` docstring:
 
@@ -59,6 +59,7 @@ nth_epoch = 0
 color_min = -40
 color_max = 40
 colormap = "RdBu_r"
+time_stamp = -300
 
 
 # <br>
@@ -81,7 +82,6 @@ epoch = epochs.get_nth_epoch(nth_epoch)
 # In[8]:
 
 
-timestamp = -300  # you can change the value to the time stamp of your interest
 topo_3d__head_static = topomap_3d_head.topo_3d_map(
     epoch,
     time_stamp,
@@ -92,15 +92,15 @@ topo_3d__head_static = topomap_3d_head.topo_3d_map(
 )
 
 
-# In[ ]:
+# In[9]:
 
 
 topo_3d__head_static.show()
 
 
-# #### Generating the animnation
+# #### Generating the animation
 
-# In[ ]:
+# In[10]:
 
 
 topo_3d_head = topomap_3d_head.animate_3d_head(
@@ -112,51 +112,51 @@ topo_3d_head = topomap_3d_head.animate_3d_head(
 )
 
 
-# In[ ]:
+# In[11]:
 
 
 topo_3d_head.show()
 
 
-# #### Saving the animnation
+# #### Saving the animation
 
-# ##### Save the static plot
+# ##### Save static plot
 
-# In[ ]:
+# In[12]:
 
 
-static_file_path = "exports/topo_3d_static.svg"  # change the file path to where you would like to save the file
+static_file_path = "../../exports/examples/topo_3d_static.svg"  # change the file path to where you would like to save the file
 
 topo_3d__head_static.write_image(static_file_path, engine="kaleido")
 
 
-# In[ ]:
+# In[13]:
 
 
-static_file_path_png = "exports/topo_3d_static.png"  # change the file path to where you would like to save the file
+static_file_path_png = "../../exports/examples/topo_3d_static.png"  # change the file path to where you would like to save the file
 
 topo_3d__head_static.write_image(static_file_path_png) # no need to specify engine if not saved as svg file
 
 
-# ##### Save the animation as html
+# ##### Save animation as html
 
-# In[ ]:
+# In[14]:
 
 
-html_file_path = "exports/topo_3d.html"  # change the file path to where you would like to save the file
+html_file_path = "../../exports/examples/topo_3d.html"  # change the file path to where you would like to save the file
 
 topo_3d_head.write_html(html_file_path)
 
 
-# ##### Save the animation as gif
+# ##### Save animation as gif
 
-# In[ ]:
+# In[15]:
 
 
 topomap_3d_head.save_gif(epoch, gifname="topo_3d_head_ani", duration=200) 
 
 
-# ##### Save the animation as mp4 
+# ##### Save animation as mp4 
 
 # ```{note}
 # You would need to save it as gif file first and then convert it into mp4 file.
@@ -168,11 +168,5 @@ topomap_3d_head.save_gif(epoch, gifname="topo_3d_head_ani", duration=200)
 import moviepy.editor as mp
 
 clip = mp.VideoFileClip("topo_3d_head_ani.gif")  # change the file path to where you saved the gif file
-clip.write_videofile("topo_3d_head_ani.mp4")  # change the file path to where you would like to save the file
-
-
-# In[ ]:
-
-
-
+clip.write_videofile("../../exports/examples/topo_3d_head_ani.mp4")  # change the file path to where you would like to save the file
 
