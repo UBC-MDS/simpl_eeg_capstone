@@ -17,34 +17,26 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply['content'])
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-tmin = None # number of seconds before the impact
-tmax = None # number of seconds after the impact
-start_second = None # starting time of the epoch
+tmin = -0.3  # number of seconds before the impact. Please change it to a value of your interest
+tmax = 0.7  # number of seconds after the impact. Please change it to a value of your interest
+start_second = None  # starting time of the epoch. Please change it to a value of your interest
 
 raw = eeg_objects.Epochs(experiment, tmin, tmax, start_second)
+
+raw.set_nth_epoch(nth_epoch)
+
+epoch = raw.get_nth_epoch()
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mTypeError[0m                                 Traceback (most recent call last)
-[0;32m<ipython-input-6-96568920970b>[0m in [0;36m<module>[0;34m[0m
-[1;32m      3[0m [0mstart_second[0m [0;34m=[0m [0;32mNone[0m [0;31m# starting time of the epoch[0m[0;34m[0m[0;34m[0m[0m
+[0;31mNameError[0m                                 Traceback (most recent call last)
+[0;32m<ipython-input-6-194e04811e54>[0m in [0;36m<module>[0;34m[0m
+[1;32m      3[0m [0mstart_second[0m [0;34m=[0m [0;32mNone[0m  [0;31m# starting time of the epoch. Please change it to a value of your interest[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      4[0m [0;34m[0m[0m
 [0;32m----> 5[0;31m [0mraw[0m [0;34m=[0m [0meeg_objects[0m[0;34m.[0m[0mEpochs[0m[0;34m([0m[0mexperiment[0m[0;34m,[0m [0mtmin[0m[0;34m,[0m [0mtmax[0m[0;34m,[0m [0mstart_second[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m
-[0;32m~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py[0m in [0;36m__init__[0;34m(self, experiment, tmin, tmax, start_second)[0m
-[1;32m     47[0m [0;34m[0m[0m
-[1;32m     48[0m     [0;32mdef[0m [0m__init__[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mexperiment[0m[0;34m,[0m [0mtmin[0m[0;34m=[0m[0;34m-[0m[0;36m0.3[0m[0;34m,[0m [0mtmax[0m[0;34m=[0m[0;36m0.7[0m[0;34m,[0m [0mstart_second[0m[0;34m=[0m[0;32mNone[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[0;32m---> 49[0;31m         [0mself[0m[0;34m.[0m[0meeg_file[0m [0;34m=[0m [0mEEG_File[0m[0;34m([0m[0mexperiment[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m     50[0m         [0mself[0m[0;34m.[0m[0mdata[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0mgenerate_epochs[0m[0;34m([0m[0mtmin[0m[0;34m,[0m [0mtmax[0m[0;34m,[0m [0mstart_second[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m     51[0m         [0mself[0m[0;34m.[0m[0mepoch[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0mset_nth_epoch[0m[0;34m([0m[0;36m0[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m      6[0m [0;34m[0m[0m
+[1;32m      7[0m [0mraw[0m[0;34m.[0m[0mset_nth_epoch[0m[0;34m([0m[0mnth_epoch[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 
-[0;32m~/mds/simpl_eeg_capstone/simpl_eeg/eeg_objects.py[0m in [0;36m__init__[0;34m(self, experiment)[0m
-[1;32m     19[0m     [0;32mdef[0m [0m__init__[0m[0;34m([0m[0mself[0m[0;34m,[0m [0mexperiment[0m[0;34m)[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
-[1;32m     20[0m         [0mself[0m[0;34m.[0m[0mexperiment[0m [0;34m=[0m [0mexperiment[0m[0;34m[0m[0;34m[0m[0m
-[0;32m---> 21[0;31m         [0mself[0m[0;34m.[0m[0mmat[0m [0;34m=[0m [0mscipy[0m[0;34m.[0m[0mio[0m[0;34m.[0m[0mloadmat[0m[0;34m([0m[0;34m"data/"[0m[0;34m+[0m[0mexperiment[0m[0;34m+[0m[0;34m"/impact locations.mat"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m     22[0m         [0mself[0m[0;34m.[0m[0mraw[0m [0;34m=[0m [0mmne[0m[0;34m.[0m[0mio[0m[0;34m.[0m[0mread_raw_eeglab[0m[0;34m([0m[0;34m"data/"[0m[0;34m+[0m[0mexperiment[0m[0;34m+[0m[0;34m"/fixica.set"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m     23[0m [0;34m[0m[0m
-
-[0;31mTypeError[0m: can only concatenate str (not "NoneType") to str
-TypeError: can only concatenate str (not "NoneType") to str
+[0;31mNameError[0m: name 'experiment' is not defined
+NameError: name 'experiment' is not defined
 

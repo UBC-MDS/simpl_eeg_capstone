@@ -92,7 +92,9 @@
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
   <a class="reference internal" href="introduction.html">
-   Package Introduction
+   <strong>
+    Package Introduction
+   </strong>
   </a>
  </li>
  <li class="toctree-l1 current active">
@@ -298,7 +300,10 @@
 </div>
 </div>
 </div>
-<p><strong>Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
@@ -337,9 +342,11 @@ Below are the docstrings for the two classes:</p>
 <div class="section" id="define-parameters">
 <h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
 <p>The only required parameter to create an epoch object is the <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> for the experiment of interest, however additional parameters may be used to customize your epoch object.</p>
-<p>If you specify a <code class="docutils literal notranslate"><span class="pre">start_second</span></code>, a single epoch will be generated with an impact event at the specified second.</p>
-<p>If you do not specify a <code class="docutils literal notranslate"><span class="pre">start_second</span></code>, epochs will be automatically generated using the impact times found in the <code class="docutils literal notranslate"><span class="pre">impact</span> <span class="pre">locations.mat</span></code> file in the selected <code class="docutils literal notranslate"><span class="pre">experiment_folder</span></code>.</p>
-<p><code class="docutils literal notranslate"><span class="pre">tmin</span></code> specifies the number of seconds before the impact to use, and <code class="docutils literal notranslate"><span class="pre">tmin</span></code> specifies the number of seconds after the impact.</p>
+<ul class="simple">
+<li><p>If you specify a <code class="docutils literal notranslate"><span class="pre">start_second</span></code>, a single epoch will be generated with an impact event at the specified second.</p></li>
+<li><p>If you do not specify a <code class="docutils literal notranslate"><span class="pre">start_second</span></code>, epochs will be automatically generated using the impact times found in the <code class="docutils literal notranslate"><span class="pre">impact</span> <span class="pre">locations.mat</span></code> file in the selected <code class="docutils literal notranslate"><span class="pre">experiment_folder</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tmin</span></code> specifies the number of seconds before the impact to use, and <code class="docutils literal notranslate"><span class="pre">tmin</span></code> specifies the number of seconds after the impact.</p></li>
+</ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">experiment_folder</span> <span class="o">=</span> <span class="s2">&quot;../../data/109&quot;</span> <span class="c1"># path to the experiment folder</span>
@@ -715,7 +722,7 @@ Below are the docstrings for the two classes:</p>
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="introduction.html" title="previous page">Package Introduction</a>
+    <a class='left-prev' id="prev-link" href="introduction.html" title="previous page"><strong>Package Introduction</strong></a>
     <a class='right-next' id="next-link" href="raw_voltage.html" title="next page">Raw Voltage Visualization</a>
 
         </div>
