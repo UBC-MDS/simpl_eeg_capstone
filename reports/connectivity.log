@@ -1,4 +1,15 @@
 Traceback (most recent call last):
+  File "/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 609, in _async_poll_for_reply
+    msg = await ensure_async(self.kc.shell_channel.get_msg(timeout=new_timeout))
+  File "/opt/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 85, in ensure_async
+    result = await obj
+  File "/opt/miniconda3/lib/python3.8/site-packages/jupyter_client/asynchronous/channels.py", line 48, in get_msg
+    raise Empty
+_queue.Empty
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
   File "/opt/miniconda3/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
     executenb(
   File "/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 1087, in execute
@@ -11,28 +22,18 @@ Traceback (most recent call last):
     return future.result()
   File "/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 540, in async_execute
     await self.async_execute_cell(
-  File "/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 832, in async_execute_cell
-    self._check_raise_for_error(cell, exec_reply)
-  File "/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 740, in _check_raise_for_error
-    raise CellExecutionError.from_cell_and_msg(cell, exec_reply['content'])
-nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
-------------------
-html_file_path = "exports/connectivity.html"  # change the file path to where you would like to save the file
-
-html_file = open(html_file_path, "w")
-html_file.write(conn_html)
-html_file.close()
-------------------
-
-[0;31m---------------------------------------------------------------------------[0m
-[0;31mFileNotFoundError[0m                         Traceback (most recent call last)
-[0;32m<ipython-input-9-3ad69e338a87>[0m in [0;36m<module>[0;34m[0m
-[1;32m      1[0m [0mhtml_file_path[0m [0;34m=[0m [0;34m"exports/connectivity.html"[0m  [0;31m# change the file path to where you would like to save the file[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      2[0m [0;34m[0m[0m
-[0;32m----> 3[0;31m [0mhtml_file[0m [0;34m=[0m [0mopen[0m[0;34m([0m[0mhtml_file_path[0m[0;34m,[0m [0;34m"w"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m      4[0m [0mhtml_file[0m[0;34m.[0m[0mwrite[0m[0;34m([0m[0mconn_html[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-[1;32m      5[0m [0mhtml_file[0m[0;34m.[0m[0mclose[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
-
-[0;31mFileNotFoundError[0m: [Errno 2] No such file or directory: 'exports/connectivity.html'
-FileNotFoundError: [Errno 2] No such file or directory: 'exports/connectivity.html'
+  File "/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 816, in async_execute_cell
+    exec_reply = await self.task_poll_for_reply
+  File "/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 633, in _async_poll_for_reply
+    await self._async_handle_timeout(timeout, cell)
+  File "/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 683, in _async_handle_timeout
+    raise CellTimeoutError.error_from_timeout_and_cell(
+nbclient.exceptions.CellTimeoutError: A cell timed out while it was being executed, after 30 seconds.
+The message was: Cell execution timed out.
+Here is a preview of the cell contents:
+-------------------
+['%%capture', '', 'plot_cir_animated = connectivity.animate_connectivity_circle(', '    epoch,', '    calc_type=calc_type,']
+...
+['', 'from IPython.display import HTML', '', 'cir_html = plot_cir_animated.to_jshtml()', 'cir_video = HTML(cir_html)']
+-------------------
 
