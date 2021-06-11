@@ -220,8 +220,8 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#define-global-parameters">
-     Define global parameters
+    <a class="reference internal nav-link" href="#define-parameters">
+     Define parameters
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -314,17 +314,18 @@
 </div>
 </div>
 </div>
-<br><div class="section" id="define-global-parameters">
-<h3>Define global parameters<a class="headerlink" href="#define-global-parameters" title="Permalink to this headline">¶</a></h3>
+<br><div class="section" id="define-parameters">
+<h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
 <p>There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change None to values of interest</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values below to values of interest</span>
 
-<span class="n">experiment_folder</span> <span class="o">=</span> <span class="s2">&quot;../../data/109&quot;</span>  <span class="c1"># path to the experiment folder.</span>
-<span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">40</span>  <span class="c1"># The minimum for the scale. Defaults to None.</span>
-<span class="n">vmax</span> <span class="o">=</span> <span class="mi">40</span>  <span class="c1"># The minimum for the scale. Defaults to None.</span>
+<span class="n">experiment_folder</span> <span class="o">=</span> <span class="s2">&quot;../../data/109&quot;</span>  <span class="c1"># path to the experiment folder</span>
+<span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># the epoch of interest</span>
+
+<span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">40</span>  <span class="c1"># minimum for the scale. Defaults to None for autodetected. </span>
+<span class="n">vmax</span> <span class="o">=</span> <span class="mi">40</span>  <span class="c1"># maximum for the scale. Defaults to None for autodetected. </span>
 <span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;Spectral&quot;</span>  <span class="c1"># select any matplotlib colormap. Defaults to RdBu_r (Red-Blue).</span>
 </pre></div>
 </div>
@@ -335,29 +336,19 @@
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmin</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.3</span>  <span class="c1"># number of seconds before the impact. Please change it to a value of your interest</span>
-<span class="n">tmax</span> <span class="o">=</span> <span class="mf">0.7</span>  <span class="c1"># number of seconds after the impact. Please change it to a value of your interest</span>
-<span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># starting time of the epoch. Please change it to a value of your interest</span>
-
-<span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-
-<span class="n">raw</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
-
-<span class="n">epoch</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">)</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mf">194e04811</span><span class="n">e54</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span> <span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># starting time of the epoch. Please change it to a value of your interest</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> 
-<span class="ne">----&gt; </span><span class="mi">5</span> <span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">6</span> 
-<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="n">raw</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">694926</span><span class="n">f4f6bf</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">)</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
 
-<span class="ne">NameError</span>: name &#39;experiment&#39; is not defined
+<span class="ne">NameError</span>: name &#39;experiment_path&#39; is not defined
 </pre></div>
 </div>
 </div>
@@ -430,13 +421,8 @@
 
 <span class="n">anim</span> <span class="o">=</span> <span class="n">topomap_2d</span><span class="o">.</span><span class="n">animate_topomap_2d</span><span class="p">(</span><span class="n">shortened_epoch</span><span class="p">)</span>
 
-<span class="c1"># use a writer if you want to specify frames per second</span>
-<span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">PillowWriter</span>
-
-<span class="n">writer</span> <span class="o">=</span> <span class="n">PillowWriter</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-
 <span class="n">gif_file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/topo_2d.gif&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
-<span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">gif_file_path</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="n">writer</span><span class="p">)</span>
+<span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">gif_file_path</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

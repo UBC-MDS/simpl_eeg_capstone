@@ -36,7 +36,7 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # <br>
 
-# ### Define global parameters
+# ### Define parameters
 
 # There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.
 
@@ -45,7 +45,7 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # change values below to values of interest
 
-experiment = "../../data/927" # path to the experiment folder.
+experiment_path = "../../data/927"
 nth_epoch = 0
 
 
@@ -56,22 +56,15 @@ nth_epoch = 0
 # In[6]:
 
 
-tmin = -0.3  # number of seconds before the impact. Please change it to a value of your interest
-tmax = 0.7  # number of seconds after the impact. Please change it to a value of your interest
-start_second = None  # starting time of the epoch. Please change it to a value of your interest
-
-raw = eeg_objects.Epochs(experiment, tmin, tmax, start_second)
-
-raw.set_nth_epoch(nth_epoch)
-
-epoch = raw.get_nth_epoch()
+epochs = eeg_objects.Epochs(experiment_path)
+epoch = epochs.get_nth_epoch(nth_epoch)
 
 
 # </br>
 
 # ### Create the raw voltage plot
 
-# #### To generate the plot
+# #### Generating the plot
 
 # In[7]:
 
@@ -80,7 +73,7 @@ voltage_plot = raw_voltage.plot_voltage(epoch)
 voltage_plot;
 
 
-# #### To save the plot
+# #### Saving the plot
 
 # In[8]:
 
@@ -90,7 +83,7 @@ voltage_plot;
 
 file_path = "exports/voltage_plot.svg"  # change the file path to where you would like to save the file
 
-voltage_plot.savefig(file_path, format= 'svg')
+voltage_plot.savefig(file_path, format="svg")
 
 
 # <br>

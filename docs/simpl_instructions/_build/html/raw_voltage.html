@@ -220,8 +220,8 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#define-global-parameters">
-     Define global parameters
+    <a class="reference internal nav-link" href="#define-parameters">
+     Define parameters
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -235,13 +235,13 @@
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-generate-the-plot">
-       To generate the plot
+      <a class="reference internal nav-link" href="#generating-the-plot">
+       Generating the plot
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#to-save-the-plot">
-       To save the plot
+      <a class="reference internal nav-link" href="#saving-the-plot">
+       Saving the plot
       </a>
      </li>
     </ul>
@@ -294,14 +294,14 @@
 </div>
 </div>
 </div>
-<br><div class="section" id="define-global-parameters">
-<h3>Define global parameters<a class="headerlink" href="#define-global-parameters" title="Permalink to this headline">¶</a></h3>
+<br><div class="section" id="define-parameters">
+<h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
 <p>There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values below to values of interest</span>
 
-<span class="n">experiment</span> <span class="o">=</span> <span class="s2">&quot;../../data/927&quot;</span> <span class="c1"># path to the experiment folder.</span>
+<span class="n">experiment_path</span> <span class="o">=</span> <span class="s2">&quot;../../data/927&quot;</span>
 <span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>
 </pre></div>
 </div>
@@ -312,15 +312,8 @@
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmin</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.3</span>  <span class="c1"># number of seconds before the impact. Please change it to a value of your interest</span>
-<span class="n">tmax</span> <span class="o">=</span> <span class="mf">0.7</span>  <span class="c1"># number of seconds after the impact. Please change it to a value of your interest</span>
-<span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># starting time of the epoch. Please change it to a value of your interest</span>
-
-<span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-
-<span class="n">raw</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
-
-<span class="n">epoch</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">)</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -354,8 +347,8 @@
 </br></div>
 <div class="section" id="create-the-raw-voltage-plot">
 <h3>Create the raw voltage plot<a class="headerlink" href="#create-the-raw-voltage-plot" title="Permalink to this headline">¶</a></h3>
-<div class="section" id="to-generate-the-plot">
-<h4>To generate the plot<a class="headerlink" href="#to-generate-the-plot" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="generating-the-plot">
+<h4>Generating the plot<a class="headerlink" href="#generating-the-plot" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">voltage_plot</span> <span class="o">=</span> <span class="n">raw_voltage</span><span class="o">.</span><span class="n">plot_voltage</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
@@ -368,8 +361,8 @@
 </div>
 </div>
 </div>
-<div class="section" id="to-save-the-plot">
-<h4>To save the plot<a class="headerlink" href="#to-save-the-plot" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="saving-the-plot">
+<h4>Saving the plot<a class="headerlink" href="#saving-the-plot" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># You could change the plot to different formats by changing the format argument in the function. </span>
@@ -377,17 +370,17 @@
 
 <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/voltage_plot.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
 
-<span class="n">voltage_plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span> <span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="n">voltage_plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;svg&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="mi">75</span><span class="n">f0a0b8e53e</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="n">f3fe1d11c435</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/voltage_plot.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
 <span class="g g-Whitespace">      </span><span class="mi">5</span> 
-<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">voltage_plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span> <span class="s1">&#39;svg&#39;</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">voltage_plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;svg&quot;</span><span class="p">)</span>
 
 <span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/figure.py</span> in <span class="ni">savefig</span><span class="nt">(self, fname, transparent, **kwargs)</span>
 <span class="g g-Whitespace">   </span><span class="mi">3003</span>                 <span class="n">patch</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>

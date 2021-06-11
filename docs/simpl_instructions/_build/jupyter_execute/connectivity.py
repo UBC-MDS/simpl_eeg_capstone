@@ -38,9 +38,7 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # <br>
 
-# ### Define global parameters
-
-# There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.
+# ### Define parameters
 
 # In[5]:
 
@@ -49,13 +47,17 @@ get_ipython().run_line_magic('autoreload', '2')
 
 experiment_path = "../../data/927" # path to the experiment folder.
 nth_epoch = 0
-vmin = -1 # The minimum for the scale. Defaults to None.
-vmax = 1 # The minimum for the scale. Defaults to None.
-colormap = 'RdBu_r' # select from ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]. Defaults to 'RdBu_r'.
-calc_type = 'correlation' # select from ["correlation", "spectral_connectivity","envelope_correlation"]
-pair_list = "all_pairs" # select from the PAIR_OPTIONS below
-line_width = None # The line width for the connections. Defaults to None for non-static width.
-max_connections = 50 # Number of connections to display. Defaults to 50.
+
+# Connectivity parameters
+vmin = -1  # minimum for the scale. Defaults to None.
+vmax = 1  # maximum for the scale. Defaults to None.
+colormap = 'RdBu_r'  # select any matplotlib colormap. Defaults to RdBu_r (Red-Blue).
+calc_type = 'correlation'  # select from ["correlation", "spectral_connectivity", "envelope_correlation"].
+pair_list = [] # select from the PAIR_OPTIONS below or use a custom pair.
+line_width = None  # the line width for the connections. Defaults to None for dynamic width based on connectivity strength.
+steps = 50  # number of steps to use for calculations. Defaults to 20.
+threshold = 0  # the minimum absolute value to display connection for. Defaults to 0.
+show_sphere = True  # whether to show the head drawing or not. Defaults to True.
 
 
 # In[6]:
@@ -100,51 +102,57 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 # In[9]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nconn_plot_animated = connectivity.animate_connectivity(\n    epoch,\n    calc_type=calc_type,\n    steps=20,\n    pair_list=pair_list,\n    threshold=0,\n    show_sphere=True,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nconn_html = conn_plot_animated.to_jshtml()\nconn_video = HTML(conn_html)')
+get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity(\n    epoch,\n    calc_type=calc_type,\n    steps=steps,\n    pair_list=pair_list,\n    threshold=threshold,\n    show_sphere=show_sphere,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
+
+
+# In[10]:
+
+
+video
 
 
 # #### Saving the animation
 
 # ##### Save as html
 
-# In[10]:
+# In[11]:
 
 
 html_file_path = "../../exports/examples/connectivity.html"  # change the file path to where you would like to save the file
 
 html_file = open(html_file_path, "w")
-html_file.write(conn_html)
+html_file.write(html_plot)
 html_file.close()
 
 
 # ##### Save as gif
 
-# In[11]:
+# In[12]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nanim_conn = connectivity.animate_connectivity(epoch, vmin=-1, vmax=1, pair_list=PAIR_OPTIONS["far_coherence"])\n\nconn_gif_file_path = "../../exports/examples/connectivity.gif"  # change the file path to where you would like to save the file\nanim_conn.save(conn_gif_file_path, fps=3, dpi=300)  # set frames per second (fps) and resolution (dpi)')
+get_ipython().run_cell_magic('capture', '', '\nanim_conn = connectivity.animate_connectivity(epoch, vmin=-1, vmax=1, pair_list=PAIR_OPTIONS["far_coherence"])\n\ngif_file_path = "../../exports/examples/connectivity.gif"  # change the file path to where you would like to save the file\nanim_conn.save(gif_file_path, fps=3, dpi=300)  # set frames per second (fps) and resolution (dpi)')
 
 
 # ##### Save as mp4
 
-# In[12]:
+# In[13]:
 
 
-conn_mp4_file_path = "../../exports/examples/connectivity.mp4"
-anim_conn.save(conn_mp4_file_path, fps=3, dpi=300)
+mp4_file_path = "../../exports/examples/connectivity.mp4"
+anim_conn.save(mp4_file_path, fps=3, dpi=300)
 
 
 # ```{note}
 # If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file.
 # ```
 
-# In[13]:
+# In[14]:
 
 
 import moviepy.editor as mp
 
-clip = mp.VideoFileClip(conn_gif_file_path) # change the file path to where you saved the gif file
-clip.write_videofile(conn_mp4_file_path) # change the file path to where you would like to save the file
+clip = mp.VideoFileClip(gif_file_path) # change the file path to where you saved the gif file
+clip.write_videofile(mp4_file_path) # change the file path to where you would like to save the file
 
 
 # <br>
@@ -153,24 +161,41 @@ clip.write_videofile(conn_mp4_file_path) # change the file path to where you wou
 
 # <img src="instruction_imgs/connectivity_circle.gif" align="left" style="height:30em"/>
 
+# ### Define parameters
+
+# In[15]:
+
+
+# change values below to values of interest
+
+# Connectivity circle parameters
+vmin = -1  # minimum for the scale. Defaults to None.
+vmax = 1  # maximum for the scale. Defaults to None.
+colormap = 'RdBu_r'  # select any matplotlib colormap. Defaults to RdBu_r (Red-Blue).
+calc_type = 'correlation'  # select from ["correlation", "spectral_connectivity", "envelope_correlation"].
+line_width = 1  # line width for the connections. Defaults to None.
+steps = 50  # number of steps to use for calculations. Defaults to 20.
+max_connections = 50  # maximum number of connections to display. Defaults to 50.
+
+
 # #### Generating the animation
 
-# In[14]:
+# In[16]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[15]:
+# In[17]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nplot_cir_animated = connectivity.animate_connectivity_circle(\n    epoch,\n    calc_type=calc_type,\n    max_connections=max_connections,\n    steps=50,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\ncir_html = plot_cir_animated.to_jshtml()\ncir_video = HTML(cir_html)')
+get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity_circle(\n    epoch,\n    calc_type=calc_type,\n    max_connections=max_connections,\n    steps=steps,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
 # In[ ]:
 
 
-cir_video
+video
 
 
 # #### Saving the animation
@@ -180,11 +205,11 @@ cir_video
 # In[ ]:
 
 
-cir_html_file_path = "../../exports/examples/connectivity_circle.html"  # change the file path to where you would like to save the file
+html_file_path = "../../exports/examples/connectivity_circle.html"  # change the file path to where you would like to save the file
 
-cir_html_file = open(cir_html_file_path, "w")
-cir_html_file.write(cir_html)
-cir_html_file.close()
+html_file = open(html_file_path, "w")
+html_file.write(html_plot)
+html_file.close()
 
 
 # ##### Save as gif
@@ -192,7 +217,7 @@ cir_html_file.close()
 # In[ ]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nanim_cir = connectivity.animate_connectivity_circle(epoch)\n\ncir_gif_file_path = "../../exports/examples/connectivity_circle.gif"  # change the file path to where you would like to save the file\nanim_cir.save(cir_gif_file_path, fps=3, dpi=300) ')
+get_ipython().run_cell_magic('capture', '', '\nanim_cir = connectivity.animate_connectivity_circle(epoch)\n\ngif_file_path = "../../exports/examples/connectivity_circle.gif"  # change the file path to where you would like to save the file\nanim_cir.save(gif_file_path, fps=3, dpi=300) ')
 
 
 # ##### Save as mp4
@@ -200,7 +225,7 @@ get_ipython().run_cell_magic('capture', '', '\nanim_cir = connectivity.animate_c
 # In[ ]:
 
 
-get_ipython().run_cell_magic('capture', '', '\ncir_mp4_file_path = "../../exports/examples/connectivity_cicle.mp4"\nanim_cir.save(cir_mp4_file_path, fps=3, dpi=300)')
+get_ipython().run_cell_magic('capture', '', '\nmp4_file_path = "../../exports/examples/connectivity_cicle.mp4"\nanim_cir.save(mp4_file_path, fps=3, dpi=300)')
 
 
 # ```{note}
@@ -212,6 +237,6 @@ get_ipython().run_cell_magic('capture', '', '\ncir_mp4_file_path = "../../export
 
 import moviepy.editor as mp
 
-clip = mp.VideoFileClip(cir_gif_file_path) # change the file path to where you saved the gif file
-clip.write_videofile(cir_mp4_file_path) # change the file path to where you would like to save the file 
+clip = mp.VideoFileClip(gif_file_path) # change the file path to where you saved the gif file
+clip.write_videofile(mp4_file_path) # change the file path to where you would like to save the file 
 

@@ -38,19 +38,20 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # <br>
 
-# ### Define global parameters
+# ### Define parameters
 
 # There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.
 
 # In[5]:
 
 
-# change None to values of interest
+# change values below to values of interest
 
-experiment_folder = "../../data/109"  # path to the experiment folder.
-nth_epoch = 0
-vmin = -40  # The minimum for the scale. Defaults to None.
-vmax = 40  # The minimum for the scale. Defaults to None.
+experiment_folder = "../../data/109"  # path to the experiment folder
+nth_epoch = 0  # the epoch of interest
+
+vmin = -40  # minimum for the scale. Defaults to None for autodetected. 
+vmax = 40  # maximum for the scale. Defaults to None for autodetected. 
 colormap = "Spectral"  # select any matplotlib colormap. Defaults to RdBu_r (Red-Blue).
 
 
@@ -61,15 +62,8 @@ colormap = "Spectral"  # select any matplotlib colormap. Defaults to RdBu_r (Red
 # In[6]:
 
 
-tmin = -0.3  # number of seconds before the impact. Please change it to a value of your interest
-tmax = 0.7  # number of seconds after the impact. Please change it to a value of your interest
-start_second = None  # starting time of the epoch. Please change it to a value of your interest
-
-raw = eeg_objects.Epochs(experiment, tmin, tmax, start_second)
-
-raw.set_nth_epoch(nth_epoch)
-
-epoch = raw.get_nth_epoch()
+epochs = eeg_objects.Epochs(experiment_path)
+epoch = epochs.get_nth_epoch(nth_epoch)
 
 
 # <br>
@@ -109,7 +103,7 @@ html_file.close()
 # In[ ]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(shortened_epoch)\n\n# use a writer if you want to specify frames per second\nfrom matplotlib.animation import PillowWriter\n\nwriter = PillowWriter(fps=5)\n\ngif_file_path = "../../exports/examples/topo_2d.gif"  # change the file path to where you would like to save the file\nanim.save(gif_file_path, writer=writer)')
+get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(shortened_epoch)\n\ngif_file_path = "../../exports/examples/topo_2d.gif"  # change the file path to where you would like to save the file\nanim.save(gif_file_path, fps=5, dpi=300)')
 
 
 # ##### Save as mp4
