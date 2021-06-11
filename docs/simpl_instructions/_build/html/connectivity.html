@@ -356,6 +356,39 @@
 </div>
 <br><div class="section" id="define-parameters">
 <h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
+<p>A detailed description of all parameters can be found in the <code class="docutils literal notranslate"><span class="pre">connectivity.animate_connectivity</span></code> docstring:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">connectivity</span><span class="o">.</span><span class="n">animate_connectivity</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function animate_connectivity in module simpl_eeg.connectivity:
+
+animate_connectivity(epoch, calc_type=&#39;correlation&#39;, steps=20, pair_list=[], threshold=0, show_sphere=True, colormap=&#39;RdBu_r&#39;, vmin=None, vmax=None, line_width=None, title=None, **kwargs)
+    Animate 2d EEG nodes on scalp with lines representing connectivity
+    
+    Args:
+        epochs (mne.epochs.Epochs): Epoch to visualize
+        calc_type (str: Connectivity calculation type. Defaults to &quot;correlation&quot;.
+        pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
+        threshold (int, optional): Unsigned connectivity threshold to display connection. Defaults to 0.
+        show_sphere (bool, optional): Whether to show the cartoon head or not. Defaults to True.
+        steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20.
+        colormap (str, optional): Colour scheme to use. Defaults to &quot;RdBu_r&quot;
+        vmin (int, optional): The minimum for the scale. Defaults to None.
+        vmin (int, optional): The maximum for the scale. Defaults to None.
+        line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
+        title (str, optional): The title to display on the plot. Defaults to None for no title.
+        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_sensors().
+    
+    Returns:
+        matplotlib.animation.Animation: Animation of connectivity plot
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values below to values of interest</span>
@@ -363,16 +396,16 @@
 <span class="n">experiment_path</span> <span class="o">=</span> <span class="s2">&quot;../../data/927&quot;</span> <span class="c1"># path to the experiment folder.</span>
 <span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="c1"># Connectivity parameters</span>
-<span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># minimum for the scale. Defaults to None.</span>
-<span class="n">vmax</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># maximum for the scale. Defaults to None.</span>
-<span class="n">colormap</span> <span class="o">=</span> <span class="s1">&#39;RdBu_r&#39;</span>  <span class="c1"># select any matplotlib colormap. Defaults to RdBu_r (Red-Blue).</span>
-<span class="n">calc_type</span> <span class="o">=</span> <span class="s1">&#39;correlation&#39;</span>  <span class="c1"># select from [&quot;correlation&quot;, &quot;spectral_connectivity&quot;, &quot;envelope_correlation&quot;].</span>
-<span class="n">pair_list</span> <span class="o">=</span> <span class="p">[]</span> <span class="c1"># select from the PAIR_OPTIONS below or use a custom pair.</span>
-<span class="n">line_width</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># the line width for the connections. Defaults to None for dynamic width based on connectivity strength.</span>
-<span class="n">steps</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># number of steps to use for calculations. Defaults to 20.</span>
-<span class="n">threshold</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># the minimum absolute value to display connection for. Defaults to 0.</span>
-<span class="n">show_sphere</span> <span class="o">=</span> <span class="kc">True</span>  <span class="c1"># whether to show the head drawing or not. Defaults to True.</span>
+<span class="c1"># connectivity parameters</span>
+<span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">vmax</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;RdBu_r&quot;</span>
+<span class="n">calc_type</span> <span class="o">=</span> <span class="s2">&quot;correlation&quot;</span>
+<span class="n">pair_list</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># select from the PAIR_OPTIONS below or use a custom pair.</span>
+<span class="n">line_width</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">threshold</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">show_sphere</span> <span class="o">=</span> <span class="kc">True</span>
 </pre></div>
 </div>
 </div>
@@ -397,6 +430,7 @@
 <br></div>
 <div class="section" id="create-epoched-data">
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
+<p>For additional options see <strong>Creating EEG Objects</strong> section.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">)</span>
@@ -660,42 +694,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_img8721b288c5384a5b922e673816e1fca8">
+  <img id="_anim_imgae8eda818d0d4bc08ca5f26d5b2ae77d">
   <div class="anim-controls">
-    <input id="_anim_slider8721b288c5384a5b922e673816e1fca8" type="range" class="anim-slider"
+    <input id="_anim_sliderae8eda818d0d4bc08ca5f26d5b2ae77d" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="anim8721b288c5384a5b922e673816e1fca8.set_frame(parseInt(this.value));"></input>
+           oninput="animae8eda818d0d4bc08ca5f26d5b2ae77d.set_frame(parseInt(this.value));"></input>
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim8721b288c5384a5b922e673816e1fca8.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="animae8eda818d0d4bc08ca5f26d5b2ae77d.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="anim8721b288c5384a5b922e673816e1fca8.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="animae8eda818d0d4bc08ca5f26d5b2ae77d.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="anim8721b288c5384a5b922e673816e1fca8.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="animae8eda818d0d4bc08ca5f26d5b2ae77d.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="anim8721b288c5384a5b922e673816e1fca8.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="animae8eda818d0d4bc08ca5f26d5b2ae77d.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="anim8721b288c5384a5b922e673816e1fca8.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="animae8eda818d0d4bc08ca5f26d5b2ae77d.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="anim8721b288c5384a5b922e673816e1fca8.play_animation()">
+      <button title="Play" aria-label="Play" onclick="animae8eda818d0d4bc08ca5f26d5b2ae77d.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="anim8721b288c5384a5b922e673816e1fca8.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="animae8eda818d0d4bc08ca5f26d5b2ae77d.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="anim8721b288c5384a5b922e673816e1fca8.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="animae8eda818d0d4bc08ca5f26d5b2ae77d.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="anim8721b288c5384a5b922e673816e1fca8.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="animae8eda818d0d4bc08ca5f26d5b2ae77d.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select8721b288c5384a5b922e673816e1fca8"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectae8eda818d0d4bc08ca5f26d5b2ae77d"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_8721b288c5384a5b922e673816e1fca8"
+      <input type="radio" name="state" value="once" id="_anim_radio1_ae8eda818d0d4bc08ca5f26d5b2ae77d"
              >
-      <label for="_anim_radio1_8721b288c5384a5b922e673816e1fca8">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_8721b288c5384a5b922e673816e1fca8"
+      <label for="_anim_radio1_ae8eda818d0d4bc08ca5f26d5b2ae77d">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_ae8eda818d0d4bc08ca5f26d5b2ae77d"
              checked>
-      <label for="_anim_radio2_8721b288c5384a5b922e673816e1fca8">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_8721b288c5384a5b922e673816e1fca8"
+      <label for="_anim_radio2_ae8eda818d0d4bc08ca5f26d5b2ae77d">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_ae8eda818d0d4bc08ca5f26d5b2ae77d"
              >
-      <label for="_anim_radio3_8721b288c5384a5b922e673816e1fca8">Reflect</label>
+      <label for="_anim_radio3_ae8eda818d0d4bc08ca5f26d5b2ae77d">Reflect</label>
     </form>
   </div>
 </div>
@@ -705,9 +739,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_img8721b288c5384a5b922e673816e1fca8";
-    var slider_id = "_anim_slider8721b288c5384a5b922e673816e1fca8";
-    var loop_select_id = "_anim_loop_select8721b288c5384a5b922e673816e1fca8";
+    var img_id = "_anim_imgae8eda818d0d4bc08ca5f26d5b2ae77d";
+    var slider_id = "_anim_sliderae8eda818d0d4bc08ca5f26d5b2ae77d";
+    var loop_select_id = "_anim_loop_selectae8eda818d0d4bc08ca5f26d5b2ae77d";
     var frames = new Array(40);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -47786,7 +47820,7 @@ ZlX6H7L5wkL508wAAAAAAElFTkSuQmCC\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anim8721b288c5384a5b922e673816e1fca8 = new Animation(frames, img_id, slider_id, 200.0,
+        animae8eda818d0d4bc08ca5f26d5b2ae77d = new Animation(frames, img_id, slider_id, 200.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -47848,73 +47882,6 @@ ZlX6H7L5wkL508wAAAAAAElFTkSuQmCC\
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:   0%|          | 0/102 [00:00&lt;?, ?it/s, now=None]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Moviepy - Building video ../../exports/examples/connectivity.mp4.
-Moviepy - Writing video ../../exports/examples/connectivity.mp4
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:   2%|▏         | 2/102 [00:00&lt;00:09, 10.13it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:   7%|▋         | 7/102 [00:00&lt;00:07, 13.21it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  12%|█▏        | 12/102 [00:00&lt;00:05, 16.87it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  19%|█▊        | 19/102 [00:00&lt;00:03, 21.62it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  25%|██▌       | 26/102 [00:00&lt;00:02, 27.15it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  32%|███▏      | 33/102 [00:00&lt;00:02, 33.06it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  40%|████      | 41/102 [00:00&lt;00:01, 39.24it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  47%|████▋     | 48/102 [00:01&lt;00:01, 36.22it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  53%|█████▎    | 54/102 [00:01&lt;00:01, 39.92it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  60%|█████▉    | 61/102 [00:01&lt;00:00, 44.69it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  66%|██████▌   | 67/102 [00:01&lt;00:00, 47.66it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  73%|███████▎  | 74/102 [00:01&lt;00:00, 51.51it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  78%|███████▊  | 80/102 [00:01&lt;00:00, 52.28it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  84%|████████▍ | 86/102 [00:01&lt;00:00, 53.39it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  90%|█████████ | 92/102 [00:01&lt;00:00, 55.09it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>t:  97%|█████████▋| 99/102 [00:01&lt;00:00, 56.33it/s, now=None]
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>                                                             
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Moviepy - Done !
-Moviepy - video ready ../../exports/examples/connectivity.mp4
-</pre></div>
-</div>
-</div>
 </div>
 <br></div>
 </div>
@@ -47924,18 +47891,26 @@ Moviepy - video ready ../../exports/examples/connectivity.mp4
 <h2>Connectivity Circle Plot<a class="headerlink" href="#connectivity-circle-plot" title="Permalink to this headline">¶</a></h2>
 <img src="instruction_imgs/connectivity_circle.gif" align="left" style="height:30em"/><div class="section" id="id1">
 <h3>Define parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+<p>A detailed description of all parameters can be found in the <code class="docutils literal notranslate"><span class="pre">connectivity.animate_connectivity_circle</span></code> docstring:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">connectivity</span><span class="o">.</span><span class="n">animate_connectivity_circle</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values below to values of interest</span>
 
-<span class="c1"># Connectivity circle parameters</span>
-<span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># minimum for the scale. Defaults to None.</span>
-<span class="n">vmax</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># maximum for the scale. Defaults to None.</span>
-<span class="n">colormap</span> <span class="o">=</span> <span class="s1">&#39;RdBu_r&#39;</span>  <span class="c1"># select any matplotlib colormap. Defaults to RdBu_r (Red-Blue).</span>
-<span class="n">calc_type</span> <span class="o">=</span> <span class="s1">&#39;correlation&#39;</span>  <span class="c1"># select from [&quot;correlation&quot;, &quot;spectral_connectivity&quot;, &quot;envelope_correlation&quot;].</span>
-<span class="n">line_width</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># line width for the connections. Defaults to None.</span>
-<span class="n">steps</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># number of steps to use for calculations. Defaults to 20.</span>
-<span class="n">max_connections</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># maximum number of connections to display. Defaults to 50.</span>
+<span class="c1"># connectivity circle parameters</span>
+<span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+<span class="n">vmax</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;RdBu_r&quot;</span>
+<span class="n">calc_type</span> <span class="o">=</span> <span class="s2">&quot;correlation&quot;</span>
+<span class="n">line_width</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">steps</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">max_connections</span> <span class="o">=</span> <span class="mi">50</span>
 </pre></div>
 </div>
 </div>

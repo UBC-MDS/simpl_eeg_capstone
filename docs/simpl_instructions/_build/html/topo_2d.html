@@ -283,7 +283,7 @@
 <p><img alt="" src="_images/topo_2d.gif" /></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">eeg_objects</span><span class="p">,</span> <span class="n">topomap_2d</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">topomap_2d</span><span class="p">,</span> <span class="n">eeg_objects</span> 
 </pre></div>
 </div>
 </div>
@@ -316,7 +316,93 @@
 </div>
 <br><div class="section" id="define-parameters">
 <h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
-<p>There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.</p>
+<p>A detailed description of all parameters can be found in the <code class="docutils literal notranslate"><span class="pre">topomap_2d.animate_topomap_2d</span></code> docstring:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">topomap_2d</span><span class="o">.</span><span class="n">animate_topomap_2d</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function animate_topomap_2d in module simpl_eeg.topomap_2d:
+
+animate_topomap_2d(epoch, colormap=&#39;RdBu_r&#39;, mark=&#39;dot&#39;, contours=0, sphere=100, cmin=-30, cmax=30, res=100, extrapolate=&#39;head&#39;, outlines=&#39;head&#39;, axes=None, mask=None, mask_params=None, colorbar=True, timestamp=True, frame_rate=12)
+    Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
+    function.
+    
+    Parameters
+    ----------
+    epochs : mne.epochs.Epochs
+        MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
+    
+    colormap: matplotlib colormap or None
+        Specifies the &#39;colormap&#39; parameter in the mne.viz.plot_topomap() function.
+    
+    mark: str
+        Specifies what kind of marker should be shown for each node on the topomap. Can be one of
+        &#39;dot&#39;, &#39;r+&#39; (for red +&#39;s), &#39;channel_name&#39;, or &#39;none&#39;.
+    
+    contours: int or array of float
+        specifies the &#39;contours&#39; parameter in the mne.viz.plot_topomap() function. &quot;The number of
+        contour lines to draw. If 0, no contours will be drawn. If an array, the values represent
+        the levels for the contours. The values are in µV for EEG, fT for magnetometers and fT/m
+        for gradiometers.&quot;
+    
+    sphere: float or array_like or instance of ConductorModel
+        specifies the &#39;sphere&#39; parameter in the mne.viz.plot_topomap() function. &quot;The sphere
+        parameters to use for the cartoon head. Can be array-like of shape (4,) to give the
+        X/Y/Z origin and radius in meters, or a single float to give the radius (origin
+        assumed 0, 0, 0). Can also be a spherical ConductorModel, which will use the origin
+        and radius. Can also be None (default) which is an alias for 0.095&quot;
+    
+    cmin: float
+        Specifies the &#39;vmin&#39; parameter in the mne.viz.plot_topomap() function.
+        Sets the limits for the colors which will be used on the topomap. Value is
+        in μV. Defaults to -10.
+        
+    cmax: float
+        Specifies the &#39;vmax&#39; parameter in the mne.viz.plot_topomap() function.
+        Sets the limits for the colors which will be used on the topomap. Value is
+        in μV. Defaults to +10.
+    
+    res: int
+        Specifies the &#39;res&#39; and parameters in the mne.viz.plot_topomap() function. &quot;The
+        resolution of the topomap image (n pixels along each side).&quot;
+    
+    extrapolate: str
+        Specifies the &#39;extrapolate&#39; and parameters in the mne.viz.plot_topomap() function. One of
+        &quot;box&quot;, &quot;local&quot;, or &quot;head&quot;.
+    
+    outlines: ‘head’ or ‘skirt’ or dict or None
+        Specifies the &#39;outlines&#39; parameter in the mne.viz.plot_topomap() function.
+    
+    axes: instance of Axes or None
+        Specifies the &#39;axes&#39; parameter in the mne.viz.plot_topomap() function.
+    
+    mask: ndarray of bool, shape (n_channels, n_times) or None
+        Specifies the &#39;mask&#39; parameter in the mne.viz.plot_topomap() function.
+    
+    mask_params: dict
+        Specifies the &#39;mask_params&#39; parameter in the mne.viz.plot_topomap() function.
+    
+    colorbar: bool
+        Specifies whether or not to include a colorbar in the animation.
+    
+    timestamp: bool
+        Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+        is being shown. Defaults to True.
+    
+    frame_rate: int
+        The frame rate to genearte the final animation with.
+    
+    Returns
+    -------
+    ani: matplotlib.animation.FuncAnimation
+        matplotlib funcanimation of a 2d topographic map based on the input epoch data
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values below to values of interest</span>
@@ -324,9 +410,21 @@
 <span class="n">experiment_folder</span> <span class="o">=</span> <span class="s2">&quot;../../data/109&quot;</span>  <span class="c1"># path to the experiment folder</span>
 <span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># the epoch of interest</span>
 
-<span class="n">vmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">40</span>  <span class="c1"># minimum for the scale. Defaults to None for autodetected. </span>
-<span class="n">vmax</span> <span class="o">=</span> <span class="mi">40</span>  <span class="c1"># maximum for the scale. Defaults to None for autodetected. </span>
-<span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;Spectral&quot;</span>  <span class="c1"># select any matplotlib colormap. Defaults to RdBu_r (Red-Blue).</span>
+<span class="n">cmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">40</span>
+<span class="n">cmax</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;Spectral&quot;</span>
+<span class="n">mark</span> <span class="o">=</span> <span class="s2">&quot;dot&quot;</span>
+<span class="n">contours</span> <span class="o">=</span> <span class="s2">&quot;6&quot;</span>
+<span class="n">sphere</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">res</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">extrapolate</span> <span class="o">=</span> <span class="s2">&quot;head&quot;</span>
+<span class="n">outlines</span> <span class="o">=</span> <span class="s2">&quot;head&quot;</span>
+<span class="n">axes</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">mask_params</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">colorbar</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">timestamp</span> <span class="o">=</span> <span class="kc">True</span>
+<span class="n">frame_rate</span> <span class="o">=</span> <span class="mi">12</span>
 </pre></div>
 </div>
 </div>
@@ -334,21 +432,37 @@
 <br></div>
 <div class="section" id="create-epoched-data">
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
+<p>For additional options see <strong>Creating EEG Objects</strong> section.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_folder</span><span class="p">)</span>
 <span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">694926</span><span class="n">f4f6bf</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
-
-<span class="ne">NameError</span>: name &#39;experiment_path&#39; is not defined
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/sasha/mds/simpl_eeg_capstone/data/109/fixica.fdt
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>33 matching events found
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Applying baseline correction (mode: mean)
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 projection items activated
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading data for 33 events and 2049 original time points ...
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 bad epochs dropped
 </pre></div>
 </div>
 </div>
@@ -365,20 +479,20 @@
 <span class="n">anim</span> <span class="o">=</span> <span class="n">topomap_2d</span><span class="o">.</span><span class="n">animate_topomap_2d</span><span class="p">(</span>
     <span class="n">shortened_epoch</span><span class="p">,</span>
     <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
-    <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;dot&quot;</span><span class="p">,</span>
-    <span class="n">contours</span><span class="o">=</span><span class="s2">&quot;6&quot;</span><span class="p">,</span>
-    <span class="n">sphere</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">cmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
-    <span class="n">cmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
-    <span class="n">res</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span>
-    <span class="n">extrapolate</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">,</span>
-    <span class="n">outlines</span><span class="o">=</span><span class="s2">&quot;head&quot;</span><span class="p">,</span>
-    <span class="n">axes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">mask</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">mask_params</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">timestamp</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-    <span class="n">frame_rate</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span>
+    <span class="n">mark</span><span class="o">=</span><span class="n">mark</span><span class="p">,</span>
+    <span class="n">contours</span><span class="o">=</span><span class="n">contours</span><span class="p">,</span>
+    <span class="n">sphere</span><span class="o">=</span><span class="n">sphere</span><span class="p">,</span>
+    <span class="n">cmin</span><span class="o">=</span><span class="n">cmin</span><span class="p">,</span>
+    <span class="n">cmax</span><span class="o">=</span><span class="n">cmax</span><span class="p">,</span>
+    <span class="n">res</span><span class="o">=</span><span class="n">res</span><span class="p">,</span>
+    <span class="n">extrapolate</span><span class="o">=</span><span class="n">extrapolate</span><span class="p">,</span>
+    <span class="n">outlines</span><span class="o">=</span><span class="n">outlines</span><span class="p">,</span>
+    <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span>
+    <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span>
+    <span class="n">mask_params</span><span class="o">=</span><span class="n">mask_params</span><span class="p">,</span>
+    <span class="n">colorbar</span><span class="o">=</span><span class="n">colorbar</span><span class="p">,</span>
+    <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+    <span class="n">frame_rate</span><span class="o">=</span><span class="n">frame_rate</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
@@ -388,10 +502,34 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="mi">46</span><span class="n">eefada27d9</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">anim</span> <span class="o">=</span> <span class="n">topomap_2d</span><span class="o">.</span><span class="n">animate_topomap_2d</span><span class="p">(</span>
+<span class="ne">----&gt; </span><span class="mi">2</span>     <span class="n">shortened_epoch</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">4</span>     <span class="n">mark</span><span class="o">=</span><span class="n">mark</span><span class="p">,</span>
+<span class="g g-Whitespace">      </span><span class="mi">5</span>     <span class="n">contours</span><span class="o">=</span><span class="n">contours</span><span class="p">,</span>
+
+<span class="ne">NameError</span>: name &#39;shortened_epoch&#39; is not defined
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">video</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">9</span><span class="o">-</span><span class="mi">7</span><span class="n">bf9888fe41c</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">video</span>
+
+<span class="ne">NameError</span>: name &#39;video&#39; is not defined
 </pre></div>
 </div>
 </div>

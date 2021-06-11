@@ -10,7 +10,7 @@
 # In[1]:
 
 
-from simpl_eeg import eeg_objects, topomap_3d_head
+from simpl_eeg import topomap_3d_head, eeg_objects
 
 
 # In[2]:
@@ -40,43 +40,45 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # ### Define global parameters
 
-# There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.
+# A detailed description of all parameters can be found in the `topomap_3d_head.animate_3d_head` docstring:
 
 # In[5]:
 
 
+help(topomap_3d_head.animate_3d_head)
+
+
+# In[6]:
+
+
 # change values below to values of interest
 
-experiment = "../../data/927"  # path to the experiment folder.
+experiment_folder = "../../data/927"
 nth_epoch = 0
-color_min = -40  # the minimum voltage to show on the colorbar
-color_max = 40  # the minimum voltage to show on the colorbar
-colormap = "RdBu_r"  # select from ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
+
+color_min = -40
+color_max = 40
+colormap = "RdBu_r"
 
 
 # <br>
 
 # ### Create epoched data
 
-# In[6]:
+# For additional options see **Creating EEG Objects** section.
+
+# In[7]:
 
 
-tmin = -0.3  # number of seconds before the impact. Please change it to a value of your interest
-tmax = 0.7  # number of seconds after the impact. Please change it to a value of your interest
-start_second = None  # starting time of the epoch. Please change it to a value of your interest
-
-raw = eeg_objects.Epochs(experiment, tmin, tmax, start_second)
-
-raw.set_nth_epoch(nth_epoch)
-
-epoch = raw.get_nth_epoch()
+epochs = eeg_objects.Epochs(experiment_folder)
+epoch = epochs.get_nth_epoch(nth_epoch)
 
 
 # </br>
 
 # ### Create the topographic map in 3D head shape
 
-# In[7]:
+# In[8]:
 
 
 timestamp = -300  # you can change the value to the time stamp of your interest

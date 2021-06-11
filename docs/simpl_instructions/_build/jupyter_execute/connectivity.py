@@ -40,7 +40,15 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # ### Define parameters
 
+# A detailed description of all parameters can be found in the `connectivity.animate_connectivity` docstring:
+
 # In[5]:
+
+
+help(connectivity.animate_connectivity)
+
+
+# In[6]:
 
 
 # change values below to values of interest
@@ -48,19 +56,19 @@ get_ipython().run_line_magic('autoreload', '2')
 experiment_path = "../../data/927" # path to the experiment folder.
 nth_epoch = 0
 
-# Connectivity parameters
-vmin = -1  # minimum for the scale. Defaults to None.
-vmax = 1  # maximum for the scale. Defaults to None.
-colormap = 'RdBu_r'  # select any matplotlib colormap. Defaults to RdBu_r (Red-Blue).
-calc_type = 'correlation'  # select from ["correlation", "spectral_connectivity", "envelope_correlation"].
-pair_list = [] # select from the PAIR_OPTIONS below or use a custom pair.
-line_width = None  # the line width for the connections. Defaults to None for dynamic width based on connectivity strength.
-steps = 50  # number of steps to use for calculations. Defaults to 20.
-threshold = 0  # the minimum absolute value to display connection for. Defaults to 0.
-show_sphere = True  # whether to show the head drawing or not. Defaults to True.
+# connectivity parameters
+vmin = -1
+vmax = 1
+colormap = "RdBu_r"
+calc_type = "correlation"
+pair_list = []  # select from the PAIR_OPTIONS below or use a custom pair.
+line_width = None
+steps = 50
+threshold = 0
+show_sphere = True
 
 
-# In[6]:
+# In[7]:
 
 
 PAIR_OPTIONS = {
@@ -80,7 +88,9 @@ PAIR_OPTIONS = {
 
 # ### Create epoched data
 
-# In[7]:
+# For additional options see **Creating EEG Objects** section.
+
+# In[8]:
 
 
 epochs = eeg_objects.Epochs(experiment_path)
@@ -93,19 +103,19 @@ epoch = epochs.get_nth_epoch(0)
 
 # #### Generating the animation
 
-# In[8]:
+# In[9]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[9]:
+# In[10]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity(\n    epoch,\n    calc_type=calc_type,\n    steps=steps,\n    pair_list=pair_list,\n    threshold=threshold,\n    show_sphere=show_sphere,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
-# In[10]:
+# In[11]:
 
 
 video
@@ -115,7 +125,7 @@ video
 
 # ##### Save as html
 
-# In[11]:
+# In[12]:
 
 
 html_file_path = "../../exports/examples/connectivity.html"  # change the file path to where you would like to save the file
@@ -127,7 +137,7 @@ html_file.close()
 
 # ##### Save as gif
 
-# In[12]:
+# In[13]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim_conn = connectivity.animate_connectivity(epoch, vmin=-1, vmax=1, pair_list=PAIR_OPTIONS["far_coherence"])\n\ngif_file_path = "../../exports/examples/connectivity.gif"  # change the file path to where you would like to save the file\nanim_conn.save(gif_file_path, fps=3, dpi=300)  # set frames per second (fps) and resolution (dpi)')
@@ -135,7 +145,7 @@ get_ipython().run_cell_magic('capture', '', '\nanim_conn = connectivity.animate_
 
 # ##### Save as mp4
 
-# In[13]:
+# In[ ]:
 
 
 mp4_file_path = "../../exports/examples/connectivity.mp4"
@@ -146,7 +156,7 @@ anim_conn.save(mp4_file_path, fps=3, dpi=300)
 # If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file.
 # ```
 
-# In[14]:
+# In[ ]:
 
 
 import moviepy.editor as mp
@@ -163,30 +173,38 @@ clip.write_videofile(mp4_file_path) # change the file path to where you would li
 
 # ### Define parameters
 
-# In[15]:
+# A detailed description of all parameters can be found in the `connectivity.animate_connectivity_circle` docstring:
+
+# In[ ]:
+
+
+help(connectivity.animate_connectivity_circle)
+
+
+# In[ ]:
 
 
 # change values below to values of interest
 
-# Connectivity circle parameters
-vmin = -1  # minimum for the scale. Defaults to None.
-vmax = 1  # maximum for the scale. Defaults to None.
-colormap = 'RdBu_r'  # select any matplotlib colormap. Defaults to RdBu_r (Red-Blue).
-calc_type = 'correlation'  # select from ["correlation", "spectral_connectivity", "envelope_correlation"].
-line_width = 1  # line width for the connections. Defaults to None.
-steps = 50  # number of steps to use for calculations. Defaults to 20.
-max_connections = 50  # maximum number of connections to display. Defaults to 50.
+# connectivity circle parameters
+vmin = -1
+vmax = 1
+colormap = "RdBu_r"
+calc_type = "correlation"
+line_width = 1
+steps = 50
+max_connections = 50
 
 
 # #### Generating the animation
 
-# In[16]:
+# In[ ]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
-# In[17]:
+# In[ ]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity_circle(\n    epoch,\n    calc_type=calc_type,\n    max_connections=max_connections,\n    steps=steps,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')

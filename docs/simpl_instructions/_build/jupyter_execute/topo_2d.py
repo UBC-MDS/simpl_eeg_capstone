@@ -10,7 +10,7 @@
 # In[1]:
 
 
-from simpl_eeg import eeg_objects, topomap_2d
+from simpl_eeg import topomap_2d, eeg_objects 
 
 
 # In[2]:
@@ -40,9 +40,15 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # ### Define parameters
 
-# There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.
+# A detailed description of all parameters can be found in the `topomap_2d.animate_topomap_2d` docstring:
 
 # In[5]:
+
+
+help(topomap_2d.animate_topomap_2d)
+
+
+# In[6]:
 
 
 # change values below to values of interest
@@ -50,19 +56,33 @@ get_ipython().run_line_magic('autoreload', '2')
 experiment_folder = "../../data/109"  # path to the experiment folder
 nth_epoch = 0  # the epoch of interest
 
-vmin = -40  # minimum for the scale. Defaults to None for autodetected. 
-vmax = 40  # maximum for the scale. Defaults to None for autodetected. 
-colormap = "Spectral"  # select any matplotlib colormap. Defaults to RdBu_r (Red-Blue).
+cmin = -40
+cmax = 40
+colormap = "Spectral"
+mark = "dot"
+contours = "6"
+sphere = 100
+res = 100
+extrapolate = "head"
+outlines = "head"
+axes = None
+mask = None
+mask_params = None
+colorbar = True
+timestamp = True
+frame_rate = 12
 
 
 # <br>
 
 # ### Create epoched data
 
-# In[6]:
+# For additional options see **Creating EEG Objects** section.
+
+# In[7]:
 
 
-epochs = eeg_objects.Epochs(experiment_path)
+epochs = eeg_objects.Epochs(experiment_folder)
 epoch = epochs.get_nth_epoch(nth_epoch)
 
 
@@ -72,13 +92,13 @@ epoch = epochs.get_nth_epoch(nth_epoch)
 
 # #### Generating the animation
 
-# In[ ]:
+# In[8]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(\n    shortened_epoch,\n    colormap=colormap,\n    mark="dot",\n    contours="6",\n    sphere=100,\n    cmin=vmin,\n    cmax=vmax,\n    res=100,\n    extrapolate="head",\n    outlines="head",\n    axes=None,\n    mask=None,\n    mask_params=None,\n    colorbar=True,\n    timestamp=True,\n    frame_rate=12,\n)\n\nfrom IPython.core.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
+get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(\n    shortened_epoch,\n    colormap=colormap,\n    mark=mark,\n    contours=contours,\n    sphere=sphere,\n    cmin=cmin,\n    cmax=cmax,\n    res=res,\n    extrapolate=extrapolate,\n    outlines=outlines,\n    axes=axes,\n    mask=mask,\n    mask_params=mask_params,\n    colorbar=colorbar,\n    timestamp=timestamp,\n    frame_rate=frame_rate,\n)\n\nfrom IPython.core.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
-# In[ ]:
+# In[9]:
 
 
 video

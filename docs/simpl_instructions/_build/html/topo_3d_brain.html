@@ -220,8 +220,8 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#define-global-parameters">
-     Define global parameters
+    <a class="reference internal nav-link" href="#define-parameters">
+     Define parameters
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -336,16 +336,114 @@
 </div>
 </div>
 </div>
-<br><div class="section" id="define-global-parameters">
-<h3>Define global parameters<a class="headerlink" href="#define-global-parameters" title="Permalink to this headline">¶</a></h3>
-<p>There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.</p>
+<br><div class="section" id="define-parameters">
+<h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
+<p>A detailed description of all parameters can be found in the <code class="docutils literal notranslate"><span class="pre">topomap_2d.animate_topomap_2d</span></code> docstring:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">topomap_3d_brain</span><span class="o">.</span><span class="n">animate_matplot_brain</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function animate_matplot_brain in module simpl_eeg.topomap_3d_brain:
+
+animate_matplot_brain(epoch, stc=&#39;auto&#39;, views=[&#39;lat&#39;, &#39;dor&#39;, &#39;fro&#39;], size=200, hemi=&#39;both&#39;, colormap=&#39;mne&#39;, colorbar=True, colormap_limit_type=&#39;lims&#39;, cmin=None, cmid=None, cmax=None, spacing=&#39;oct5&#39;, smoothing_steps=2, timestamp=True, frame_rate=12, **kwargs)
+    Creates an animated view of all timestamp observations an mne.epochs.Epochs data using a matplotlib backend.
+    If multiple views are used then speed becomes significantly slower. Colorbar placement may be inconsistent.
+    
+    Parameters
+    ----------
+    epoch : mne.epochs.Epochs or mne.evoked.EvokedArray
+            MNE epochs or evoked object containing portions of raw EEG data built around specified
+            timestamp(s) The inverse solution will be built based on the data in the specified epoch.
+    
+    stc: mne.source_estimate.SourceEstimate or &#39;auto&#39;
+            &#39;inverse_solution&#39; to generate the plot from. If set to &quot;auto&quot; (default) then an stc will be
+            automatically generated however, this will significantly increase running time.
+    
+    views: str or list
+            Specifies the &#39;view&#39; parameter in the mne.SourceEstimate.plot() function. For any backend
+            can be any combination of &#39;lat&#39; (lateral), &#39;med&#39; (medial), &#39;ros&#39; (rostral), &#39;cau&#39; (caudal),
+            &#39;dor&#39; (dorsal), &#39;ven&#39;(ventral), &#39;fro&#39;(frontal), &#39;par&#39; (parietal). The following arguments
+            are also accepted but are NOT compatible with the matplotlib backend &#39;axi&#39; (axial), &#39;sag&#39;
+            (sagittal), and &#39;cor&#39;(coronal). Defaults to [&#39;lat&#39;, &#39;fro&#39;, &#39;dor&#39;].
+    
+    size: int
+            If using a non-matplotlib backend then specifies how many pixels tall EACH &quot;view&quot; of the brian will be.
+            If using matplotlib as a backend then the height will be divided by 100 and rounded the closest inch.
+            For example, entering 100 will result in 1 inch per view. If plotting multiple views overall size of
+            the multiplot is automatically calculated to fit all views. Defaults to 300.              
+    
+    hemi: &#39;lh’ or ‘rh’ or ‘both’ or ‘split’
+            Specifies the &#39;initial_time&#39; parameter in the mne.SourceEstimate.plot() function. Can be
+            one of ‘lh’, ‘rh’, ‘both’, or ‘split’. Defaults to &#39;both&#39;. Note that when using the matplotlib
+            backend that &#39;split&#39; and &#39;both&#39; will return a &#39;split&#39; view since both is not avalible.
+            Defaults to &#39;both&#39;
+    
+    colormap: str or np.ndarray of float, shape(n_colors, 3 | 4)
+            Specifies the &#39;colormap&#39; parameter in the mne.SourceEstimate.plot() function. Can use a
+            matplotlib colormap by name or take a custom look up table as input. Defaults to &quot;mne&quot;
+    
+    colorbar: bool
+            Determines whether to include a colorbar on the plot not. Defaults to True.
+    
+    colormap_limit_type: str
+            Can be either &quot;lims&quot; or &quot;pos_lims&quot;. &quot;lims&quot; means that your cmin, cmid, and cmax values will specify the
+            &quot;Lower, middle, and upper bounds for colormap&quot;. Using &quot;pos_lims&quot; will lead to cmin, cmid, and cmax representing
+            the &quot;Lower, middle, and upper bound for colormap. Positive values will be mirrored directly across
+            zero during colormap construction to obtain negative control points.&quot; Defaults to &quot;lims&quot;
+    
+    cmin: float
+            Specifies the lower value of the colormap limit. If no value is specified then
+            limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
+            will be the negative value of cmax if only that is provided.
+    
+    cmid: float
+            Specifies the middle value of the colormap limit. If no value is specified then
+            limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
+            will be the value between cmin and cmax if one/both of them is provided.
+    
+    cmax: float
+            Specifies the middle value of the colormap limit. If no value is specified then
+            limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
+            will be the negative value of cmin if only that is provided.
+    
+    spacing: str
+            Specifies the &#39;spacing&#39; parameter in the mne.SourceEstimate.plot() function. &quot;The spacing to use for the
+            source space. Can be &#39;ico#&#39; for a recursively subdivided icosahedron, &#39;oct#&#39; for a recursively subdivided
+            octahedron. In general, you can speed up the plotting by selecting a sparser source
+            space. Has no effect with mayavi backend. Defaults to ‘oct6’&quot;.
+    
+    smoothing_steps: int
+            Specifies the &#39;smoothing_steps&#39; parameter in the mne.SourceEstimate.plot() function. &quot;The amount of smoothing&quot;.
+            3 by default.
+            
+    timestamp: &#39;auto&#39; or bool
+        Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+        is being shown. Only works with &#39;matplotlib&#39; set to the backend. Defaults to &#39;auto&#39; which be True
+        if a matplotlib backend is being used and False otherwise.
+            
+    frame_rate: int
+            The frame rate to render the animation at. Defautls to 12.
+    
+    Returns
+    -------
+    ani: matplotlib.animation.FuncAnimation
+            Animation containing frames from all of the avalible times in the passed in epoch.
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values belo to values of interest</span>
 
-<span class="n">experiment</span> <span class="o">=</span> <span class="s2">&quot;../../data/927&quot;</span> <span class="c1"># path to the experiment folder.</span>
-<span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;RdBu_r&quot;</span> <span class="c1"># select from [&quot;RdBu_r&quot;, &quot;hot&quot;, &quot;cool&quot;, &quot;inferno&quot;, &quot;turbo&quot;, &quot;rainbow&quot;]</span>
+<span class="n">experiment_folder</span> <span class="o">=</span> <span class="s2">&quot;../../data/109&quot;</span>  <span class="c1"># path to the experiment folder</span>
+<span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># the epoch of interest</span>
+
+<span class="c1"># 3D brain parameters</span>
+<span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;RdBu_r&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -353,22 +451,16 @@
 <br></div>
 <div class="section" id="create-epoched-data">
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
+<p>For additional options see <strong>Creating EEG Objects</strong> section.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmin</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.3</span>  <span class="c1"># number of seconds before the impact. Please change it to a value of your interest</span>
-<span class="n">tmax</span> <span class="o">=</span> <span class="mf">0.7</span>  <span class="c1"># number of seconds after the impact. Please change it to a value of your interest</span>
-<span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># starting time of the epoch. Please change it to a value of your interest</span>
-
-<span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-
-<span class="n">raw</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
-
-<span class="n">epoch</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_folder</span><span class="p">)</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/sasha/mds/simpl_eeg_capstone/data/927/fixica.fdt
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/sasha/mds/simpl_eeg_capstone/data/109/fixica.fdt
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
@@ -554,7 +646,7 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing rank from data with rank=None
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Using tolerance 1.8e-11 (2.2e-16 eps * 19 dim * 4.3e+03  max singular value)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Using tolerance 2e-11 (2.2e-16 eps * 19 dim * 4.7e+03  max singular value)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Estimated rank (eeg): 19
@@ -585,8 +677,8 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>log-likelihood on unseen data (descending order):
-   shrunk: -66.294
-   empirical: -187.228
+   shrunk: -48.219
+   empirical: -155.021
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>selecting best estimator: shrunk
@@ -637,7 +729,7 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing rank from covariance with rank=None
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Using tolerance 3.7e-13 (2.2e-16 eps * 19 dim * 88  max singular value)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Using tolerance 4.5e-13 (2.2e-16 eps * 19 dim * 1.1e+02  max singular value)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Estimated rank (eeg): 19
@@ -658,10 +750,10 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing SVD of whitened and weighted lead field matrix.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    largest singular value = 2.66383
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    largest singular value = 2.79772
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    scaling factor to adjust the trace = 3.61722e+24 (nchan = 19 nzero = 0)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    scaling factor to adjust the trace = 4.25971e+26 (nchan = 19 nzero = 0)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Preparing the inverse operator for use...
@@ -749,7 +841,7 @@
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">54</span><span class="n">c6db6a71d3</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">13</span><span class="o">-</span><span class="mi">54</span><span class="n">c6db6a71d3</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/topomap_3d_brain.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
 <span class="g g-Whitespace">      </span><span class="mi">5</span> 
 <span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">matplot_brain_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span> <span class="s1">&#39;svg&#39;</span><span class="p">)</span>

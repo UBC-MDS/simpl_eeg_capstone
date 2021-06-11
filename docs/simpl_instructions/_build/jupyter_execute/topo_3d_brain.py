@@ -38,36 +38,39 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # <br>
 
-# ### Define global parameters
+# ### Define parameters
 
-# There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.
+# A detailed description of all parameters can be found in the `topomap_2d.animate_topomap_2d` docstring:
 
 # In[5]:
 
 
+help(topomap_3d_brain.animate_matplot_brain)
+
+
+# In[6]:
+
+
 # change values belo to values of interest
 
-experiment = "../../data/927" # path to the experiment folder.
-nth_epoch = 0
-colormap = "RdBu_r" # select from ["RdBu_r", "hot", "cool", "inferno", "turbo", "rainbow"]
+experiment_folder = "../../data/109"  # path to the experiment folder
+nth_epoch = 0  # the epoch of interest
+
+# 3D brain parameters
+colormap = "RdBu_r"
 
 
 # <br>
 
 # ### Create epoched data
 
-# In[6]:
+# For additional options see **Creating EEG Objects** section.
+
+# In[7]:
 
 
-tmin = -0.3  # number of seconds before the impact. Please change it to a value of your interest
-tmax = 0.7  # number of seconds after the impact. Please change it to a value of your interest
-start_second = None  # starting time of the epoch. Please change it to a value of your interest
-
-raw = eeg_objects.Epochs(experiment, tmin, tmax, start_second)
-
-raw.set_nth_epoch(nth_epoch)
-
-epoch = raw.get_nth_epoch()
+epochs = eeg_objects.Epochs(experiment_folder)
+epoch = epochs.get_nth_epoch(nth_epoch)
 
 
 # </br>
@@ -82,7 +85,7 @@ epoch = raw.get_nth_epoch()
 
 # #### Generate Forward
 
-# In[7]:
+# In[8]:
 
 
 fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
@@ -90,7 +93,7 @@ fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
 
 # #### Generate Inverse
 
-# In[8]:
+# In[9]:
 
 
 stc = topomap_3d_brain.create_inverse_solution(epoch, fwd)
@@ -98,7 +101,7 @@ stc = topomap_3d_brain.create_inverse_solution(epoch, fwd)
 
 # #### Generate figure with pyvista backend (NOT CURRENTLY WORKING)
 
-# In[9]:
+# In[10]:
 
 
 #pyvista_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc = stc, backend = 'pyvista')
@@ -106,7 +109,7 @@ stc = topomap_3d_brain.create_inverse_solution(epoch, fwd)
 
 # #### Save animation with pyvista backend (NOT CURRENTLY WORKING)
 
-# In[10]:
+# In[11]:
 
 
 #topomap_3d_brain.save_animated_topomap_3d_brain(pyvista_brain_fig, filename = "brain_animation.gif")
@@ -116,7 +119,7 @@ stc = topomap_3d_brain.create_inverse_solution(epoch, fwd)
 
 # #### Generate figure with matplotlib backend (recommended)
 
-# In[11]:
+# In[12]:
 
 
 get_ipython().run_cell_magic('capture', '', "matplot_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc = stc, backend = 'matplotlib')")
@@ -124,7 +127,7 @@ get_ipython().run_cell_magic('capture', '', "matplot_brain_fig = topomap_3d_brai
 
 # ##### Save the figure
 
-# In[12]:
+# In[13]:
 
 
 # You could change the plot to different formats by changing the format argument in the function. 

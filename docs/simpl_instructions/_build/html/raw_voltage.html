@@ -296,7 +296,32 @@
 </div>
 <br><div class="section" id="define-parameters">
 <h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
-<p>There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.</p>
+<p>A detailed description of all parameters can be found in the <code class="docutils literal notranslate"><span class="pre">raw_voltage.plot_voltage</span></code> docstring:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">raw_voltage</span><span class="o">.</span><span class="n">plot_voltage</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function plot_voltage in module simpl_eeg.raw_voltage:
+
+plot_voltage(epoch, remove_xlabel=False, **kwargs)
+    Return interactive raw voltage plot
+    
+    Parameters
+    ----------
+    epoch (mne.epochs.Epochs): Epoch to display
+    remove_xlabel (bool, optional): Whether to remove the x axis label. Defaults to False.
+    **kwargs : arguments
+               raw, events=None, duration=10.0, start=0.0, n_channels=20, bgcolor=&#39;w&#39;, color=None, bad_color=(0.8, 0.8, 0.8), event_color=&#39;cyan&#39;, 
+               scalings=None, remove_dc=True, order=None, show_options=False, title=None, show=True, block=False, highpass=None, lowpass=None, 
+               filtorder=4, clipping=1.5, show_first_samp=False, proj=True, group_by=&#39;type&#39;, butterfly=False, decim=&#39;auto&#39;, noise_cov=None, 
+               event_id=None, show_scrollbars=True, show_scalebars=True, verbose=None)
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values below to values of interest</span>
@@ -310,6 +335,7 @@
 <br></div>
 <div class="section" id="create-epoched-data">
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
+<p>For additional options see <strong>Creating EEG Objects</strong> section.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">)</span>
@@ -357,7 +383,7 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/raw_voltage_18_0.png" src="_images/raw_voltage_18_0.png" />
+<img alt="_images/raw_voltage_20_0.png" src="_images/raw_voltage_20_0.png" />
 </div>
 </div>
 </div>
@@ -377,7 +403,7 @@
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="n">f3fe1d11c435</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">9</span><span class="o">-</span><span class="n">f3fe1d11c435</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/voltage_plot.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
 <span class="g g-Whitespace">      </span><span class="mi">5</span> 
 <span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">voltage_plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;svg&quot;</span><span class="p">)</span>

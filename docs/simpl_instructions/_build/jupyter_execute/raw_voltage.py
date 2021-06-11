@@ -38,9 +38,15 @@ get_ipython().run_line_magic('autoreload', '2')
 
 # ### Define parameters
 
-# There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.
+# A detailed description of all parameters can be found in the `raw_voltage.plot_voltage` docstring:
 
 # In[5]:
+
+
+help(raw_voltage.plot_voltage)
+
+
+# In[6]:
 
 
 # change values below to values of interest
@@ -53,7 +59,9 @@ nth_epoch = 0
 
 # ### Create epoched data
 
-# In[6]:
+# For additional options see **Creating EEG Objects** section.
+
+# In[7]:
 
 
 epochs = eeg_objects.Epochs(experiment_path)
@@ -66,7 +74,7 @@ epoch = epochs.get_nth_epoch(nth_epoch)
 
 # #### Generating the plot
 
-# In[7]:
+# In[8]:
 
 
 voltage_plot = raw_voltage.plot_voltage(epoch)
@@ -75,7 +83,7 @@ voltage_plot;
 
 # #### Saving the plot
 
-# In[8]:
+# In[9]:
 
 
 # You could change the plot to different formats by changing the format argument in the function. 
