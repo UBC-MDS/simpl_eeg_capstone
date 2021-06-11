@@ -244,9 +244,9 @@ def main():
         """----------\nExperiment\nlength:\n{}""".format(exp_len)
     )
 
-    col1, col2 = st.sidebar.beta_columns((1, 1))
+    col1, col2 = st.sidebar.beta_columns((1, 1.3))
     time_select = col1.radio(
-        "Time selection type",
+        "Timestamp type",
         ["Epoch", "Time"],
         help="""Select "Epoch" to render figures based around the timestamps specified in the "impact locations.mat".
         Select "Time" to specify a custom timestamp to render the animation from.
@@ -274,13 +274,34 @@ def main():
         epoch_num = 0
     else:
         start_second = None
+
+        refresh_rate = raw_epoch_obj.raw.info.get('sfreq') 
+        event_times = raw_epoch_obj.mat['elecmax1'][0]
+        epoch_times = {}
+
+        for i in range(len(event_times)):
+            secs = round(event_times[i]/refresh_rate, 2)
+            isec, fsec = divmod(round(secs*100), 100)
+            time = "{}.{:02.0f}".format(datetime.timedelta(seconds=isec), fsec)
+            label = str(i) + " (" + time + ")"
+            epoch_times[i] = label
+
         epoch_num = col2.selectbox(
             "Epoch",
-            [i for i in range(33)],
+            options = list(epoch_times.keys()),
+            format_func=lambda key: epoch_times[key],
             help="""The number epoch to use in all of the figures. Epochs are generated in sequence based
             on the order of events in the "impact locations.mat" file.
             """
         )
+
+        # epoch_num = col2.selectbox(
+        #     "Epoch",
+        #     [i for i in range(33)],
+        #     help="""The number epoch to use in all of the figures. Epochs are generated in sequence based
+        #     on the order of events in the "impact locations.mat" file.
+        #     """
+        # )
 
     tmin = st.sidebar.number_input(
         "Seconds before impact",
@@ -294,7 +315,7 @@ def main():
 
     tmax_max_value = 10.0
     if start_second != None:
-        seconds_to_end = round(max_secs - start_second,2)
+        seconds_to_end = round(max_secs - start_second,2) - 0.01
         if seconds_to_end < 10.0:
             tmax_max_value = seconds_to_end
 
