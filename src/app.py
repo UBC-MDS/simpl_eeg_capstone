@@ -282,8 +282,8 @@ def main():
         for i in range(len(event_times)):
             secs = round(event_times[i]/refresh_rate, 2)
             isec, fsec = divmod(round(secs*100), 100)
-            time = "{}.{:02.0f}".format(datetime.timedelta(seconds=isec), fsec)
-            label = str(i) + " (" + time + ")"
+            event_time_str = "{}.{:02.0f}".format(datetime.timedelta(seconds=isec), fsec)
+            label = str(i) + " (" + event_time_str + ")"
             epoch_times[i] = label
 
         epoch_num = col2.selectbox(
