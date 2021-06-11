@@ -317,14 +317,9 @@ def plot_conn_circle(
 
     angles = mne.viz.circular_layout(ch_names, ch_names, start_pos=90)
 
-    node_range = list(range(len(ch_names)+4))
-    node_cmap = plt.cm.ScalarMappable(cmap="Greys")
-    node_cmap.set_array(node_range)
-    node_cmap.autoscale()
-    node_colors = node_cmap.to_rgba(node_range)
-
     if line_width is None:
         line_width = 1.5
+
     mne.viz.plot_connectivity_circle(
         conn,
         ch_names,
@@ -334,7 +329,7 @@ def plot_conn_circle(
         facecolor="w",
         textcolor="black",
         colormap=colormap,
-        node_colors=[tuple(i) for i in node_colors],
+        node_colors=["grey" for i in range(len(ch_names))],
         vmin=vmin,
         vmax=vmax,
         linewidth=line_width,
