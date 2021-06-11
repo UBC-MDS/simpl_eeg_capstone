@@ -51,7 +51,7 @@ class Epochs:
     def __init__(self, folder_path, tmin=-0.3, tmax=0.7, start_second=None):
         self.eeg_file = EEG_File(folder_path)
         self.data = self.generate_epochs(tmin, tmax, start_second)
-        self.epoch = self.set_nth_epoch(0)
+        self.set_nth_epoch(0)
 
     def generate_epochs(self, tmin, tmax, start_second):
         freq = int(self.eeg_file.raw.info["sfreq"])
@@ -84,13 +84,15 @@ class Epochs:
 
         self.epoch = self.data[n]
 
-    def get_nth_epoch(self):
+    def get_nth_epoch(self, epoch_num=None):
         """
         Return the nth epoch from the raw data
 
         Returns:
             mne: The epoch of interest
         """
+        if epoch_num: 
+            self.set_nth_epoch(epoch_num)
         return self.epoch
 
     def skip_n_steps(self, num_steps):

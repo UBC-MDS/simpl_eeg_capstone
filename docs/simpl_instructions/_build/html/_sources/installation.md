@@ -1,4 +1,4 @@
-# Install guide
+# **Install guide**
 
 ### **Pre-requisite computer setup**
 
@@ -39,16 +39,21 @@ Please open your Unix shell (i.e. terminal on a Mac, GitBash on Windows) and nav
 
 Then clone our repo using...
 
+```bash
 `git clone https://github.com/UBC-MDS/simpl_eeg_capstone.git`
+```
 
 And enter the root of the directory using...
 
+```bash
 `cd simpl_eeg_capstone`
+```
 
 ![](instruction_imgs/navigation2.png)
 
 After navigating to the root of the directory in terminal (i.e. being within the 'simpl\_eeg\_capstone' folder) Run the following commands...
 
+```bash
 `conda create –name simpl_eeg` (then press "y" to accept when prompted)
 
 `conda activate simpl_eeg`
@@ -56,16 +61,21 @@ After navigating to the root of the directory in terminal (i.e. being within the
 `conda install ipykernel` (then press "y" to accept)
 
 `conda install nb_conda_kernels` (then press "y" to accept)
+```
 
 Finally, double check that you are in the simple\_eeg\_capstone directory and install the package contents using...
 
+```bash
 `pip install -e .`
+```
 
 ### **To use the streamlit UI**
 
 Navigate to the root of the directory and run the following command...
 
+```bash
 streamlit run src/app.py
+```
 
 ![](instruction_imgs/streamlit.png)
 
@@ -81,7 +91,9 @@ Every subsequent time you open the UI remember to activate the simple_eeg enviro
 
 You can set your current environment for the terminal tab you're in using the following command...
 
+```bash
 `conda activate simpl_eeg`
+```
 
 Being in the root of the directory means that your location in terminal should end with `simpl_eeg_capstone$`
 
@@ -95,7 +107,9 @@ Please complete the JuptyerLab setup section if you have not installed it yet (<
 
 The instructions for how to use the package are in a JupyterNotebook stored in `simpl_eeg_capstone/simple_instructions/instructions.ipynb`. After installing JuptyerLab you should be able to open the program by typing...
 
+```bash
 `jupyter lab`
+```
 
 In the command line which will open a new tab in your browser.
 
