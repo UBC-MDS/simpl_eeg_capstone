@@ -5,7 +5,7 @@
 
 # ## Connectivity Plot
 
-# <img src="instruction_imgs/connectivity.gif" align="left" style="height:30em"/>
+# ![](instruction_imgs/connectivity.gif)
 
 # In[1]:
 
@@ -115,7 +115,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity(\n    epoch,\n    calc_type=calc_type,\n    steps=steps,\n    pair_list=pair_list,\n    threshold=threshold,\n    show_sphere=show_sphere,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
-# In[11]:
+# In[ ]:
 
 
 video
@@ -125,7 +125,7 @@ video
 
 # ##### Save as html
 
-# In[12]:
+# In[ ]:
 
 
 html_file_path = "../../exports/examples/connectivity.html"  # change the file path to where you would like to save the file
@@ -137,7 +137,7 @@ html_file.close()
 
 # ##### Save as gif
 
-# In[13]:
+# In[ ]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim_conn = connectivity.animate_connectivity(epoch, vmin=-1, vmax=1, pair_list=PAIR_OPTIONS["far_coherence"])\n\ngif_file_path = "../../exports/examples/connectivity.gif"  # change the file path to where you would like to save the file\nanim_conn.save(gif_file_path, fps=3, dpi=300)  # set frames per second (fps) and resolution (dpi)')
@@ -169,7 +169,7 @@ clip.write_videofile(mp4_file_path) # change the file path to where you would li
 
 # ## Connectivity Circle Plot
 
-# <img src="instruction_imgs/connectivity_circle.gif" align="left" style="height:30em"/>
+# ![](instruction_imgs/connectivity_circle.gif)
 
 # ### Define parameters
 
@@ -181,7 +181,7 @@ clip.write_videofile(mp4_file_path) # change the file path to where you would li
 help(connectivity.animate_connectivity_circle)
 
 
-# In[ ]:
+# In[9]:
 
 
 # change values below to values of interest
@@ -198,7 +198,7 @@ max_connections = 50
 
 # #### Generating the animation
 
-# In[ ]:
+# In[10]:
 
 
 get_ipython().run_line_magic('matplotlib', 'inline')

@@ -133,37 +133,43 @@ get_ipython().run_cell_magic('capture', '', "matplot_brain_fig = topomap_3d_brai
 # You could change the plot to different formats by changing the format argument in the function. 
 # It supports 'png', 'pdf', 'svg'.
 
-file_path = "exports/topomap_3d_brain.svg"  # change the file path to where you would like to save the file
+file_path = "../../exports/examples/topomap_3d_brain.svg"  # change the file path to where you would like to save the file
 
 matplot_brain_fig.savefig(file_path, format= 'svg')
 
 
 # #### Generate animation with matplotlib backend (slow but recommended)
 
-# In[ ]:
+# In[14]:
 
 
-get_ipython().run_cell_magic('capture', '', "matplotlib_animation = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = 'lat', hemi = 'lh')")
+get_ipython().run_cell_magic('capture', '', "matplotlib_animation = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = 'lat', hemi = 'lh')\n\nfrom IPython.display import HTML\nvideo = HTML(matplotlib_animation.to_jshtml())")
 
-
-# In[ ]:
-
-
-matplotlib_animation
-
-
-# ##### Save the animation as gif
 
 # In[ ]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nanim_brain = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = \'lat\', hemi = \'lh\')\n\n# use a writer if you want to specify frames per second\nfrom matplotlib.animation import PillowWriter\n\nwriter = PillowWriter(fps=5)\n\ngif_file_path = "exports/topomap_3d_brain.gif"  # change the file path to where you would like to save the file\nanim_brain.save(gif_file_path, writer=writer)')
+video
 
 
-# #### Save the animation as mp4
+# #### Save as gif
+
+# In[ ]:
+
+
+get_ipython().run_cell_magic('capture', '', '\nanim_brain = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = \'lat\', hemi = \'lh\')\n\ngif_file_path = "../../exports/examples/topomap_3d_brain.gif"  # change the file path to where you would like to save the file\nanim_brain.save(gif_file_path, fps=5, dpi=300)')
+
+
+# #### Save as mp4
+
+# In[ ]:
+
+
+get_ipython().run_cell_magic('capture', '', '\nmp4_file_path = "../../exports/examples/topo_2d.mp4"  # change the file path to where you would like to save the file\nanim_brain.save(mp4_file_path, fps=5, dpi=300)')
+
 
 # ```{note}
-# You would need to save it as gif file first and then convert it into mp4 file.
+# If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file.
 # ```
 
 # In[ ]:
@@ -171,8 +177,8 @@ get_ipython().run_cell_magic('capture', '', '\nanim_brain = topomap_3d_brain.ani
 
 import moviepy.editor as mp
 
-clip = mp.VideoFileClip("exports/topomap_3d_brain.gif") # change the file path to where you saved the gif file
-clip.write_videofile("exports/topomap_3d_brain.mp4")  # change the file path to where you would like to save the file
+clip = mp.VideoFileClip(gif_file_path) # change the file path to where you saved the gif file
+clip.write_videofile(mp4_file_path)  # change the file path to where you would like to save the file
 
 
 # <br>
