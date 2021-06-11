@@ -219,8 +219,8 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#define-global-parameters">
-     Define global parameters
+    <a class="reference internal nav-link" href="#define-parameters">
+     Define parameters
     </a>
    </li>
    <li class="toc-h3 nav-item toc-entry">
@@ -234,33 +234,33 @@
     </a>
     <ul class="nav section-nav flex-column">
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#generating-the-animnation">
-       Generating the animnation
+      <a class="reference internal nav-link" href="#generating-the-animation">
+       Generating the animation
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#saving-the-animnation">
-       Saving the animnation
+      <a class="reference internal nav-link" href="#saving-the-animation">
+       Saving the animation
       </a>
       <ul class="nav section-nav flex-column">
        <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#save-the-static-plot">
-         Save the static plot
+        <a class="reference internal nav-link" href="#save-static-plot">
+         Save static plot
         </a>
        </li>
        <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#save-the-animation-as-html">
-         Save the animation as html
+        <a class="reference internal nav-link" href="#save-animation-as-html">
+         Save animation as html
         </a>
        </li>
        <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#save-the-animation-as-gif">
-         Save the animation as gif
+        <a class="reference internal nav-link" href="#save-animation-as-gif">
+         Save animation as gif
         </a>
        </li>
        <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#save-the-animation-as-mp4">
-         Save the animation as mp4
+        <a class="reference internal nav-link" href="#save-animation-as-mp4">
+         Save animation as mp4
         </a>
        </li>
       </ul>
@@ -287,7 +287,7 @@
 <p><img alt="" src="_images/topo_3d_head_ani.gif" /></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">eeg_objects</span><span class="p">,</span> <span class="n">topomap_3d_head</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">topomap_3d_head</span><span class="p">,</span> <span class="n">eeg_objects</span>
 </pre></div>
 </div>
 </div>
@@ -318,18 +318,45 @@
 </div>
 </div>
 </div>
-<br><div class="section" id="define-global-parameters">
-<h3>Define global parameters<a class="headerlink" href="#define-global-parameters" title="Permalink to this headline">¶</a></h3>
-<p>There are some common parameters for all functions in this package, it would be more convenient to define all parameters before going into each functions.</p>
+<br><div class="section" id="define-parameters">
+<h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
+<p>A detailed description of all parameters can be found in the <code class="docutils literal notranslate"><span class="pre">topomap_3d_head.animate_3d_head</span></code> docstring:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">help</span><span class="p">(</span><span class="n">topomap_3d_head</span><span class="o">.</span><span class="n">animate_3d_head</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function animate_3d_head in module simpl_eeg.topomap_3d_head:
+
+animate_3d_head(epoch, plot_title=&#39;&#39;, color_title=&#39;EEG MicroVolt&#39;, color_min=-50, color_max=50, colormap=&#39;Bluered&#39;)
+    Plot an animated topographic map in a 3D head shape
+    
+    Args:
+        epoch (mne.epochs.Epochs): An epoched file for the EEGLab data
+        plot_title (str, optionl): The title of the plot. Defaults to &quot;&quot;.
+        color_title (str,  optional): The title of the color bar. Defaults to &quot;EEG MicroVolt&quot;.
+        color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
+        color_max (int, optional): The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
+        colormap (str, optional): The colour scheme to use. Defaults to Bluered.
+    
+    Returns:
+        figure: An animated topographic map in a 3D head shape
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values below to values of interest</span>
 
-<span class="n">experiment</span> <span class="o">=</span> <span class="s2">&quot;../../data/927&quot;</span>  <span class="c1"># path to the experiment folder.</span>
+<span class="n">experiment_folder</span> <span class="o">=</span> <span class="s2">&quot;../../data/927&quot;</span>
 <span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">color_min</span> <span class="o">=</span> <span class="o">-</span><span class="mi">40</span>  <span class="c1"># the minimum voltage to show on the colorbar</span>
-<span class="n">color_max</span> <span class="o">=</span> <span class="mi">40</span>  <span class="c1"># the minimum voltage to show on the colorbar</span>
-<span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;RdBu_r&quot;</span>  <span class="c1"># select from [&quot;RdBu_r&quot;, &quot;hot&quot;, &quot;cool&quot;, &quot;inferno&quot;, &quot;turbo&quot;, &quot;rainbow&quot;]</span>
+
+<span class="n">color_min</span> <span class="o">=</span> <span class="o">-</span><span class="mi">40</span>
+<span class="n">color_max</span> <span class="o">=</span> <span class="mi">40</span>
+<span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;RdBu_r&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -337,17 +364,11 @@
 <br></div>
 <div class="section" id="create-epoched-data">
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
+<p>For additional options see <strong>Creating EEG Objects</strong> section.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">tmin</span> <span class="o">=</span> <span class="o">-</span><span class="mf">0.3</span>  <span class="c1"># number of seconds before the impact. Please change it to a value of your interest</span>
-<span class="n">tmax</span> <span class="o">=</span> <span class="mf">0.7</span>  <span class="c1"># number of seconds after the impact. Please change it to a value of your interest</span>
-<span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># starting time of the epoch. Please change it to a value of your interest</span>
-
-<span class="n">raw</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
-
-<span class="n">raw</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
-
-<span class="n">epoch</span> <span class="o">=</span> <span class="n">raw</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">()</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_folder</span><span class="p">)</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -398,7 +419,7 @@
 <div class="cell_output docutils container">
 <div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
 <span class="ne">NameError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">7</span><span class="o">-</span><span class="n">fd32d8517896</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">8</span><span class="o">-</span><span class="n">fd32d8517896</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
 <span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">topo_3d__head_static</span> <span class="o">=</span> <span class="n">topomap_3d_head</span><span class="o">.</span><span class="n">topo_3d_map</span><span class="p">(</span>
 <span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">epoch</span><span class="p">,</span>
 <span class="ne">----&gt; </span><span class="mi">4</span>     <span class="n">time_stamp</span><span class="p">,</span>
@@ -417,8 +438,8 @@
 </div>
 </div>
 </div>
-<div class="section" id="generating-the-animnation">
-<h4>Generating the animnation<a class="headerlink" href="#generating-the-animnation" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="generating-the-animation">
+<h4>Generating the animation<a class="headerlink" href="#generating-the-animation" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">topo_3d_head</span> <span class="o">=</span> <span class="n">topomap_3d_head</span><span class="o">.</span><span class="n">animate_3d_head</span><span class="p">(</span>
@@ -440,13 +461,13 @@
 </div>
 </div>
 </div>
-<div class="section" id="saving-the-animnation">
-<h4>Saving the animnation<a class="headerlink" href="#saving-the-animnation" title="Permalink to this headline">¶</a></h4>
-<div class="section" id="save-the-static-plot">
-<h5>Save the static plot<a class="headerlink" href="#save-the-static-plot" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="saving-the-animation">
+<h4>Saving the animation<a class="headerlink" href="#saving-the-animation" title="Permalink to this headline">¶</a></h4>
+<div class="section" id="save-static-plot">
+<h5>Save static plot<a class="headerlink" href="#save-static-plot" title="Permalink to this headline">¶</a></h5>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">static_file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/topo_3d_static.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">static_file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/topo_3d_static.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
 
 <span class="n">topo_3d__head_static</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">static_file_path</span><span class="p">,</span> <span class="n">engine</span><span class="o">=</span><span class="s2">&quot;kaleido&quot;</span><span class="p">)</span>
 </pre></div>
@@ -455,7 +476,7 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">static_file_path_png</span> <span class="o">=</span> <span class="s2">&quot;exports/topo_3d_static.png&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">static_file_path_png</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/topo_3d_static.png&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
 
 <span class="n">topo_3d__head_static</span><span class="o">.</span><span class="n">write_image</span><span class="p">(</span><span class="n">static_file_path_png</span><span class="p">)</span> <span class="c1"># no need to specify engine if not saved as svg file</span>
 </pre></div>
@@ -463,11 +484,11 @@
 </div>
 </div>
 </div>
-<div class="section" id="save-the-animation-as-html">
-<h5>Save the animation as html<a class="headerlink" href="#save-the-animation-as-html" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="save-animation-as-html">
+<h5>Save animation as html<a class="headerlink" href="#save-animation-as-html" title="Permalink to this headline">¶</a></h5>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">html_file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/topo_3d.html&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">html_file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/topo_3d.html&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
 
 <span class="n">topo_3d_head</span><span class="o">.</span><span class="n">write_html</span><span class="p">(</span><span class="n">html_file_path</span><span class="p">)</span>
 </pre></div>
@@ -475,8 +496,8 @@
 </div>
 </div>
 </div>
-<div class="section" id="save-the-animation-as-gif">
-<h5>Save the animation as gif<a class="headerlink" href="#save-the-animation-as-gif" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="save-animation-as-gif">
+<h5>Save animation as gif<a class="headerlink" href="#save-animation-as-gif" title="Permalink to this headline">¶</a></h5>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">topomap_3d_head</span><span class="o">.</span><span class="n">save_gif</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">gifname</span><span class="o">=</span><span class="s2">&quot;topo_3d_head_ani&quot;</span><span class="p">,</span> <span class="n">duration</span><span class="o">=</span><span class="mi">200</span><span class="p">)</span> 
@@ -485,8 +506,8 @@
 </div>
 </div>
 </div>
-<div class="section" id="save-the-animation-as-mp4">
-<h5>Save the animation as mp4<a class="headerlink" href="#save-the-animation-as-mp4" title="Permalink to this headline">¶</a></h5>
+<div class="section" id="save-animation-as-mp4">
+<h5>Save animation as mp4<a class="headerlink" href="#save-animation-as-mp4" title="Permalink to this headline">¶</a></h5>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
 <p>You would need to save it as gif file first and then convert it into mp4 file.</p>
@@ -496,7 +517,7 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mp</span>
 
 <span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;topo_3d_head_ani.gif&quot;</span><span class="p">)</span>  <span class="c1"># change the file path to where you saved the gif file</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;topo_3d_head_ani.mp4&quot;</span><span class="p">)</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;../../exports/examples/topo_3d_head_ani.mp4&quot;</span><span class="p">)</span>  <span class="c1"># change the file path to where you would like to save the file</span>
 </pre></div>
 </div>
 </div>

@@ -32,8 +32,8 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-['%%capture', '', 'plot_cir_animated = connectivity.animate_connectivity_circle(', '    epoch,', '    calc_type=calc_type,']
+['%%capture', '', 'anim = connectivity.animate_connectivity_circle(', '    epoch,', '    calc_type=calc_type,']
 ...
-['', 'from IPython.display import HTML', '', 'cir_html = plot_cir_animated.to_jshtml()', 'cir_video = HTML(cir_html)']
+['', 'from IPython.display import HTML', '', 'html_plot = anim.to_jshtml()', 'video = HTML(html_plot)']
 -------------------
 

@@ -22,15 +22,15 @@ nbclient.exceptions.CellExecutionError: An error occurred while executing the fo
 
 file_path = "exports/voltage_plot.svg"  # change the file path to where you would like to save the file
 
-voltage_plot.savefig(file_path, format= 'svg')
+voltage_plot.savefig(file_path, format="svg")
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mFileNotFoundError[0m                         Traceback (most recent call last)
-[0;32m<ipython-input-8-75f0a0b8e53e>[0m in [0;36m<module>[0;34m[0m
+[0;32m<ipython-input-9-f3fe1d11c435>[0m in [0;36m<module>[0;34m[0m
 [1;32m      4[0m [0mfile_path[0m [0;34m=[0m [0;34m"exports/voltage_plot.svg"[0m  [0;31m# change the file path to where you would like to save the file[0m[0;34m[0m[0;34m[0m[0m
 [1;32m      5[0m [0;34m[0m[0m
-[0;32m----> 6[0;31m [0mvoltage_plot[0m[0;34m.[0m[0msavefig[0m[0;34m([0m[0mfile_path[0m[0;34m,[0m [0mformat[0m[0;34m=[0m [0;34m'svg'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0;32m----> 6[0;31m [0mvoltage_plot[0m[0;34m.[0m[0msavefig[0m[0;34m([0m[0mfile_path[0m[0;34m,[0m [0mformat[0m[0;34m=[0m[0;34m"svg"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
 [0m
 [0;32m/opt/miniconda3/lib/python3.8/site-packages/matplotlib/figure.py[0m in [0;36msavefig[0;34m(self, fname, transparent, **kwargs)[0m
 [1;32m   3003[0m                 [0mpatch[0m[0;34m.[0m[0mset_edgecolor[0m[0;34m([0m[0;34m'none'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m

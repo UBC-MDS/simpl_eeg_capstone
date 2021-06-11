@@ -30,7 +30,7 @@ topo_3d__head_static = topomap_3d_head.topo_3d_map(
 
 [0;31m---------------------------------------------------------------------------[0m
 [0;31mNameError[0m                                 Traceback (most recent call last)
-[0;32m<ipython-input-7-fd32d8517896>[0m in [0;36m<module>[0;34m[0m
+[0;32m<ipython-input-8-fd32d8517896>[0m in [0;36m<module>[0;34m[0m
 [1;32m      2[0m topo_3d__head_static = topomap_3d_head.topo_3d_map(
 [1;32m      3[0m     [0mepoch[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
 [0;32m----> 4[0;31m     [0mtime_stamp[0m[0;34m,[0m[0;34m[0m[0;34m[0m[0m
