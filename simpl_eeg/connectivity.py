@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib.colors as mpl_colors
 import pandas as pd
+import numpy as np
 import math
 import mne
 
@@ -82,7 +83,7 @@ def calculate_connectivity(epoch, calc_type="correlation"):
     return conn_df
 
 
-def get_frame(epoch, step_size, frame_number):
+def get_frame(epoch, step_size, frame_number, max_index=np.Inf):
     """Crop an epoch based on a frame number
 
     Args:
@@ -94,9 +95,15 @@ def get_frame(epoch, step_size, frame_number):
         mne.epochs.Epochs: Cropped epochs for the given frame
     """
     times = epoch.times
+    tmax = (frame_number+1)*step_size
+
+    # make sure we don't go outside the possible range
+    if(tmax > max_index):
+        tmax = max_index
+
     return epoch.copy().crop(
-        times[frame_number],
-        times[frame_number+step_size],
+        times[frame_number*step_size],
+        times[tmax],
         include_tmax=True
     )
 
@@ -114,6 +121,7 @@ def plot_connectivity(
     vmax=None,
     line_width=None,
     title=None,
+    timestamp=None,
     **kwargs
 ):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
@@ -190,6 +198,9 @@ def plot_connectivity(
                     )
     fig.colorbar(cmap)
 
+    if timestamp:
+        plt.text(-35, -130, timestamp, fontsize=10)
+
     # add padding for names
     data.copy()
     data = data.rename_channels(lambda x: "  "+str(x))
@@ -251,14 +262,23 @@ def animate_connectivity(
     )
 
     pair_list = convert_pairs(pair_list)
-    num_steps = (len(epoch.times)//steps)
+    num_steps = math.ceil(len(epoch.times)/steps)
+    max_index = len(epoch.times)-1
+
     fig = plt.figure()
 
     def animate(frame_number):
         fig.clear()
+
+        frame_epoch = get_frame(epoch, steps, frame_number, max_index)
+
+        start_time = frame_epoch.tmin
+        end_time = frame_epoch.tmax
+        timestamp = f"time: {'%.3f' % start_time}s to {'%.3f' % end_time}s"
+
         return [
             plot_connectivity(
-                get_frame(epoch, num_steps, frame_number),
+                frame_epoch,
                 fig,
                 locations,
                 calc_type,
@@ -270,6 +290,7 @@ def animate_connectivity(
                 vmax=vmax,
                 line_width=line_width,
                 title=title,
+                timestamp=timestamp,
                 **kwargs
             )
         ]
@@ -384,13 +405,14 @@ def animate_connectivity_circle(
         raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
 
     fig = plt.figure()
+    max_index = len(epoch.times)-1
 
     def animate(frame_number):
         fig.clear()
 
         return [
             plot_conn_circle(
-                get_frame(epoch, steps, frame_number),
+                get_frame(epoch, steps, frame_number, max_index),
                 fig,
                 calc_type=calc_type,
                 max_connections=max_connections,
