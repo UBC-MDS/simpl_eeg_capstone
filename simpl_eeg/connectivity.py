@@ -52,7 +52,7 @@ def calculate_connectivity(epoch, calc_type="correlation"):
 
     if type(epoch) is not mne.epochs.Epochs:
         raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
-    
+
     if type(calc_type) is not str:
         raise TypeError("calc_type has to be a string")
 
@@ -168,6 +168,7 @@ def plot_connectivity(
             "y": [node.get_position()[1] for node in locations],
         }
     )
+
     x_list = []
     y_list = []
 
@@ -188,6 +189,11 @@ def plot_connectivity(
                         linewidth=line_width if line_width else 1.5+math.log(1-min(abs(correlation), 0.999)),
                     )
     fig.colorbar(cmap)
+
+    # add padding for names
+    data.copy()
+    data = data.rename_channels(lambda x: "  "+str(x))
+
     data.plot_sensors(
         axes=ax,
         show_names=True,
