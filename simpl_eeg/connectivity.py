@@ -83,7 +83,7 @@ def calculate_connectivity(epoch, calc_type="correlation"):
     return conn_df
 
 
-def get_frame(epoch, step_size, frame_number, max_index=np.Inf):
+def get_frame(epoch, step_size, frame_number):
     """Crop an epoch based on a frame number
 
     Args:
@@ -95,6 +95,7 @@ def get_frame(epoch, step_size, frame_number, max_index=np.Inf):
         mne.epochs.Epochs: Cropped epochs for the given frame
     """
     times = epoch.times
+    max_index = len(times)-1
     tmax = (frame_number+1)*step_size
 
     # make sure we don't go outside the possible range
@@ -121,7 +122,8 @@ def plot_connectivity(
     vmax=None,
     line_width=None,
     title=None,
-    timestamp=None,
+    colorbar=True,
+    caption=None,
     **kwargs
 ):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
@@ -196,10 +198,8 @@ def plot_connectivity(
                         color=colour_array[row, col],
                         linewidth=line_width if line_width else 1.5+math.log(1-min(abs(correlation), 0.999)),
                     )
-    fig.colorbar(cmap)
-
-    if timestamp:
-        plt.text(-35, -130, timestamp, fontsize=10)
+    if colorbar:
+        fig.colorbar(cmap)
 
     # add padding for names
     data.copy()
@@ -216,6 +216,9 @@ def plot_connectivity(
 
     if title:
         plt.title(title)
+
+    if caption:
+        plt.text(-35, -130, caption, fontsize=10)
 
     return fig
 
@@ -263,18 +266,17 @@ def animate_connectivity(
 
     pair_list = convert_pairs(pair_list)
     num_steps = math.ceil(len(epoch.times)/steps)
-    max_index = len(epoch.times)-1
 
     fig = plt.figure()
 
     def animate(frame_number):
         fig.clear()
 
-        frame_epoch = get_frame(epoch, steps, frame_number, max_index)
+        frame_epoch = get_frame(epoch, steps, frame_number)
 
         start_time = frame_epoch.tmin
         end_time = frame_epoch.tmax
-        timestamp = f"time: {'%.3f' % start_time}s to {'%.3f' % end_time}s"
+        caption = f"time: {'%.3f' % start_time}s to {'%.3f' % end_time}s"
 
         return [
             plot_connectivity(
@@ -290,7 +292,7 @@ def animate_connectivity(
                 vmax=vmax,
                 line_width=line_width,
                 title=title,
-                timestamp=timestamp,
+                caption=caption,
                 **kwargs
             )
         ]
@@ -309,6 +311,8 @@ def plot_conn_circle(
     vmax=None,
     line_width=None,
     title=None,
+    colorbar=True,
+    caption=None,
     **kwargs
 ):
     """Plot connectivity circle
@@ -347,7 +351,7 @@ def plot_conn_circle(
     if line_width is None:
         line_width = 1.5
 
-    mne.viz.plot_connectivity_circle(
+    fig, ax = mne.viz.plot_connectivity_circle(
         conn,
         ch_names,
         n_lines=max_connections,
@@ -363,11 +367,15 @@ def plot_conn_circle(
         title=title,
         colorbar=False,
         **kwargs
-    )[0]
+    )
 
-    cmap = plt.cm.ScalarMappable(cmap=colormap)
-    cmap.set_clim(vmin, vmax)
-    fig.colorbar(cmap)
+    if colorbar:
+        cmap = plt.cm.ScalarMappable(cmap=colormap)
+        cmap.set_clim(vmin, vmax)
+        fig.colorbar(cmap)
+
+    if caption:
+        fig.text(0.33, 0.1, caption, fontsize=10)
 
     return fig
 
@@ -405,14 +413,21 @@ def animate_connectivity_circle(
         raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
 
     fig = plt.figure()
-    max_index = len(epoch.times)-1
+
+    num_steps = math.ceil(len(epoch.times)/steps)
 
     def animate(frame_number):
         fig.clear()
 
+        frame_epoch = get_frame(epoch, steps, frame_number)
+
+        start_time = frame_epoch.tmin
+        end_time = frame_epoch.tmax
+        caption = f"time: {'%.3f' % start_time}s to {'%.3f' % end_time}s"
+
         return [
             plot_conn_circle(
-                get_frame(epoch, steps, frame_number, max_index),
+                frame_epoch,
                 fig,
                 calc_type=calc_type,
                 max_connections=max_connections,
@@ -421,10 +436,11 @@ def animate_connectivity_circle(
                 vmax=vmax,
                 line_width=line_width,
                 title=title,
+                caption=caption,
                 **kwargs
             )
         ]
 
-    anim = animation.FuncAnimation(fig, animate, steps, blit=True)
+    anim = animation.FuncAnimation(fig, animate, num_steps, blit=True)
     return anim
 
