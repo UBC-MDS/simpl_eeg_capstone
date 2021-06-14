@@ -169,16 +169,13 @@ get_ipython().run_cell_magic('capture', '', '\nmp4_file_path = "../../exports/ex
 
 
 # ```{note}
-# If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file.
+# If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file by running the code below.
 # ```
-
-# In[ ]:
-
-
-import moviepy.editor as mp
-
-clip = mp.VideoFileClip(gif_file_path) # change the file path to where you saved the gif file
-clip.write_videofile(mp4_file_path)  # change the file path to where you would like to save the file
-
+# ```python
+# import moviepy.editor as mp
+# 
+# clip = mp.VideoFileClip(gif_file_path)  # change the file path to where you saved the gif file
+# clip.write_videofile(mp4_file_path)  # change the file path to where you would like to save the mp4 file 
+# ```
 
 # <br>

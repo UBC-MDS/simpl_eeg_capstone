@@ -46,8 +46,18 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+
 @st.cache(show_spinner=False)
 def calculate_timeframe(start_time, raw):
+    """Parse time from string and determine position in raw data
+
+    Args:
+        start_time (str): The start time in format H:M:S
+        raw (mne.Raw): The full experiment data
+
+    Returns:
+        tuple(int, int): The time in seconds and the index
+    """
     if re.match('^0{1,}:0{1,}:0{1,}$', start_time):
         return True, -1
     if re.match('^[0-9]{1,}:[0-9]{1,}:[0-9]{1,}$', start_time):
@@ -61,73 +71,86 @@ def calculate_timeframe(start_time, raw):
         return int(seconds), in_timeframe
     else:
         return None, 1
-        
-
-
-
-
-@st.cache(show_spinner=False)
-def animate_ui_3d_head(epoch, **kwargs):
-    return topomap_3d_head.animate_3d_head(epoch, **kwargs)
-
-
-@st.cache(show_spinner=False)
-def animate_ui_2d_head(epoch, **kwargs):
-    anim = topomap_2d.animate_topomap_2d(epoch, **kwargs)
-    return anim.to_jshtml()
-
-
-@st.cache(show_spinner=False)
-def animate_ui_3d_head(epoch, **kwargs):
-    return topomap_3d_head.animate_3d_head(epoch, **kwargs)
 
 
 @st.cache(show_spinner=False)
 def generate_stc_epoch(epoch):
+    """Helper function for 3D brain map - generate inverse solution from forward"""
     fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
     return (topomap_3d_brain.create_inverse_solution(epoch, fwd))
 
 
 @st.cache(show_spinner=False)
 def generate_stc_fwd(epoch, fwd):
+    """Helper function for 3D brain map - Generate forward solution"""
     return (topomap_3d_brain.create_inverse_solution(epoch, fwd))
 
 
 @st.cache(show_spinner=False)
+def animate_ui_2d_head(epoch, **kwargs):
+    """Caching wrapper function to call topomap_2d.animate_topomap_2d"""
+    anim = topomap_2d.animate_topomap_2d(epoch, **kwargs)
+    return anim.to_jshtml()
+
+
+@st.cache(show_spinner=False)
+def animate_ui_3d_head(epoch, **kwargs):
+    """Caching wrapper function to call topomap_3d_head.animate_3d_head"""
+    return topomap_3d_head.animate_3d_head(epoch, **kwargs)
+
+@st.cache(show_spinner=False)
 def animate_ui_3d_brain(epoch, **kwargs):
+    """Caching wrapper function to call topomap_3d_brain.animate_matplot_brain"""
     anim = topomap_3d_brain.animate_matplot_brain(epoch, **kwargs)
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
 def animate_ui_connectivity(epoch, connection_type, **kwargs):
-    anim = connectivity.animate_connectivity(epoch, connection_type, **kwargs)
-    return anim.to_jshtml()
-
-
-@st.cache(show_spinner=False)
-def animate_ui_connectivity_circle(epoch, connection_type, steps, colormap, vmin, vmax, line_width, max_connections):
-    anim = connectivity.animate_connectivity_circle(
+    """Caching wrapper function to call connectivity.animate_connectivity"""
+    anim = connectivity.animate_connectivity(
         epoch,
         connection_type,
-        steps=steps,
-        colormap=colormap,
-        vmin=vmin,
-        vmax=vmax,
-        line_width=line_width,
-        max_connections=max_connections
+        **kwargs
     )
     return anim.to_jshtml()
 
+
+@st.cache(show_spinner=False)
+def animate_ui_connectivity_circle(epoch, connection_type, **kwargs):
+    """Caching wrapper function to call connectivity.animate_connectivity_circle"""
+    anim = connectivity.animate_connectivity_circle(
+        epoch,
+        connection_type,
+        **kwargs
+    )
+    return anim.to_jshtml()
+
+
 @st.cache(show_spinner=False)
 def generate_eeg_file(experiment_num):
+    """Helper function for creating standalone eeg_file object"""
     gen_eeg_file = eeg_objects.EEG_File(
         DATA_FOLDER+experiment_num
     )
     return gen_eeg_file
 
+
 @st.cache(show_spinner=False)
 def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
+    """Generate a custom epoch
+
+    Args:
+        experiment_num (str): Folder name of experiment
+        tmin (float): Seconds before the impact time
+        tmax (float): Seconds after the impact time
+        start_second (int): The second of impact
+        epoch_num (int, optional): An epoch of interest to store.
+
+    Returns:
+        eeg_objects.Epoch: The generated epoch object
+    """
+
     epoch_obj = eeg_objects.Epochs(
         DATA_FOLDER+experiment_num,
         tmin=-tmin,
@@ -137,11 +160,9 @@ def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
     epoch_obj.set_nth_epoch(epoch_num)
     return epoch_obj
 
-# @st.cache(show_spinner=False)
-# def generate_raw(experiment_num):
-#     return (mne.io.read_raw_eeglab(DATA_FOLDER+experiment_num))
 
 def get_shared_conn_widgets(epoch, frame_steps, key):
+    """Helper function for producing shared widgets for connectivity sections"""
 
     key = str(key)
 
@@ -150,6 +171,7 @@ def get_shared_conn_widgets(epoch, frame_steps, key):
         "spectral_connectivity",
         "envelope_correlation",
     ]
+
     if (len(epoch.times)//frame_steps) >= 100:
         connectivity_methods.append("covariance")
 
@@ -159,8 +181,13 @@ def get_shared_conn_widgets(epoch, frame_steps, key):
         connectivity_methods,
         key=label+key,
         format_func=lambda name: name.replace("_", " ").capitalize(),
-        help = """Calculation type, one of spectral_connectivity, envelope_correlation,
-        covariance, correlation"""
+        help="""
+        Calculation type, one of
+        spectral connectivity, envelope correlation,
+        covariance, correlation.
+        Envelope correlation is only available with 100 or more timesteps
+        per frame.
+        """
     )
     default_cmin = -1.0
     default_cmax = 1.0
@@ -172,8 +199,7 @@ def get_shared_conn_widgets(epoch, frame_steps, key):
         label,
         value=default_cmin,
         key=label+key,
-        help = """The minimum for the scale. 
-        """
+        help = "The minimum for the scale."
     )
 
     label = "Maximum Value"
@@ -182,8 +208,7 @@ def get_shared_conn_widgets(epoch, frame_steps, key):
         value=default_cmax,
         min_value=cmin,
         key=label+key,
-        help = """The maximum for the scale
-        """
+        help="The maximum for the scale"
     )
 
     return connection_type, cmin, cmax
@@ -193,6 +218,7 @@ def main():
     """
     Populate and display the streamlit user interface
     """
+
     st.header("Visualize your EEG data")
     st.markdown(
         """
@@ -275,7 +301,7 @@ def main():
     else:
         start_second = None
 
-        refresh_rate = raw_epoch_obj.raw.info.get('sfreq') 
+        refresh_rate = raw_epoch_obj.raw.info.get('sfreq')
         event_times = raw_epoch_obj.mat['elecmax1'][0]
         epoch_times = {}
 
@@ -294,14 +320,6 @@ def main():
             on the order of events in the "impact locations.mat" file.
             """
         )
-
-        # epoch_num = col2.selectbox(
-        #     "Epoch",
-        #     [i for i in range(33)],
-        #     help="""The number epoch to use in all of the figures. Epochs are generated in sequence based
-        #     on the order of events in the "impact locations.mat" file.
-        #     """
-        # )
 
     tmin = st.sidebar.number_input(
         "Seconds before impact",
@@ -366,7 +384,6 @@ def main():
         """.format(plot_epoch.times.shape[0])
     )
 
-
     col1, col2 = st.sidebar.beta_columns((2, 1))
     colormap = col1.selectbox(
         "Select Colour Scheme",
@@ -374,7 +391,6 @@ def main():
         format_func=lambda name: name.capitalize(),
         help="""The color scheme to use on all of the figures."""
     )
-
 
     with col2:
         fig = plt.figure()
@@ -387,7 +403,34 @@ def main():
 
     # Create sections
     class Section:
+        """
+        A class to represent an expander section
+
+        Attributes
+        ----------
+        section_name : str
+            title of the section
+        render : bool
+            whether or not the plot within the section should be rendered
+        expander : st.expander
+            streamlit expander object for the section
+        plot_col : st.beta_column
+            the left column for the plot elements
+        widget_col : st.beta_column
+            the right column for the widgets related to the section
+
+        Methods
+        -------
+        export_button():
+            Adds an export button to the bottom of section's widget column
+        generate_file_name(file_type="html"):
+            Generates an export file name and success message function
+        html_export(self, html_plot):
+            Generates a file name and export a given plot as html
+        """
         def __init__(self, name, render=False, expand=False):
+            """Set up the expander and columns"""
+
             self.section_name = SECTION_NAMES[name]
             self.render = self.section_name in render_list
             self.expander = st.beta_expander(
@@ -398,6 +441,7 @@ def main():
                 self.plot_col, self.widget_col = st.beta_columns((3, 1))
 
         def export_button(self):
+            """Add an export button to the bottom of widget column"""
             return self.widget_col.button(
                 "Export",
                 key=self.section_name,
@@ -405,24 +449,47 @@ def main():
             )
 
         def generate_file_name(self, file_type="html"):
+            """Generate an export file name and success message function
+
+            Args:
+                file_type (str, optional): File extension. Defaults to "html".
+
+            Returns:
+                tuple(str, function): The generated file name and success message function
+            """
+
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M%S")
             folder = "exports"
             file_name = self.section_name.replace(" ", "_")+"_"+timestamp
             file_name = folder+"/"+file_name+"."+file_type
 
             def success_message():
-                message = self.expander.success("Your file was saved: "+file_name)
+                """Display message when file successfully saved"""
+
+                message = self.expander.success(
+                    "Your file was saved: "+file_name
+                )
                 time.sleep(2)
                 message.empty()
+
             return file_name, success_message
 
         def html_export(self, html_plot):
+            """
+            Generate a file name and export a plot as html
+            Prints success message to screen
+
+            Args:
+                html_plot (html): The plot to export
+            """
+
             file_name, send_message = self.generate_file_name()
-            Html_file = open(file_name,"w")
+            Html_file = open(file_name, "w")
             Html_file.write(html_plot)
             Html_file.close()
             send_message()
 
+    # set up expander sections
     expander_raw = Section("raw", render=False)
     expander_2d_head = Section("2d_head")
     expander_3d_head = Section("3d_head")
@@ -476,7 +543,7 @@ def main():
         )
 
         # Doesn't currently work for whatever reason.
-        # Can't compair two number inputs.
+        # Can't compare two number inputs.
         if vmax_2d_head < vmin_2d_head:
             st.error("ERROR: Minimum Voltage Set higher than Maximum Voltage. Please enter a valid input")
 
@@ -489,8 +556,8 @@ def main():
         mark_selection_2d = st.selectbox(
             "Select mark",
             mark_options,
-            index = 0,
-            help = "The type of mark to show for each electrode on the topomap"
+            index=0,
+            help="The type of mark to show for each electrode on the topomap"
         )
         advanced_options_2d = st.checkbox("Advanced Options", value=False, key="2dAO")
         if advanced_options_2d:
@@ -501,21 +568,21 @@ def main():
                 value=0,
                 min_value=0,
                 max_value=50,
-                help = "The number of contour lines to draw. Min = 0, max = 50."
+                help="The number of contour lines to draw. Min = 0, max = 50."
             )
             sphere_2d = st.number_input(
                 "Sphere size",
                 value=100,
                 min_value=80,
                 max_value=120,
-                help = "The sphere parameters to use for the cartoon head. Min = 80, max = 120."
+                help="The sphere parameters to use for the cartoon head. Min = 80, max = 120."
             )
             heat_res_2d = st.number_input(
                 "Heatmap resolution",
                 value=100,
                 min_value=1,
                 max_value=1000,
-                help = "The resolution of the topomap image(n pixels along each side). Min = 0, max = 1000."
+                help="The resolution of the topomap image(n pixels along each side). Min = 0, max = 1000."
             )
             extrapolate_options_2d = [
                 "head",
@@ -523,15 +590,15 @@ def main():
                 "box",
             ]
             extrapolate_2d = st.selectbox(
-            "Select extrapolation",
-            extrapolate_options_2d,
-            index = 0,
-            help = """HEAD- Extrapolate out to the edges of the clipping circle.
-            LOCAL- Extrapolate only to nearby points (approximately to points
-            closer than median inter-electrode distance). BOX- Extrapolate to four
-            points placed to form a square encompassing all data points, where each
-            side of the square is three times the range of the data in the respective dimension.
-            """
+                "Select extrapolation",
+                extrapolate_options_2d,
+                index=0,
+                help="""HEAD- Extrapolate out to the edges of the clipping circle.
+                LOCAL- Extrapolate only to nearby points (approximately to points
+                closer than median inter-electrode distance). BOX- Extrapolate to four
+                points placed to form a square encompassing all data points, where each
+                side of the square is three times the range of the data in the respective dimension.
+                """
             )
         else:
             colorbar_2d_headmap = True
@@ -545,26 +612,26 @@ def main():
         vmin_3d_head = st.number_input(
             "Minimum Voltage (μV) ",
             value=-40.0,
-            help = min_voltage_message
+            help=min_voltage_message
         )
         vmax_3d_head = st.number_input(
             "Maximum Voltage (μV) ",
             value=40.0,
             min_value=vmin_3d_head,
-            help = max_voltage_message
+            help=max_voltage_message
         )
 
     with expander_3d_brain.widget_col:
         vmin_3d_brain = st.number_input(
             "Minimum Voltage (μV)",
             value=-5.0,
-            help = min_voltage_message
+            help=min_voltage_message
         )
         vmax_3d_brain = st.number_input(
             "Maximum Voltage (μV)",
             value=5.0,
             min_value=vmin_3d_brain,
-            help = max_voltage_message
+            help=max_voltage_message
         )
         view_option_dict = {
             "lat": "Lateral",
@@ -594,9 +661,13 @@ def main():
             "Select brain hemisphere",
             options=list(hemi_options_dict.keys()),
             format_func=lambda key: hemi_options_dict[key],
-            help = """The side of the brain to render. If "both" is selected the right hemi of the brain will be rendered
-            for the entire top row with the left hemi rendered in the bottom row. Note that a different (slightly slower) figure
-            rendering method is used whenever more than one view is selected OR if brain hemi is set to "both".
+            help="""
+            The side of the brain to render.
+            If "both" is selected the right hemi of the brain will be rendered for
+            the entire top row with the left hemi rendered in the bottom row.
+            Note that a different (slightly slower) figure
+            rendering method is used whenever more than one view is selected
+            OR if brain hemi is set to "both".
             """
         )
         advanced_options_brain = st.checkbox("Advanced Options", value=False, key="brainAO")
@@ -604,8 +675,8 @@ def main():
             spacing_value = st.selectbox(
                 "Spacing type",
                 ["oct4", "oct5", "oct6", "oct7", "ico3", "ico4", "ico5", "ico6"],
-                index = 1,
-                help = """The spacing to use for the source space. "oct" uses a recursively subdivided 
+                index=1,
+                help="""The spacing to use for the source space. "oct" uses a recursively subdivided 
                 octahedron and "ico" uses a recursively subdivided icosahedron. Reccomend using oct5 for speed
                 and oct6 for more detail. Increasing the number leads to an exponential increase in render time.
                 """
@@ -672,7 +743,7 @@ def main():
     with expander_connectivity_circle.widget_col:
 
         # Connection type and min/max value widgets
-        connection_type_circle, cmin_circle, cmax_circle = get_shared_conn_widgets(epoch, frame_steps, "circle")
+        conn_type_circle, cmin_circle, cmax_circle = get_shared_conn_widgets(epoch, frame_steps, "circle")
 
         # Line width widget
         conn_circle_line_width = st.slider(
@@ -691,16 +762,20 @@ def main():
         )
 
     #### PLOTS ####
-    default_message = lambda name: st.markdown(
-        """
-            \n
-            Select your customizations, 
-            then add "%s" to the list of figures to render on the sidebar.
-            \n
-            **WARNING: depending on your settings, rendering may take a while...**
-            \n
-        """ % name
-    )
+
+    def default_message(name):
+        """Returns a message for non-rendered plots for a given section name"""
+
+        return st.markdown(
+            """
+                \n
+                Select your customizations,
+                then add "%s" to the list of figures to render on the sidebar.
+                \n
+                **WARNING:depending on your settings, rendering may take a while...**
+                \n
+            """ % name
+        )
 
     with expander_raw.plot_col:
         if expander_raw.render:
@@ -772,15 +847,15 @@ def main():
                 st.markdown(
                     """
                     **WARNING:**
-                    The 3D brain map animation takes a long time to compute. 
+                    The 3D brain map animation takes a long time to compute.
                     Are you sure you want to generate this plot?
                     """
                 )
                 if st.checkbox("Yes I'm sure, bombs away!", value=False):
 
-                    # Loads an example epoch, checks if it matches conditions, if it does loads an
-                    # accompanying forward
-                    if stc_generated == False:
+                    # Loads an example epoch, checks if it matches conditions
+                    # if it does, loads an accompanying forward
+                    if stc_generated is False:
                         with open(HEADER_EPOCH_PATH, "rb") as handle:
                             example_epoch = pickle.load(handle)
                         if plot_epoch.info.__dict__ == example_epoch.info.__dict__:
@@ -790,7 +865,7 @@ def main():
                                     stc = generate_stc_fwd(plot_epoch, fwd)
                                     stc_generated = True
 
-                    if stc_generated == False:
+                    if stc_generated is False:
                         stc = generate_stc_epoch(plot_epoch)
                         stc_generated = True
                     html_plot = animate_ui_3d_brain(
@@ -843,7 +918,7 @@ def main():
         if expander_connectivity_circle.render:
             html_plot = animate_ui_connectivity_circle(
                 epoch,
-                connection_type_circle,
+                conn_type_circle,
                 steps=frame_steps,
                 colormap=colormap,
                 vmin=cmin_circle,

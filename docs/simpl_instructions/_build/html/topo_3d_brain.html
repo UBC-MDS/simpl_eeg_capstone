@@ -889,17 +889,13 @@ animate_matplot_brain(epoch, stc=&#39;auto&#39;, views=[&#39;lat&#39;, &#39;dor&
 </div>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>If <code class="docutils literal notranslate"><span class="pre">FFMpegWriter</span></code> does not work on your computer you can save the file as a gif first and then convert it into mp4 file.</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">FFMpegWriter</span></code> does not work on your computer you can save the file as a gif first and then convert it into mp4 file by running the code below.</p>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mp</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mp</span>
 
-<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">gif_file_path</span><span class="p">)</span> <span class="c1"># change the file path to where you saved the gif file</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="n">mp4_file_path</span><span class="p">)</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">gif_file_path</span><span class="p">)</span>  <span class="c1"># change the file path to where you saved the gif file</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="n">mp4_file_path</span><span class="p">)</span>  <span class="c1"># change the file path to where you would like to save the mp4 file </span>
 </pre></div>
-</div>
-</div>
 </div>
 <br></div>
 </div>

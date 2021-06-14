@@ -86,7 +86,7 @@ voltage_plot;
 # In[9]:
 
 
-# You could change the plot to different formats by changing the format argument in the function. 
+# You can change the plot to different formats by changing the format argument in the function. 
 # It supports 'png', 'pdf', 'svg'.
 
 file_path = "../../exports/examples/voltage_plot.svg"  # change the file path to where you would like to save the file

@@ -7,6 +7,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import matplotlib.colors as mpl_colors
 import pandas as pd
+import numpy as np
 import math
 import mne
 
@@ -52,7 +53,7 @@ def calculate_connectivity(epoch, calc_type="correlation"):
 
     if type(epoch) is not mne.epochs.Epochs:
         raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
-    
+
     if type(calc_type) is not str:
         raise TypeError("calc_type has to be a string")
 
@@ -94,9 +95,16 @@ def get_frame(epoch, step_size, frame_number):
         mne.epochs.Epochs: Cropped epochs for the given frame
     """
     times = epoch.times
+    max_index = len(times)-1
+    tmax = (frame_number+1)*step_size
+
+    # make sure we don't go outside the possible range
+    if(tmax > max_index):
+        tmax = max_index
+
     return epoch.copy().crop(
-        times[frame_number],
-        times[frame_number+step_size],
+        times[frame_number*step_size],
+        times[tmax],
         include_tmax=True
     )
 
@@ -114,6 +122,8 @@ def plot_connectivity(
     vmax=None,
     line_width=None,
     title=None,
+    colorbar=True,
+    caption=None,
     **kwargs
 ):
     """Plot 2d EEG nodes on scalp with lines representing connectivity
@@ -168,6 +178,7 @@ def plot_connectivity(
             "y": [node.get_position()[1] for node in locations],
         }
     )
+
     x_list = []
     y_list = []
 
@@ -187,7 +198,13 @@ def plot_connectivity(
                         color=colour_array[row, col],
                         linewidth=line_width if line_width else 1.5+math.log(1-min(abs(correlation), 0.999)),
                     )
-    fig.colorbar(cmap)
+    if colorbar:
+        fig.colorbar(cmap)
+
+    # add padding for names
+    data.copy()
+    data = data.rename_channels(lambda x: "  "+str(x))
+
     data.plot_sensors(
         axes=ax,
         show_names=True,
@@ -199,6 +216,9 @@ def plot_connectivity(
 
     if title:
         plt.title(title)
+
+    if caption:
+        plt.text(-35, -130, caption, fontsize=10)
 
     return fig
 
@@ -245,14 +265,22 @@ def animate_connectivity(
     )
 
     pair_list = convert_pairs(pair_list)
-    num_steps = (len(epoch.times)//steps)
+    num_steps = math.ceil(len(epoch.times)/steps)
+
     fig = plt.figure()
 
     def animate(frame_number):
         fig.clear()
+
+        frame_epoch = get_frame(epoch, steps, frame_number)
+
+        start_time = frame_epoch.tmin
+        end_time = frame_epoch.tmax
+        caption = f"time: {'%.3f' % start_time}s to {'%.3f' % end_time}s"
+
         return [
             plot_connectivity(
-                get_frame(epoch, num_steps, frame_number),
+                frame_epoch,
                 fig,
                 locations,
                 calc_type,
@@ -264,6 +292,7 @@ def animate_connectivity(
                 vmax=vmax,
                 line_width=line_width,
                 title=title,
+                caption=caption,
                 **kwargs
             )
         ]
@@ -282,6 +311,8 @@ def plot_conn_circle(
     vmax=None,
     line_width=None,
     title=None,
+    colorbar=True,
+    caption=None,
     **kwargs
 ):
     """Plot connectivity circle
@@ -317,15 +348,10 @@ def plot_conn_circle(
 
     angles = mne.viz.circular_layout(ch_names, ch_names, start_pos=90)
 
-    node_range = list(range(len(ch_names)+4))
-    node_cmap = plt.cm.ScalarMappable(cmap="Greys")
-    node_cmap.set_array(node_range)
-    node_cmap.autoscale()
-    node_colors = node_cmap.to_rgba(node_range)
-
     if line_width is None:
         line_width = 1.5
-    mne.viz.plot_connectivity_circle(
+
+    fig, ax = mne.viz.plot_connectivity_circle(
         conn,
         ch_names,
         n_lines=max_connections,
@@ -334,18 +360,22 @@ def plot_conn_circle(
         facecolor="w",
         textcolor="black",
         colormap=colormap,
-        node_colors=[tuple(i) for i in node_colors],
+        node_colors=["grey" for i in range(len(ch_names))],
         vmin=vmin,
         vmax=vmax,
         linewidth=line_width,
         title=title,
         colorbar=False,
         **kwargs
-    )[0]
+    )
 
-    cmap = plt.cm.ScalarMappable(cmap=colormap)
-    cmap.set_clim(vmin, vmax)
-    fig.colorbar(cmap)
+    if colorbar:
+        cmap = plt.cm.ScalarMappable(cmap=colormap)
+        cmap.set_clim(vmin, vmax)
+        fig.colorbar(cmap)
+
+    if caption:
+        fig.text(0.33, 0.1, caption, fontsize=10)
 
     return fig
 
@@ -384,12 +414,20 @@ def animate_connectivity_circle(
 
     fig = plt.figure()
 
+    num_steps = math.ceil(len(epoch.times)/steps)
+
     def animate(frame_number):
         fig.clear()
 
+        frame_epoch = get_frame(epoch, steps, frame_number)
+
+        start_time = frame_epoch.tmin
+        end_time = frame_epoch.tmax
+        caption = f"time: {'%.3f' % start_time}s to {'%.3f' % end_time}s"
+
         return [
             plot_conn_circle(
-                get_frame(epoch, steps, frame_number),
+                frame_epoch,
                 fig,
                 calc_type=calc_type,
                 max_connections=max_connections,
@@ -398,10 +436,11 @@ def animate_connectivity_circle(
                 vmax=vmax,
                 line_width=line_width,
                 title=title,
+                caption=caption,
                 **kwargs
             )
         ]
 
-    anim = animation.FuncAnimation(fig, animate, steps, blit=True)
+    anim = animation.FuncAnimation(fig, animate, num_steps, blit=True)
     return anim
 
