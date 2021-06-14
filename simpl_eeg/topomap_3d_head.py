@@ -149,6 +149,7 @@ def animate_3d_head(epoch, plot_title="", color_title="EEG MicroVolt", color_min
 
     # change the raw epoched data to a dataframe
     df = epoch.to_data_frame().groupby("time").mean().reset_index()
+    df = df.loc[(df[channel_names] != 0).all(axis=1)]
     nb_frame=len(df)
 
     # get the standard montage coordinates
@@ -310,6 +311,7 @@ def topo_3d_map(epoch, time_stamp, plot_title="", color_title="EEG MicroVolt", c
 
     # change the raw epoched data to a dataframe
     df = epoch.to_data_frame().groupby("time").mean().reset_index()
+    df = df.loc[(df[channel_names] != 0).all(axis=1)]
     nb_frame=len(df)
 
     # get the standard montage coordinates
