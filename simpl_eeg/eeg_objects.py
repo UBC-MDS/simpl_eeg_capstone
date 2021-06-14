@@ -69,7 +69,7 @@ class Epochs:
             tmin=tmin,
             tmax=tmax,
             preload=True,
-            baseline=(0, 0)
+            baseline=(0, 0) # THIS is what's causing the reading at 0 seconds to be completely white
         )
 
         return epochs
