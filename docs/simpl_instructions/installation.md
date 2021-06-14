@@ -23,7 +23,8 @@ Please fully install the sections with the following headers...
     -   Git
     -   Python and Conda
 
-### **Installing the simpl\_eeg package in a new environment**
+### **Package Installation**
+#### Installing the simpl\_eeg package in a new environment
 
 Please open your Unix shell (i.e. terminal on a Mac, GitBash on Windows) and navigate to a folder you will use to store the files (if you've never used a terminal before please look at the following instructions <https://swcarpentry.github.io/shell-novice/02-filedir/index.html> to help you navigate). Some basic commands which might help include...
 
@@ -69,7 +70,7 @@ Finally, double check that you are in the simple\_eeg\_capstone directory and in
 `pip install -e .`
 ```
 
-### **To use the streamlit UI**
+### **Streamlit UI**
 
 Navigate to the root of the directory and run the following command...
 
@@ -84,6 +85,7 @@ This will cause the UI to open in your browser like such...
 ![](instruction_imgs/streamlit2.png)
 
 You can refresh the UI to restart it or open it in another window by copying the url (<http://localhost:8502/>).
+
 
 ## **Troubleshooting**
 
@@ -101,7 +103,8 @@ For example...
 
 `(simpl_eeg) mpin@Matthews-MacBook-Pro:~/Documents/MDS/capstone/simpl_eeg_capstone$ `
 
-## **To use the simple\_eeg\_capstone's visualization tools in JupyterLab**
+## **JupyterLab**
+### Using the simple\_eeg\_capstone's visualization tools in JupyterLab
 
 Please complete the JuptyerLab setup section if you have not installed it yet (<https://ubc-mds.github.io/resources_pages/installation_instructions/>)
 

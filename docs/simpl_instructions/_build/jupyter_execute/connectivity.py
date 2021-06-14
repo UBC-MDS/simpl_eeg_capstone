@@ -5,7 +5,7 @@
 
 # ## Connectivity Plot
 
-# <img src="instruction_imgs/connectivity.gif" align="left" style="height:30em"/>
+# ![](instruction_imgs/connectivity.gif)
 
 # In[1]:
 
@@ -140,48 +140,45 @@ html_file.close()
 # In[13]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nanim_conn = connectivity.animate_connectivity(epoch, vmin=-1, vmax=1, pair_list=PAIR_OPTIONS["far_coherence"])\n\ngif_file_path = "../../exports/examples/connectivity.gif"  # change the file path to where you would like to save the file\nanim_conn.save(gif_file_path, fps=3, dpi=300)  # set frames per second (fps) and resolution (dpi)')
+get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity(epoch, vmin=-1, vmax=1, pair_list=PAIR_OPTIONS["far_coherence"])\n\ngif_file_path = "../../exports/examples/connectivity.gif"  # change the file path to where you would like to save the file\nanim.save(gif_file_path, fps=3, dpi=300)  # set frames per second (fps) and resolution (dpi)')
 
 
 # ##### Save as mp4
 
-# In[ ]:
+# In[14]:
 
 
 mp4_file_path = "../../exports/examples/connectivity.mp4"
-anim_conn.save(mp4_file_path, fps=3, dpi=300)
+anim.save(mp4_file_path, fps=3, dpi=300)
 
 
 # ```{note}
-# If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file.
+# If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file by running the code below.
 # ```
-
-# In[ ]:
-
-
-import moviepy.editor as mp
-
-clip = mp.VideoFileClip(gif_file_path) # change the file path to where you saved the gif file
-clip.write_videofile(mp4_file_path) # change the file path to where you would like to save the file
-
+# ```python
+# import moviepy.editor as mp
+# 
+# clip = mp.VideoFileClip(gif_file_path)  # change the file path to where you saved the gif file
+# clip.write_videofile(mp4_file_path)  # change the file path to where you would like to save the mp4 file 
+# ```
 
 # <br>
 
 # ## Connectivity Circle Plot
 
-# <img src="instruction_imgs/connectivity_circle.gif" align="left" style="height:30em"/>
+# ![](instruction_imgs/connectivity_circle.gif)
 
 # ### Define parameters
 
 # A detailed description of all parameters can be found in the `connectivity.animate_connectivity_circle` docstring:
 
-# In[ ]:
+# In[15]:
 
 
 help(connectivity.animate_connectivity_circle)
 
 
-# In[ ]:
+# In[16]:
 
 
 # change values below to values of interest
@@ -198,19 +195,19 @@ max_connections = 50
 
 # #### Generating the animation
 
-# In[ ]:
+# In[17]:
 
 
-get_ipython().run_line_magic('matplotlib', 'inline')
+get_ipython().run_line_magic('matplotlib', 'notebook')
 
 
-# In[ ]:
+# In[18]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity_circle(\n    epoch,\n    calc_type=calc_type,\n    max_connections=max_connections,\n    steps=steps,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
-# In[ ]:
+# In[19]:
 
 
 video
@@ -220,7 +217,7 @@ video
 
 # ##### Save as html
 
-# In[ ]:
+# In[20]:
 
 
 html_file_path = "../../exports/examples/connectivity_circle.html"  # change the file path to where you would like to save the file
@@ -232,29 +229,26 @@ html_file.close()
 
 # ##### Save as gif
 
-# In[ ]:
+# In[21]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nanim_cir = connectivity.animate_connectivity_circle(epoch)\n\ngif_file_path = "../../exports/examples/connectivity_circle.gif"  # change the file path to where you would like to save the file\nanim_cir.save(gif_file_path, fps=3, dpi=300) ')
+get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity_circle(epoch)\n\ngif_file_path = "../../exports/examples/connectivity_circle.gif"  # change the file path to where you would like to save the file\nanim.save(gif_file_path, fps=3, dpi=300) ')
 
 
 # ##### Save as mp4
 
-# In[ ]:
+# In[22]:
 
 
-get_ipython().run_cell_magic('capture', '', '\nmp4_file_path = "../../exports/examples/connectivity_cicle.mp4"\nanim_cir.save(mp4_file_path, fps=3, dpi=300)')
+get_ipython().run_cell_magic('capture', '', '\nmp4_file_path = "../../exports/examples/connectivity_cicle.mp4"\nanim.save(mp4_file_path, fps=3, dpi=300)')
 
 
 # ```{note}
-# If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file.
+# If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file by running the code below.
 # ```
-
-# In[ ]:
-
-
-import moviepy.editor as mp
-
-clip = mp.VideoFileClip(gif_file_path) # change the file path to where you saved the gif file
-clip.write_videofile(mp4_file_path) # change the file path to where you would like to save the file 
-
+# ```python
+# import moviepy.editor as mp
+# 
+# clip = mp.VideoFileClip(gif_file_path)  # change the file path to where you saved the gif file
+# clip.write_videofile(mp4_file_path)  # change the file path to where you would like to save the mp4 file 
+# ```

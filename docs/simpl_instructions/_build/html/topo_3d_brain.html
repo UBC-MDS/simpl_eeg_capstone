@@ -270,17 +270,15 @@
       <a class="reference internal nav-link" href="#generate-animation-with-matplotlib-backend-slow-but-recommended">
        Generate animation with matplotlib backend (slow but recommended)
       </a>
-      <ul class="nav section-nav flex-column">
-       <li class="toc-h5 nav-item toc-entry">
-        <a class="reference internal nav-link" href="#save-the-animation-as-gif">
-         Save the animation as gif
-        </a>
-       </li>
-      </ul>
      </li>
      <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#save-the-animation-as-mp4">
-       Save the animation as mp4
+      <a class="reference internal nav-link" href="#save-as-gif">
+       Save as gif
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#save-as-mp4">
+       Save as mp4
       </a>
      </li>
     </ul>
@@ -832,63 +830,9 @@ animate_matplot_brain(epoch, stc=&#39;auto&#39;, views=[&#39;lat&#39;, &#39;dor&
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># You could change the plot to different formats by changing the format argument in the function. </span>
 <span class="c1"># It supports &#39;png&#39;, &#39;pdf&#39;, &#39;svg&#39;.</span>
 
-<span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/topomap_3d_brain.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/topomap_3d_brain.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
 
 <span class="n">matplot_brain_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span> <span class="s1">&#39;svg&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">13</span><span class="o">-</span><span class="mi">54</span><span class="n">c6db6a71d3</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/topomap_3d_brain.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> 
-<span class="ne">----&gt; </span><span class="mi">6</span> <span class="n">matplot_brain_fig</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span> <span class="s1">&#39;svg&#39;</span><span class="p">)</span>
-
-<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/figure.py</span> in <span class="ni">savefig</span><span class="nt">(self, fname, transparent, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3003</span>                 <span class="n">patch</span><span class="o">.</span><span class="n">set_edgecolor</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3004</span> 
-<span class="ne">-&gt; </span><span class="mi">3005</span>         <span class="bp">self</span><span class="o">.</span><span class="n">canvas</span><span class="o">.</span><span class="n">print_figure</span><span class="p">(</span><span class="n">fname</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-<span class="g g-Whitespace">   </span><span class="mi">3006</span> 
-<span class="g g-Whitespace">   </span><span class="mi">3007</span>         <span class="k">if</span> <span class="n">transparent</span><span class="p">:</span>
-
-<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/backend_bases.py</span> in <span class="ni">print_figure</span><span class="nt">(self, filename, dpi, facecolor, edgecolor, orientation, format, bbox_inches, pad_inches, bbox_extra_artists, backend, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">2253</span>                 <span class="c1"># force the figure dpi to 72), so we need to set it again here.</span>
-<span class="g g-Whitespace">   </span><span class="mi">2254</span>                 <span class="k">with</span> <span class="n">cbook</span><span class="o">.</span><span class="n">_setattr_cm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="n">dpi</span><span class="p">):</span>
-<span class="ne">-&gt; </span><span class="mi">2255</span>                     <span class="n">result</span> <span class="o">=</span> <span class="n">print_method</span><span class="p">(</span>
-<span class="g g-Whitespace">   </span><span class="mi">2256</span>                         <span class="n">filename</span><span class="p">,</span>
-<span class="g g-Whitespace">   </span><span class="mi">2257</span>                         <span class="n">facecolor</span><span class="o">=</span><span class="n">facecolor</span><span class="p">,</span>
-
-<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/backends/backend_svg.py</span> in <span class="ni">print_svg</span><span class="nt">(self, filename, *args, **kwargs)</span>
-<span class="g g-Whitespace">   </span><span class="mi">1319</span>             <span class="n">__</span> <span class="n">DC_</span>
-<span class="g g-Whitespace">   </span><span class="mi">1320</span>         <span class="sd">&quot;&quot;&quot;</span>
-<span class="ne">-&gt; </span><span class="mi">1321</span><span class="sd">         with cbook.open_file_cm(filename, &quot;w&quot;, encoding=&quot;utf-8&quot;) as fh:</span>
-<span class="g g-Whitespace">   </span><span class="mi">1322</span><span class="sd"> </span>
-<span class="g g-Whitespace">   </span><span class="mi">1323</span><span class="sd">             filename = getattr(fh, &#39;name&#39;, &#39;&#39;)</span>
-
-<span class="nn">/opt/miniconda3/lib/python3.8/contextlib.py</span> in <span class="ni">__enter__</span><span class="nt">(self)</span>
-<span class="g g-Whitespace">    </span><span class="mi">111</span><span class="sd">         del self.args, self.kwds, self.func</span>
-<span class="g g-Whitespace">    </span><span class="mi">112</span><span class="sd">         try:</span>
-<span class="ne">--&gt; </span><span class="mi">113</span><span class="sd">             return next(self.gen)</span>
-<span class="g g-Whitespace">    </span><span class="mi">114</span><span class="sd">         except StopIteration:</span>
-<span class="g g-Whitespace">    </span><span class="mi">115</span><span class="sd">             raise RuntimeError(&quot;generator didn&#39;t yield&quot;) from None</span>
-
-<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/cbook/__init__.py</span> in <span class="ni">open_file_cm</span><span class="nt">(path_or_file, mode, encoding)</span>
-<span class="g g-Whitespace">    </span><span class="mi">475</span><span class="sd"> def open_file_cm(path_or_file, mode=&quot;r&quot;, encoding=None):</span>
-<span class="g g-Whitespace">    </span><span class="mi">476</span><span class="sd">     r&quot;&quot;&quot;</span><span class="n">Pass</span> <span class="n">through</span> <span class="n">file</span> <span class="n">objects</span> <span class="ow">and</span> <span class="n">context</span><span class="o">-</span><span class="n">manage</span> <span class="n">path</span><span class="o">-</span><span class="n">likes</span><span class="o">.</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="ne">--&gt; </span><span class="mi">477</span><span class="s2">     fh, opened = to_filehandle(path_or_file, mode, True, encoding)</span>
-<span class="g g-Whitespace">    </span><span class="mi">478</span><span class="s2">     if opened:</span>
-<span class="g g-Whitespace">    </span><span class="mi">479</span><span class="s2">         with fh:</span>
-
-<span class="nn">/opt/miniconda3/lib/python3.8/site-packages/matplotlib/cbook/__init__.py</span> in <span class="ni">to_filehandle</span><span class="nt">(fname, flag, return_opened, encoding)</span>
-<span class="g g-Whitespace">    </span><span class="mi">460</span><span class="s2">             fh = bz2.BZ2File(fname, flag)</span>
-<span class="g g-Whitespace">    </span><span class="mi">461</span><span class="s2">         else:</span>
-<span class="ne">--&gt; </span><span class="mi">462</span><span class="s2">             fh = open(fname, flag, encoding=encoding)</span>
-<span class="g g-Whitespace">    </span><span class="mi">463</span><span class="s2">         opened = True</span>
-<span class="g g-Whitespace">    </span><span class="mi">464</span><span class="s2">     elif hasattr(fname, &#39;seek&#39;):</span>
-
-<span class="ne">FileNotFoundError</span>: [Errno 2] No such file or directory: &#39;exports/topomap_3d_brain.svg&#39;
 </pre></div>
 </div>
 </div>
@@ -901,53 +845,57 @@ animate_matplot_brain(epoch, stc=&#39;auto&#39;, views=[&#39;lat&#39;, &#39;dor&
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
 <span class="n">matplotlib_animation</span> <span class="o">=</span> <span class="n">topomap_3d_brain</span><span class="o">.</span><span class="n">animate_matplot_brain</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">stc</span> <span class="o">=</span> <span class="n">stc</span><span class="p">,</span> <span class="n">views</span> <span class="o">=</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">hemi</span> <span class="o">=</span> <span class="s1">&#39;lh&#39;</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">IPython.display</span> <span class="kn">import</span> <span class="n">HTML</span>
+<span class="n">video</span> <span class="o">=</span> <span class="n">HTML</span><span class="p">(</span><span class="n">matplotlib_animation</span><span class="o">.</span><span class="n">to_jshtml</span><span class="p">())</span>
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">matplotlib_animation</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">video</span>
 </pre></div>
 </div>
 </div>
 </div>
-<div class="section" id="save-the-animation-as-gif">
-<h5>Save the animation as gif<a class="headerlink" href="#save-the-animation-as-gif" title="Permalink to this headline">¶</a></h5>
+</div>
+<div class="section" id="save-as-gif">
+<h4>Save as gif<a class="headerlink" href="#save-as-gif" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
 
 <span class="n">anim_brain</span> <span class="o">=</span> <span class="n">topomap_3d_brain</span><span class="o">.</span><span class="n">animate_matplot_brain</span><span class="p">(</span><span class="n">epoch</span><span class="p">,</span> <span class="n">stc</span> <span class="o">=</span> <span class="n">stc</span><span class="p">,</span> <span class="n">views</span> <span class="o">=</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">hemi</span> <span class="o">=</span> <span class="s1">&#39;lh&#39;</span><span class="p">)</span>
 
-<span class="c1"># use a writer if you want to specify frames per second</span>
-<span class="kn">from</span> <span class="nn">matplotlib.animation</span> <span class="kn">import</span> <span class="n">PillowWriter</span>
-
-<span class="n">writer</span> <span class="o">=</span> <span class="n">PillowWriter</span><span class="p">(</span><span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
-
-<span class="n">gif_file_path</span> <span class="o">=</span> <span class="s2">&quot;exports/topomap_3d_brain.gif&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
-<span class="n">anim_brain</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">gif_file_path</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="n">writer</span><span class="p">)</span>
+<span class="n">gif_file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/topomap_3d_brain.gif&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">anim_brain</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">gif_file_path</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </div>
 </div>
-</div>
-<div class="section" id="save-the-animation-as-mp4">
-<h4>Save the animation as mp4<a class="headerlink" href="#save-the-animation-as-mp4" title="Permalink to this headline">¶</a></h4>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>You would need to save it as gif file first and then convert it into mp4 file.</p>
-</div>
+<div class="section" id="save-as-mp4">
+<h4>Save as mp4<a class="headerlink" href="#save-as-mp4" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mp</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
 
-<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="s2">&quot;exports/topomap_3d_brain.gif&quot;</span><span class="p">)</span> <span class="c1"># change the file path to where you saved the gif file</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="s2">&quot;exports/topomap_3d_brain.mp4&quot;</span><span class="p">)</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">mp4_file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/topo_2d.mp4&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">anim_brain</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">mp4_file_path</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>If <code class="docutils literal notranslate"><span class="pre">FFMpegWriter</span></code> does not work on your computer you can save the file as a gif first and then convert it into mp4 file by running the code below.</p>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mp</span>
+
+<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">gif_file_path</span><span class="p">)</span>  <span class="c1"># change the file path to where you saved the gif file</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="n">mp4_file_path</span><span class="p">)</span>  <span class="c1"># change the file path to where you would like to save the mp4 file </span>
+</pre></div>
 </div>
 <br></div>
 </div>

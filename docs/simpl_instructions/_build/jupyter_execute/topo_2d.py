@@ -55,6 +55,7 @@ help(topomap_2d.animate_topomap_2d)
 
 experiment_folder = "../../data/109"  # path to the experiment folder
 nth_epoch = 0  # the epoch of interest
+num_steps = 50 # number of steps to skip to shorten epoch
 
 cmin = -40
 cmax = 40
@@ -84,6 +85,7 @@ frame_rate = 12
 
 epochs = eeg_objects.Epochs(experiment_folder)
 epoch = epochs.get_nth_epoch(nth_epoch)
+shortened_epoch = epochs.skip_n_steps(num_steps)
 
 
 # <br>
@@ -108,7 +110,7 @@ video
 
 # ##### Save as html
 
-# In[ ]:
+# In[10]:
 
 
 html_file_path = "../../exports/examples/topo_2d.html"  # change the file path to where you would like to save the file
@@ -120,7 +122,7 @@ html_file.close()
 
 # ##### Save as gif
 
-# In[ ]:
+# In[11]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(shortened_epoch)\n\ngif_file_path = "../../exports/examples/topo_2d.gif"  # change the file path to where you would like to save the file\nanim.save(gif_file_path, fps=5, dpi=300)')
@@ -128,10 +130,20 @@ get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap
 
 # ##### Save as mp4
 
-# In[ ]:
+# In[12]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim = topomap_2d.animate_topomap_2d(shortened_epoch)\n\nmp4_file_path = "../../exports/examples/topo_2d.mp4"  # change the file path to where you would like to save the file\nanim.save(mp4_file_path)')
 
+
+# ```{note}
+# If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file by running the code below.
+# ```
+# ```python
+# import moviepy.editor as mp
+# 
+# clip = mp.VideoFileClip(gif_file_path)  # change the file path to where you saved the gif file
+# clip.write_videofile(mp4_file_path)  # change the file path to where you would like to save the mp4 file 
+# ```
 
 # <br>
