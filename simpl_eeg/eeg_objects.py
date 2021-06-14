@@ -48,12 +48,12 @@ class Epochs:
         Calculates a subset of the epoch based on the step size and frame
     """
 
-    def __init__(self, folder_path, tmin=-0.3, tmax=0.7, start_second=None):
+    def __init__(self, folder_path, tmin=-0.3, tmax=0.7, start_second=None, **kwargs):
         self.eeg_file = EEG_File(folder_path)
-        self.data = self.generate_epochs(tmin, tmax, start_second)
+        self.data = self.generate_epochs(tmin, tmax, start_second, **kwargs)
         self.set_nth_epoch(0)
 
-    def generate_epochs(self, tmin, tmax, start_second):
+    def generate_epochs(self, tmin, tmax, start_second, **kwargs):
         freq = int(self.eeg_file.raw.info["sfreq"])
         if start_second:
             start_time = start_second*freq
@@ -69,7 +69,7 @@ class Epochs:
             tmin=tmin,
             tmax=tmax,
             preload=True,
-            baseline=(0, 0) # THIS is what's causing the reading at 0 seconds to be completely white
+            **kwargs
         )
 
         return epochs
