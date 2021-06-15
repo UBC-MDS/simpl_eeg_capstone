@@ -182,7 +182,7 @@ def plot_topomap_2d(epoch,
 
     if colorbar:
         ax_divider = make_axes_locatable(ax)
-        cax = ax_divider.append_axes("right", size="3%", pad="0%")
+        cax = ax_divider.append_axes("right", size=0.1, pad="0%")
         cmid = (cmin+cmax)/2
         clim = dict(kind='value', lims=[cmin, cmid, cmax])
         # https://mne.tools/stable/generated/mne.viz.plot_brain_colorbar.html
@@ -342,7 +342,7 @@ def animate_topomap_2d(epoch,
         topomap_2d = plt.plot(1,2)
 
         if colorbar:
-            cax = ax_divider.append_axes("right", size="3%", pad="0%")
+            cax = ax_divider.append_axes("right", size=0.1, pad="0%")
             # https://mne.tools/stable/generated/mne.viz.plot_brain_colorbar.html
             mne.viz.plot_brain_colorbar(
                 cax,
