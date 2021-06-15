@@ -172,13 +172,13 @@ anim.save(mp4_file_path, fps=3, dpi=300)
 
 # A detailed description of all parameters can be found in the `connectivity.animate_connectivity_circle` docstring:
 
-# In[15]:
+# In[ ]:
 
 
 help(connectivity.animate_connectivity_circle)
 
 
-# In[16]:
+# In[ ]:
 
 
 # change values below to values of interest
@@ -195,19 +195,19 @@ max_connections = 50
 
 # #### Generating the animation
 
-# In[17]:
+# In[ ]:
 
 
 get_ipython().run_line_magic('matplotlib', 'notebook')
 
 
-# In[18]:
+# In[ ]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity_circle(\n    epoch,\n    calc_type=calc_type,\n    max_connections=max_connections,\n    steps=steps,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
-# In[19]:
+# In[ ]:
 
 
 video
@@ -217,7 +217,7 @@ video
 
 # ##### Save as html
 
-# In[20]:
+# In[ ]:
 
 
 html_file_path = "../../exports/examples/connectivity_circle.html"  # change the file path to where you would like to save the file
@@ -229,7 +229,7 @@ html_file.close()
 
 # ##### Save as gif
 
-# In[21]:
+# In[ ]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity_circle(epoch)\n\ngif_file_path = "../../exports/examples/connectivity_circle.gif"  # change the file path to where you would like to save the file\nanim.save(gif_file_path, fps=3, dpi=300) ')
@@ -237,7 +237,7 @@ get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_conne
 
 # ##### Save as mp4
 
-# In[22]:
+# In[ ]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nmp4_file_path = "../../exports/examples/connectivity_cicle.mp4"\nanim.save(mp4_file_path, fps=3, dpi=300)')
