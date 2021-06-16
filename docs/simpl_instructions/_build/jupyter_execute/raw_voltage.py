@@ -20,7 +20,9 @@ import warnings
 warnings.filterwarnings('ignore')
 
 
-# **Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**
+# ```{note}
+# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**
+# ```
 
 # In[3]:
 
@@ -74,24 +76,32 @@ epoch = epochs.get_nth_epoch(nth_epoch)
 
 # #### Generating the plot
 
+# You can create a plot for one epoch or multiple epochs by customizing the epoch object you pass to the function.
+
 # In[8]:
 
 
+# multiple epochs
+raw_voltage.plot_voltage(epochs.data, n_epochs=2);
+
+
+# In[9]:
+
+
+# single epoch 
 voltage_plot = raw_voltage.plot_voltage(epoch)
 voltage_plot;
 
 
 # #### Saving the plot
 
-# In[9]:
+# You can change the plot to different formats by changing the format argument in the function. It supports 'png', 'pdf', 'svg'.
 
-
-# You can change the plot to different formats by changing the format argument in the function. 
-# It supports 'png', 'pdf', 'svg'.
-
-file_path = "../../exports/examples/voltage_plot.svg"  # change the file path to where you would like to save the file
-
-voltage_plot.savefig(file_path, format="svg")
-
+# ```python
+# # change the file path to where you would like to save the file
+# file_path = "../../exports/examples/voltage_plot.svg"
+# 
+# voltage_plot.savefig(file_path, format="svg")
+# ```
 
 # <br>

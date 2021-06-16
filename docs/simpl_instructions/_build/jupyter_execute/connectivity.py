@@ -3,9 +3,16 @@
 
 # # Connectivity Visualizations
 
-# ## Connectivity Plot
+# ## Connectivity plots
+# 
+# The connectivity plots provide a way to visualize pair-wise correlation, coherence, and connectivity measures between nodes. There are 2 types of plots, shown in the image below. Both types of plots can be generated as an animation to view changes over time or as standalone plots. 
 
-# ![](instruction_imgs/connectivity.gif)
+# [1) Connectivity Plot](#connectivity)             | [2) Connectivity Circle](#circle)
+# :-------------------------:|:-------------------------:
+# Lines drawn on a 2D representation of a skull![](instruction_imgs/connectivity.gif)  | Lines drawn between nodes represented in a circle ![](instruction_imgs/connectivity_circle.gif)
+
+# ## General Setup
+# ### Import required modules
 
 # In[1]:
 
@@ -36,39 +43,46 @@ get_ipython().run_line_magic('load_ext', 'autoreload')
 get_ipython().run_line_magic('autoreload', '2')
 
 
-# <br>
+# ### Create epoched data
+# For additional options see [Creating EEG Objects](eeg_objects.html#intro) section.
+
+# In[5]:
+
+
+experiment_folder = "../../data/927"
+nth_epoch = 0
+
+epochs = eeg_objects.Epochs(experiment_folder)
+epoch = epochs.get_nth_epoch(nth_epoch)
+
+
+# <a id="connectivity"></a>
+# ## Create a Connectivity Plot animation
 
 # ### Define parameters
 
 # A detailed description of all parameters can be found in the `connectivity.animate_connectivity` docstring:
 
-# In[5]:
+# In[6]:
 
 
 help(connectivity.animate_connectivity)
 
 
-# In[6]:
+# In[7]:
 
 
-# change values below to values of interest
-
-experiment_path = "../../data/927" # path to the experiment folder.
-nth_epoch = 0
-
-# connectivity parameters
 vmin = -1
 vmax = 1
 colormap = "RdBu_r"
 calc_type = "correlation"
-pair_list = []  # select from the PAIR_OPTIONS below or use a custom pair.
 line_width = None
 steps = 50
 threshold = 0
 show_sphere = True
 
 
-# In[7]:
+# In[8]:
 
 
 PAIR_OPTIONS = {
@@ -83,25 +97,14 @@ PAIR_OPTIONS = {
     "prefrontal_to_occipital": "Fp1-O1, Fp2-O2"
 }
 
+# select from the PAIR_OPTIONS options above or use a custom pair.
+pair_list = []  # leave as an empty list if you want all pairs
 
-# <br>
-
-# ### Create epoched data
-
-# For additional options see **Creating EEG Objects** section.
-
-# In[8]:
+# example of referencing a pair from the list
+pair_list = PAIR_OPTIONS["far_coherence"]
 
 
-epochs = eeg_objects.Epochs(experiment_path)
-epoch = epochs.get_nth_epoch(0)
-
-
-# <br>
-
-# ### Create the connectivity plot
-
-# #### Generating the animation
+# ### Generating the animation
 
 # In[9]:
 
@@ -115,42 +118,36 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity(\n    epoch,\n    calc_type=calc_type,\n    steps=steps,\n    pair_list=pair_list,\n    threshold=threshold,\n    show_sphere=show_sphere,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
-# In[ ]:
+# In[11]:
 
 
 video
 
 
-# #### Saving the animation
+# ### Saving the animation
 
-# ##### Save as html
+# #### Save as html
+# ```python
+# html_file_path = "examples/connectivity.html"
+# 
+# html_file = open(html_file_path, "w")
+# html_file.write(html_plot)
+# html_file.close()
+# ```
 
-# In[ ]:
+# #### Save as gif
+# ```python
+# gif_file_path = "examples/connectivity.gif"
+# 
+# # set frames per second (fps) and resolution (dpi)
+# anim.save(gif_file_path, fps=3, dpi=300)
+# ```
 
-
-html_file_path = "../../exports/examples/connectivity.html"  # change the file path to where you would like to save the file
-
-html_file = open(html_file_path, "w")
-html_file.write(html_plot)
-html_file.close()
-
-
-# ##### Save as gif
-
-# In[ ]:
-
-
-get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity(epoch, vmin=-1, vmax=1, pair_list=PAIR_OPTIONS["far_coherence"])\n\ngif_file_path = "../../exports/examples/connectivity.gif"  # change the file path to where you would like to save the file\nanim.save(gif_file_path, fps=3, dpi=300)  # set frames per second (fps) and resolution (dpi)')
-
-
-# ##### Save as mp4
-
-# In[ ]:
-
-
-mp4_file_path = "../../exports/examples/connectivity.mp4"
-anim.save(mp4_file_path, fps=3, dpi=300)
-
+# #### Save as mp4
+# ```python
+# mp4_file_path = "examples/connectivity.mp4"
+# anim.save(mp4_file_path, fps=3, dpi=300)
+# ```
 
 # ```{note}
 # If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file by running the code below.
@@ -158,32 +155,26 @@ anim.save(mp4_file_path, fps=3, dpi=300)
 # ```python
 # import moviepy.editor as mp
 # 
-# clip = mp.VideoFileClip(gif_file_path)  # change the file path to where you saved the gif file
-# clip.write_videofile(mp4_file_path)  # change the file path to where you would like to save the mp4 file 
+# clip = mp.VideoFileClip(gif_file_path)
+# clip.write_videofile(mp4_file_path)
 # ```
 
-# <br>
-
-# ## Connectivity Circle Plot
-
-# ![](instruction_imgs/connectivity_circle.gif)
+# <a id="circle"></a>
+# ## Create a Connectivity Circle animation
 
 # ### Define parameters
 
 # A detailed description of all parameters can be found in the `connectivity.animate_connectivity_circle` docstring:
 
-# In[ ]:
+# In[12]:
 
 
 help(connectivity.animate_connectivity_circle)
 
 
-# In[ ]:
+# In[13]:
 
 
-# change values below to values of interest
-
-# connectivity circle parameters
 vmin = -1
 vmax = 1
 colormap = "RdBu_r"
@@ -193,55 +184,49 @@ steps = 50
 max_connections = 50
 
 
-# #### Generating the animation
+# ### Generating the animation
 
-# In[ ]:
+# In[14]:
 
 
 get_ipython().run_line_magic('matplotlib', 'notebook')
 
 
-# In[ ]:
+# In[15]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity_circle(\n    epoch,\n    calc_type=calc_type,\n    max_connections=max_connections,\n    steps=steps,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
-# In[ ]:
+# In[16]:
 
 
 video
 
 
-# #### Saving the animation
+# ### Saving the animation
 
-# ##### Save as html
+# #### Save as html
+# ```python
+# html_file_path = "examples/connectivity_circle.html"
+# html_file = open(html_file_path, "w")
+# html_file.write(html_plot)
+# html_file.close()
+# ```
 
-# In[ ]:
+# #### Save as gif
+# ```python
+# gif_file_path = "examples/connectivity_circle.gif"
+# 
+# # set frames per second (fps) and resolution (dpi)
+# anim.save(gif_file_path, fps=3, dpi=300)
+# ```
 
-
-html_file_path = "../../exports/examples/connectivity_circle.html"  # change the file path to where you would like to save the file
-
-html_file = open(html_file_path, "w")
-html_file.write(html_plot)
-html_file.close()
-
-
-# ##### Save as gif
-
-# In[ ]:
-
-
-get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity_circle(epoch)\n\ngif_file_path = "../../exports/examples/connectivity_circle.gif"  # change the file path to where you would like to save the file\nanim.save(gif_file_path, fps=3, dpi=300) ')
-
-
-# ##### Save as mp4
-
-# In[ ]:
-
-
-get_ipython().run_cell_magic('capture', '', '\nmp4_file_path = "../../exports/examples/connectivity_cicle.mp4"\nanim.save(mp4_file_path, fps=3, dpi=300)')
-
+# #### Save as mp4
+# ```python
+# mp4_file_path = "examples/connectivity_cicle.mp4"
+# anim.save(mp4_file_path, fps=3, dpi=300)
+# ```
 
 # ```{note}
 # If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file by running the code below.
@@ -249,6 +234,6 @@ get_ipython().run_cell_magic('capture', '', '\nmp4_file_path = "../../exports/ex
 # ```python
 # import moviepy.editor as mp
 # 
-# clip = mp.VideoFileClip(gif_file_path)  # change the file path to where you saved the gif file
-# clip.write_videofile(mp4_file_path)  # change the file path to where you would like to save the mp4 file 
+# clip = mp.VideoFileClip(gif_file_path)
+# clip.write_videofile(mp4_file_path)
 # ```
