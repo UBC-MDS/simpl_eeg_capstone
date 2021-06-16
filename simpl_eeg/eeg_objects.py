@@ -1,3 +1,9 @@
+# -*- coding: utf-8 -*-
+
+"""
+Module for generating and animating EEG connectivity figures
+"""
+
 import mne
 import scipy.io
 
@@ -23,6 +29,7 @@ class EEG_File:
         self.experiment = folder_path.split("/")[-1]
         self.mat = scipy.io.loadmat(folder_path+"/impact locations.mat")
         self.raw = mne.io.read_raw_eeglab(folder_path+"/fixica.set")
+
 
 class Epochs:
     """
