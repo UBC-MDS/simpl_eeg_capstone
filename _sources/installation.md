@@ -13,12 +13,7 @@ Please fully install the sections with the following headers...
     -   Git and Bash
     -   Python and Conda
 
--   Mac
-
-    -   Git
-    -   Python and Conda
-
--   Ubuntu
+-   Mac and Ubuntu
 
     -   Git
     -   Python and Conda
