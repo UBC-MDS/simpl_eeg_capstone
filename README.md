@@ -7,7 +7,8 @@ Python package and web application for visualizing EEG data
 # Helpful Links
 - [Proposal Presentation](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Capstone_Proposal_Presentation.pdf)
 - [Proposal Report](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Proposal.pdf)
-- [Meeting Agendas and Minutes](https://ubc-mds.github.io/simpl_eeg_capstone/)
+- [Meeting Agendas and Minutes](https://github.com/UBC-MDS/simpl_eeg_capstone/tree/main/docs/minutes/_posts)
+- [Product Documentation](https://ubc-mds.github.io/simpl_eeg_capstone/)
 
 # Installation Instructions
 Clone the repository:
@@ -15,7 +16,7 @@ Clone the repository:
 git clone https://github.com/UBC-MDS/simpl_eeg_capstone.git
 cd simpl_eeg_capstone
 ```
-If you have no experience working with the unix shell click [here](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/docs/simpl_instructions/installation.md) for detailed instructions on installation and launching the streamlit app.
+If you have no experience working with the unix shell click [here](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html) for detailed instructions on installation and launching the streamlit app.
 
 
 # Package Installation Instructions
