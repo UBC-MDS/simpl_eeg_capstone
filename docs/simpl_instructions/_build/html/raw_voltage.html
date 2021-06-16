@@ -282,7 +282,10 @@
 </div>
 </div>
 </div>
-<p><strong>Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.</strong></p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**</p>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
@@ -381,31 +384,39 @@ plot_voltage(epoch, remove_xlabel=False, **kwargs)
 <h3>Create the raw voltage plot<a class="headerlink" href="#create-the-raw-voltage-plot" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="generating-the-plot">
 <h4>Generating the plot<a class="headerlink" href="#generating-the-plot" title="Permalink to this headline">¶</a></h4>
+<p>You can create a plot for one epoch or multiple epochs by customizing the epoch object you pass to the function.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">voltage_plot</span> <span class="o">=</span> <span class="n">raw_voltage</span><span class="o">.</span><span class="n">plot_voltage</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># multiple epochs</span>
+<span class="n">raw_voltage</span><span class="o">.</span><span class="n">plot_voltage</span><span class="p">(</span><span class="n">epochs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/raw_voltage_21_0.png" src="_images/raw_voltage_21_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># single epoch </span>
+<span class="n">voltage_plot</span> <span class="o">=</span> <span class="n">raw_voltage</span><span class="o">.</span><span class="n">plot_voltage</span><span class="p">(</span><span class="n">epoch</span><span class="p">)</span>
 <span class="n">voltage_plot</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/raw_voltage_20_0.png" src="_images/raw_voltage_20_0.png" />
+<img alt="_images/raw_voltage_22_0.png" src="_images/raw_voltage_22_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="saving-the-plot">
 <h4>Saving the plot<a class="headerlink" href="#saving-the-plot" title="Permalink to this headline">¶</a></h4>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># You can change the plot to different formats by changing the format argument in the function. </span>
-<span class="c1"># It supports &#39;png&#39;, &#39;pdf&#39;, &#39;svg&#39;.</span>
-
-<span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/voltage_plot.svg&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<p>You can change the plot to different formats by changing the format argument in the function. It supports ‘png’, ‘pdf’, ‘svg’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;../../exports/examples/voltage_plot.svg&quot;</span>
 
 <span class="n">voltage_plot</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">,</span> <span class="nb">format</span><span class="o">=</span><span class="s2">&quot;svg&quot;</span><span class="p">)</span>
 </pre></div>
-</div>
-</div>
 </div>
 <br></div>
 </div>
