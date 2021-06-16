@@ -41,6 +41,22 @@ Run the following command from the root folder of the project:
 streamlit run src/app.py
 ```
 
+# Updating JupyterBook Documentation
+Make sure you have `jupyter-book` and `ghp-impor`t installed. If you do not you can install them by running the following commands: 
+```bash
+pip install -U jupyter-book
+pip install ghp-import
+```
+
+The files used to generate the documentation are stored in the [docs/simpl_instructions/](https://github.com/UBC-MDS/simpl_eeg_capstone/tree/main/docs/simpl_instructions) folder. 
+
+After making updates, run the following commands from the project root folder to update the online version of the documentation:
+
+```bash
+jb build docs/simpl_instructions/
+ghp-import -n -p -f docs/simpl_instructions/_build/html
+```
+
 # Group Members
 - Matthew Pin
 - Mo Garoub
