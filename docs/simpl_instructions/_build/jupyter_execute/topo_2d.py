@@ -3,14 +3,13 @@
 
 # # 2D Head Visualizations
 
-# ## 2D topographic map
+# ## 2D topographic head map
 # 
-# The 2D topographic map provides a view of voltage measurements as a heatmap imposed on an image of a 2D skull. It can be generated as an [animation](#animation) to view changes over time or as a [standalone plot](#plot). 
+# The 2D topographic head map provides a view of voltage measurements as a heatmap imposed on an image of a 2D skull. It can be generated as an [animation](#animation) to view changes over time or as a [standalone plot](#plot). 
 
 # ![](instruction_imgs/topo_2d.gif)
 
 # ## General Setup
-
 # ### Import required modules
 
 # In[1]:
@@ -42,10 +41,7 @@ get_ipython().run_line_magic('load_ext', 'autoreload')
 get_ipython().run_line_magic('autoreload', '2')
 
 
-# <br>
-
 # ### Create epoched data
-
 # For additional options see [Creating EEG Objects](eeg_objects.html#intro) section.
 
 # In[5]:
@@ -53,14 +49,12 @@ get_ipython().run_line_magic('autoreload', '2')
 
 experiment_folder = "../../data/109"
 nth_epoch = 0
-num_steps = 50 # number of steps to skip to shorten epoch
+num_steps = 50  # number of steps to skip to shorten epoch
 
 epochs = eeg_objects.Epochs(experiment_folder)
 epoch = epochs.get_nth_epoch(nth_epoch)
 shortened_epoch = epochs.skip_n_steps(num_steps)
 
-
-# <br>
 
 # <a id="animation"></a>
 # ## Create a 2D topographic animation
@@ -95,8 +89,6 @@ timestamp = True
 frame_rate = 12
 
 
-# <br>
-
 # ### Generating the animation
 
 # In[8]:
@@ -116,8 +108,7 @@ video
 # #### Save as html
 
 # ```python
-# html_file_path = "examples/topo_2d.html"  # change the file path to where you would like to save the file
-# 
+# html_file_path = "examples/topo_2d.html"
 # html_file = open(html_file_path, "w")
 # html_file.write(html_plot)
 # html_file.close()
@@ -128,7 +119,7 @@ video
 # ```python
 # anim = topomap_2d.animate_topomap_2d(shortened_epoch)
 # 
-# gif_file_path = "examples/topo_2d.gif"  # change the file path to where you would like to save the file
+# gif_file_path = "examples/topo_2d.gif"
 # anim.save(gif_file_path, fps=5, dpi=300)
 # ```
 
@@ -137,7 +128,7 @@ video
 # ```python
 # anim = topomap_2d.animate_topomap_2d(shortened_epoch)
 # 
-# mp4_file_path = "examples/topo_2d.mp4"  # change the file path to where you would like to save the file
+# mp4_file_path = "examples/topo_2d.mp4"
 # anim.save(mp4_file_path)
 # ```
 
@@ -147,11 +138,9 @@ video
 # ```python
 # import moviepy.editor as mp
 # 
-# clip = mp.VideoFileClip(gif_file_path)  # change the file path to where you saved the gif file
-# clip.write_videofile(mp4_file_path)  # change the file path to where you would like to save the mp4 file 
+# clip = mp.VideoFileClip(gif_file_path)
+# clip.write_videofile(mp4_file_path)
 # ```
-
-# <br>
 
 # <a id="plot"></a>
 # ## Create a 2D topographic plot
@@ -188,12 +177,8 @@ plot;
 
 
 # ### Saving the plot
+# You can change the plot to different formats by changing the format argument in the function. It supports 'png', 'pdf', 'svg'.
 # ```python
-# plot.figure.savefig("examples/topo_2d.svg")
+# file_path = "examples/topo_2d.svg"
+# plot.figure.savefig(file_path)
 # ```
-
-# In[ ]:
-
-
-
-
