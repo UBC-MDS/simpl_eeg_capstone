@@ -76,7 +76,7 @@ colormap = "RdBu_r"
 time_stamp = -300
 
 
-# #### Generating the animation
+# ### Generating the animation
 
 # In[8]:
 
@@ -139,6 +139,17 @@ help(topomap_3d_head.topo_3d_map)
 # In[11]:
 
 
+color_min = -40
+color_max = 40
+colormap = "RdBu_r"
+time_stamp = -300
+
+
+# ### Generating a standalone plot
+
+# In[12]:
+
+
 topo_3d__head_static = topomap_3d_head.topo_3d_map(
     epoch,
     time_stamp,
@@ -149,7 +160,7 @@ topo_3d__head_static = topomap_3d_head.topo_3d_map(
 )
 
 
-# In[12]:
+# In[13]:
 
 
 topo_3d__head_static.show()
