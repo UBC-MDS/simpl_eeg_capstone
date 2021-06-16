@@ -49,6 +49,7 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Creating EEG Objects" href="eeg_objects.html" />
@@ -228,6 +229,11 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-folder-structure">
+     Data Folder Structure
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#import">
      Import
     </a>
@@ -255,6 +261,14 @@
 </div>
 <div class="section" id="instructions">
 <h2>Instructions<a class="headerlink" href="#instructions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-folder-structure">
+<h3>Data Folder Structure<a class="headerlink" href="#data-folder-structure" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To have data properly loaded to functions in this package, please make sure that the data is saved in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder. All files related to the same experiment should be included one subfolder under the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder. Inside each experiment folder, there should be <code class="docutils literal notranslate"><span class="pre">fixedareas.mat</span></code> file, <code class="docutils literal notranslate"><span class="pre">fixica.fdt</span></code> file, <code class="docutils literal notranslate"><span class="pre">fixica.set</span></code> file and <code class="docutils literal notranslate"><span class="pre">impact</span> <span class="pre">locations.mat</span></code> file. Please refer to the screenshot below for setting up the data folder.</p>
+</div>
+<p><img alt="" src="_images/data_folder_structure.png" /></p>
+</div>
 <div class="section" id="import">
 <h3>Import<a class="headerlink" href="#import" title="Permalink to this headline">¶</a></h3>
 <p>There are six modules in this package. Each of them contains functions for different visualizations. The <code class="docutils literal notranslate"><span class="pre">eeg_objects</span></code> module contains functions to convert the raw data into epoched data with specified time ranges.</p>

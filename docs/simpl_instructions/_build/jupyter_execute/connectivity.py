@@ -237,3 +237,124 @@ video
 # clip = mp.VideoFileClip(gif_file_path)
 # clip.write_videofile(mp4_file_path)
 # ```
+
+# <a id="circle"></a>
+# ## Create a Connectivity Plot
+
+# ### Define parameters
+# A detailed description of all animation parameters can be found in the `connectivity.plot_connectivity` docstring:
+
+# In[17]:
+
+
+help(connectivity.plot_connectivity)
+
+
+# In[18]:
+
+
+vmin = -1
+vmax = 1
+colormap = "RdBu_r"
+calc_type = "correlation"
+line_width = None
+threshold = 0
+show_sphere = True
+
+
+# In[19]:
+
+
+PAIR_OPTIONS = {
+    "all_pairs": [],
+    "local_anterior": "Fp1-F7, Fp2-F8, F7-C3, F4-C4, C4-F8, F3-C3",
+    "local_posterior": "T5-C3, T5-O1, C3-P3, C4-P4, C4-T6, T6-O2",
+    "far_coherence": "Fp1-T5, Fp2-T6, F7-T5, F7-P3, F7-O1, T5-F3, F3-P3, F4-P4, P4-F8, F8-T6, F8-O2, F4-T6",
+    "prefrontal_to_frontal_and_central": "Fp1-F3, Fp1-C3, Fp2-F4, Fp2-C4",
+    "occipital_to_parietal_and_central": "C3-O1, P3-O1, C4-O2, P4-O4",
+    "prefrontal_to_parietal": "Fp1-P3, Fp2-P4",
+    "frontal_to_occipital": "F3-O1, P4-O2",
+    "prefrontal_to_occipital": "Fp1-O1, Fp2-O2"
+}
+
+# select from the PAIR_OPTIONS options above or use a custom pair.
+pair_list = []  # leave as an empty list if you want all pairs
+
+# example of referencing a pair from the list
+pair_list = PAIR_OPTIONS["far_coherence"]
+
+
+# ### Generating a standalone plot
+
+# ```{note}
+# Generating a plot will use the first frame in the epoch, so make sure to update your epoch object to contain your frame of interest. 
+# ```
+
+# In[20]:
+
+
+get_ipython().run_cell_magic('capture', '', 'plot = connectivity.plot_connectivity(\n    epoch,\n)')
+
+
+# In[21]:
+
+
+plot
+
+
+# ### Saving the plot
+# You can change the plot to different formats by changing the format argument in the function. It supports 'png', 'pdf', 'svg'.
+# ```python
+# file_path = "examples/connectivity.svg"
+# plot.figure.savefig(file_path)
+# ```
+
+# </br>
+
+# <a id="circle"></a>
+# ## Create a Connectivity Circle Plot
+
+# ### Define parameters
+# A detailed description of all animation parameters can be found in the `connectivity.plot_conn_circle` docstring:
+
+# In[22]:
+
+
+help(connectivity.plot_conn_circle)
+
+
+# In[23]:
+
+
+vmin = -1
+vmax = 1
+colormap = "RdBu_r"
+calc_type = "correlation"
+line_width = 1
+max_connections = 50
+
+
+# ### Generating a standalone plot
+
+# ```{note}
+# Generating a plot will use the first frame in the epoch, so make sure to update your epoch object to contain your frame of interest. 
+# ```
+
+# In[24]:
+
+
+get_ipython().run_cell_magic('capture', '', 'plot = connectivity.plot_conn_circle(\n    epoch,\n)')
+
+
+# In[25]:
+
+
+plot
+
+
+# ### Saving the plot
+# You can change the plot to different formats by changing the format argument in the function. It supports 'png', 'pdf', 'svg'.
+# ```python
+# file_path = "examples/connectivity_circle.svg"
+# plot.figure.savefig(file_path)
+# ```

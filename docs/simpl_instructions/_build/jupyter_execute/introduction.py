@@ -12,6 +12,14 @@
 
 # ## Instructions
 
+# ### Data Folder Structure
+
+# ```{note}
+# To have data properly loaded to functions in this package, please make sure that the data is saved in the `data` folder. All files related to the same experiment should be included one subfolder under the `data` folder. Inside each experiment folder, there should be `fixedareas.mat` file, `fixica.fdt` file, `fixica.set` file and `impact locations.mat` file. Please refer to the screenshot below for setting up the data folder.
+# ```
+
+# ![](instruction_imgs/data_folder_structure.png)
+
 # ### Import
 
 # There are six modules in this package. Each of them contains functions for different visualizations. The `eeg_objects` module contains functions to convert the raw data into epoched data with specified time ranges.
