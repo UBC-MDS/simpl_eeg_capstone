@@ -7,7 +7,7 @@
 # 
 # The connectivity plots provide a way to visualize pair-wise correlation, coherence, and connectivity measures between nodes. There are 2 types of plots, shown in the image below. Both types of plots can be generated as an animation to view changes over time or as standalone plots. 
 
-# [Connectivity Plot](#connectivity)             | [Connectivity Circle](#circle)
+# [1) Connectivity Plot](#connectivity)             | [2) Connectivity Circle](#circle)
 # :-------------------------:|:-------------------------:
 # Lines drawn on a 2D representation of a skull![](instruction_imgs/connectivity.gif)  | Lines drawn between nodes represented in a circle ![](instruction_imgs/connectivity_circle.gif)
 
@@ -76,7 +76,6 @@ vmin = -1
 vmax = 1
 colormap = "RdBu_r"
 calc_type = "correlation"
-pair_list = []  # select from the PAIR_OPTIONS below or use a custom pair.
 line_width = None
 steps = 50
 threshold = 0
@@ -98,8 +97,11 @@ PAIR_OPTIONS = {
     "prefrontal_to_occipital": "Fp1-O1, Fp2-O2"
 }
 
+# select from the PAIR_OPTIONS options above or use a custom pair.
+pair_list = []  # leave as an empty list if you want all pairs
+
 # example of referencing a pair from the list
-PAIR_OPTIONS["far_coherence"]
+pair_list = PAIR_OPTIONS["far_coherence"]
 
 
 # ### Generating the animation
