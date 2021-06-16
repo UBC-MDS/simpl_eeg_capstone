@@ -15,6 +15,9 @@ install :
 test :
 	poetry run pytest
 
+clean_docs :
+	jb clean docs/simpl_instructions/
+
 update_docs :
 	jb build docs/simpl_instructions/
 	ghp-import -n -p -f docs/simpl_instructions/_build/html
