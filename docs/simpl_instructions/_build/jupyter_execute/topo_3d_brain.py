@@ -3,14 +3,25 @@
 
 # # 3D Brain Visualizations
 
-# ## Topographic map in 3D brain
+# ## 3D topographic brain map
+# 
+# The 3D topographic brain map provides a view of voltage measurements as a heatmap converted to estimated position on the brain. There are 2 plot options with different backends: 
+# 
+# 1) [matplotlib](#matplotlib) (the version found on the UI)
+# 
+# 2) [pyVista](#pyvista) (a better rendering but incompatible with the UI)
+# 
+# Both plots can be generated as an animation to view changes over time or as a standalone plot.
 
 # ![](instruction_imgs/topomap_3d_brain.gif)
+
+# ## General Setup
+# ### Import required modules
 
 # In[1]:
 
 
-from simpl_eeg import eeg_objects, topomap_3d_brain
+from simpl_eeg import topomap_3d_brain, eeg_objects
 
 
 # In[2]:
@@ -36,46 +47,20 @@ get_ipython().run_line_magic('load_ext', 'autoreload')
 get_ipython().run_line_magic('autoreload', '2')
 
 
-# <br>
-
-# ### Define parameters
-
-# A detailed description of all parameters can be found in the `topomap_2d.animate_topomap_2d` docstring:
+# ### Create epoched data
+# For additional options see [Creating EEG Objects](eeg_objects.html#intro) section.
 
 # In[5]:
 
 
-help(topomap_3d_brain.animate_matplot_brain)
-
-
-# In[6]:
-
-
-# change values belo to values of interest
-
-experiment_folder = "../../data/109"  # path to the experiment folder
-nth_epoch = 0  # the epoch of interest
-
-# 3D brain parameters
-colormap = "RdBu_r"
-
-
-# <br>
-
-# ### Create epoched data
-
-# For additional options see **Creating EEG Objects** section.
-
-# In[7]:
-
+experiment_folder = "../../data/109"
+nth_epoch = 0
 
 epochs = eeg_objects.Epochs(experiment_folder)
 epoch = epochs.get_nth_epoch(nth_epoch)
 
 
-# </br>
-
-# ### Create the topographic map in 3D brain
+# ### Generate forward and inverse (optional)
 
 # ```{note}
 # - Before an animation or plot can be generated a **"forward"** and **"inverse"** (abbreviated as **"stc"**) must first be generated. If they are not provided to either of the plotting animations they will be automatically generated **HOWEVER** this will increase the time it takes to generate the figure.
@@ -85,7 +70,7 @@ epoch = epochs.get_nth_epoch(nth_epoch)
 
 # #### Generate Forward
 
-# In[8]:
+# In[6]:
 
 
 fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
@@ -93,57 +78,37 @@ fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
 
 # #### Generate Inverse
 
-# In[9]:
+# In[7]:
 
 
 stc = topomap_3d_brain.create_inverse_solution(epoch, fwd)
 
 
-# #### Generate figure with pyvista backend (NOT CURRENTLY WORKING)
+# <a id="matplotlib"></a>
+# ## Create a matplotlib 3D brain animation (recommended)
 
-# In[10]:
+# ### Define parameters
 
+# A detailed description of all parameters can be found in the `topomap_2d.animate_topomap_2d` docstring:
 
-#pyvista_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc = stc, backend = 'pyvista')
-
-
-# #### Save animation with pyvista backend (NOT CURRENTLY WORKING)
-
-# In[11]:
+# In[8]:
 
 
-#topomap_3d_brain.save_animated_topomap_3d_brain(pyvista_brain_fig, filename = "brain_animation.gif")
+help(topomap_3d_brain.animate_matplot_brain)
 
 
-# </br>
-
-# #### Generate figure with matplotlib backend (recommended)
-
-# In[12]:
+# In[9]:
 
 
-get_ipython().run_cell_magic('capture', '', "matplot_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc = stc, backend = 'matplotlib')")
-
-
-# ##### Save the figure
-
-# In[13]:
-
-
-# You could change the plot to different formats by changing the format argument in the function. 
-# It supports 'png', 'pdf', 'svg'.
-
-file_path = "../../exports/examples/topomap_3d_brain.svg"  # change the file path to where you would like to save the file
-
-matplot_brain_fig.savefig(file_path, format= 'svg')
+colormap = "RdBu_r"
 
 
 # #### Generate animation with matplotlib backend (slow but recommended)
 
-# In[14]:
+# In[10]:
 
 
-get_ipython().run_cell_magic('capture', '', "matplotlib_animation = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = 'lat', hemi = 'lh')\n\nfrom IPython.display import HTML\nvideo = HTML(matplotlib_animation.to_jshtml())")
+get_ipython().run_cell_magic('capture', '', "\nmatplotlib_animation = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = 'lat', hemi = 'lh')\n\nfrom IPython.display import HTML\nvideo = HTML(matplotlib_animation.to_jshtml())")
 
 
 # In[ ]:
@@ -152,21 +117,23 @@ get_ipython().run_cell_magic('capture', '', "matplotlib_animation = topomap_3d_b
 video
 
 
+# ### Saving the animation
+
 # #### Save as gif
 
-# In[ ]:
-
-
-get_ipython().run_cell_magic('capture', '', '\nanim_brain = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = \'lat\', hemi = \'lh\')\n\ngif_file_path = "../../exports/examples/topomap_3d_brain.gif"  # change the file path to where you would like to save the file\nanim_brain.save(gif_file_path, fps=5, dpi=300)')
-
+# ```python
+# anim_brain = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = 'lat', hemi = 'lh')
+# 
+# gif_file_path = "examples/topomap_3d_brain.gif" 
+# anim_brain.save(gif_file_path, fps=5, dpi=300)
+# ```
 
 # #### Save as mp4
 
-# In[ ]:
-
-
-get_ipython().run_cell_magic('capture', '', '\nmp4_file_path = "../../exports/examples/topo_2d.mp4"  # change the file path to where you would like to save the file\nanim_brain.save(mp4_file_path, fps=5, dpi=300)')
-
+# ```python
+# mp4_file_path = "examples/topo_2d.mp4"
+# anim_brain.save(mp4_file_path, fps=5, dpi=300)
+# ```
 
 # ```{note}
 # If `FFMpegWriter` does not work on your computer you can save the file as a gif first and then convert it into mp4 file by running the code below.
@@ -174,8 +141,42 @@ get_ipython().run_cell_magic('capture', '', '\nmp4_file_path = "../../exports/ex
 # ```python
 # import moviepy.editor as mp
 # 
-# clip = mp.VideoFileClip(gif_file_path)  # change the file path to where you saved the gif file
-# clip.write_videofile(mp4_file_path)  # change the file path to where you would like to save the mp4 file 
+# clip = mp.VideoFileClip(gif_file_path)
+# clip.write_videofile(mp4_file_path)
 # ```
 
-# <br>
+# ## Create a matplotlib 3D brain figure (recommended)
+
+# ### Generating a matplotlib plot
+
+# In[ ]:
+
+
+get_ipython().run_cell_magic('capture', '', "matplot_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc=stc, backend='matplotlib')")
+
+
+# ### Save the plot
+# You can change the plot to different formats by changing the format argument in the function. It supports 'png', 'pdf', 'svg'.
+# ```python
+# file_path = "examples/topomap_3d_brain.svg"  
+# matplot_brain_fig.savefig(file_path, format='svg')
+# ```
+
+# <a id="pyvista"></a>
+# ## Create a pyVista 3D brain animation
+
+# ### Generate figure with pyvista backend (NOT CURRENTLY WORKING)
+
+# In[ ]:
+
+
+#pyvista_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc = stc, backend = 'pyvista')
+
+
+# ### Save animation with pyvista backend (NOT CURRENTLY WORKING)
+
+# In[ ]:
+
+
+#topomap_3d_brain.save_animated_topomap_3d_brain(pyvista_brain_fig, filename = "brain_animation.gif")
+

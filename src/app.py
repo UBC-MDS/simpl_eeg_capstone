@@ -142,9 +142,9 @@ def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
 
     Args:
         experiment_num (str): Folder name of experiment
-        tmin (float): Seconds before the impact time
-        tmax (float): Seconds after the impact time
-        start_second (int): The second of impact
+        tmin (float): Seconds before the event time
+        tmax (float): Seconds after the event time
+        start_second (int): The second of event
         epoch_num (int, optional): An epoch of interest to store.
 
     Returns:
@@ -281,7 +281,7 @@ def main():
 
     if time_select == "Time":
         start_time = col2.text_input(
-            "Custom impact time",
+            "Custom event time",
             value="0:00:05",
             max_chars=7,
             help="""The timestamp to render the figures around. Must be entered in the format "H:MM:SS".
@@ -294,8 +294,8 @@ def main():
         if in_timeframe == 0:
             st.error("Input time exceeds max timestamp of the current experiment ({}).".format(max_time))
         if in_timeframe == -1:
-            st.error("""Specified impact time cannot be 0:00:00. If you wish to see the experiment from the
-            earliest time possible then please specify an impact time of 00:00:01 and a "Seconds before impact"
+            st.error("""Specified event time cannot be 0:00:00. If you wish to see the experiment from the
+            earliest time possible then please specify an event time of 00:00:01 and a "Seconds before event"
             value of 1.0""")
         epoch_num = 0
     else:
@@ -313,16 +313,16 @@ def main():
             epoch_times[i] = label
 
         epoch_num = col2.selectbox(
-            "Epoch",
+            "Event",
             options = list(epoch_times.keys()),
             format_func=lambda key: epoch_times[key],
             help="""The number epoch to use in all of the figures. Epochs are generated in sequence based
-            on the order of events in the "impact locations.mat" file.
+            on the order of events in the "event locations.mat" file.
             """
         )
 
     tmin = st.sidebar.number_input(
-        "Seconds before impact",
+        "Seconds before event",
         value=0.3,
         min_value=0.01,
         max_value=min(float(start_second), 10.0) if start_second else 10.0,
@@ -338,7 +338,7 @@ def main():
             tmax_max_value = seconds_to_end
 
     tmax = st.sidebar.number_input(
-        "Seconds after impact",
+        "Seconds after event",
         value=0.7,
         min_value=0.01,
         max_value=tmax_max_value,
@@ -688,9 +688,18 @@ def main():
                 help = """The amount of smoothing to apply to the brain model.
                 """
             )
+            use_non_MNE_colours = st.checkbox("Use non-MNE colour palette",
+                                             value=False,
+                                             key="braincolour",
+                                             help = """The default MNE color palette is reccomended
+                                             for this figure as it includes texturing on the brain.
+                                             Select this if you still wish to use the color palette specified
+                                             in the sidebar.
+                                             """)
         else:
             spacing_value = "oct5"
             smoothing_amount = 2
+            use_non_MNE_colours = False
 
     with expander_connectivity.widget_col:
 
@@ -868,12 +877,16 @@ def main():
                     if stc_generated is False:
                         stc = generate_stc_epoch(plot_epoch)
                         stc_generated = True
+                    if use_non_MNE_colours is False:
+                        colormap_brain = "mne"
+                    else:
+                        colormap_brain = colormap
                     html_plot = animate_ui_3d_brain(
                         epoch=plot_epoch,
                         views=view_selection,
                         stc=stc,
                         hemi=hemi_selection,
-                        colormap=colormap,
+                        colormap=colormap_brain,
                         cmin=vmin_3d_brain,
                         cmax=vmax_3d_brain,
                         spacing=spacing_value,
@@ -941,3 +954,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
