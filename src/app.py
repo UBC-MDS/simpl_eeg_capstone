@@ -313,7 +313,7 @@ def main():
             epoch_times[i] = label
 
         epoch_num = col2.selectbox(
-            "Epoch",
+            "Event",
             options = list(epoch_times.keys()),
             format_func=lambda key: epoch_times[key],
             help="""The number epoch to use in all of the figures. Epochs are generated in sequence based
@@ -322,7 +322,7 @@ def main():
         )
 
     tmin = st.sidebar.number_input(
-        "Seconds before impact",
+        "Seconds before timestamp",
         value=0.3,
         min_value=0.01,
         max_value=min(float(start_second), 10.0) if start_second else 10.0,
@@ -338,7 +338,7 @@ def main():
             tmax_max_value = seconds_to_end
 
     tmax = st.sidebar.number_input(
-        "Seconds after impact",
+        "Seconds after timestamp",
         value=0.7,
         min_value=0.01,
         max_value=tmax_max_value,
@@ -688,9 +688,18 @@ def main():
                 help = """The amount of smoothing to apply to the brain model.
                 """
             )
+            use_non_MNE_colours = st.checkbox("Use non-MNE colour palette",
+                                             value=False,
+                                             key="braincolour",
+                                             help = """The default MNE color palette is reccomended
+                                             for this figure as it includes texturing on the brain.
+                                             Select this if you still wish to use the color palette specified
+                                             in the sidebar.
+                                             """)
         else:
             spacing_value = "oct5"
             smoothing_amount = 2
+            use_non_MNE_colours = False
 
     with expander_connectivity.widget_col:
 
@@ -868,12 +877,16 @@ def main():
                     if stc_generated is False:
                         stc = generate_stc_epoch(plot_epoch)
                         stc_generated = True
+                    if use_non_MNE_colours is False:
+                        colormap_brain = "mne"
+                    else:
+                        colormap_brain = colormap
                     html_plot = animate_ui_3d_brain(
                         epoch=plot_epoch,
                         views=view_selection,
                         stc=stc,
                         hemi=hemi_selection,
-                        colormap=colormap,
+                        colormap=colormap_brain,
                         cmin=vmin_3d_brain,
                         cmax=vmax_3d_brain,
                         spacing=spacing_value,
