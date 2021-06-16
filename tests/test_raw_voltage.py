@@ -5,7 +5,7 @@ import pickle
 import mne
 
 # import the test data
-with open('data/test_data/test_data1.pkl', 'rb') as input:
+with open('tests/test_data/test_data1.pkl', 'rb') as input:
     raw1 = pickle.load(input)
 
 def test_raw_voltage_plot():
