@@ -688,9 +688,18 @@ def main():
                 help = """The amount of smoothing to apply to the brain model.
                 """
             )
+            use_non_MNE_colours = st.checkbox("Use non-MNE colour palette",
+                                             value=False,
+                                             key="braincolour",
+                                             help = """The default MNE color palette is reccomended
+                                             for this figure as it includes texturing on the brain.
+                                             Select this if you still wish to use the color palette specified
+                                             in the sidebar.
+                                             """)
         else:
             spacing_value = "oct5"
             smoothing_amount = 2
+            use_non_MNE_colours = False
 
     with expander_connectivity.widget_col:
 
@@ -868,12 +877,16 @@ def main():
                     if stc_generated is False:
                         stc = generate_stc_epoch(plot_epoch)
                         stc_generated = True
+                    if use_non_MNE_colours is False:
+                        colormap_brain = "mne"
+                    else:
+                        colormap_brain = colormap
                     html_plot = animate_ui_3d_brain(
                         epoch=plot_epoch,
                         views=view_selection,
                         stc=stc,
                         hemi=hemi_selection,
-                        colormap=colormap,
+                        colormap=colormap_brain,
                         cmin=vmin_3d_brain,
                         cmax=vmax_3d_brain,
                         spacing=spacing_value,
@@ -941,3 +954,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
