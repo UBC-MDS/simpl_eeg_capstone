@@ -52,7 +52,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="3D Brain Visualizations" href="topo_3d_brain.html" />
-    <link rel="prev" title="Connectivity Visualizations" href="connectivity.html" />
+    <link rel="prev" title="Raw Voltage Visualization" href="raw_voltage.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -105,11 +105,6 @@
    Raw Voltage Visualization
   </a>
  </li>
- <li class="toctree-l1">
-  <a class="reference internal" href="connectivity.html">
-   Connectivity Visualizations
-  </a>
- </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    2D Head Visualizations
@@ -123,6 +118,11 @@
  <li class="toctree-l1">
   <a class="reference internal" href="topo_3d_head.html">
    3D Head Visualizations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="connectivity.html">
+   Connectivity Visualizations
   </a>
  </li>
  <li class="toctree-l1">
@@ -218,8 +218,8 @@
             <nav id="bd-toc-nav">
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#d-topographic-map">
-   2D topographic map
+  <a class="reference internal nav-link" href="#d-topographic-head-map">
+   2D topographic head map
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
@@ -313,9 +313,9 @@
                 
   <div class="section" id="d-head-visualizations">
 <h1>2D Head Visualizations<a class="headerlink" href="#d-head-visualizations" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="d-topographic-map">
-<h2>2D topographic map<a class="headerlink" href="#d-topographic-map" title="Permalink to this headline">¶</a></h2>
-<p>The 2D topographic map provides a view of voltage measurements as a heatmap imposed on an image of a 2D skull. It can be generated as an <a class="reference external" href="#animation">animation</a> to view changes over time or as a <a class="reference external" href="#plot">standalone plot</a>.</p>
+<div class="section" id="d-topographic-head-map">
+<h2>2D topographic head map<a class="headerlink" href="#d-topographic-head-map" title="Permalink to this headline">¶</a></h2>
+<p>The 2D topographic head map provides a view of voltage measurements as a heatmap imposed on an image of a 2D skull. It can be generated as an <a class="reference external" href="#animation">animation</a> to view changes over time or as a <a class="reference external" href="#plot">standalone plot</a>.</p>
 <p><img alt="" src="_images/topo_2d.gif" /></p>
 </div>
 <div class="section" id="general-setup">
@@ -355,7 +355,7 @@
 </div>
 </div>
 </div>
-<br></div>
+</div>
 <div class="section" id="create-epoched-data">
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
 <p>For additional options see <a class="reference external" href="eeg_objects.html#intro">Creating EEG Objects</a> section.</p>
@@ -363,7 +363,7 @@
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">experiment_folder</span> <span class="o">=</span> <span class="s2">&quot;../../data/109&quot;</span>
 <span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">0</span>
-<span class="n">num_steps</span> <span class="o">=</span> <span class="mi">50</span> <span class="c1"># number of steps to skip to shorten epoch</span>
+<span class="n">num_steps</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># number of steps to skip to shorten epoch</span>
 
 <span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_folder</span><span class="p">)</span>
 <span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
@@ -401,11 +401,11 @@
 </div>
 </div>
 </div>
-<br></div>
+<p><a id="animation"></a></p>
+</div>
 </div>
 <div class="section" id="create-a-2d-topographic-animation">
 <h2>Create a 2D topographic animation<a class="headerlink" href="#create-a-2d-topographic-animation" title="Permalink to this headline">¶</a></h2>
-<p><a id="animation"></a></p>
 <div class="section" id="define-parameters">
 <h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
 <p>A detailed description of all animation parameters can be found in the <code class="docutils literal notranslate"><span class="pre">topomap_2d.animate_topomap_2d</span></code> docstring:</p>
@@ -517,7 +517,7 @@ animate_topomap_2d(epoch, colormap=&#39;RdBu_r&#39;, mark=&#39;dot&#39;, contour
 </div>
 </div>
 </div>
-<br></div>
+</div>
 <div class="section" id="generating-the-animation">
 <h3>Generating the animation<a class="headerlink" href="#generating-the-animation" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
@@ -743,42 +743,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_imgb5e97e5bb38c4dd6907b0a08bbcab3f6">
+  <img id="_anim_img867e3fba373948c68e5247ee45ed5723">
   <div class="anim-controls">
-    <input id="_anim_sliderb5e97e5bb38c4dd6907b0a08bbcab3f6" type="range" class="anim-slider"
+    <input id="_anim_slider867e3fba373948c68e5247ee45ed5723" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="animb5e97e5bb38c4dd6907b0a08bbcab3f6.set_frame(parseInt(this.value));"></input>
+           oninput="anim867e3fba373948c68e5247ee45ed5723.set_frame(parseInt(this.value));"></input>
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="animb5e97e5bb38c4dd6907b0a08bbcab3f6.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim867e3fba373948c68e5247ee45ed5723.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="animb5e97e5bb38c4dd6907b0a08bbcab3f6.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="anim867e3fba373948c68e5247ee45ed5723.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="animb5e97e5bb38c4dd6907b0a08bbcab3f6.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="anim867e3fba373948c68e5247ee45ed5723.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="animb5e97e5bb38c4dd6907b0a08bbcab3f6.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="anim867e3fba373948c68e5247ee45ed5723.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="animb5e97e5bb38c4dd6907b0a08bbcab3f6.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="anim867e3fba373948c68e5247ee45ed5723.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="animb5e97e5bb38c4dd6907b0a08bbcab3f6.play_animation()">
+      <button title="Play" aria-label="Play" onclick="anim867e3fba373948c68e5247ee45ed5723.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="animb5e97e5bb38c4dd6907b0a08bbcab3f6.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="anim867e3fba373948c68e5247ee45ed5723.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="animb5e97e5bb38c4dd6907b0a08bbcab3f6.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="anim867e3fba373948c68e5247ee45ed5723.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="animb5e97e5bb38c4dd6907b0a08bbcab3f6.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="anim867e3fba373948c68e5247ee45ed5723.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectb5e97e5bb38c4dd6907b0a08bbcab3f6"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select867e3fba373948c68e5247ee45ed5723"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_b5e97e5bb38c4dd6907b0a08bbcab3f6"
+      <input type="radio" name="state" value="once" id="_anim_radio1_867e3fba373948c68e5247ee45ed5723"
              >
-      <label for="_anim_radio1_b5e97e5bb38c4dd6907b0a08bbcab3f6">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_b5e97e5bb38c4dd6907b0a08bbcab3f6"
+      <label for="_anim_radio1_867e3fba373948c68e5247ee45ed5723">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_867e3fba373948c68e5247ee45ed5723"
              checked>
-      <label for="_anim_radio2_b5e97e5bb38c4dd6907b0a08bbcab3f6">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_b5e97e5bb38c4dd6907b0a08bbcab3f6"
+      <label for="_anim_radio2_867e3fba373948c68e5247ee45ed5723">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_867e3fba373948c68e5247ee45ed5723"
              >
-      <label for="_anim_radio3_b5e97e5bb38c4dd6907b0a08bbcab3f6">Reflect</label>
+      <label for="_anim_radio3_867e3fba373948c68e5247ee45ed5723">Reflect</label>
     </form>
   </div>
 </div>
@@ -788,9 +788,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_imgb5e97e5bb38c4dd6907b0a08bbcab3f6";
-    var slider_id = "_anim_sliderb5e97e5bb38c4dd6907b0a08bbcab3f6";
-    var loop_select_id = "_anim_loop_selectb5e97e5bb38c4dd6907b0a08bbcab3f6";
+    var img_id = "_anim_img867e3fba373948c68e5247ee45ed5723";
+    var slider_id = "_anim_slider867e3fba373948c68e5247ee45ed5723";
+    var loop_select_id = "_anim_loop_select867e3fba373948c68e5247ee45ed5723";
     var frames = new Array(41);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -23823,7 +23823,7 @@ JUrAFAqFQhFKlIApFAqFIpQoAVMoFApFKFECplAoFIpQ8v/kd03+dx9wBQAAAABJRU5ErkJggg==\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        animb5e97e5bb38c4dd6907b0a08bbcab3f6 = new Animation(frames, img_id, slider_id, 83.0,
+        anim867e3fba373948c68e5247ee45ed5723 = new Animation(frames, img_id, slider_id, 83.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -23835,8 +23835,7 @@ JUrAFAqFQhFKlIApFAqFIpQoAVMoFApFKFECplAoFIpQ8v/kd03+dx9wBQAAAABJRU5ErkJggg==\
 <h3>Saving the animation<a class="headerlink" href="#saving-the-animation" title="Permalink to this headline">¶</a></h3>
 <div class="section" id="save-as-html">
 <h4>Save as html<a class="headerlink" href="#save-as-html" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">html_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/topo_2d.html&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
-
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">html_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/topo_2d.html&quot;</span>
 <span class="n">html_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">html_file_path</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span>
 <span class="n">html_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">html_plot</span><span class="p">)</span>
 <span class="n">html_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
@@ -23847,7 +23846,7 @@ JUrAFAqFQhFKlIApFAqFIpQoAVMoFApFKFECplAoFIpQ8v/kd03+dx9wBQAAAABJRU5ErkJggg==\
 <h4>Save as gif<a class="headerlink" href="#save-as-gif" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">anim</span> <span class="o">=</span> <span class="n">topomap_2d</span><span class="o">.</span><span class="n">animate_topomap_2d</span><span class="p">(</span><span class="n">shortened_epoch</span><span class="p">)</span>
 
-<span class="n">gif_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/topo_2d.gif&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">gif_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/topo_2d.gif&quot;</span>
 <span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">gif_file_path</span><span class="p">,</span> <span class="n">fps</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -23856,7 +23855,7 @@ JUrAFAqFQhFKlIApFAqFIpQoAVMoFApFKFECplAoFIpQ8v/kd03+dx9wBQAAAABJRU5ErkJggg==\
 <h4>Save as mp4<a class="headerlink" href="#save-as-mp4" title="Permalink to this headline">¶</a></h4>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">anim</span> <span class="o">=</span> <span class="n">topomap_2d</span><span class="o">.</span><span class="n">animate_topomap_2d</span><span class="p">(</span><span class="n">shortened_epoch</span><span class="p">)</span>
 
-<span class="n">mp4_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/topo_2d.mp4&quot;</span>  <span class="c1"># change the file path to where you would like to save the file</span>
+<span class="n">mp4_file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/topo_2d.mp4&quot;</span>
 <span class="n">anim</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">mp4_file_path</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -23866,16 +23865,16 @@ JUrAFAqFQhFKlIApFAqFIpQoAVMoFApFKFECplAoFIpQ8v/kd03+dx9wBQAAAABJRU5ErkJggg==\
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">moviepy.editor</span> <span class="k">as</span> <span class="nn">mp</span>
 
-<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">gif_file_path</span><span class="p">)</span>  <span class="c1"># change the file path to where you saved the gif file</span>
-<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="n">mp4_file_path</span><span class="p">)</span>  <span class="c1"># change the file path to where you would like to save the mp4 file </span>
+<span class="n">clip</span> <span class="o">=</span> <span class="n">mp</span><span class="o">.</span><span class="n">VideoFileClip</span><span class="p">(</span><span class="n">gif_file_path</span><span class="p">)</span>
+<span class="n">clip</span><span class="o">.</span><span class="n">write_videofile</span><span class="p">(</span><span class="n">mp4_file_path</span><span class="p">)</span>
 </pre></div>
 </div>
-<br></div>
+<p><a id="plot"></a></p>
+</div>
 </div>
 </div>
 <div class="section" id="create-a-2d-topographic-plot">
 <h2>Create a 2D topographic plot<a class="headerlink" href="#create-a-2d-topographic-plot" title="Permalink to this headline">¶</a></h2>
-<p><a id="plot"></a></p>
 <div class="section" id="id1">
 <h3>Define parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>A detailed description of all animation parameters can be found in the <code class="docutils literal notranslate"><span class="pre">topomap_2d.plot_topomap_2d</span></code> docstring:</p>
@@ -23993,13 +23992,15 @@ plot_topomap_2d(epoch, plotting_data=None, recording_number=0, colormap=&#39;RdB
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/topo_2d_38_0.png" src="_images/topo_2d_38_0.png" />
+<img alt="_images/topo_2d_32_0.png" src="_images/topo_2d_32_0.png" />
 </div>
 </div>
 </div>
 <div class="section" id="saving-the-plot">
 <h3>Saving the plot<a class="headerlink" href="#saving-the-plot" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s2">&quot;examples/topo_2d.svg&quot;</span><span class="p">)</span>
+<p>You can change the plot to different formats by changing the format argument in the function. It supports ‘png’, ‘pdf’, ‘svg’.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">file_path</span> <span class="o">=</span> <span class="s2">&quot;examples/topo_2d.svg&quot;</span>
+<span class="n">plot</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -24031,7 +24032,7 @@ plot_topomap_2d(epoch, plotting_data=None, recording_number=0, colormap=&#39;RdB
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="connectivity.html" title="previous page">Connectivity Visualizations</a>
+    <a class='left-prev' id="prev-link" href="raw_voltage.html" title="previous page">Raw Voltage Visualization</a>
     <a class='right-next' id="next-link" href="topo_3d_brain.html" title="next page">3D Brain Visualizations</a>
 
         </div>
