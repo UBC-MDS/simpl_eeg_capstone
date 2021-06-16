@@ -322,7 +322,7 @@ def main():
         )
 
     tmin = st.sidebar.number_input(
-        "Seconds before timestamp",
+        "Seconds before event",
         value=0.3,
         min_value=0.01,
         max_value=min(float(start_second), 10.0) if start_second else 10.0,
@@ -338,7 +338,7 @@ def main():
             tmax_max_value = seconds_to_end
 
     tmax = st.sidebar.number_input(
-        "Seconds after timestamp",
+        "Seconds after event",
         value=0.7,
         min_value=0.01,
         max_value=tmax_max_value,
