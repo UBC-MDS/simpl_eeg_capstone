@@ -8,3 +8,4 @@ sections:
 - file: topo_2d
 - file: topo_3d_brain
 - file: topo_3d_head
+- file: user_interface
