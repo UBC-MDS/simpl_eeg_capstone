@@ -26,7 +26,6 @@ PAIR_OPTIONS = {
     "prefrontal_to_occipital": "Fp1-O1, Fp2-O2"
 }
 
-
 def convert_pairs(string_pairs):
     """
     Convert pair names to usable format
@@ -267,14 +266,17 @@ def plot_connectivity(
     epoch.copy()
     epoch = epoch.rename_channels(lambda x: "  "+str(x))
 
-    epoch.plot_sensors(
-        axes=ax,
-        show_names=True,
-        kind="topomap",
-        sphere=(9, -15, 0, 100) if show_sphere else None,
-        show=False,
-        **kwargs
-    )
+    # combine default settings with user specified settings
+    default_kwargs = {
+        "axes": ax,
+        "show_names": True,
+        "kind": "topomap",
+        "sphere": (9, -15, 0, 100) if show_sphere else None,
+        "show": False
+    }
+    kwargs = {**default_kwargs, **kwargs}
+
+    epoch.plot_sensors(**kwargs)
 
     if colorbar:
         fig.colorbar(cmap)
@@ -462,20 +464,25 @@ def plot_conn_circle(
 
     angles = mne.viz.circular_layout(ch_names, ch_names, start_pos=90)
 
+    # combine default settings with user specified settings
+    default_kwargs = {
+        "n_lines": max_connections,
+        "fig": fig,
+        "node_angles": angles,
+        "facecolor": "w",
+        "textcolor": "black",
+        "colormap": colormap,
+        "node_colors": ["grey" for i in range(len(ch_names))],
+        "vmin": vmin,
+        "vmax": vmax,
+        "linewidth": line_width,
+        "title": title
+    }
+    kwargs = {**default_kwargs, **kwargs}
+
     fig = mne.viz.plot_connectivity_circle(
         conn,
         ch_names,
-        n_lines=max_connections,
-        fig=fig,
-        node_angles=angles,
-        facecolor="w",
-        textcolor="black",
-        colormap=colormap,
-        node_colors=["grey" for i in range(len(ch_names))],
-        vmin=vmin,
-        vmax=vmax,
-        linewidth=line_width,
-        title=title,
         colorbar=False,
         **kwargs
     )[0]
@@ -545,6 +552,18 @@ def animate_connectivity_circle(
 
     num_steps = math.ceil(len(epoch.times)/steps)
 
+    # combine default settings with user specified settings
+    default_kwargs = {
+        "calc_type": calc_type,
+        "max_connections": max_connections,
+        "colormap": colormap,
+        "vmin": vmin,
+        "vmax": vmax,
+        "line_width": line_width,
+        "title": title
+    }
+    kwargs = {**default_kwargs, **kwargs}
+
     def animate(frame_number):
         fig.clear()
 
@@ -558,13 +577,6 @@ def animate_connectivity_circle(
             plot_conn_circle(
                 frame_epoch,
                 fig,
-                calc_type=calc_type,
-                max_connections=max_connections,
-                colormap=colormap,
-                vmin=vmin,
-                vmax=vmax,
-                line_width=line_width,
-                title=title,
                 caption=caption,
                 **kwargs
             )
