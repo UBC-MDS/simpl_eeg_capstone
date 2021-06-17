@@ -343,17 +343,19 @@ def main():
             """
         )
 
+    max_tmax = 10.0
+    curr_max = min(float(start_second), max_tmax) if start_second else max_tmax
     tmin = st.sidebar.number_input(
         "Seconds before event",
         value=0.3,
-        min_value=0.01,
-        max_value=min(float(start_second), 10.0) if start_second else 10.0,
+        min_value=0.0,
+        max_value=curr_max,
         help="""The number of seconds prior to the specified timestamp
         to start the figures from.
-        Min = 0.01, max = 10
+        Min = 0.0, max = {}
         (also cannot be a value that will cause the
         timestamp to go beyond 00:00:00).
-        """
+        """.format(curr_max)
     )
 
     tmax_max_value = 10.0
