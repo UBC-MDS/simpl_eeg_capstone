@@ -1,6 +1,8 @@
 """Module for generating and animating the topographic map in a 3D head shape
 """
 
+import gif
+
 # import libraries
 import mne
 import numpy as np
@@ -8,16 +10,13 @@ import pandas as pd
 import plotly.graph_objects as go
 from scipy.interpolate import NearestNDInterpolator
 from simpl_eeg import eeg_objects
-import gif
 
 
 # define the frame arguments for the animated plot
 def frame_args(duration):
     """Return the frame arguments of the animated plot
-
     Args:
         duration (int): The number of frames for the animated plot
-
     Returns:
         dict: A dictionary of frame arguments
     """
@@ -39,7 +38,6 @@ def frame_args(duration):
 
 def get_standard_coord():
     """Generate an array of cartesian coordinates of the standard node locations ("standard_1005")
-
     Returns:
         montage (mne.channels.montage): The standard montage from the mne library
         array: A numpy array of cartesian coordinates of the standard node locations ("standard_1005")
@@ -59,7 +57,6 @@ def get_standard_coord():
 
 def interpolated_time(df, channel_names, node_coord, x, y, z, t):
     """To interpolate EEG signals to locations points that don't have data
-
     Args:
         df (dataframe): A dataframe that contains the EEG signal of each channels for each time stamps
         channel_names (list): A list of channel names in the raw data
@@ -68,7 +65,6 @@ def interpolated_time(df, channel_names, node_coord, x, y, z, t):
         y (array): A numpy array of Y coordinates of all channels for interpolation
         z (array): A numpy array of Z coordinates of all channels for interpolation
         t (int): The time stamp we want to interpolate EEG voltages for
-
     Returns:
         array: A numpy array of interpolated EEG voltages
     """
@@ -99,11 +95,9 @@ def interpolated_time(df, channel_names, node_coord, x, y, z, t):
 
 def get_eeg_node(raw, standard_montage_list):
     """Get the electrode location from the raw data
-
     Args:
         raw (mne.epochs.Epochs): The raw epoch data
         standard_montage_list (array): The numpy array which contains the cartesian coordinate of standard node location
-
     Returns:
         array: The electrode location from the raw data
     """
@@ -126,11 +120,9 @@ def get_eeg_node(raw, standard_montage_list):
 
 def get_node_dataframe(raw, montage):
     """Get the electrode name and electrode location from the raw data and save it in a dataframe
-
     Args:
         raw (mne.epochs.Epochs): The raw epoch data
         montage (array): The numpy array which contains the cartesian coordinate of standard node location
-
     Returns:
         dataframe: A dataframe which contains the electrode name and electrode location from the raw data
     """
@@ -165,7 +157,6 @@ def animate_3d_head(
     colormap="Bluered",
 ):
     """Plot an animated topographic map in a 3D head shape
-
     Args:
         epoch (mne.epochs.Epochs): An epoched file for the EEGLab data
         plot_title (str, optionl): The title of the plot. Defaults to "".
@@ -173,7 +164,6 @@ def animate_3d_head(
         color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
         color_max (int, optional): The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
         colormap (str, optional): The colour scheme to use. Defaults to Bluered.
-
     Returns:
         figure: An animated topographic map in a 3D head shape
     """
@@ -217,6 +207,13 @@ def animate_3d_head(
     node_coord = get_eeg_node(epoch, standard_montage)
     node_df = get_node_dataframe(epoch, standard_montage)
 
+    # get the interpolated values for all electrode locations
+    interpolated_values_dict = {}
+    for i in range(nb_frame):
+        interpolated_values_dict[str(i)] = interpolated_time(
+            df, channel_names, node_coord, x, y, z, i
+        )
+
     # generate the animated plot
     fig = go.Figure(
         frames=[
@@ -229,9 +226,7 @@ def animate_3d_head(
                     colorbar_title=color_title,
                     cmin=color_min,
                     cmax=color_max,
-                    intensity=interpolated_time(
-                        df, channel_names, node_coord, x, y, z, k
-                    ),
+                    intensity=interpolated_values_dict[str(k)],
                     intensitymode="vertex",  # can't be changed
                     alphahull=1,  # can't be changed
                     opacity=1,
@@ -254,7 +249,7 @@ def animate_3d_head(
             colorbar_title=color_title,
             cmin=color_min,
             cmax=color_max,
-            intensity=interpolated_time(df, channel_names, node_coord, x, y, z, 0),
+            intensity=interpolated_values_dict[str(0)],
             intensitymode="vertex",
             alphahull=1,
             opacity=1,
@@ -342,7 +337,6 @@ def topo_3d_map(
     colormap="Bluered",
 ):
     """Plot a topographic map in a 3D head shape for a single time stamp
-
     Args:
         epoch (mne.epochs.Epochs): An epoched file for the EEGLab data
         time_stamp (int): The time stamp that is of interest
@@ -350,7 +344,6 @@ def topo_3d_map(
         color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
         color_max (int, optional): The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
         colormap (str, optional): The colour scheme to use. Defaults to Bluered.
-
     Returns:
         figure: A topographic map in a 3D head shape
     """
@@ -448,7 +441,6 @@ def topo3dhead_plot(epoch, i):
 # To save the animated plot as a gif
 def save_gif(epoch, gifname, duration):
     """Save the animated plot as gif file
-
     Args:
         epoch(mne.epochs.Epochs): The epoch file for creating gif
         gifname (str): The file name.
