@@ -295,9 +295,6 @@ def topo_3d_map(epoch, time_stamp, color_title="EEG MicroVolt", color_min = -50,
     """
     if type(epoch) is not mne.epochs.Epochs:
         raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
-    
-    if type(plot_title) is not str:
-        raise TypeError("plot_title has to be a string")
 
     if type(color_title) is not str:
         raise TypeError("color_title has to be a string")
