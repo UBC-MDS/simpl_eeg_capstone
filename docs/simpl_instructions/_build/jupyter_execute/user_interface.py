@@ -9,6 +9,8 @@
 # 
 # A selection of the most useful package features are available in the UI, although the customization options and visualizations available on the UI are not exhaustive. If you would like to heavily customize your visualization we recommend using the python package directly instead, as it allows more flexibility. 
 # 
+# ![](instruction_imgs/ui_showcase.gif)
+# 
 # ## Features
 # The UI contains over 40 customization options and 6 visualization options:
 # 
@@ -25,8 +27,6 @@
 # **6) [Connectivity Circle Animation](connectivity.html#circle)**
 # 
 # Features include customizing epochs, setting colour scheme, setting value scales, and more. Help messages have been added to all features, so hover over help button (which looks like a `?` in a circle) if you are ever wondering what a specific feature does.
-
-# ![](instruction_imgs/ui_showcase.gif)
 
 # ## Demo Example 1
 # 
