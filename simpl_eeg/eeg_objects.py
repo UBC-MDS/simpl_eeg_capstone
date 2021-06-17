@@ -6,6 +6,7 @@ Module for generating and animating EEG connectivity figures
 
 import mne
 import scipy.io
+import warnings
 
 
 class EEG_File:
@@ -20,15 +21,36 @@ class EEG_File:
         the experiment name (name of the folder containing experiment files)
     mat : list(int)
         a list of integers representing impact times
-    raw : mne.io.Raw
+    raw : mne.io.eeglab.eeglab.RawEEGLAB
         raw experiment data in FIF format
     """
 
-    def __init__(self, folder_path):
+    def __init__(self, folder_path, file_name="fixica"):
+        """
+        Imports and stores EEG data files
+
+        Args:
+            folder_path (str):
+                The folder path containing the experiment data
+            file_name (str, optional):
+                The file name for the .set and .fdt file.
+                Defaults to "fixica".
+        """
+
         self.folder_path = folder_path
         self.experiment = folder_path.split("/")[-1]
-        self.mat = scipy.io.loadmat(folder_path+"/impact locations.mat")
-        self.raw = mne.io.read_raw_eeglab(folder_path+"/fixica.set")
+
+        try:
+            self.mat = scipy.io.loadmat(folder_path+"/impact locations.mat")
+        except(FileNotFoundError):
+            warnings.warn(
+                "Events could not be detected, "
+                "please ensure an impact locations.mat file exists"
+            )
+            # return empty dictionary
+            self.mat = dict()
+
+        self.raw = mne.io.read_raw_eeglab(folder_path+"/"+file_name+".set")
 
 
 class Epochs:
@@ -62,6 +84,7 @@ class Epochs:
         tmin=-0.3,
         tmax=0.7,
         start_second=None,
+        file_name="fixica",
         **kwargs
     ):
         """
@@ -75,6 +98,9 @@ class Epochs:
             start_second (int):
                 Second of the event time,
                 or None if autodetected event time should be used
+            file_name (str, optional):
+                The file name for the .set and .fdt file.
+                Defaults to "fixica".
             **kwargs (dict, optional):
                 Additional parameters to pass to the mne.Epochs() constructor
 
@@ -84,7 +110,7 @@ class Epochs:
         if tmax-tmin < 0.0001:
             raise Exception("Please increase the time between tmin and tmax")
 
-        self.eeg_file = EEG_File(folder_path)
+        self.eeg_file = EEG_File(folder_path, file_name=file_name)
         self.data = self.generate_epochs(tmin, tmax, start_second, **kwargs)
         self.set_nth_epoch(0)
 
@@ -120,7 +146,11 @@ class Epochs:
 
         # create epoch with autodetected event time
         else:
-            stim_mock = self.eeg_file.mat["elecmax1"]
+            try:
+                stim_mock = self.eeg_file.mat["elecmax1"]
+            except(KeyError):
+                # if .mat file isn't working set start time to 0
+                stim_mock = [[int(-tmin*freq)]]
 
         # generate the events
         events = [[ts, 0, ts//freq] for i, ts in enumerate(stim_mock[0])]
