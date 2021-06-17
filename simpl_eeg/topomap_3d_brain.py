@@ -12,29 +12,47 @@ import matplotlib.gridspec as gridspec
 from matplotlib.transforms import Bbox
 import matplotlib.animation as animation
 
-# def add_timestamp(frame, xpos, ypos):
-#     """
-#     Adds a timestamp to a matplotlib.image.AxesImage object
+def add_timestamp_brain(figure, frame, xpos, ypos, fontsize):
+    """
+    Adds a timestamp to a matplotlib.image.AxesImage object
     
-#     Parameters
-#     ----------
-#     frame: int
-#         The time to plot as a timestamp.
+    Parameters
+    ----------
+    figure: matplotlib.figure.Figure
+        The time to plot as a timestamp.
     
-#     xpos: float
-#         The matplotlib x coordinate of the timestamp.
+    frame: int
+        The time to plot as a timestamp.
+    
+    xpos: float
+        The matplotlib x coordinate of the timestamp.
 
-#     ypos: float
-#         The matplotlib y coordinate of the timestamp.
+    ypos: float
+        The matplotlib y coordinate of the timestamp.
         
-#     Returns
-#     -------
-#     """
-#     tstamp = format(frame, '.4f')
-#     if frame >= 0:
-#         plt.text(-35, -130, 'time:  {}'.format(tstamp) + 's', fontsize=10, color = 'white')
-#     else:
-#         plt.text(-35, -130, 'time: {}'.format(tstamp) + 's', fontsize=10, color = 'white')
+    fontsize:
+        The size to make the font
+        
+    Returns
+    -------
+    """
+    
+    tstamp = format(frame, '.4f')
+    if float(frame) >= 0:
+        figure.text(xpos,
+                    ypos,
+                    'time:  {}'.format(tstamp) + 's',
+                    fontsize=fontsize,
+                    color = 'white',
+                    clip_on=True)
+    else:
+        figure.text(xpos,
+                    ypos,
+                    'time: {}'.format(tstamp) + 's',
+                    fontsize=fontsize,
+                    color = 'white',
+                    clip_on=True)
+        
         
 def calculate_cbar_dims(img_width, img_figsize, img_height):
     cbar_width = img_width * img_figsize * 0.65
@@ -462,7 +480,10 @@ def plot_topomap_3d_brain(
         return (make_plot())
 
     elif (hemi == 'lh' and len(views) == 1) or (hemi == 'rh' and len(views) == 1):
-        return (make_plot(views=views[0]))
+        
+        figure_brain = make_plot(views=views[0])
+
+        return (figure_brain)
 
     else:
 
@@ -715,12 +736,8 @@ def animate_matplot_brain(
         epoch.tmin,
         epoch.tmax,
         frames_to_show)
-    
-    #times_to_show = times_to_show[0:2]
 
     ms_between_frames = 1000 / frame_rate
-
-    fig, ax = plt.subplots()
 
     def plotting(figure=None, display_time=0, cbar = False, hemi = hemi, views = views):
         return (plot_topomap_3d_brain(epoch,
@@ -748,17 +765,21 @@ def animate_matplot_brain(
 
     if (hemi == 'lh' and len(views) == 1) or (hemi == 'rh' and len(views) == 1):
         # Plotting for single view/hemi matplotlib.figure.Figure
+
+        fig, ax = plt.subplots(round(size/100), round(size/100))
+        
         def animate(frame):
 
             fig.clear()
+            
             # get new image from list
             plotting(figure=fig,
                      display_time=frame,
                      cbar = colorbar
                      )
             
-#             if timestamp:
-#                 add_timestamp(frame, 0, 0)
+            if timestamp:
+                add_timestamp_brain(fig, frame, 0.18, 0.94, 15)
 
             return[fig]
         
@@ -772,25 +793,24 @@ def animate_matplot_brain(
 
     else:
         # Plotting for multi view/hemi matplotlib.image.AxesImage
-        fig, ax = plt.subplots()
+        img_width = len(views)
+        img_figsize = round(size / 100)
+        
+        if hemi == 'lh' or hemi == 'rh':
+            img_height = 1
+        else:
+            img_height = 2
+        
+        fig, ax = plt.subplots(figsize = (img_figsize*img_width, img_figsize*img_height))
         
         if colorbar:
             add_colorbar = 1
             colorbar = False
         else:
             add_colorbar = 0
-
-        if hemi == 'lh' or hemi == 'rh':
-            img_height = 1
-        else:
-            img_height = 2
-            
-        img_width = len(views)
-        img_figsize = round(size / 100)
         
         # Generate dummy colorbar to move to the main figure
         if add_colorbar:
-            #cbar_size = base_fig.get_size_inches()[0]/2
 
             cbar_width, cbar_height = calculate_cbar_dims(img_width, img_figsize, img_height)
                 
@@ -816,6 +836,19 @@ def animate_matplot_brain(
             
             if add_colorbar:
                 copy_axes(cbar_fig.axes[1], brain)
+            
+            if timestamp:
+                if img_height == 2 and img_width == 1:
+                    xpos = 0.1
+                    ypos = 0.48
+                else:
+                    ypos = 0
+                    xpos = 0.7
+                    for i in range(img_width-2):
+                        if img_width >= 3:
+                            xpos += 0.1/(2**(i))
+                
+                add_timestamp_brain(brain, frame, xpos-0.01, ypos, 6*img_figsize)
 
             # Convert plot to image/frame
             brain.canvas.draw()
@@ -834,6 +867,9 @@ def animate_matplot_brain(
                 plot_image = plot_image[cropped_height:, :, :]
 
 
+            plt.setp(ax.get_xticklabels(), visible=False)
+            plt.setp(ax.get_yticklabels(), visible=False)
+            ax.tick_params(axis='both', which='both', length=0)
             # display new image
             ax.imshow(plot_image)
         
