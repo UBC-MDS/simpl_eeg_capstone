@@ -62,11 +62,30 @@ def interpolated_time(df, channel_names, node_coord, x, y, z, t):
         x (array): A numpy array of X coordinates of all channels for interpolation
         y (array): A numpy array of Y coordinates of all channels for interpolation
         z (array): A numpy array of Z coordinates of all channels for interpolation
-        t (int): The time stampe we want to interpolate EEG voltages for
+        t (int): The time stamp we want to interpolate EEG voltages for
 
     Returns:
         array: A numpy array of interpolated EEG voltages
     """
+    if type(df) is not pd.core.frame.DataFrame:
+        raise TypeError("df is not a dataframe")
+
+    if type(channel_names) is not list:
+        raise TypeError("channel_names has to be a list of names for electrodes")
+
+    if type(node_coord) is not np.ndarray:
+        raise TypeError("node_coord has to be a numpy array of electrode names")
+
+    if type(x) is not np.ndarray:
+        raise TypeError("x has to be a numpy array of X coordinate for electordes")
+    
+    if type(y) is not np.ndarray:
+        raise TypeError("y has to be a numpy array of Y coordinate for electordes")
+    
+    if type(z) is not np.ndarray:
+        raise TypeError("z has to be a numpy array of Z coordinate for electordes")
+    
+    
     # get the EEG data for a specific time stamp
     eeg = df.loc[t, channel_names].values
     # build the interpolation model using NearestNDInterpolator
@@ -84,6 +103,12 @@ def get_eeg_node(raw, standard_montage_list):
     Returns:
         array: The electrode location from the raw data
     """
+    if type(raw) is not mne.epochs.Epochs:
+        raise TypeError("raw is not an epoched data, please refer to eeg_objects to create an epoched data")
+    
+    if type(standard_montage_list) is not mne.channels.montage.DigMontage:
+        raise TypeError("standard_montage_list has to be a mne montage")
+    
     node_list = []
     for channel in raw.get_montage().ch_names:
         node_list.append(
@@ -103,6 +128,12 @@ def get_node_dataframe(raw, montage):
     Returns:
         dataframe: A dataframe which contains the electrode name and electrode location from the raw data
     """
+    if type(raw) is not mne.epochs.Epochs:
+        raise TypeError("raw is not an epoched data, please refer to eeg_objects to create an epoched data")
+    
+    if type(montage) is not mne.channels.montage.DigMontage:
+        raise TypeError("montage has to be a mne montage")
+    
     node_list_name = []
     for channel in raw.get_montage().ch_names:
         node_list_name.append(

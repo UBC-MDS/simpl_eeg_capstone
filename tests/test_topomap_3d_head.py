@@ -101,6 +101,17 @@ def test_get_standard_coord():
 
 def test_get_eeg_node():
     """Test cases for getting electrode location from the raw data"""
+    test_df = pd.DataFrame({"x":[1]})
+    standard_montage, standard_coord = topomap_3d_head.get_standard_coord()
+    
+    # reject non-df data
+    with pytest.raises(TypeError):
+        topomap_3d_head.get_eeg_node(test_df, standard_montage)
+    
+    # reject non-mne.montage input
+    with pytest.raises(TypeError):
+        topomap_3d_head.get_eeg_node(epoch42, standard_coord)
+
     standard_montage, standard_coord = topomap_3d_head.get_standard_coord()
     node_array = topomap_3d_head.get_eeg_node(epoch42, standard_montage)
     # there should be xyz coordinate for 19 electrode nodes
@@ -109,7 +120,17 @@ def test_get_eeg_node():
 
 def test_get_node_dataframe():
     """Test cases for saving electrode node location into a dataframe"""
+    test_df = pd.DataFrame({"x":[1]})
     standard_montage, standard_coord = topomap_3d_head.get_standard_coord()
+
+    # reject non-df data
+    with pytest.raises(TypeError):
+        topomap_3d_head.get_node_dataframe(test_df, standard_montage)
+    
+    # reject non-mne.montage input
+    with pytest.raises(TypeError):
+        topomap_3d_head.get_node_dataframe(epoch42, standard_coord)
+    
     node_df = topomap_3d_head.get_node_dataframe(epoch42, standard_montage)
     # check all outputs should be as expected
     assert type(node_df) == pd.core.frame.DataFrame
@@ -127,6 +148,27 @@ def test_interpolated_time():
     x = numpy.array(standard_coord)[:, 0]
     y = numpy.array(standard_coord)[:, 1]
     z = numpy.array(standard_coord)[:, 2]
+
+    # reject non-df data
+    with pytest.raises(TypeError):
+        topomap_3d_head.interpolated_time(epoch42, channel_names, node_coord, x, y, z, 1)
+
+    # reject non-list channel_names
+    with pytest.raises(TypeError):
+        topomap_3d_head.interpolated_time(epoch42.to_data_frame(), "channel_names", node_coord, x, y, z, 1)
+    
+    # reject non-array node_coord
+    with pytest.raises(TypeError):
+        topomap_3d_head.interpolated_time(epoch42.to_data_frame(), "channel_names", channel_names, x, y, z, 1)
+    
+    # reject non-array x, y, z
+    with pytest.raises(TypeError):
+        topomap_3d_head.interpolated_time(epoch42.to_data_frame(), channel_names, node_coord, 1, y, z, 1)
+    with pytest.raises(TypeError):
+        topomap_3d_head.interpolated_time(epoch42.to_data_frame(), channel_names, node_coord, x, 1, z, 1)
+    with pytest.raises(TypeError):
+        topomap_3d_head.interpolated_time(epoch42.to_data_frame(), channel_names, node_coord, x, y, 1, 1)
+
     output = topomap_3d_head.interpolated_time(epoch42.to_data_frame(), channel_names, node_coord, x, y, z, 1)
     # check all outputs should be as expected
     assert output.shape == (343, )
