@@ -153,3 +153,13 @@ To run use JuptyerLab click on any cell and push `shift + enter` to cause all of
 Navigate back to the terminal window you used to launch JupyterLab and press `Ctr + C` (Windows/Linux) or `Command + C` (Mac) and then press `y` to confirm and shut down the notebook. This will free up this terminal window and allow you to type commands again.
 
 ![](instruction_imgs/jupyter_lab5.png)
+
+## GitHub
+
+All files pertaining to this project are hosted on GitHub at https://github.com/UBC-MDS/simpl_eeg_capstone. 
+
+Below is an overview of locations for important project files and folders:
+
+![](instruction_imgs/github_locations.png)
+
+Changes made to the project should be pushed to GitHub to ensure the latest version of the project is available for other users. For more information about `git` and GitHub, please check out the [Git Handbook](https://guides.github.com/introduction/git-handbook/). 

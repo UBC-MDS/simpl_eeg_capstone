@@ -3,6 +3,7 @@
 
 # # Raw Voltage Visualization
 
+# <a id="plot"></a>
 # ## Raw voltage plot
 
 # ![](instruction_imgs/voltage_plot.svg)

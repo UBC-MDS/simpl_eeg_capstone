@@ -212,6 +212,71 @@
         <!-- Table of contents -->
         <div class="d-none d-md-block col-md-2 bd-toc show">
             
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#overview">
+   Overview
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#features">
+   Features
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#raw-voltage-values-plot">
+     1) Raw Voltage Values Plot
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d-head-map-animation">
+     2) 2D Head Map Animation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#id1">
+     3) 3D Head Map Animation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#d-brain-map-animation">
+     4) 3D Brain Map Animation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#connectivity-animation">
+     5) Connectivity Animation
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#connectivity-circle-animation">
+     6) Connectivity Circle Animation
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#demo-example-1">
+   Demo Example 1
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#demo-example-2">
+   Demo Example 2
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#demo-example-3">
+   Demo Example 3
+  </a>
+ </li>
+</ul>
+
+            </nav>
         </div>
     </div>
 </div>
@@ -222,6 +287,49 @@
                 
   <div class="section" id="user-interface">
 <h1>User Interface<a class="headerlink" href="#user-interface" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="overview">
+<h2>Overview<a class="headerlink" href="#overview" title="Permalink to this headline">¶</a></h2>
+<p>The user interface (UI) is designed to allow users to generate and customize visualizations with no coding required.</p>
+<p>A selection of the most useful package features are available in the UI, although the customization options and visualizations available on the UI are not exhaustive. If you would like to heavily customize your visualization we recommend using the python package directly instead, as it allows more flexibility.</p>
+</div>
+<div class="section" id="features">
+<h2>Features<a class="headerlink" href="#features" title="Permalink to this headline">¶</a></h2>
+<p>The UI contains over 40 customization options and 6 visualization options:</p>
+<div class="section" id="raw-voltage-values-plot">
+<h3>1) <a class="reference external" href="raw_voltage.html#plot">Raw Voltage Values Plot</a><a class="headerlink" href="#raw-voltage-values-plot" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="d-head-map-animation">
+<h3>2) <a class="reference external" href="topo_2d.html#animation">2D Head Map Animation</a><a class="headerlink" href="#d-head-map-animation" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="id1">
+<h3>3) <a class="reference external" href="topo_3d_head.html#animation">3D Head Map Animation</a><a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="d-brain-map-animation">
+<h3>4) <a class="reference external" href="topo_3d_brain.html#matplotlib">3D Brain Map Animation</a><a class="headerlink" href="#d-brain-map-animation" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="connectivity-animation">
+<h3>5) <a class="reference external" href="connectivity.html#connectivity">Connectivity Animation</a><a class="headerlink" href="#connectivity-animation" title="Permalink to this headline">¶</a></h3>
+</div>
+<div class="section" id="connectivity-circle-animation">
+<h3>6) <a class="reference external" href="connectivity.html#circle">Connectivity Circle Animation</a><a class="headerlink" href="#connectivity-circle-animation" title="Permalink to this headline">¶</a></h3>
+<p>Features include customizing epochs, setting colour scheme, setting value scales, and more. Help messages have been added to all features, so hover over help button (which looks like a <code class="docutils literal notranslate"><span class="pre">?</span></code> in a circle) if you are ever wondering what a specific feature does.</p>
+</div>
+</div>
+<div class="section" id="demo-example-1">
+<h2>Demo Example 1<a class="headerlink" href="#demo-example-1" title="Permalink to this headline">¶</a></h2>
+<p>Selecting a custom time between 14 - 16 seconds and generating a 3D head map for every 10th frame.
+[]</p>
+</div>
+<div class="section" id="demo-example-2">
+<h2>Demo Example 2<a class="headerlink" href="#demo-example-2" title="Permalink to this headline">¶</a></h2>
+<p>Creating a 2D head map with values between -30 to 30 with no colourbar and a pink green colour scheme.</p>
+<p><img alt="" src="_images/demo2.gif" /></p>
+</div>
+<div class="section" id="demo-example-3">
+<h2>Demo Example 3<a class="headerlink" href="#demo-example-3" title="Permalink to this headline">¶</a></h2>
+<p>Exporting a envelope correlation connectivity plot with custom node pairs “Fp1-Fp2, Fp1-F7, Fp2-F8”</p>
+<p><img alt="" src="_images/demo3.gif" /></p>
+</div>
 </div>
 
     <script type="text/x-thebe-config">
