@@ -20,6 +20,10 @@ def frame_args(duration):
     Returns:
         dict: A dictionary of frame arguments
     """
+    
+    if type(duration) is not int and type(duration) is not float:
+        raise TypeError("duration has to be a number")
+    
     return {
         "frame": {"duration": duration},
         "mode": "immediate",
