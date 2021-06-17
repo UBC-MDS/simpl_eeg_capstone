@@ -208,7 +208,7 @@ def get_shared_conn_widgets(epoch, frame_steps, key):
         label,
         value=default_cmin,
         key=label+key,
-        help = "The minimum for the scale."
+        help="The minimum for the scale."
     )
 
     label = "Maximum Value"
@@ -795,7 +795,9 @@ def main():
             node_pair_options,
             index=1,
             format_func=lambda name: name.replace("_", " ").capitalize(),
-            help="""Node pairs"""
+            help="""Select node pairs template to show only selected nodes.
+            These can be further customized after selecting the template
+            in the node pair textbox below"""
         )
 
         selected_pairs = []
@@ -814,16 +816,19 @@ def main():
         # Line width widgets
         line_width_type = st.checkbox(
             "Set static line width",
-            False
+            False,
+            help="""Use static line width rather than dynamic line
+            width based on connectivity score"""
         )
 
         conn_line_width = None
         if line_width_type is True:
             conn_line_width = st.slider(
                 "Select line width",
-                min_value=1,
-                max_value=5,
-                value=2
+                min_value=0.5,
+                max_value=5.0,
+                value=1.5,
+                help="Select a custom line width"
             )
 
     with expander_connectivity_circle.widget_col:
@@ -840,7 +845,8 @@ def main():
             "Select line width ",
             min_value=1,
             max_value=5,
-            value=2
+            value=2,
+            help="Select a custom line width"
         )
 
         # Maximum connections widget
@@ -848,7 +854,8 @@ def main():
             "Maximum connections to display",
             min_value=0,
             max_value=len(epoch.ch_names)*len(epoch.ch_names),
-            value=20
+            value=20,
+            help="Select the maximum number of connection measurements to show"
         )
 
     # PLOTS
