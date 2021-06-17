@@ -360,13 +360,13 @@ def main():
     frame_steps = col1_step.number_input(
         "Number of timesteps per frame",
         value=50,
-        min_value=0,
+        min_value=1,
         help ="""The number of recordings in the data to skip between each rendered frame in the figures.
         For example, if an experiment is recorded at 2048 Hz (2048 recordings per second) then setting
-        this value to 1 will show ever second recording in the data and 1024 frames will be rendered
-        for every second of data. A value of 0 will lead to every recorded value being rendered as a frame.
+        this value to 2 will show ever second recording in the data and 1024 frames will be rendered
+        for every second of data. A value of 1 will lead to every recorded value being rendered as a frame.
         "Num. frames to render" represents how many frames of animation will be rendered in each figure.
-        Min = 0.
+        Min = 1.
         """
     )
 
@@ -376,8 +376,9 @@ def main():
 
     stc_generated = False
 
-    min_voltage_message = "The minimum value (in μV) to show on the plot"
-    max_voltage_message = "The maximum value (in μV) to show on the plot"
+    if plot_epoch.times.shape[0] <= 2:
+        st.warning("""WARNING: At least 3 frames must be rendered for the 3D brain plot to work due
+        to neccesary pre-processing steps.""")
 
     col2_step.text(
         """-----------\nNum. frames\nto render:\n{}
@@ -529,6 +530,9 @@ def main():
             else:
                 scaling = scaling * 1e-6
 
+    min_voltage_message = "The minimum value (in μV) to show on the plot"
+    max_voltage_message = "The maximum value (in μV) to show on the plot"
+
     with expander_2d_head.widget_col:
         vmin_2d_head = st.number_input(
             "Minimum Voltage (μV)",
@@ -561,8 +565,8 @@ def main():
         )
         advanced_options_2d = st.checkbox("Advanced Options", value=False, key="2dAO")
         if advanced_options_2d:
-            colorbar_2d_headmap = st.checkbox("Include colorbar", value=True)
-            timestamps_2d_headmap = st.checkbox("Include timestamps", value=True)
+            colorbar_2d_headmap = st.checkbox("Include colorbar", value=True, key = "cbar_2d")
+            timestamps_2d_headmap = st.checkbox("Include timestamps", value=True, key = "tstamp_2d")
             contours_2d = st.number_input(
                 "Number of contours",
                 value=0,
@@ -670,17 +674,20 @@ def main():
             OR if brain hemi is set to "both".
             """
         )
+        spacing_value = st.selectbox(
+            "Spacing type",
+            ["oct4", "oct5", "oct6", "oct7", "ico3", "ico4", "ico5", "ico6"],
+            index=1,
+            help="""The spacing to use for the source space. "oct" uses a recursively subdivided 
+            octahedron and "ico" uses a recursively subdivided icosahedron. Reccomend using oct5 for speed
+            and oct6 for more detail. Increasing the number leads to an exponential increase in render time.
+            """
+        )
         advanced_options_brain = st.checkbox("Advanced Options", value=False, key="brainAO")
         if advanced_options_brain:
-            spacing_value = st.selectbox(
-                "Spacing type",
-                ["oct4", "oct5", "oct6", "oct7", "ico3", "ico4", "ico5", "ico6"],
-                index=1,
-                help="""The spacing to use for the source space. "oct" uses a recursively subdivided 
-                octahedron and "ico" uses a recursively subdivided icosahedron. Reccomend using oct5 for speed
-                and oct6 for more detail. Increasing the number leads to an exponential increase in render time.
-                """
-            )
+            colorbar_brain = st.checkbox("Include colorbar", value=True, key = "cbar_brain")
+            timestamps_brain = st.checkbox("Include timestamps", value=True, key = "tstamp_brain")
+
             smoothing_amount = st.number_input(
                 "Number of smoothing steps",
                 value=2,
@@ -697,6 +704,8 @@ def main():
                                              in the sidebar.
                                              """)
         else:
+            colorbar_brain = True
+            timestamps_brain = True
             spacing_value = "oct5"
             smoothing_amount = 2
             use_non_MNE_colours = False
@@ -890,7 +899,9 @@ def main():
                         cmin=vmin_3d_brain,
                         cmax=vmax_3d_brain,
                         spacing=spacing_value,
-                        smoothing_steps=smoothing_amount
+                        smoothing_steps=smoothing_amount,
+                        colorbar = colorbar_brain,
+                        timestamp = timestamps_brain
                     )
                     components.html(
                         html_plot,
@@ -954,4 +965,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    
