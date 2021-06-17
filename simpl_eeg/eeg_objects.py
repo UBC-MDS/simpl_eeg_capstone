@@ -81,6 +81,8 @@ class Epochs:
                 Full list of options available at
                 https://mne.tools/stable/generated/mne.Epochs.html
         """
+        if tmax-tmin < 0.0001:
+            raise Exception("Please increase the time between tmin and tmax")
 
         self.eeg_file = EEG_File(folder_path)
         self.data = self.generate_epochs(tmin, tmax, start_second, **kwargs)
@@ -131,6 +133,9 @@ class Epochs:
             "preload": True
         }
         kwargs = {**default_kwargs, **kwargs}
+
+        if tmin == 0:
+            kwargs["baseline"] = (0, 0)
 
         # generate the epoch
         epochs = mne.Epochs(
