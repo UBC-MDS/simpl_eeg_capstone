@@ -482,6 +482,9 @@ def plot_topomap_3d_brain(
     elif (hemi == 'lh' and len(views) == 1) or (hemi == 'rh' and len(views) == 1):
         
         figure_brain = make_plot(views=views[0])
+        
+        if colorbar == False:
+            figure_brain.axes[1].remove()
 
         return (figure_brain)
 
