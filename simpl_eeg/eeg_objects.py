@@ -64,12 +64,9 @@ class Epochs:
         start_second=None,
         **kwargs
     ):
-        self.eeg_file = EEG_File(folder_path)
-        self.data = self.generate_epochs(tmin, tmax, start_second, **kwargs)
-        self.set_nth_epoch(0)
+        """
+        Generates epochs and stores related information
 
-    def generate_epochs(self, tmin, tmax, start_second, **kwargs):
-        """ Generates an epoch object based on the given input
         Args:
             tmin (float):
                 Number of seconds before the event time to include in epoch
@@ -80,6 +77,32 @@ class Epochs:
                 or None if autodetected event time should be used
             **kwargs (dict, optional):
                 Additional parameters to pass to the mne.Epochs() constructor
+
+                Full list of options available at
+                https://mne.tools/stable/generated/mne.Epochs.html
+        """
+
+        self.eeg_file = EEG_File(folder_path)
+        self.data = self.generate_epochs(tmin, tmax, start_second, **kwargs)
+        self.set_nth_epoch(0)
+
+    def generate_epochs(self, tmin, tmax, start_second, **kwargs):
+        """
+        Generates an epoch object based on the given input
+
+        Args:
+            tmin (float):
+                Number of seconds before the event time to include in epoch
+            tmax (float):
+                Number of seconds after the event time to include in epoch
+            start_second (int):
+                Second of the event time,
+                or None if autodetected event time should be used
+            **kwargs (dict, optional):
+                Additional parameters to pass to the mne.Epochs() constructor
+
+                Full list of options available at
+                https://mne.tools/stable/generated/mne.Epochs.html
 
         Returns:
             mne.Epochs: The generated epoch
@@ -160,4 +183,3 @@ class Epochs:
         """
 
         return self.epoch.copy().decimate(num_steps)
-

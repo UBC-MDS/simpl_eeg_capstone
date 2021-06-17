@@ -192,7 +192,10 @@ def plot_connectivity(
         caption (str, optional):
             The caption to display at the bottom of the plot. Defaults to None.
         **kwargs (dict, optional):
-            Optional arguments to pass to mne.viz.plot_sensors().
+            Optional arguments to pass to mne.viz.plot_sensors()
+
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_sensors.html
 
     Returns:
         matplotlib.pyplot.figure:
@@ -328,7 +331,10 @@ def animate_connectivity(
         title (str, optional):
             The title to display on the plot. Defaults to None for no title.
         **kwargs (dict, optional):
-            Optional arguments to pass to mne.viz.plot_sensors().
+            Optional arguments to pass to mne.viz.plot_sensors()
+
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_sensors.html
 
     Returns:
         matplotlib.animation.Animation:
@@ -428,7 +434,10 @@ def plot_conn_circle(
         caption (str, optional):
             The caption to display at the bottom of the plot. Defaults to None.
         **kwargs (dict, optional):
-            Optional arguments to pass to mne.viz.plot_connectivity_circle().
+            Optional arguments to pass to mne.viz.plot_connectivity_circle()
+
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html
 
     Returns:
         matplotlib.pyplot.figure:
@@ -517,7 +526,10 @@ def animate_connectivity_circle(
         title (str, optional):
             The title to display on the plot. Defaults to None for no title.
         **kwargs (dict, optional):
-            Optional arguments to pass to mne.viz.plot_connectivity_circle().
+            Optional arguments to pass to mne.viz.plot_connectivity_circle()
+
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html
 
     Returns:
         matplotlib.animation.Animation:
