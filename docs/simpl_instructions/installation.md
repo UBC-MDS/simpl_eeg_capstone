@@ -34,7 +34,9 @@ Please open your Unix shell (i.e. terminal on a Mac, GitBash on Windows) and nav
 
 ![](instruction_imgs/navigation.png)
 
+```{tip}
 Pro tip: press `tab` when typing a file location to use auto-complete and have the remainder of the file name be completed automatically. For example, typing 'M' (then pressing `tab`) will have the terminal automatically match the file name 'MDS' since there are no other files names which start with 'M').
+```
 
 Then clone our repo using...
 
@@ -50,10 +52,10 @@ cd simpl_eeg_capstone
 
 ![](instruction_imgs/navigation2.png)
 
-After navigating to the root of the directory in terminal (i.e. being within the 'simpl\_eeg\_capstone' folder) Run the following commands...
+After navigating to the root of the directory in terminal (i.e. being within the `simpl_eeg_capstone` folder) Run the following commands...
 
 ```bash
-conda create –name simpl_eeg
+conda create -name simpl_eeg
 ```
 (then press "y" to accept when prompted)
 
@@ -102,7 +104,7 @@ You can refresh the UI to restart it or open it in another window by copying the
 
 ### Shutting down Streamlit App
 
-When you are done (or if you need to restart the app) simply navigate back to the Terminal window you used to launch the app and press `Ctrl + C` (PC/Linux) or `Command + C` (Mac) and then press 'y' to confirm to shut down the app. This will return the terminal window to the state that it was in before launching the app, allowing you to type commands again.
+When you are done (or if you need to restart the app) simply navigate back to the Terminal window you used to launch the app and press `Ctrl + C` (PC/Linux) or `Command + C` (Mac) and then press `y` to confirm to shut down the app. This will return the terminal window to the state that it was in before launching the app, allowing you to type commands again.
 
 ### Troubleshooting Streamlit
 
@@ -138,11 +140,11 @@ in the command line. This will open a new tab in your browser...
 
 ![](instruction_imgs/jupyter_lab.png)
 
-You can now open the instructions notebook in the location `simple_instructions/instructions.ipynb`
+You can now open the instructions notebook in the location `docs/simple_instructions/introduction.ipynb`
 
 ![](instruction_imgs/jupyter_lab2.png)
 
-When you have the instructions open make sure that you are in the correct environment. If you are not you can click the dropdown and select `simple_eeg`.
+When you have the `introduction.ipynb` opened, make sure that you are in the correct environment. If you are not you can click the dropdown and select `simple_eeg`.
 
 ![](instruction_imgs/jupyter_lab4.png)
 
