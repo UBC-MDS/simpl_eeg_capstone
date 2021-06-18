@@ -257,10 +257,27 @@ def main():
         """
     )
 
+    experiment_list = []
+    for name in os.listdir("data/"):
+        curr_path = os.path.join("data", name)
+        if os.path.isdir(curr_path):
+            for fname in os.listdir(curr_path):
+                if fname.endswith('.set'):
+                    experiment_list.append(name)
+    
+    if not experiment_list:
+        raise FileNotFoundError(
+            """
+            Please move at least one experiment folder
+            to the data folder to use this app.
+            At a minimum the folder must contain a .set file.
+            """
+        )
+
     col1_exp, col2_exp = st.sidebar.beta_columns((2, 1))
     experiment_num = col1_exp.selectbox(
         "Select experiment",
-        [name for name in os.listdir("data/") if os.path.isdir(os.path.join("data", name))],
+        experiment_list,
         help="""List of folders contained in the "data" folder.
         Each folder should represent one experiment and contain files labelled
         "fixica.fdt", "fixica.set", and "impact locations.mat".
