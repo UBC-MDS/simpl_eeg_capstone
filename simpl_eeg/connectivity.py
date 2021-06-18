@@ -52,7 +52,7 @@ def calculate_connectivity(epoch, calc_type="correlation"):
     Args:
         epoch: mne.epochs.Epochs
             Epoch to calculate connectivity for
-        calc_type: str, optional
+        calc_type: str (optional)
             Calculation type, one of
             spectral_connectivity,
             envelope_correlation,
@@ -164,35 +164,35 @@ def plot_connectivity(
     Args:
         epoch: mne.epochs.Epochs
             Epoch to visualize
-        fig: matplotlib.pyplot.figure, optional
+        fig: matplotlib.pyplot.figure (optional)
             Figure to plot on. Defaults to None.
-        locations: [matplotlib.text.Text], optional
+        locations: [matplotlib.text.Text] (optional)
             List of node locations. Defaults to None.
         calc_type: str
             Connectivity calculation type
-        pair_list: [str], optional
+        pair_list: [str] (optional)
             List of node pairs. Defaults to [], which indicates all pairs.
-        threshold: int, optional
+        threshold: int (optional)
             Unsigned connectivity threshold to display connection.
             Defaults to 0.
-        show_sphere: bool, optional
+        show_sphere: bool (optional)
             Whether to show the cartoon head or not. Defaults to True.
-        colormap: str, optional
+        colormap: str (optional)
             Colour scheme to use. Defaults to "RdBlu_r".
-        vmin: int, optional
+        vmin: int (optional)
             The minimum for the scale. Defaults to None.
-        vmin: int, optional
+        vmin: int (optional)
             The maximum for the scale. Defaults to None.
-        line_width: int, optional
+        line_width: int (optional)
             The line width for the connections.
             Defaults to None for non-static width.
-        title: str, optional
+        title: str (optional)
             The title to display on the plot. Defaults to None for no title.
-        colorbar: bool, optional
+        colorbar: bool (optional)
             Whether to display the colorbar or not. Defaults to True.
-        caption: str, optional
+        caption: str (optional)
             The caption to display at the bottom of the plot. Defaults to None.
-        **kwargs: dict, optional
+        **kwargs: dict (optional)
             Optional arguments to pass to mne.viz.plot_sensors()
 
             Full list of options available at
@@ -312,29 +312,29 @@ def animate_connectivity(
     Args:
         epochs: mne.epochs.Epochs
             Epoch to visualize
-        calc_type: str, optional
+        calc_type: str (optional)
             Connectivity calculation type. Defaults to "correlation".
-        steps: int, optional
+        steps: int (optional)
             Number of frames to use in correlation caluclation. Defaults to 20.
-        pair_list: [str], optional
+        pair_list: [str] (optional)
             List of node pairs. Defaults to [], which indicates all pairs.
-        threshold: int, optional
+        threshold: int (optional)
             Unsigned connectivity threshold to display connection.
             Defaults to 0.
-        show_sphere: bool, optional
+        show_sphere: bool (optional)
             Whether to show the cartoon head or not. Defaults to True.
-        colormap: str, optional
+        colormap: str (optional)
             Colour scheme to use. Defaults to "RdBu_r"
-        vmin: int, optional
+        vmin: int (optional)
             The minimum for the scale. Defaults to None.
-        vmin: int, optional
+        vmin: int (optional)
             The maximum for the scale. Defaults to None.
-        line_width: int, optional
+        line_width: int (optional)
             The line width for the connections.
             Defaults to None for non-static width.
-        title: str, optional
+        title: str (optional)
             The title to display on the plot. Defaults to None for no title.
-        **kwargs: dict, optional
+        **kwargs: dict (optional)
             Optional arguments to pass to mne.viz.plot_sensors()
 
             Full list of options available at
@@ -412,32 +412,32 @@ def plot_conn_circle(
     Args:
         epoch: mne.epochs.Epochs
             Epoch to visualize
-        fig: matplotlib.pyplot.figure, optional
+        fig: matplotlib.pyplot.figure (optional)
             Figure to plot on. Defaults to None.
-        calc_type: str, optional
+        calc_type: str (optional)
             Connectivity calculation type. Defaults to "correlation"
-        max_connections: int, optional
+        max_connections: int (optional)
             Maximum connections to plot. Defaults to 50.
-        ch_names: [str], optional
+        ch_names: [str] (optional)
             List of channel names to display.
             Defaults to [], which indicates all channels.
-        vmin: int, optional
+        vmin: int (optional)
             The minimum for the scale. Defaults to None.
-        vmin: int, optional
+        vmin: int (optional)
             The maximum for the scale. Defaults to None.
-        colormap: str, optional
+        colormap: str (optional)
             Colour scheme to use. Defaults to "RdBu_r".
-        colormap: bool, optional
+        colormap: bool (optional)
             Whether to plot the colorbar. Defaults to True.
-        line_width: int, optional
+        line_width: int (optional)
             The line width for the connections. Defaults to 1.5.
-        title: str, optional
+        title: str (optional)
             The title to display on the plot. Defaults to None for no title.
-        colorbar: bool, optional
+        colorbar: bool (optional)
             Whether to display the colorbar or not. Defaults to True.
-        caption: str, optional
+        caption: str (optional)
             The caption to display at the bottom of the plot. Defaults to None.
-        **kwargs: dict, optional
+        **kwargs: dict (optional)
             Optional arguments to pass to mne.viz.plot_connectivity_circle()
 
             Full list of options available at
@@ -518,23 +518,23 @@ def animate_connectivity_circle(
     Args:
         epoch: mne.epochs.Epochs
             Epoch to visualize
-        calc_type: str, optional
+        calc_type: str (optional)
             Connectivity calculation type. Defaults to "correlation".
-        max_connections: int, optional
+        max_connections: int (optional)
             Number of connections to display. Defaults to 50.
-        steps: int, optional
+        steps: int (optional)
             Number of frames to use in correlation caluclation. Defaults to 20.
-        colormap: str, optional
+        colormap: str (optional)
             Colour scheme to use. Defaults to "RdBu_r".
-        vmin: int, optional
+        vmin: int (optional)
             The minimum for the scale. Defaults to None.
-        vmin: int, optional
+        vmin: int (optional)
             The maximum for the scale. Defaults to None.
-        line_width: int, optional
+        line_width: int (optional)
             The line width for the connections. Defaults to 1.5.
-        title: str, optional
+        title: str (optional)
             The title to display on the plot. Defaults to None for no title.
-        **kwargs: dict, optional
+        **kwargs: dict (optional)
             Optional arguments to pass to mne.viz.plot_connectivity_circle()
 
             Full list of options available at
