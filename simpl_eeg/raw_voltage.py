@@ -5,14 +5,14 @@ def plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs):
     """
     Generate raw voltage plot
 
-    Args:
-        epoch (mne.epochs.Epochs):
+    Parameters:
+        epoch: mne.epochs.Epochs
             Epoch(s) to display
-        remove_xlabel (bool, optional):
+        remove_xlabel: bool (optional)
             Whether to remove the x axis label. Defaults to False.
-        show_times (bool, optional):
+        show_times: bool (optional)
             Whether to show seconds on the x axis. Defaults to True.
-        **kwargs (dict, optional):
+        **kwargs: dict (optional)
             Optional arguments to pass to mne.Epochs.plot()
 
             Full list of options available at
@@ -31,10 +31,12 @@ def plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs):
     fig = epoch.plot(**kwargs)
     ax = fig.axes[0]
 
+    # remove "Epoch Number"
     if remove_xlabel:
         ax.set_xlabel("")
         ax.minorticks_off()
 
+    # Show start and end time on x-axis
     if show_times:
         event_time = epoch.events[0][2]
 

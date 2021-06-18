@@ -1,9 +1,9 @@
-"""Module for generating and animating the topographic map in a 3D head shape
+"""
+Module for generating and animating the topographic map in a 3D head shape
 """
 
-import gif
-
 # import libraries
+import gif
 import mne
 import numpy as np
 import pandas as pd
@@ -14,22 +14,22 @@ from simpl_eeg import eeg_objects
 
 # define the frame arguments for the animated plot
 def frame_args(duration):
-    """Return the frame arguments of the animated plot
+    """
+    Return the frame arguments of the animated plot
 
-    Parameters
-    ----------
-    duration : int 
-        The number of frames for the animated plot
-    
-    Returns
-    -------
-    frame_args : dict
-        A dictionary of frame arguments
+    Parameters:
+        duration: int
+            The number of frames for the animated plot
+    Returns:
+        dict:
+            A dictionary of frame arguments
+
     """
 
     if type(duration) is not int and type(duration) is not float:
         raise TypeError("duration has to be a number")
 
+    # make sure "redraw" is false to reduce rendering time
     return {
         "frame": {"duration": duration},
         "mode": "immediate",
@@ -37,20 +37,22 @@ def frame_args(duration):
         "transition": {
             "duration": duration,
             "easing": "linear",
-            "redraw": False,
-        },  # make sure "redraw" is false to reduce rendering time
+            "redraw": False
+        }
     }
 
 
 def get_standard_coord():
-    """Generate an array of cartesian coordinates of the standard node locations ("standard_1005")
-    
-    Returns
-    ----------
-    montage : mne.channels.montage 
-        The standard montage from the mne library
-    standard_coord_array : numpy.ndarray
-        A numpy array of cartesian coordinates of the standard node locations ("standard_1005")
+    """
+    Generate an array of cartesian coordinates of the
+    standard node locations ("standard_1005")
+
+    Returns:
+        mne.channels.montage:
+            The standard montage from the mne library
+        array:
+            A numpy array of cartesian coordinates of
+            the standard node locations ("standard_1005")
     """
     # get the dictionary of standard montage "standard_1005"
     montage = mne.channels.make_standard_montage("standard_1005")
@@ -66,77 +68,92 @@ def get_standard_coord():
 
 
 def interpolated_time(df, channel_names, node_coord, x, y, z, t):
-    """To interpolate EEG signals to locations points that don't have data
-    
-    Parameters
-    ----------
-    df : dataframe
-        A dataframe that contains the EEG signal of each channels for each time stamps
-    channel_names : list
-        A list of channel names in the raw data
-    node_coord : numpy.ndarray 
-        A numpy array of (x, y, z) coordinates of all channels in the raw data
-    x : numpy.ndarray 
-        A numpy array of X coordinates of all channels for interpolation
-    y : numpy.ndarray 
-        A numpy array of Y coordinates of all channels for interpolation
-    z : numpy.ndarray
-        A numpy array of Z coordinates of all channels for interpolation
-    t : int 
-        The time stamp we want to interpolate EEG voltages for
-    
-    Returns
-    -------
-        interpolated_value: numpy.ndarray 
+    """
+    To interpolate EEG signals to locations points that don't have data
+
+    Parameters:
+        df: dataframe
+            A dataframe that contains the EEG signal of
+            each channels for each time stamps
+        channel_names: list
+            A list of channel names in the raw data
+        node_coord: array
+            A numpy array of (x, y, z) coordinates of
+            all channels in the raw data
+        x: array
+            A numpy array of X coordinates of all channels for interpolation
+        y: array
+            A numpy array of Y coordinates of all channels for interpolation
+        z: array
+            A numpy array of Z coordinates of all channels for interpolation
+        t: int
+            The time stamp we want to interpolate EEG voltages for
+
+    Returns:
+        numpy.ndarray:
             A numpy array of interpolated EEG voltages
     """
     if type(df) is not pd.core.frame.DataFrame:
         raise TypeError("df is not a dataframe")
 
     if type(channel_names) is not list:
-        raise TypeError("channel_names has to be a list of names for electrodes")
+        raise TypeError(
+            "channel_names has to be a list of names for electrodes"
+        )
 
     if type(node_coord) is not np.ndarray:
-        raise TypeError("node_coord has to be a numpy array of electrode names")
+        raise TypeError(
+            "node_coord has to be a numpy array of electrode names"
+        )
 
     if type(x) is not np.ndarray:
-        raise TypeError("x has to be a numpy array of X coordinates for electordes")
+        raise TypeError(
+            "x has to be a numpy array of X coordinates for electordes"
+        )
 
     if type(y) is not np.ndarray:
-        raise TypeError("y has to be a numpy array of Y coordinates for electordes")
+        raise TypeError(
+            "y has to be a numpy array of Y coordinates for electordes"
+        )
 
     if type(z) is not np.ndarray:
-        raise TypeError("z has to be a numpy array of Z coordinates for electordes")
+        raise TypeError(
+            "z has to be a numpy array of Z coordinates for electordes"
+        )
 
     # get the EEG data for a specific time stamp
     eeg = df.loc[t, channel_names].values
+
     # build the interpolation model using NearestNDInterpolator
     interpolate_model = NearestNDInterpolator(node_coord, eeg)
     return interpolate_model(np.array(list(zip(x, y, z))))
 
 
 def get_eeg_node(raw, standard_montage_list):
-    """Get the electrode location from the raw data
-
-    Parameters
-    ----------
-    raw : mne.epochs.Epochs
-        The raw epoch data
-    standard_montage_list : numpy.ndarray 
-        The numpy array which contains the cartesian coordinate of standard node location
-    
-    Returns
-    -------
-    node_coord : numpy.ndarray
-        The electrode location from the raw data
     """
+    Get the electrode location from the raw data
+
+    Parameters:
+        raw: mne.epochs.Epochs
+            The raw epoch data
+        standard_montage_list: numpy.ndarray 
+            The numpy array which contains the cartesian coordinate of standard node location
+
+    Returns:
+        numpy.ndarray:
+            The electrode location from the raw data
+    """
+
     if type(raw) is not mne.epochs.Epochs:
         raise TypeError(
-            "raw is not an epoched data, please refer to eeg_objects to create an epoched data"
+            "raw is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
         )
 
     if type(standard_montage_list) is not mne.channels.montage.DigMontage:
-        raise TypeError("standard_montage_list has to be a mne montage")
+        raise TypeError(
+            "standard_montage_list has to be a mne montage"
+        )
 
     node_list = []
     for channel in raw.get_montage().ch_names:
@@ -148,23 +165,25 @@ def get_eeg_node(raw, standard_montage_list):
 
 
 def get_node_dataframe(raw, montage):
-    """Get the electrode name and electrode location from the raw data and save it in a dataframe
-    
-    Parameters
-    ----------
-    raw : mne.epochs.Epochs
-        The raw epoch data
-    montage : numpy.ndarray 
-        The numpy array which contains the cartesian coordinate of standard node location
-    
-    Returns
-    -------
-    node_df : pandas.core.frame.DataFrame
-        A dataframe which contains the electrode name and electrode location from the raw data
+    """
+    Get the electrode name and electrode location from
+    the raw data and save it in a dataframe
+
+    Parameters:
+        raw: mne.epochs.Epochs
+            The raw epoch data
+        montage: numpy.ndarray 
+            The numpy array which contains the cartesian coordinate 
+            of standard node location
+
+    Returns:
+        pandas.core.frame.DataFrame:
+            A dataframe which contains the electrode name and electrode location from the raw data
     """
     if type(raw) is not mne.epochs.Epochs:
         raise TypeError(
-            "raw is not an epoched data, please refer to eeg_objects to create an epoched data"
+            "raw is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
         )
 
     if type(montage) is not mne.channels.montage.DigMontage:
@@ -192,31 +211,33 @@ def animate_3d_head(
     color_max=50,
     colormap="Bluered",
 ):
-    """Plot an animated topographic map in a 3D head shape
-    
-    Parameters
-    ----------
-    epoch : mne.epochs.Epochs 
-        An epoched file for the EEGLab data
-    plot_title : str, optionl 
-        The title of the plot. Defaults to "".
-    color_title : str,  optional 
-        The title of the color bar. Defaults to "EEG MicroVolt".
-    color_min : int, optional 
-        The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
-    color_max : int, optional 
-        The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
-    colormap : str, optional 
-        The colour scheme to use. Defaults to Bluered.
-    
-    Returns
-    ----------
-    fig : plotly.graph_objs._figure.Figure
-        An animated topographic map in a 3D head shape
     """
+    Plot an animated topographic map in a 3D head shape
+
+    Parameters:
+        epoch: mne.epochs.Epochs
+            An epoched file for the EEGLab data
+        plot_title: str (optional)
+            The title of the plot. Defaults to "".
+        color_title: str (optional)
+            The title of the color bar. Defaults to "EEG MicroVolt".
+        color_min: int (optional)
+            The minimum EEG voltage value to be shown on the color bar.
+            Defaults to -50.
+        color_max: int (optional)
+            The maximum EEG voltage value to be shown on the color bar.
+            Defaults to 50.
+        colormap: str (optional)
+            The colour scheme to use. Defaults to Bluered.
+    Returns:
+        plotly.graph_objs._figure.Figure:
+            An animated topographic map in a 3D head shape
+    """
+
     if type(epoch) is not mne.epochs.Epochs:
         raise TypeError(
-            "epoch is not an epoched data, please refer to eeg_objects to create an epoched data"
+            "epoch is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
         )
 
     if type(plot_title) is not str:
@@ -278,9 +299,11 @@ def animate_3d_head(
                     alphahull=1,  # can't be changed
                     opacity=1,
                 ),
+                # you need to name the frame for the 
+                # animation to behave properly
                 name=format(
                     epoch.times[k], ".4f"
-                ),  # you need to name the frame for the animation to behave properly
+                ),  
             )
             for k in range(nb_frame)
         ]
@@ -324,7 +347,7 @@ def animate_3d_head(
             "x": 0.1,
             "y": 0,
             "currentvalue": {
-                "prefix": "Time stamp : ",
+                "prefix": "Time stamp: ",
                 "visible": True,
                 "xanchor": "center",
             },
@@ -383,31 +406,33 @@ def topo_3d_map(
     color_max=50,
     colormap="Bluered",
 ):
-    """Plot a topographic map in a 3D head shape for a single time stamp
-    
-    Parameters
-    ----------
-    epoch : mne.epochs.Epochs 
-        An epoched file for the EEGLab data
-    time_stamp : int 
-        The time stamp that is of interest
-    color_title : str,  optional
-        The title of the color bar. Defaults to "EEG MicroVolt".
-    color_min : int, optional 
-        The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
-    color_max : int, optional 
-        The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
-    colormap : str, optional 
-        The colour scheme to use. Defaults to Bluered.
-    
-    Returns
-    -------
-    fig : plotly.graph_objs._figure.Figure
-        A topographic map in a 3D head shape
+    """
+    Plot a topographic map in a 3D head shape for a single time stamp
+
+    Parameters:
+        epoch: mne.epochs.Epochs
+            An epoched file for the EEGLab data
+        time_stamp: int
+            The time stamp that is of interest
+        color_title: str (optional)
+            The title of the color bar. Defaults to "EEG MicroVolt".
+        color_min: int (optional)
+            The minimum EEG voltage value to be shown on the color bar.
+            Defaults to -50.
+        color_max: int (optional)
+            The maximum EEG voltage value to be shown on the color bar.
+            Defaults to 50.
+        colormap: str (optional)
+            The colour scheme to use. Defaults to Bluered.
+
+    Returns:
+        plotly.graph_objs._figure.Figure
+            A topographic map in a 3D head shape
     """
     if type(epoch) is not mne.epochs.Epochs:
         raise TypeError(
-            "epoch is not an epoched data, please refer to eeg_objects to create an epoched data"
+            "epoch is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
         )
 
     if type(color_title) is not str:
@@ -489,52 +514,53 @@ def topo_3d_map(
     return fig
 
 
-# A helper function to generate gif plotly figure
 @gif.frame
 def topo3dhead_plot(epoch, i):
-    """To generate a static image for each gif frame
+    """
+    To generate a static image for each gif frame
 
-    Parameters
-    ----------
-    epoch : mne.epochs.Epochs 
-        An epoched file for the EEGLab data
-    i : int 
-        The time stamp that is of interest
-    
-    Returns
-    -------
-    fig: plotly.graph_objs._figure.Figure
-        The 3D topograpic map on 3D shape
+    Parameters:
+        epoch: mne.epochs.Epochs
+            An epoched file for the EEGLab data
+        i: int
+            The time stamp that is of interest
+
+    Returns:
+        plotly.graph_objs._figure.Figure:
+            The 3D topograpic map on 3D shape
     """
     if type(epoch) is not mne.epochs.Epochs:
         raise TypeError(
-            "epoch is not an epoched data, please refer to eeg_objects to create an epoched data"
+            "epoch is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
         )
     if type(i) is not int and type(i) is not float:
         raise TypeError("i has to be a number")
-    
+
     fig = topo_3d_map(epoch, i)
     return fig
 
 
 # To save the animated plot as a gif
 def save_gif(epoch, gifname, duration):
-    """Save the animated plot as gif file
-
-    Parameters
-    ----------
-    epoch : mne.epochs.Epochs 
-        An epoched file for creating the gif
-    gifname : str 
-        The file name.
-    duration : int 
-        The duration (milliseconds) between each frame
     """
+    Save the animated plot as gif file
+
+    Parameters:
+        epoch: mne.epochs.Epochs
+            The epoch file for creating gif.
+        gifname: str
+            The file name.
+        duration: int
+            The duration (milliseconds) between each frame.
+    """
+
     frames = []
     starting = epoch.to_data_frame()["time"].min()
     ending = epoch.to_data_frame()["time"].max()
 
-    # for iterate over each timestamps in the dataframe to generate a plot, and then save it as animated gif
+    # for iterate over each timestamps in the dataframe
+    # to generate a plot, and then save it as animated gif
     for i in range(starting, ending, 1):
         frame = topo3dhead_plot(epoch, i)
         frames.append(frame)

@@ -49,14 +49,18 @@ st.markdown(
 
 @st.cache(show_spinner=False)
 def calculate_timeframe(start_time, raw):
-    """Parse time from string and determine position in raw data
+    """
+    Parse time from string and determine position in raw data
 
-    Args:
-        start_time (str): The start time in format H:M:S
-        raw (mne.Raw): The full experiment data
+    Parameters:
+        start_time : str
+            The start time in format H:M:S
+        raw : mne.io.Raw
+            The full experiment data
 
     Returns:
-        tuple(int, int): The time in seconds and the index
+        tuple of length 2:
+            The time in seconds and the index
     """
     if re.match('^0{1,}:0{1,}:0{1,}$', start_time):
         return True, -1
@@ -75,42 +79,54 @@ def calculate_timeframe(start_time, raw):
 
 @st.cache(show_spinner=False)
 def generate_stc_epoch(epoch):
-    """Helper function for 3D brain map
-    generate inverse solution from forward"""
+    """
+    Helper function for 3D brain map
+    generate inverse solution from forward
+    """
     fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
     return (topomap_3d_brain.create_inverse_solution(epoch, fwd))
 
 
 @st.cache(show_spinner=False)
 def generate_stc_fwd(epoch, fwd):
-    """Helper function for 3D brain map - Generate forward solution"""
+    """
+    Helper function for 3D brain map - Generate forward solution
+    """
     return (topomap_3d_brain.create_inverse_solution(epoch, fwd))
 
 
 @st.cache(show_spinner=False)
 def animate_ui_2d_head(epoch, **kwargs):
-    """Caching wrapper function to call topomap_2d.animate_topomap_2d"""
+    """
+    Caching wrapper function to call topomap_2d.animate_topomap_2d
+    """
     anim = topomap_2d.animate_topomap_2d(epoch, **kwargs)
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
 def animate_ui_3d_head(epoch, **kwargs):
-    """Caching wrapper function to call topomap_3d_head.animate_3d_head"""
+    """
+    Caching wrapper function to call topomap_3d_head.animate_3d_head
+    """
     return topomap_3d_head.animate_3d_head(epoch, **kwargs)
 
 
 @st.cache(show_spinner=False)
 def animate_ui_3d_brain(epoch, **kwargs):
-    """Caching wrapper function to call
-    topomap_3d_brain.animate_matplot_brain"""
+    """
+    Caching wrapper function to call
+    topomap_3d_brain.animate_matplot_brain
+    """
     anim = topomap_3d_brain.animate_matplot_brain(epoch, **kwargs)
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
 def animate_ui_connectivity(epoch, connection_type, **kwargs):
-    """Caching wrapper function to call connectivity.animate_connectivity"""
+    """
+    Caching wrapper function to call connectivity.animate_connectivity
+    """
     anim = connectivity.animate_connectivity(
         epoch,
         connection_type,
@@ -121,8 +137,10 @@ def animate_ui_connectivity(epoch, connection_type, **kwargs):
 
 @st.cache(show_spinner=False)
 def animate_ui_connectivity_circle(epoch, connection_type, **kwargs):
-    """Caching wrapper function to call
-    connectivity.animate_connectivity_circle"""
+    """
+    Caching wrapper function to call
+    connectivity.animate_connectivity_circle
+    """
     anim = connectivity.animate_connectivity_circle(
         epoch,
         connection_type,
@@ -133,7 +151,9 @@ def animate_ui_connectivity_circle(epoch, connection_type, **kwargs):
 
 @st.cache(show_spinner=False)
 def generate_eeg_file(experiment_num):
-    """Helper function for creating standalone eeg_file object"""
+    """
+    Helper function for creating standalone eeg_file object
+    """
     gen_eeg_file = eeg_objects.EEG_File(
         DATA_FOLDER+experiment_num
     )
@@ -142,22 +162,24 @@ def generate_eeg_file(experiment_num):
 
 @st.cache(show_spinner=False)
 def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
-    """Generate a custom epoch
+    """
+    Generate a custom epoch
 
-    Args:
-        experiment_num (str):
+    Parameters:
+        experiment_num : str
             Folder name of experiment
-        tmin (float):
+        tmin : float
             Seconds before the event time
-        tmax (float):
+        tmax : float
             Seconds after the event time
-        start_second (int):
+        start_second : int
             The second of event
-        epoch_num (int, optional):
+        epoch_num : int (optional)
             An epoch of interest to store.
 
     Returns:
-        eeg_objects.Epoch: The generated epoch object
+        eeg_objects.Epoch:
+            The generated epoch object
     """
 
     epoch_obj = eeg_objects.Epochs(
@@ -171,8 +193,10 @@ def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
 
 
 def get_shared_conn_widgets(epoch, frame_steps, key):
-    """Helper function for producing shared widgets for
-    connectivity sections"""
+    """
+    Helper function for producing shared widgets for
+    connectivity sections
+    """
 
     key = str(key)
 
@@ -264,7 +288,7 @@ def main():
             for fname in os.listdir(curr_path):
                 if fname.endswith('.set'):
                     experiment_list.append(name)
-    
+
     if not experiment_list:
         raise FileNotFoundError(
             """
@@ -320,7 +344,7 @@ def main():
             of the experiment).""".format(max_time)
         )
         start_second, in_timeframe = calculate_timeframe(start_time, raw_epoch_obj.raw)
-        if start_second == None:
+        if start_second is None:
             st.error('Time is in wrong format please use H:MM:SS')
         if in_timeframe == 0:
             st.error(
@@ -500,14 +524,15 @@ def main():
             )
 
         def generate_file_name(self, file_type="html"):
-            """Generate an export file name and success message function
+            """
+            Generate an export file name and success message function
 
-            Args:
-                file_type (str, optional):
+            Parameters:
+                file_type : str (optional)
                     File extension. Defaults to "html".
 
             Returns:
-                tuple(str, function):
+                tuple of str, function:
                     The generated file name and success message function
             """
 
@@ -533,7 +558,8 @@ def main():
             Prints success message to screen
 
             Args:
-                html_plot (html): The plot to export
+                html_plot : html
+                    The plot to export
             """
 
             file_name, send_message = self.generate_file_name()
@@ -741,8 +767,7 @@ def main():
             "Select brain hemisphere",
             options=list(hemi_options_dict.keys()),
             format_func=lambda key: hemi_options_dict[key],
-            help="""
-            The side of the brain to render.
+            help="""The side of the brain to render.
             If "both" is selected the right hemi of the brain will be rendered
             for the entire top row with the left hemi rendered in the bottom row.
             Note that a different (slightly slower) figure

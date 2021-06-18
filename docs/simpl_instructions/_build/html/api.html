@@ -275,13 +275,13 @@
 <dd><p>A class to import and store relevant eeg files</p>
 <dl class="simple">
 <dt>Attributes:</dt><dd><dl class="simple">
-<dt>folder_path (str):</dt><dd><p>path to experiment folder</p>
+<dt>folder_path: str</dt><dd><p>path to experiment folder</p>
 </dd>
-<dt>experiment (str):</dt><dd><p>the name of the folder containing experiment files</p>
+<dt>experiment: str</dt><dd><p>the name of the folder containing experiment files</p>
 </dd>
-<dt>mat ([[int]]):</dt><dd><p>a list of integers representing impact times</p>
+<dt>mat: list of ints</dt><dd><p>a list of integers representing impact times</p>
 </dd>
-<dt>raw (mne.io.eeglab.eeglab.RawEEGLAB):</dt><dd><p>raw experiment data in FIF format</p>
+<dt>raw: mne.io.eeglab.eeglab.RawEEGLAB</dt><dd><p>raw experiment data in FIF format</p>
 </dd>
 </dl>
 </dd>
@@ -294,11 +294,11 @@
 <dd><p>A class to represent epochs and underlying data</p>
 <dl class="simple">
 <dt>Attributes:</dt><dd><dl class="simple">
-<dt>eeg_file (EEG_File):</dt><dd><p>eeg file data</p>
+<dt>eeg_file: EEG_File</dt><dd><p>eeg file data</p>
 </dd>
-<dt>data (mne.Epochs):</dt><dd><p>the generated epoch data</p>
+<dt>data: mne.Epochs</dt><dd><p>the generated epoch data</p>
 </dd>
-<dt>epoch (mne.Epochs):</dt><dd><p>the selected epoch</p>
+<dt>epoch: mne.Epochs</dt><dd><p>the selected epoch</p>
 </dd>
 </dl>
 </dd>
@@ -319,21 +319,24 @@
 <code class="sig-name descname"><span class="pre">generate_epochs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tmin</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tmax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start_second</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.eeg_objects.Epochs.generate_epochs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generates an epoch object based on the given input</p>
 <dl>
-<dt>Args:</dt><dd><dl>
-<dt>tmin (float):</dt><dd><p>Number of seconds before the event time to include in epoch</p>
+<dt>Parameters:</dt><dd><dl>
+<dt>tmin: float</dt><dd><p>Number of seconds before the event time to include in epoch</p>
 </dd>
-<dt>tmax (float):</dt><dd><p>Number of seconds after the event time to include in epoch</p>
+<dt>tmax: float</dt><dd><p>Number of seconds after the event time to include in epoch</p>
 </dd>
-<dt>start_second (int):</dt><dd><p>Second of the event time,
+<dt>start_second: int</dt><dd><p>Second of the event time,
 or None if autodetected event time should be used</p>
 </dd>
-<dt><a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs (dict, optional):</dt><dd><p>Additional parameters to pass to the mne.Epochs() constructor</p>
+<dt><a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs: dict (optional)</dt><dd><p>Additional parameters to pass to the mne.Epochs() constructor</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.Epochs.html">https://mne.tools/stable/generated/mne.Epochs.html</a></p>
 </dd>
 </dl>
 </dd>
-<dt>Returns:</dt><dd><p>mne.Epochs: The generated epoch</p>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>mne.Epochs:</dt><dd><p>The generated epoch</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -344,8 +347,8 @@ or None if autodetected event time should be used</p>
 <dd><p>Return the nth epoch from the raw data,
 or current selected epoch if epoch_num is not given</p>
 <dl class="simple">
-<dt>Args:</dt><dd><dl class="simple">
-<dt>epoch_num (int):</dt><dd><p>The epoch to select</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch_num: int</dt><dd><p>The epoch to select</p>
 </dd>
 </dl>
 </dd>
@@ -362,8 +365,8 @@ or current selected epoch if epoch_num is not given</p>
 <code class="sig-name descname"><span class="pre">set_nth_epoch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch_num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.eeg_objects.Epochs.set_nth_epoch" title="Permalink to this definition">¶</a></dt>
 <dd><p>Set the nth epoch from the raw data</p>
 <dl class="simple">
-<dt>Args:</dt><dd><dl class="simple">
-<dt>epoch_num (int):</dt><dd><p>The epoch to select</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch_num: int</dt><dd><p>The epoch to select</p>
 </dd>
 </dl>
 </dd>
@@ -374,8 +377,8 @@ or current selected epoch if epoch_num is not given</p>
 <dt id="simpl_eeg.eeg_objects.Epochs.skip_n_steps">
 <code class="sig-name descname"><span class="pre">skip_n_steps</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_steps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.eeg_objects.Epochs.skip_n_steps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return new epoch containing every nth frame</p>
-<p>Args:
-num_steps (int):</p>
+<p>Parameters:
+num_steps: int</p>
 <blockquote>
 <div><p>The number of time steps to skip</p>
 </div></blockquote>
@@ -398,14 +401,14 @@ num_steps (int):</p>
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.raw_voltage.</span></code><code class="sig-name descname"><span class="pre">plot_voltage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.raw_voltage.plot_voltage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate raw voltage plot</p>
 <dl>
-<dt>Args:</dt><dd><dl>
-<dt>epoch (mne.epochs.Epochs):</dt><dd><p>Epoch(s) to display</p>
+<dt>Parameters:</dt><dd><dl>
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch(s) to display</p>
 </dd>
-<dt>remove_xlabel (bool, optional):</dt><dd><p>Whether to remove the x axis label. Defaults to False.</p>
+<dt>remove_xlabel: bool (optional)</dt><dd><p>Whether to remove the x axis label. Defaults to False.</p>
 </dd>
-<dt>show_times (bool, optional):</dt><dd><p>Whether to show seconds on the x axis. Defaults to True.</p>
+<dt>show_times: bool (optional)</dt><dd><p>Whether to show seconds on the x axis. Defaults to True.</p>
 </dd>
-<dt><a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs (dict, optional):</dt><dd><p>Optional arguments to pass to mne.Epochs.plot()</p>
+<dt><a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.Epochs.plot()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.Epochs.html#mne.Epochs.plot">https://mne.tools/stable/generated/mne.Epochs.html#mne.Epochs.plot</a></p>
 </dd>
@@ -427,13 +430,16 @@ num_steps (int):</p>
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_2d.</span></code><code class="sig-name descname"><span class="pre">add_timestamp</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_number</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xpos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ypos</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_2d.add_timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a timestamp to a matplotlib.image.AxesImage object</p>
 <dl class="simple">
-<dt>epoch<span class="classifier">mne.epochs.Epochs</span></dt><dd><p>MNE epochs object containing the timestamps.</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>MNE epochs object containing the timestamps.</p>
 </dd>
-<dt>frame_number: int</dt><dd><p>The timestamp to plot.</p>
+<dt>frame_number: int</dt><dd><p>The timestamp to plot</p>
 </dd>
 <dt>xpos: float</dt><dd><p>The matplotlib x coordinate of the timestamp.</p>
 </dd>
 <dt>ypos: float</dt><dd><p>The matplotlib y coordinate of the timestamp.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -441,59 +447,76 @@ num_steps (int):</p>
 <dl class="py function">
 <dt id="simpl_eeg.topomap_2d.animate_topomap_2d">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_2d.</span></code><code class="sig-name descname"><span class="pre">animate_topomap_2d</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">res</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extrapolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'head'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outlines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'head'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_2d.animate_topomap_2d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
+<dd><p>Plots a still image mne.epochs.
+Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
 function.</p>
+<p>Parameters:
+epochs: mne.epochs.Epochs</p>
+<blockquote>
+<div><p>MNE epochs object containing portions of raw EEG data
+built around specified timestamp(s)</p>
+</div></blockquote>
 <dl class="simple">
-<dt>epochs<span class="classifier">mne.epochs.Epochs</span></dt><dd><p>MNE epochs object containing portions of raw EEG data built around specified timestamp(s)</p>
-</dd>
 <dt>colormap: matplotlib colormap or None</dt><dd><p>Specifies the ‘colormap’ parameter in the mne.viz.plot_topomap() function.</p>
 </dd>
-<dt>mark: str</dt><dd><p>Specifies what kind of marker should be shown for each node on the topomap. Can be one of
-‘dot’, ‘r+’ (for red +’s), ‘channel_name’, or ‘none’.</p>
+<dt>mark: str</dt><dd><p>Specifies what kind of marker should be shown for each node on the topomap.
+Can be one of ‘dot’, ‘r+’ (for red +’s), ‘channel_name’, or ‘none’.</p>
 </dd>
-<dt>contours: int or array of float</dt><dd><p>specifies the ‘contours’ parameter in the mne.viz.plot_topomap() function. “The number of
-contour lines to draw. If 0, no contours will be drawn. If an array, the values represent
-the levels for the contours. The values are in µV for EEG, fT for magnetometers and fT/m
+<dt>contours: int | array of float</dt><dd><p>specifies the ‘contours’ parameter in the
+mne.viz.plot_topomap() function.
+“The number of contour lines to draw.
+If 0, no contours will be drawn.
+If an array, the values represent the levels for the contours.
+The values are in µV for EEG, fT for magnetometers and fT/m
 for gradiometers.”</p>
 </dd>
-<dt>sphere: float or array_like or instance of ConductorModel</dt><dd><p>specifies the ‘sphere’ parameter in the mne.viz.plot_topomap() function. “The sphere
-parameters to use for the cartoon head. Can be array-like of shape (4,) to give the
-X/Y/Z origin and radius in meters, or a single float to give the radius (origin
-assumed 0, 0, 0). Can also be a spherical ConductorModel, which will use the origin
-and radius. Can also be None (default) which is an alias for 0.095”</p>
+<dt>sphere: float | array_like | instance of ConductorModel | None</dt><dd><p>specifies the ‘sphere’ parameter in the mne.viz.plot_topomap() function.
+“The sphere parameters to use for the cartoon head.
+Can be array-like of shape (4,) to give the X/Y/Z origin and
+radius in meters, or a single float to give the radius (origin
+assumed 0, 0, 0). Can also be a spherical ConductorModel,
+which will use the origin and radius.
+Can also be None (default) which is an alias for 0.095”</p>
 </dd>
 <dt>cmin: float</dt><dd><p>Specifies the ‘vmin’ parameter in the mne.viz.plot_topomap() function.
 Sets the limits for the colors which will be used on the topomap. Value is
 in μV. Defaults to -10.</p>
 </dd>
 <dt>cmax: float</dt><dd><p>Specifies the ‘vmax’ parameter in the mne.viz.plot_topomap() function.
-Sets the limits for the colors which will be used on the topomap. Value is
-in μV. Defaults to +10.</p>
+Sets the limits for the colors which will be used on the topomap.
+Value is in μV. Defaults to +10.</p>
 </dd>
-<dt>res: int</dt><dd><p>Specifies the ‘res’ and parameters in the mne.viz.plot_topomap() function. “The
+<dt>res: int</dt><dd><p>Specifies the ‘res’ and parameters in the
+mne.viz.plot_topomap() function. “The
 resolution of the topomap image (n pixels along each side).”</p>
 </dd>
-<dt>extrapolate: str</dt><dd><p>Specifies the ‘extrapolate’ and parameters in the mne.viz.plot_topomap() function. One of
+<dt>extrapolate: str</dt><dd><p>Specifies the ‘extrapolate’ and parameters in the
+mne.viz.plot_topomap() function. One of
 “box”, “local”, or “head”.</p>
 </dd>
-<dt>outlines: ‘head’ or ‘skirt’ or dict or None</dt><dd><p>Specifies the ‘outlines’ parameter in the mne.viz.plot_topomap() function.</p>
+<dt>outlines: ‘head’ or ‘skirt’ | dict | None</dt><dd><p>Specifies the ‘outlines’ parameter in the
+mne.viz.plot_topomap() function.</p>
 </dd>
-<dt>axes: instance of Axes or None</dt><dd><p>Specifies the ‘axes’ parameter in the mne.viz.plot_topomap() function.</p>
+<dt>axes: instance of Axes | None</dt><dd><p>Specifies the ‘axes’ parameter in the mne.viz.plot_topomap() function.</p>
 </dd>
-<dt>mask: ndarray of bool, shape (n_channels, n_times) or None</dt><dd><p>Specifies the ‘mask’ parameter in the mne.viz.plot_topomap() function.</p>
+<dt>mask: ndarray of bool, shape (n_channels, n_times) | None</dt><dd><p>Specifies the ‘mask’ parameter in the mne.viz.plot_topomap() function.</p>
 </dd>
-<dt>mask_params: dict</dt><dd><p>Specifies the ‘mask_params’ parameter in the mne.viz.plot_topomap() function.</p>
+<dt>mask_params: dict</dt><dd><p>Specifies the ‘mask_params’ parameter in the
+mne.viz.plot_topomap() function.</p>
 </dd>
 <dt>colorbar: bool</dt><dd><p>Specifies whether or not to include a colorbar in the animation.</p>
 </dd>
-<dt>timestamp: bool</dt><dd><p>Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-is being shown. Defaults to True.</p>
+<dt>timestamp: bool</dt><dd><p>Specifies whether or not to show the timestamp on the plot
+relative to the time in the epoch that is being shown.
+Defaults to True.</p>
 </dd>
 <dt>frame_rate: int</dt><dd><p>The frame rate to genearte the final animation with.</p>
 </dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>matplotlib.animation.FuncAnimation:</dt><dd><p>matplotlib funcanimation of a 2d topographic map
+based on the input epoch data.</p>
+</dd>
 </dl>
-<dl class="simple">
-<dt>ani: matplotlib.animation.FuncAnimation</dt><dd><p>matplotlib funcanimation of a 2d topographic map based on the input epoch data</p>
 </dd>
 </dl>
 </dd></dl>
@@ -501,61 +524,87 @@ is being shown. Defaults to True.</p>
 <dl class="py function">
 <dt id="simpl_eeg.topomap_2d.plot_topomap_2d">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_2d.</span></code><code class="sig-name descname"><span class="pre">plot_topomap_2d</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotting_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recording_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">res</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extrapolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'head'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outlines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'head'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_2d.plot_topomap_2d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
-function.</p>
+<dd><p>Plots a still image mne.epochs.Epochs EEG data as a
+2D topomap using the mne.viz.plot_topomap function</p>
 <dl class="simple">
-<dt>epoch<span class="classifier">mne.epochs.Epochs</span></dt><dd><p>MNE epochs object containing portions of raw EEG data built around specified timestamp(s)</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>MNE epochs object containing portions of raw
+EEG data built around specified timestamp(s).</p>
 </dd>
-<dt>plotting_data: numpy.ndarray</dt><dd><p>array of the EEG data from a measurement (not a time interval) to be plotted</p>
+<dt>plotting_data: numpy.ndarray</dt><dd><p>array of the EEG data from a measurement
+(not a time interval) to be plotted.</p>
 </dd>
 <dt>recording_number: int</dt><dd><p>The “frame” of the epoch to show in the plot.</p>
 </dd>
-<dt>colormap: matplotlib colormap or None</dt><dd><p>Specifies the ‘colormap’ parameter in the mne.viz.plot_topomap() function.</p>
+<dt>colormap: matplotlib colormap | None</dt><dd><p>Specifies the ‘colormap’ parameter in the 
+mne.viz.plot_topomap() function.</p>
 </dd>
-<dt>colorbar: bool</dt><dd><p>Specifies whether to include a colorbar or not. Removing it will improve performance.</p>
+<dt>colorbar: bool</dt><dd><p>Specifies whether to include a colorbar or not.
+Removing it will improve performance.</p>
 </dd>
-<dt>cmin: float</dt><dd><p>Specifies the ‘vmin’ parameter in the mne.viz.plot_topomap() function.
-Sets the limits for the colors which will be used on the topomap. Value is
-in μV. Defaults to -10.</p>
+<dt>cmin: float</dt><dd><p>Specifies the ‘vmin’ parameter in the
+mne.viz.plot_topomap() function.
+Sets the limits for the colors which will be used on the topomap.
+Value is in μV. Defaults to -10.</p>
 </dd>
-<dt>cmax: float</dt><dd><p>Specifies the ‘vmax’ parameter in the mne.viz.plot_topomap() function.
-Sets the limits for the colors which will be used on the topomap. Value is
-in μV. Defaults to +10.</p>
+<dt>cmax: float</dt><dd><p>Specifies the ‘vmax’ parameter in the
+mne.viz.plot_topomap() function.
+Sets the limits for the colors which will be used on the topomap.
+Value is in μV. Defaults to +10.</p>
 </dd>
-<dt>mark: str</dt><dd><p>Specifies what kind of marker should be shown for each node on the topomap. Can be one of
+<dt>mark: str</dt><dd><p>Specifies what kind of marker should be shown for
+each node on the topomap. Can be one of
 ‘dot’, ‘r+’ (for red +’s), ‘channel_name’, or ‘none’.</p>
 </dd>
-<dt>contours: int or array of float</dt><dd><p>specifies the ‘contours’ parameter in the mne.viz.plot_topomap() function. “The number of
-contour lines to draw. If 0, no contours will be drawn. If an array, the values represent
-the levels for the contours. The values are in µV for EEG, fT for magnetometers and fT/m
+<dt>contours: int or array of float</dt><dd><p>specifies the ‘contours’ parameter in the
+mne.viz.plot_topomap() function. “The number of
+contour lines to draw. If 0, no contours will be drawn.
+If an array, the values represent
+the levels for the contours.
+The values are in µV for EEG, fT for magnetometers and fT/m
 for gradiometers.”</p>
 </dd>
-<dt>sphere: float or array_like or instance of ConductorModel</dt><dd><p>specifies the ‘sphere’ parameter in the mne.viz.plot_topomap() function. “The sphere
-parameters to use for the cartoon head. Can be array-like of shape (4,) to give the
-X/Y/Z origin and radius in meters, or a single float to give the radius (origin
-assumed 0, 0, 0). Can also be a spherical ConductorModel, which will use the origin
+<dt>sphere: float or array_like or instance of ConductorModel</dt><dd><p>specifies the ‘sphere’ parameter in the
+mne.viz.plot_topomap() function. “The sphere
+parameters to use for the cartoon head.
+Can be array-like of shape (4,) to give the
+X/Y/Z origin and radius in meters, or a single
+float to give the radius (origin
+assumed 0, 0, 0). Can also be a spherical ConductorModel,
+which will use the origin
 and radius. Can also be None (default) which is an alias for 0.095”</p>
 </dd>
-<dt>res: int</dt><dd><p>Specifies the ‘res’ and parameters in the mne.viz.plot_topomap() function. “The
+<dt>res: int</dt><dd><p>Specifies the ‘res’ and parameters in the
+mne.viz.plot_topomap() function. “The
 resolution of the topomap image (n pixels along each side).”</p>
 </dd>
-<dt>extrapolate: str</dt><dd><p>Specifies the ‘extrapolate’ and parameters in the mne.viz.plot_topomap() function. One of
+<dt>extrapolate: str</dt><dd><p>Specifies the ‘extrapolate’ and parameters in the
+mne.viz.plot_topomap() function. One of
 “box”, “local”, or “head”.</p>
 </dd>
-<dt>outlines: ‘head’ or ‘skirt’ or dict or None</dt><dd><p>Specifies the ‘outlines’ parameter in the mne.viz.plot_topomap() function.</p>
+<dt>outlines: ‘head’ or ‘skirt’ | dict | None</dt><dd><p>Specifies the ‘outlines’ parameter in the
+mne.viz.plot_topomap() function.</p>
 </dd>
-<dt>axes: instance of Axes or None</dt><dd><p>Specifies the ‘axes’ parameter in the mne.viz.plot_topomap() function.</p>
+<dt>axes: instance of Axes | None</dt><dd><p>Specifies the ‘axes’ parameter in the
+mne.viz.plot_topomap() function.</p>
 </dd>
-<dt>mask: ndarray of bool, shape (n_channels, n_times) or None</dt><dd><p>Specifies the ‘mask’ parameter in the mne.viz.plot_topomap() function.</p>
+<dt>mask: ndarray of bool, shape (n_channels, n_times) | None</dt><dd><p>Specifies the ‘mask’ parameter in the
+mne.viz.plot_topomap() function.</p>
 </dd>
-<dt>mask_params: dict</dt><dd><p>Specifies the ‘mask_params’ parameter in the mne.viz.plot_topomap() function.</p>
+<dt>mask_params: dict</dt><dd><p>Specifies the ‘mask_params’ parameter in the
+mne.viz.plot_topomap() function.</p>
 </dd>
-<dt>timestamp: bool</dt><dd><p>Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+<dt>timestamp: bool</dt><dd><p>Specifies whether or not to show the timestamp on the plot
+relative to the time in the epoch that
 is being shown. Defaults to true.</p>
 </dd>
 </dl>
-<dl class="simple">
-<dt>topo_2d_fig: matplotlib.image.AxesImage</dt><dd><p>matplotlib image plot of a 2d topographic map based on the input epoch data</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>matplotlib.image.AxesImage</dt><dd><p>matplotlib image plot of a 2d topographic map based
+on the input epoch data</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -567,18 +616,29 @@ is being shown. Defaults to true.</p>
 <dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.animate_3d_head">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">animate_3d_head</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EEG</span> <span class="pre">MicroVolt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Bluered'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.animate_3d_head" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot an animated topographic map in a 3D head shape
-Args:</p>
-<blockquote>
-<div><p>epoch (mne.epochs.Epochs): An epoched file for the EEGLab data
-plot_title (str, optionl): The title of the plot. Defaults to “”.
-color_title (str,  optional): The title of the color bar. Defaults to “EEG MicroVolt”.
-color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
-color_max (int, optional): The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
-colormap (str, optional): The colour scheme to use. Defaults to Bluered.</p>
-</div></blockquote>
+<dd><p>Plot an animated topographic map in a 3D head shape</p>
 <dl class="simple">
-<dt>Returns:</dt><dd><p>figure: An animated topographic map in a 3D head shape</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>An epoched file for the EEGLab data</p>
+</dd>
+<dt>plot_title: str (optional)</dt><dd><p>The title of the plot. Defaults to “”.</p>
+</dd>
+<dt>color_title: str (optional)</dt><dd><p>The title of the color bar. Defaults to “EEG MicroVolt”.</p>
+</dd>
+<dt>color_min: int (optional)</dt><dd><p>The minimum EEG voltage value to be shown on the color bar.
+Defaults to -50.</p>
+</dd>
+<dt>color_max: int (optional)</dt><dd><p>The maximum EEG voltage value to be shown on the color bar.
+Defaults to 50.</p>
+</dd>
+<dt>colormap: str (optional)</dt><dd><p>The colour scheme to use. Defaults to Bluered.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>plotly.graph_objs._figure.Figure:</dt><dd><p>An animated topographic map in a 3D head shape</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -586,13 +646,17 @@ colormap (str, optional): The colour scheme to use. Defaults to Bluered.</p>
 <dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.frame_args">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">frame_args</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.frame_args" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the frame arguments of the animated plot
-Args:</p>
-<blockquote>
-<div><p>duration (int): The number of frames for the animated plot</p>
-</div></blockquote>
+<dd><p>Return the frame arguments of the animated plot</p>
 <dl class="simple">
-<dt>Returns:</dt><dd><p>dict: A dictionary of frame arguments</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>duration: int</dt><dd><p>The number of frames for the animated plot</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>dict:</dt><dd><p>A dictionary of frame arguments</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -600,14 +664,19 @@ Args:</p>
 <dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.get_eeg_node">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">get_eeg_node</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">standard_montage_list</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.get_eeg_node" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the electrode location from the raw data
-Args:</p>
-<blockquote>
-<div><p>raw (mne.epochs.Epochs): The raw epoch data
-standard_montage_list (array): The numpy array which contains the cartesian coordinate of standard node location</p>
-</div></blockquote>
+<dd><p>Get the electrode location from the raw data</p>
 <dl class="simple">
-<dt>Returns:</dt><dd><p>array: The electrode location from the raw data</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>raw: mne.epochs.Epochs</dt><dd><p>The raw epoch data</p>
+</dd>
+<dt>standard_montage_list: numpy.ndarray </dt><dd><p>The numpy array which contains the cartesian coordinate of standard node location</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>numpy.ndarray:</dt><dd><p>The electrode location from the raw data</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -615,14 +684,21 @@ standard_montage_list (array): The numpy array which contains the cartesian coor
 <dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.get_node_dataframe">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">get_node_dataframe</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">raw</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">montage</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.get_node_dataframe" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the electrode name and electrode location from the raw data and save it in a dataframe
-Args:</p>
-<blockquote>
-<div><p>raw (mne.epochs.Epochs): The raw epoch data
-montage (array): The numpy array which contains the cartesian coordinate of standard node location</p>
-</div></blockquote>
+<dd><p>Get the electrode name and electrode location from
+the raw data and save it in a dataframe</p>
 <dl class="simple">
-<dt>Returns:</dt><dd><p>dataframe: A dataframe which contains the electrode name and electrode location from the raw data</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>raw: mne.epochs.Epochs</dt><dd><p>The raw epoch data</p>
+</dd>
+<dt>montage: numpy.ndarray </dt><dd><p>The numpy array which contains the cartesian coordinate 
+of standard node location</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>pandas.core.frame.DataFrame:</dt><dd><p>A dataframe which contains the electrode name and electrode location from the raw data</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -630,30 +706,48 @@ montage (array): The numpy array which contains the cartesian coordinate of stan
 <dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.get_standard_coord">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">get_standard_coord</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.get_standard_coord" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate an array of cartesian coordinates of the standard node locations (“standard_1005”)
-Returns:</p>
-<blockquote>
-<div><p>montage (mne.channels.montage): The standard montage from the mne library
-array: A numpy array of cartesian coordinates of the standard node locations (“standard_1005”)</p>
-</div></blockquote>
+<dd><p>Generate an array of cartesian coordinates of the
+standard node locations (“standard_1005”)</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>mne.channels.montage:</dt><dd><p>The standard montage from the mne library</p>
+</dd>
+<dt>array:</dt><dd><p>A numpy array of cartesian coordinates of
+the standard node locations (“standard_1005”)</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.interpolated_time">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">interpolated_time</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">channel_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_coord</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">t</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.interpolated_time" title="Permalink to this definition">¶</a></dt>
-<dd><p>To interpolate EEG signals to locations points that don’t have data
-Args:</p>
-<blockquote>
-<div><p>df (dataframe): A dataframe that contains the EEG signal of each channels for each time stamps
-channel_names (list): A list of channel names in the raw data
-node_coord (array): A numpy array of (x, y, z) coordinates of all channels in the raw data
-x (array): A numpy array of X coordinates of all channels for interpolation
-y (array): A numpy array of Y coordinates of all channels for interpolation
-z (array): A numpy array of Z coordinates of all channels for interpolation
-t (int): The time stamp we want to interpolate EEG voltages for</p>
-</div></blockquote>
+<dd><p>To interpolate EEG signals to locations points that don’t have data</p>
 <dl class="simple">
-<dt>Returns:</dt><dd><p>array: A numpy array of interpolated EEG voltages</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>df: dataframe</dt><dd><p>A dataframe that contains the EEG signal of
+each channels for each time stamps</p>
+</dd>
+<dt>channel_names: list</dt><dd><p>A list of channel names in the raw data</p>
+</dd>
+<dt>node_coord: array</dt><dd><p>A numpy array of (x, y, z) coordinates of
+all channels in the raw data</p>
+</dd>
+<dt>x: array</dt><dd><p>A numpy array of X coordinates of all channels for interpolation</p>
+</dd>
+<dt>y: array</dt><dd><p>A numpy array of Y coordinates of all channels for interpolation</p>
+</dd>
+<dt>z: array</dt><dd><p>A numpy array of Z coordinates of all channels for interpolation</p>
+</dd>
+<dt>t: int</dt><dd><p>The time stamp we want to interpolate EEG voltages for</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>numpy.ndarray:</dt><dd><p>A numpy array of interpolated EEG voltages</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -661,30 +755,66 @@ t (int): The time stamp we want to interpolate EEG voltages for</p>
 <dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.save_gif">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">save_gif</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gifname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.save_gif" title="Permalink to this definition">¶</a></dt>
-<dd><p>Save the animated plot as gif file
-Args:</p>
-<blockquote>
-<div><p>epoch(mne.epochs.Epochs): The epoch file for creating gif
-gifname (str): The file name.
-duration (int): The duration (milliseconds) between each frame</p>
-</div></blockquote>
+<dd><p>Save the animated plot as gif file</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>The epoch file for creating gif.</p>
+</dd>
+<dt>gifname: str</dt><dd><p>The file name.</p>
+</dd>
+<dt>duration: int</dt><dd><p>The duration (milliseconds) between each frame.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="simpl_eeg.topomap_3d_head.topo3dhead_plot">
+<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">topo3dhead_plot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.topo3dhead_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>To generate a static image for each gif frame</p>
+<dl class="simple">
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>An epoched file for the EEGLab data</p>
+</dd>
+<dt>i: int</dt><dd><p>The time stamp that is of interest</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>plotly.graph_objs._figure.Figure:</dt><dd><p>The 3D topograpic map on 3D shape</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.topo_3d_map">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">topo_3d_map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_stamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EEG</span> <span class="pre">MicroVolt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Bluered'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.topo_3d_map" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot a topographic map in a 3D head shape for a single time stamp
-Args:</p>
-<blockquote>
-<div><p>epoch (mne.epochs.Epochs): An epoched file for the EEGLab data
-time_stamp (int): The time stamp that is of interest
-color_title (str,  optional): The title of the color bar. Defaults to “EEG MicroVolt”.
-color_min (int, optional): The minimum EEG voltage value to be shown on the color bar. Defaults to -50.
-color_max (int, optional): The maximum EEG voltage value to be shown on the color bar. Defaults to 50.
-colormap (str, optional): The colour scheme to use. Defaults to Bluered.</p>
-</div></blockquote>
+<dd><p>Plot a topographic map in a 3D head shape for a single time stamp</p>
 <dl class="simple">
-<dt>Returns:</dt><dd><p>figure: A topographic map in a 3D head shape</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>An epoched file for the EEGLab data</p>
+</dd>
+<dt>time_stamp: int</dt><dd><p>The time stamp that is of interest</p>
+</dd>
+<dt>color_title: str (optional)</dt><dd><p>The title of the color bar. Defaults to “EEG MicroVolt”.</p>
+</dd>
+<dt>color_min: int (optional)</dt><dd><p>The minimum EEG voltage value to be shown on the color bar.
+Defaults to -50.</p>
+</dd>
+<dt>color_max: int (optional)</dt><dd><p>The maximum EEG voltage value to be shown on the color bar.
+Defaults to 50.</p>
+</dd>
+<dt>colormap: str (optional)</dt><dd><p>The colour scheme to use. Defaults to Bluered.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>plotly.graph_objs._figure.Figure</dt><dd><p>A topographic map in a 3D head shape</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -697,6 +827,7 @@ colormap (str, optional): The colour scheme to use. Defaults to Bluered.</p>
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_brain.</span></code><code class="sig-name descname"><span class="pre">add_timestamp_brain</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">figure</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xpos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ypos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fontsize</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_brain.add_timestamp_brain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a timestamp to a matplotlib.image.AxesImage object</p>
 <dl class="simple">
+<dt>Parameters:</dt><dd><dl class="simple">
 <dt>figure: matplotlib.figure.Figure</dt><dd><p>The time to plot as a timestamp.</p>
 </dd>
 <dt>frame: int</dt><dd><p>The time to plot as a timestamp.</p>
@@ -705,7 +836,9 @@ colormap (str, optional): The colour scheme to use. Defaults to Bluered.</p>
 </dd>
 <dt>ypos: float</dt><dd><p>The matplotlib y coordinate of the timestamp.</p>
 </dd>
-<dt>fontsize:</dt><dd><p>The size to make the font</p>
+<dt>fontsize:</dt><dd><p>The size to make the font.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -715,14 +848,15 @@ colormap (str, optional): The colour scheme to use. Defaults to Bluered.</p>
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_brain.</span></code><code class="sig-name descname"><span class="pre">animate_matplot_brain</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'auto'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">views</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['lat',</span> <span class="pre">'dor',</span> <span class="pre">'fro']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">200</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hemi</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'both'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'mne'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap_limit_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'lims'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmid</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'oct5'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smoothing_steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_brain.animate_matplot_brain" title="Permalink to this definition">¶</a></dt>
 <dd><p>Creates an animated view of all timestamp observations an mne.epochs.Epochs data using a matplotlib backend.
 If multiple views are used then speed becomes significantly slower. Colorbar placement may be inconsistent.</p>
-<dl class="simple">
-<dt>epoch<span class="classifier">mne.epochs.Epochs or mne.evoked.EvokedArray</span></dt><dd><p>MNE epochs or evoked object containing portions of raw EEG data built around specified
+<dl>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch: mne.epochs.Epochs or mne.evoked.EvokedArray</dt><dd><p>MNE epochs or evoked object containing portions of raw EEG data built around specified
 timestamp(s) The inverse solution will be built based on the data in the specified epoch.</p>
 </dd>
-<dt>stc: mne.source_estimate.SourceEstimate or ‘auto’</dt><dd><p>‘inverse_solution’ to generate the plot from. If set to “auto” (default) then an stc will be
+<dt>stc: mne.source_estimate.SourceEstimate | ‘auto’</dt><dd><p>‘inverse_solution’ to generate the plot from. If set to “auto” (default) then an stc will be
 automatically generated however, this will significantly increase running time.</p>
 </dd>
-<dt>views: str or list</dt><dd><p>Specifies the ‘view’ parameter in the mne.SourceEstimate.plot() function. For any backend
+<dt>views: str | list</dt><dd><p>Specifies the ‘view’ parameter in the mne.SourceEstimate.plot() function. For any backend
 can be any combination of ‘lat’ (lateral), ‘med’ (medial), ‘ros’ (rostral), ‘cau’ (caudal),
 ‘dor’ (dorsal), ‘ven’(ventral), ‘fro’(frontal), ‘par’ (parietal). The following arguments
 are also accepted but are NOT compatible with the matplotlib backend ‘axi’ (axial), ‘sag’
@@ -733,12 +867,12 @@ If using matplotlib as a backend then the height will be divided by 100 and roun
 For example, entering 100 will result in 1 inch per view. If plotting multiple views overall size of
 the multiplot is automatically calculated to fit all views. Defaults to 300.</p>
 </dd>
-<dt>hemi: ‘lh’ or ‘rh’ or ‘both’ or ‘split’</dt><dd><p>Specifies the ‘initial_time’ parameter in the mne.SourceEstimate.plot() function. Can be
+<dt>hemi: str (‘lh’ or ‘rh’ or ‘both’ or ‘split’)</dt><dd><p>Specifies the ‘initial_time’ parameter in the mne.SourceEstimate.plot() function. Can be
 one of ‘lh’, ‘rh’, ‘both’, or ‘split’. Defaults to ‘both’. Note that when using the matplotlib
 backend that ‘split’ and ‘both’ will return a ‘split’ view since both is not avalible.
 Defaults to ‘both’</p>
 </dd>
-<dt>colormap: str or np.ndarray of float, shape(n_colors, 3 | 4)</dt><dd><p>Specifies the ‘colormap’ parameter in the mne.SourceEstimate.plot() function. Can use a
+<dt>colormap: str | np.ndarray of float, shape(n_colors, 3 | 4)</dt><dd><p>Specifies the ‘colormap’ parameter in the mne.SourceEstimate.plot() function. Can use a
 matplotlib colormap by name or take a custom look up table as input. Defaults to “mne”</p>
 </dd>
 <dt>colorbar: bool</dt><dd><p>Determines whether to include a colorbar on the plot not. Defaults to True.</p>
@@ -768,15 +902,19 @@ space. Has no effect with mayavi backend. Defaults to ‘oct6’”.</p>
 <dt>smoothing_steps: int</dt><dd><p>Specifies the ‘smoothing_steps’ parameter in the mne.SourceEstimate.plot() function. “The amount of smoothing”.
 3 by default.</p>
 </dd>
-<dt>timestamp: ‘auto’ or bool</dt><dd><p>Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-is being shown. Only works with ‘matplotlib’ set to the backend. Defaults to ‘auto’ which be True
-if a matplotlib backend is being used and False otherwise.</p>
-</dd>
+</dl>
+<p>timestamp: bool
+Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+is being shown.</p>
+<dl class="simple">
 <dt>frame_rate: int</dt><dd><p>The frame rate to render the animation at. Defautls to 12.</p>
 </dd>
 </dl>
-<dl class="simple">
-<dt>ani: matplotlib.animation.FuncAnimation</dt><dd><p>Animation containing frames from all of the avalible times in the passed in epoch.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>matplotlib.animation.FuncAnimation:</dt><dd><p>Animation containing frames from all of the avalible times in the passed in epoch.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -788,13 +926,19 @@ if a matplotlib backend is being used and False otherwise.</p>
 and for a known model of the head. Returns EEG forward operator with a downloaded template
 MRI (fsaverage).</p>
 <dl class="simple">
-<dt>epoch<span class="classifier">mne.epochs.Epochs</span></dt><dd><p>MNE epoch object containing portions of raw EEG data built around specified timestamp(s)</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>MNE epoch object containing portions of raw EEG data built around specified timestamp(s)</p>
 </dd>
 <dt>kwargs: arguments</dt><dd><p>Specify any of the following arguments for the mne.make_forward_solution() function. These include midist=5.0, n_jobs=1.</p>
 </dd>
 </dl>
-<p>fwd: mne.forward.forward.Forward
-Forward operator built from the user_input epoch and the fsaverage brain.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>mne.forward.forward.Forward:</dt><dd><p>Forward operator built from the user_input epoch and the fsaverage brain.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -802,13 +946,16 @@ Forward operator built from the user_input epoch and the fsaverage brain.</p>
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_brain.</span></code><code class="sig-name descname"><span class="pre">create_inverse_solution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariance_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['empirical',</span> <span class="pre">'shrunk']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_inverse_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dSPM'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pick_ori</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'normal'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_brain.create_inverse_solution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the inverse solution, which is an Estimation of the unknown sources
 corresponding to the measured EEG or MEG.</p>
-<dl class="simple">
-<dt>epoch<span class="classifier">mne.epochs.Epochs or mne.evoked.EvokedArray</span></dt><dd><p>MNE epochs or evoked object containing portions of raw EEG data built around specified
+<p>Parameters:
+epoch: mne.epochs.Epochs | mne.evoked.EvokedArray</p>
+<blockquote>
+<div><p>MNE epochs or evoked object containing portions of raw EEG data built around specified
 timestamp(s). The inverse solution will be built based on the data in the specified epoch.</p>
-</dd>
+</div></blockquote>
+<dl class="simple">
 <dt>forward: mne.forward.forward.Forward</dt><dd><p>Specifies the ‘forward’ parameter in the mne.minimum_norm.make_inverse_operator() function.</p>
 </dd>
-<dt>epoch_num: int or str</dt><dd><p>If input is an ‘int’ then this specifies which epoch in the ‘epochs’ number to build an
+<dt>epoch_num: int | str</dt><dd><p>If input is an ‘int’ then this specifies which epoch in the ‘epochs’ number to build an
 inverse solution from. If input is “all” then an inverse solution will be built from all
 epochs.</p>
 </dd>
@@ -826,9 +973,10 @@ or mne.minimum_norm.apply_inverse() (if using evoked data).</p>
 <dt>pick_ori: str</dt><dd><p>Specifies the ‘pick_ori’ parameter in mne.minimum_norm.apply_inverse_epochs() (if using epochs)
 or mne.minimum_norm.apply_inverse() (if using evoked data).</p>
 </dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>mne.source_estimate.SourceEstimate:</dt><dd><p>Forward operator built from the user_input epochs and the fsaverage brain.</p>
+</dd>
 </dl>
-<dl class="simple">
-<dt>stc: mne.source_estimate.SourceEstimate</dt><dd><p>Forward operator built from the user_input epochs and the fsaverage brain.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -841,23 +989,24 @@ function. Written to work with either a ‘pyvista’ or ‘matplotlib’ backen
 at the expense of the returned object being less compatible with other functions. The ‘matplotlib’ backend
 will return a matplotlib figure which is widely used in python.</p>
 <dl class="simple">
-<dt>epoch<span class="classifier">mne.epochs.Epoch</span></dt><dd><p>MNE epochs object containing portions of raw EEG data built around specified
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch: mne.epochs.Epoch</dt><dd><p>MNE epochs object containing portions of raw EEG data built around specified
 timestamp(s) The inverse solution will be built based on the data in the specified epoch.</p>
 </dd>
-<dt>stc: mne.source_estimate.SourceEstimate or ‘auto’</dt><dd><p>‘inverse_solution’ to generate the plot from. If set to “auto” (default) then an stc will be
+<dt>stc: mne.source_estimate.SourceEstimate | ‘auto’</dt><dd><p>‘inverse_solution’ to generate the plot from. If set to “auto” (default) then an stc will be
 automatically generated however, this will significantly increase running time.</p>
 </dd>
-<dt>display_time: float or None</dt><dd><p>Specifies the ‘initial_time’ parameter in the mne.SourceEstimate.plot() function to show
+<dt>display_time: float | None</dt><dd><p>Specifies the ‘initial_time’ parameter in the mne.SourceEstimate.plot() function to show
 a plot at a specific time. Defaults to 0.</p>
 </dd>
-<dt>backend: ‘auto’ or ‘mayavi’ or ‘pyvista’ or ‘matplotlib’</dt><dd><p>Specifies the ‘initial_time’ parameter in the mne.SourceEstimate.plot() function. “Which backend
+<dt>backend: str (‘auto’ or ‘mayavi’ or ‘pyvista’ or ‘matplotlib’)</dt><dd><p>Specifies the ‘initial_time’ parameter in the mne.SourceEstimate.plot() function. “Which backend
 to use. If ‘auto’ (default), tries to plot with pyvista, but resorts to matplotlib if no 3d
 backend is available.” Note that mayavi has not been tested for this function. Using matplotlib
 as a backend will lead to some functionality breaking (look at the documentation on a function-by-function
 basis to know how) but it is the most widely compatable backend. Multiplotting and multi-views for the matplotlib backend
 was built by hand for this function.</p>
 </dd>
-<dt>views: str or list</dt><dd><p>Specifies the ‘view’ parameter in the mne.SourceEstimate.plot() function. For any backend
+<dt>views: str | list</dt><dd><p>Specifies the ‘view’ parameter in the mne.SourceEstimate.plot() function. For any backend
 can be any combination of ‘lat’ (lateral), ‘med’ (medial), ‘ros’ (rostral), ‘cau’ (caudal),
 ‘dor’ (dorsal), ‘ven’(ventral), ‘fro’(frontal), ‘par’ (parietal). The following arguments
 are also accepted but are NOT compatible with the matplotlib backend ‘axi’ (axial), ‘sag’
@@ -872,12 +1021,12 @@ If using matplotlib as a backend then the height will be divided by 100 and roun
 For example, entering 100 will result in 1 inch per view. If plotting multiple views overall size of
 the multiplot is automatically calculated to fit all views. Defaults to 300.</p>
 </dd>
-<dt>hemi: ‘lh’ or ‘rh’ or ‘both’ or ‘split’</dt><dd><p>Specifies the ‘initial_time’ parameter in the mne.SourceEstimate.plot() function. Can be
+<dt>hemi: str (‘lh’ or ‘rh’ or ‘both’ or ‘split’)</dt><dd><p>Specifies the ‘initial_time’ parameter in the mne.SourceEstimate.plot() function. Can be
 one of ‘lh’, ‘rh’, ‘both’, or ‘split’. Defaults to ‘both’. Note that when using the matplotlib
 backend that ‘split’ and ‘both’ will return a ‘split’ view since both is not avalible.
 Defaults to ‘both’</p>
 </dd>
-<dt>colormap: str or np.ndarray of float, shape(n_colors, 3 | 4)</dt><dd><p>Specifies the ‘colormap’ parameter in the mne.SourceEstimate.plot() function. Can use a
+<dt>colormap: str | np.ndarray of float, shape(n_colors, 3 | 4)</dt><dd><p>Specifies the ‘colormap’ parameter in the mne.SourceEstimate.plot() function. Can use a
 matplotlib colormap by name or take a custom look up table as input. Defaults to “mne”</p>
 </dd>
 <dt>colormap_limit_type: str</dt><dd><p>Can be either “lims” or “pos_lims”. “lims” means that your cmin, cmid, and cmax values will specify the
@@ -899,7 +1048,7 @@ will be the negative value of cmin if only that is provided.</p>
 </dd>
 <dt>colorbar: bool</dt><dd><p>Determines whether to include a colorbar on the plot not. Defaults to True.</p>
 </dd>
-<dt>time_viewer: bool or str</dt><dd><p>Specifies the ‘time_viewer’ parameter in the mne.SourceEstimate.plot() function. ‘auto’ by default. With a
+<dt>time_viewer: bool | str</dt><dd><p>Specifies the ‘time_viewer’ parameter in the mne.SourceEstimate.plot() function. ‘auto’ by default. With a
 PyVista backend this will allow for the user to interact with the genreated plot. Has no effect on figures
 generated with the matplotlib backend.</p>
 </dd>
@@ -924,9 +1073,12 @@ with the given id. If an instance of matplotlib figure, mpl backend is used for 
 multiple views OR a split/both hemi with the matplotlib backend then this argument will not work. None by default.</p>
 </dd>
 </dl>
-<dl class="simple">
-<dt>brain: mne.viz._brain._brain.Brain OR matplotlib.figure.Figure</dt><dd><p>If using ‘pyvista’ then returns a mne.viz figure of brain with input epoch or stc data mapped to it. If
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>mne.viz._brain._brain.Brain | matplotlib.figure.Figure</dt><dd><p>If using ‘pyvista’ then returns a mne.viz figure of brain with input epoch or stc data mapped to it. If
 using ‘matplotlib’ backend then returns a matplotlib.figure.Figure.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -937,7 +1089,8 @@ using ‘matplotlib’ backend then returns a matplotlib.figure.Figure.</p>
 <dd><p>Saves an animated mne.viz._brain._brain.Brain object as a gif using the mne.viz.Brain.save_movie()
 function. Saves animation of the entire figure.</p>
 <dl class="simple">
-<dt>brain<span class="classifier">brain: mne.viz._brain._brain.Brain</span></dt><dd><p>mne.viz figure of brain which will be saved as a gif</p>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>brain: mne.viz._brain._brain.Brain</dt><dd><p>mne.viz figure of brain which will be saved as a gif</p>
 </dd>
 <dt>filename: str</dt><dd><p>‘filename’ parameter in mne.viz.Brain.save_movie() function. “Path at which to save the movie.
 The extension determines the format (e.g., ‘<em>.mov’, ‘</em>.gif’, …; see the imageio documentation
@@ -947,12 +1100,14 @@ for available formats)”.</p>
 (default 4). For example, an epoch from -100 to 600 ms lasts 700 ms. With time_dilation=4 this
 would result in a 2.8 s long movie.”</p>
 </dd>
-<dt>interpolation: str or None</dt><dd><p>‘interpolation’ parameter in mne.viz.Brain.save_movie() function. “Interpolation method
+<dt>interpolation: str | None</dt><dd><p>‘interpolation’ parameter in mne.viz.Brain.save_movie() function. “Interpolation method
 (scipy.interpolate.interp1d parameter). Must be one of ‘linear’, ‘nearest’, ‘zero’, ‘slinear’,
 ‘quadratic’, or ‘cubic’.”</p>
 </dd>
 <dt>time_viewer: bool</dt><dd><p>‘time_dilation’ parameter in mne.viz.Brain.save_movie() function. “If True, include time viewer
 traces”.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -967,31 +1122,31 @@ traces”.</p>
 <dd><p>Animate 2d EEG nodes on scalp with lines representing connectivity</p>
 <dl>
 <dt>Args:</dt><dd><dl>
-<dt>epochs (mne.epochs.Epochs):</dt><dd><p>Epoch to visualize</p>
+<dt>epochs: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>calc_type (str, optional):</dt><dd><p>Connectivity calculation type. Defaults to “correlation”.</p>
+<dt>calc_type: str (optional)</dt><dd><p>Connectivity calculation type. Defaults to “correlation”.</p>
 </dd>
-<dt>steps (int, optional):</dt><dd><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
+<dt>steps: int (optional)</dt><dd><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
 </dd>
-<dt>pair_list ([str], optional):</dt><dd><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
+<dt>pair_list: [str] (optional)</dt><dd><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
 </dd>
-<dt>threshold (int, optional):</dt><dd><p>Unsigned connectivity threshold to display connection.
+<dt>threshold: int (optional)</dt><dd><p>Unsigned connectivity threshold to display connection.
 Defaults to 0.</p>
 </dd>
-<dt>show_sphere (bool, optional):</dt><dd><p>Whether to show the cartoon head or not. Defaults to True.</p>
+<dt>show_sphere: bool (optional)</dt><dd><p>Whether to show the cartoon head or not. Defaults to True.</p>
 </dd>
-<dt>colormap (str, optional):</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”</p>
+<dt>colormap: str (optional)</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”</p>
 </dd>
-<dt>vmin (int, optional):</dt><dd><p>The minimum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The minimum for the scale. Defaults to None.</p>
 </dd>
-<dt>vmin (int, optional):</dt><dd><p>The maximum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The maximum for the scale. Defaults to None.</p>
 </dd>
-<dt>line_width (int, optional):</dt><dd><p>The line width for the connections.
+<dt>line_width: int (optional)</dt><dd><p>The line width for the connections.
 Defaults to None for non-static width.</p>
 </dd>
-<dt>title (str, optional):</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
+<dt>title: str (optional)</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
 </dd>
-<dt><a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs (dict, optional):</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
+<dt><a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_sensors.html">https://mne.tools/stable/generated/mne.viz.plot_sensors.html</a></p>
 </dd>
@@ -1011,25 +1166,25 @@ Defaults to None for non-static width.</p>
 <dd><p>Animate connectivity circle</p>
 <dl>
 <dt>Args:</dt><dd><dl>
-<dt>epoch (mne.epochs.Epochs):</dt><dd><p>Epoch to visualize</p>
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>calc_type (str, optional):</dt><dd><p>Connectivity calculation type. Defaults to “correlation”.</p>
+<dt>calc_type: str (optional)</dt><dd><p>Connectivity calculation type. Defaults to “correlation”.</p>
 </dd>
-<dt>max_connections (int, optional):</dt><dd><p>Number of connections to display. Defaults to 50.</p>
+<dt>max_connections: int (optional)</dt><dd><p>Number of connections to display. Defaults to 50.</p>
 </dd>
-<dt>steps (int, optional):</dt><dd><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
+<dt>steps: int (optional)</dt><dd><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
 </dd>
-<dt>colormap (str, optional):</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
+<dt>colormap: str (optional)</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
 </dd>
-<dt>vmin (int, optional):</dt><dd><p>The minimum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The minimum for the scale. Defaults to None.</p>
 </dd>
-<dt>vmin (int, optional):</dt><dd><p>The maximum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The maximum for the scale. Defaults to None.</p>
 </dd>
-<dt>line_width (int, optional):</dt><dd><p>The line width for the connections. Defaults to 1.5.</p>
+<dt>line_width: int (optional)</dt><dd><p>The line width for the connections. Defaults to 1.5.</p>
 </dd>
-<dt>title (str, optional):</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
+<dt>title: str (optional)</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
 </dd>
-<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs (dict, optional):</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
+<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html">https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html</a></p>
 </dd>
@@ -1049,9 +1204,9 @@ Defaults to None for non-static width.</p>
 <dd><p>Calculate connectivity between nodes</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
-<dt>epoch (mne.epochs.Epochs):</dt><dd><p>Epoch to calculate connectivity for</p>
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to calculate connectivity for</p>
 </dd>
-<dt>calc_type (str, optional):</dt><dd><p>Calculation type, one of
+<dt>calc_type: str (optional)</dt><dd><p>Calculation type, one of
 spectral_connectivity,
 envelope_correlation,
 covariance,
@@ -1074,7 +1229,7 @@ Defaults to “correlation”.</p>
 <dd><p>Convert pair names to usable format</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
-<dt>string_pairs (str):</dt><dd><p>Comma seperated node pairs in format “node1-node2”</p>
+<dt>string_pairs: str</dt><dd><p>Comma seperated node pairs in format “node1-node2”</p>
 </dd>
 </dl>
 </dd>
@@ -1092,11 +1247,11 @@ Defaults to “correlation”.</p>
 <dd><p>Crop an epoch based on a frame number</p>
 <dl class="simple">
 <dt>Args:</dt><dd><dl class="simple">
-<dt>epoch (mne.epochs.Epochs):</dt><dd><p>Epoch to crop</p>
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to crop</p>
 </dd>
-<dt>steps_size (int):</dt><dd><p>Number of time frames per step</p>
+<dt>steps_size: int</dt><dd><p>Number of time frames per step</p>
 </dd>
-<dt>frame_number (int):</dt><dd><p>Current frame number</p>
+<dt>frame_number: int</dt><dd><p>Current frame number</p>
 </dd>
 </dl>
 </dd>
@@ -1114,34 +1269,34 @@ Defaults to “correlation”.</p>
 <dd><p>Plot connectivity circle</p>
 <dl>
 <dt>Args:</dt><dd><dl>
-<dt>epoch (mne.epochs.Epochs):</dt><dd><p>Epoch to visualize</p>
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>fig (matplotlib.pyplot.figure, optional):</dt><dd><p>Figure to plot on. Defaults to None.</p>
+<dt>fig: matplotlib.pyplot.figure (optional)</dt><dd><p>Figure to plot on. Defaults to None.</p>
 </dd>
-<dt>calc_type (str, optional):</dt><dd><p>Connectivity calculation type. Defaults to “correlation”</p>
+<dt>calc_type: str (optional)</dt><dd><p>Connectivity calculation type. Defaults to “correlation”</p>
 </dd>
-<dt>max_connections (int, optional):</dt><dd><p>Maximum connections to plot. Defaults to 50.</p>
+<dt>max_connections: int (optional)</dt><dd><p>Maximum connections to plot. Defaults to 50.</p>
 </dd>
-<dt>ch_names ([str], optional):</dt><dd><p>List of channel names to display.
+<dt>ch_names: [str] (optional)</dt><dd><p>List of channel names to display.
 Defaults to [], which indicates all channels.</p>
 </dd>
-<dt>vmin (int, optional):</dt><dd><p>The minimum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The minimum for the scale. Defaults to None.</p>
 </dd>
-<dt>vmin (int, optional):</dt><dd><p>The maximum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The maximum for the scale. Defaults to None.</p>
 </dd>
-<dt>colormap (str, optional):</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
+<dt>colormap: str (optional)</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
 </dd>
-<dt>colormap (bool, optional):</dt><dd><p>Whether to plot the colorbar. Defaults to True.</p>
+<dt>colormap: bool (optional)</dt><dd><p>Whether to plot the colorbar. Defaults to True.</p>
 </dd>
-<dt>line_width (int, optional):</dt><dd><p>The line width for the connections. Defaults to 1.5.</p>
+<dt>line_width: int (optional)</dt><dd><p>The line width for the connections. Defaults to 1.5.</p>
 </dd>
-<dt>title (str, optional):</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
+<dt>title: str (optional)</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
 </dd>
-<dt>colorbar (bool, optional):</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
+<dt>colorbar: bool (optional)</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
 </dd>
-<dt>caption (str, optional):</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
+<dt>caption: str (optional)</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
 </dd>
-<dt><a href="#id9"><span class="problematic" id="id10">**</span></a>kwargs (dict, optional):</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
+<dt><a href="#id9"><span class="problematic" id="id10">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html">https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html</a></p>
 </dd>
@@ -1161,37 +1316,37 @@ Defaults to [], which indicates all channels.</p>
 <dd><p>Plot 2d EEG nodes on scalp with lines representing connectivity</p>
 <dl>
 <dt>Args:</dt><dd><dl>
-<dt>epoch (mne.epochs.Epochs):</dt><dd><p>Epoch to visualize</p>
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>fig (matplotlib.pyplot.figure, optional):</dt><dd><p>Figure to plot on. Defaults to None.</p>
+<dt>fig: matplotlib.pyplot.figure (optional)</dt><dd><p>Figure to plot on. Defaults to None.</p>
 </dd>
-<dt>locations ([matplotlib.text.Text], optional):</dt><dd><p>List of node locations. Defaults to None.</p>
+<dt>locations: [matplotlib.text.Text] (optional)</dt><dd><p>List of node locations. Defaults to None.</p>
 </dd>
-<dt>calc_type (str):</dt><dd><p>Connectivity calculation type</p>
+<dt>calc_type: str</dt><dd><p>Connectivity calculation type</p>
 </dd>
-<dt>pair_list ([str], optional):</dt><dd><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
+<dt>pair_list: [str] (optional)</dt><dd><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
 </dd>
-<dt>threshold (int, optional):</dt><dd><p>Unsigned connectivity threshold to display connection.
+<dt>threshold: int (optional)</dt><dd><p>Unsigned connectivity threshold to display connection.
 Defaults to 0.</p>
 </dd>
-<dt>show_sphere (bool, optional):</dt><dd><p>Whether to show the cartoon head or not. Defaults to True.</p>
+<dt>show_sphere: bool (optional)</dt><dd><p>Whether to show the cartoon head or not. Defaults to True.</p>
 </dd>
-<dt>colormap (str, optional):</dt><dd><p>Colour scheme to use. Defaults to “RdBlu_r”.</p>
+<dt>colormap: str (optional)</dt><dd><p>Colour scheme to use. Defaults to “RdBlu_r”.</p>
 </dd>
-<dt>vmin (int, optional):</dt><dd><p>The minimum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The minimum for the scale. Defaults to None.</p>
 </dd>
-<dt>vmin (int, optional):</dt><dd><p>The maximum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The maximum for the scale. Defaults to None.</p>
 </dd>
-<dt>line_width (int, optional):</dt><dd><p>The line width for the connections.
+<dt>line_width: int (optional)</dt><dd><p>The line width for the connections.
 Defaults to None for non-static width.</p>
 </dd>
-<dt>title (str, optional):</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
+<dt>title: str (optional)</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
 </dd>
-<dt>colorbar (bool, optional):</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
+<dt>colorbar: bool (optional)</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
 </dd>
-<dt>caption (str, optional):</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
+<dt>caption: str (optional)</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
 </dd>
-<dt><a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs (dict, optional):</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
+<dt><a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_sensors.html">https://mne.tools/stable/generated/mne.viz.plot_sensors.html</a></p>
 </dd>
