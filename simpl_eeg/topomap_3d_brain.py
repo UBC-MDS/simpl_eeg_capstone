@@ -249,8 +249,8 @@ def plot_topomap_3d_brain(
 
     Parameters
     ----------
-    epoch : mne.epochs.Epochs or mne.evoked.EvokedArray
-            MNE epochs or evoked object containing portions of raw EEG data built around specified
+    epoch : mne.epochs.Epoch
+            MNE epochs object containing portions of raw EEG data built around specified
             timestamp(s) The inverse solution will be built based on the data in the specified epoch.
 
     stc: mne.source_estimate.SourceEstimate or 'auto'
@@ -358,14 +358,82 @@ def plot_topomap_3d_brain(
             using 'matplotlib' backend then returns a matplotlib.figure.Figure.
     """
     
-    defaultKwargs = { 'transparent': False, 'alpha': 1.0, 'surface': 'inflated', 'cortex': 'classic',
+    defaultKwargs = {'transparent': False, 'alpha': 1.0, 'surface': 'inflated', 'cortex': 'classic',
                      'subject': None, 'time_label': 'auto', 'time_unit': 's', 'volume_options': None,
                      'subjects_dir': None, 'title': None, 'show_traces': 'auto', 'src': None, 'verbose': None }
     kwargs = { **defaultKwargs, **kwargs }    
     
-
-    # if hemi == "split" and view_layout == 'horizontal':
-    #     # Return warning that the horizontal with split isn't reccomended
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError(
+            """Passed epoch object is not in the correct format, 
+            please pass an mne.epochs.Epochs object instead"""
+        )
+    
+    if type(stc) is not mne.source_estimate.SourceEstimate:
+        raise TypeError(
+            """Passed stc object is not in the correct format, 
+            please pass an mne.source_estimate.SourceEstimate object instead"""
+        )
+    
+    if type(display_time) is not int and type(display_time) is not float and display_time is not None:
+        raise TypeError(
+                """Passed display_time object is not in the correct format, 
+                please pass a int, float, or None (for default = 0) object instead"""
+            )
+    
+    if backend not in ['auto', 'mayavi', 'pyvista', 'matplotlib']:
+        raise ValueError(
+                """Passed backend is not accepted, please pass one of "auto",
+                "pyvista", "matplotlib", or "mayavi" instead"""
+            )
+        
+    views_error = """please pass a str or list containing any cobination of 'lat'
+                (lateral), 'med' (medial), 'ros' (rostral), 'cau' (caudal),
+                'dor' (dorsal), 'ven'(ventral), 'fro'(frontal), or 'par' (parietal). The following arguments
+                are also accepted but are NOT compatible with the matplotlib backend 'axi' (axial), 'sag'
+                (sagittal), and 'cor'(coronal)."""
+    
+    if type(views) != str and type(views) != list:
+        raise TypeError(
+                """Passed views object is not in the correct format, """ + views_error
+            )
+    
+    matplot_views = ['lat', 'med', 'ros', 'cau', 'dor', 'ven', 'fro', 'par']
+    non_matplot_views = matplot_views + ['axi', 'sag', 'cor']
+    
+    if type(views) == str:
+        if views not in non_matplot_views:
+            raise ValueError("""Passed view is not accepted,""" + views_error)
+        if backend == 'matplotlib' and views not in matplot_views:
+            raise ValueError("""Passed view is not accepted,""" + views_error)
+    
+    if type(views) == list:
+        if all(e in non_matplot_views for e in views) == False:
+            raise ValueError("""At least one of the passed views is not accepted,""" + views_error)
+        if backend == 'matplotlib' and all(e in matplot_views for e in views) == False:
+            raise ValueError("""At least one of the passed views is not accepted,""" + views_error)
+    
+    if view_layout not in ['vertical', 'horizontal']:
+        raise ValueError(
+                """Passed view_layout is not accepted, please pass one of 'horizontal' or 
+                'vertical'."""
+            )
+    
+    if type(size) is not int:
+            raise TypeError(
+                """Size value must be passed as an int"""
+            )
+    
+    if hemi not in ['lh', 'rh', 'both', 'split']:
+        raise ValueError(
+                """Passed hemi is not accepted, please pass one of "lh" (left hemisphere), "rh" (right
+                hemisphere), "both" (both hemispheres), "split" (split hemisphere view)"""
+            )
+    
+    if type(colorbar) is not bool:
+            raise TypeError(
+                """Colorbar value must be a bool (True or False)"""
+            )
 
     # Calculate stc if one is not provided
     if stc == 'auto':
@@ -777,7 +845,7 @@ def animate_matplot_brain(
             
             # get new image from list
             plotting(figure=fig,
-                     display_time=frame,
+                     display_time=float(frame),
                      cbar = colorbar
                      )
             
@@ -833,7 +901,7 @@ def animate_matplot_brain(
             plt.show(block=True)
 
             brain = plotting( 
-                display_time=frame,
+                display_time=float(frame),
                 cbar = False
             )
             
