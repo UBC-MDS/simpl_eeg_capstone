@@ -1124,29 +1124,29 @@ traces”.</p>
 <dt>Args:</dt><dd><dl>
 <dt>epochs: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>calc_type: str, optional</dt><dd><p>Connectivity calculation type. Defaults to “correlation”.</p>
+<dt>calc_type: str (optional)</dt><dd><p>Connectivity calculation type. Defaults to “correlation”.</p>
 </dd>
-<dt>steps: int, optional</dt><dd><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
+<dt>steps: int (optional)</dt><dd><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
 </dd>
-<dt>pair_list: [str], optional</dt><dd><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
+<dt>pair_list: [str] (optional)</dt><dd><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
 </dd>
-<dt>threshold: int, optional</dt><dd><p>Unsigned connectivity threshold to display connection.
+<dt>threshold: int (optional)</dt><dd><p>Unsigned connectivity threshold to display connection.
 Defaults to 0.</p>
 </dd>
-<dt>show_sphere: bool, optional</dt><dd><p>Whether to show the cartoon head or not. Defaults to True.</p>
+<dt>show_sphere: bool (optional)</dt><dd><p>Whether to show the cartoon head or not. Defaults to True.</p>
 </dd>
-<dt>colormap: str, optional</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”</p>
+<dt>colormap: str (optional)</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”</p>
 </dd>
-<dt>vmin: int, optional</dt><dd><p>The minimum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The minimum for the scale. Defaults to None.</p>
 </dd>
-<dt>vmin: int, optional</dt><dd><p>The maximum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The maximum for the scale. Defaults to None.</p>
 </dd>
-<dt>line_width: int, optional</dt><dd><p>The line width for the connections.
+<dt>line_width: int (optional)</dt><dd><p>The line width for the connections.
 Defaults to None for non-static width.</p>
 </dd>
-<dt>title: str, optional</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
+<dt>title: str (optional)</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
 </dd>
-<dt><a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs: dict, optional</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
+<dt><a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_sensors.html">https://mne.tools/stable/generated/mne.viz.plot_sensors.html</a></p>
 </dd>
@@ -1168,23 +1168,23 @@ Defaults to None for non-static width.</p>
 <dt>Args:</dt><dd><dl>
 <dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>calc_type: str, optional</dt><dd><p>Connectivity calculation type. Defaults to “correlation”.</p>
+<dt>calc_type: str (optional)</dt><dd><p>Connectivity calculation type. Defaults to “correlation”.</p>
 </dd>
-<dt>max_connections: int, optional</dt><dd><p>Number of connections to display. Defaults to 50.</p>
+<dt>max_connections: int (optional)</dt><dd><p>Number of connections to display. Defaults to 50.</p>
 </dd>
-<dt>steps: int, optional</dt><dd><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
+<dt>steps: int (optional)</dt><dd><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
 </dd>
-<dt>colormap: str, optional</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
+<dt>colormap: str (optional)</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
 </dd>
-<dt>vmin: int, optional</dt><dd><p>The minimum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The minimum for the scale. Defaults to None.</p>
 </dd>
-<dt>vmin: int, optional</dt><dd><p>The maximum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The maximum for the scale. Defaults to None.</p>
 </dd>
-<dt>line_width: int, optional</dt><dd><p>The line width for the connections. Defaults to 1.5.</p>
+<dt>line_width: int (optional)</dt><dd><p>The line width for the connections. Defaults to 1.5.</p>
 </dd>
-<dt>title: str, optional</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
+<dt>title: str (optional)</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
 </dd>
-<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs: dict, optional</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
+<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html">https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html</a></p>
 </dd>
@@ -1206,7 +1206,7 @@ Defaults to None for non-static width.</p>
 <dt>Args:</dt><dd><dl class="simple">
 <dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to calculate connectivity for</p>
 </dd>
-<dt>calc_type: str, optional</dt><dd><p>Calculation type, one of
+<dt>calc_type: str (optional)</dt><dd><p>Calculation type, one of
 spectral_connectivity,
 envelope_correlation,
 covariance,
@@ -1271,32 +1271,32 @@ Defaults to “correlation”.</p>
 <dt>Args:</dt><dd><dl>
 <dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>fig: matplotlib.pyplot.figure, optional</dt><dd><p>Figure to plot on. Defaults to None.</p>
+<dt>fig: matplotlib.pyplot.figure (optional)</dt><dd><p>Figure to plot on. Defaults to None.</p>
 </dd>
-<dt>calc_type: str, optional</dt><dd><p>Connectivity calculation type. Defaults to “correlation”</p>
+<dt>calc_type: str (optional)</dt><dd><p>Connectivity calculation type. Defaults to “correlation”</p>
 </dd>
-<dt>max_connections: int, optional</dt><dd><p>Maximum connections to plot. Defaults to 50.</p>
+<dt>max_connections: int (optional)</dt><dd><p>Maximum connections to plot. Defaults to 50.</p>
 </dd>
-<dt>ch_names: [str], optional</dt><dd><p>List of channel names to display.
+<dt>ch_names: [str] (optional)</dt><dd><p>List of channel names to display.
 Defaults to [], which indicates all channels.</p>
 </dd>
-<dt>vmin: int, optional</dt><dd><p>The minimum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The minimum for the scale. Defaults to None.</p>
 </dd>
-<dt>vmin: int, optional</dt><dd><p>The maximum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The maximum for the scale. Defaults to None.</p>
 </dd>
-<dt>colormap: str, optional</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
+<dt>colormap: str (optional)</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
 </dd>
-<dt>colormap: bool, optional</dt><dd><p>Whether to plot the colorbar. Defaults to True.</p>
+<dt>colormap: bool (optional)</dt><dd><p>Whether to plot the colorbar. Defaults to True.</p>
 </dd>
-<dt>line_width: int, optional</dt><dd><p>The line width for the connections. Defaults to 1.5.</p>
+<dt>line_width: int (optional)</dt><dd><p>The line width for the connections. Defaults to 1.5.</p>
 </dd>
-<dt>title: str, optional</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
+<dt>title: str (optional)</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
 </dd>
-<dt>colorbar: bool, optional</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
+<dt>colorbar: bool (optional)</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
 </dd>
-<dt>caption: str, optional</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
+<dt>caption: str (optional)</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
 </dd>
-<dt><a href="#id9"><span class="problematic" id="id10">**</span></a>kwargs: dict, optional</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
+<dt><a href="#id9"><span class="problematic" id="id10">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html">https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html</a></p>
 </dd>
@@ -1318,35 +1318,35 @@ Defaults to [], which indicates all channels.</p>
 <dt>Args:</dt><dd><dl>
 <dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>fig: matplotlib.pyplot.figure, optional</dt><dd><p>Figure to plot on. Defaults to None.</p>
+<dt>fig: matplotlib.pyplot.figure (optional)</dt><dd><p>Figure to plot on. Defaults to None.</p>
 </dd>
-<dt>locations: [matplotlib.text.Text], optional</dt><dd><p>List of node locations. Defaults to None.</p>
+<dt>locations: [matplotlib.text.Text] (optional)</dt><dd><p>List of node locations. Defaults to None.</p>
 </dd>
 <dt>calc_type: str</dt><dd><p>Connectivity calculation type</p>
 </dd>
-<dt>pair_list: [str], optional</dt><dd><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
+<dt>pair_list: [str] (optional)</dt><dd><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
 </dd>
-<dt>threshold: int, optional</dt><dd><p>Unsigned connectivity threshold to display connection.
+<dt>threshold: int (optional)</dt><dd><p>Unsigned connectivity threshold to display connection.
 Defaults to 0.</p>
 </dd>
-<dt>show_sphere: bool, optional</dt><dd><p>Whether to show the cartoon head or not. Defaults to True.</p>
+<dt>show_sphere: bool (optional)</dt><dd><p>Whether to show the cartoon head or not. Defaults to True.</p>
 </dd>
-<dt>colormap: str, optional</dt><dd><p>Colour scheme to use. Defaults to “RdBlu_r”.</p>
+<dt>colormap: str (optional)</dt><dd><p>Colour scheme to use. Defaults to “RdBlu_r”.</p>
 </dd>
-<dt>vmin: int, optional</dt><dd><p>The minimum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The minimum for the scale. Defaults to None.</p>
 </dd>
-<dt>vmin: int, optional</dt><dd><p>The maximum for the scale. Defaults to None.</p>
+<dt>vmin: int (optional)</dt><dd><p>The maximum for the scale. Defaults to None.</p>
 </dd>
-<dt>line_width: int, optional</dt><dd><p>The line width for the connections.
+<dt>line_width: int (optional)</dt><dd><p>The line width for the connections.
 Defaults to None for non-static width.</p>
 </dd>
-<dt>title: str, optional</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
+<dt>title: str (optional)</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
 </dd>
-<dt>colorbar: bool, optional</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
+<dt>colorbar: bool (optional)</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
 </dd>
-<dt>caption: str, optional</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
+<dt>caption: str (optional)</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
 </dd>
-<dt><a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs: dict, optional</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
+<dt><a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_sensors.html">https://mne.tools/stable/generated/mne.viz.plot_sensors.html</a></p>
 </dd>
