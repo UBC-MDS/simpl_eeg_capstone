@@ -3,6 +3,7 @@ import mne
 from simpl_eeg import raw_voltage, topomap_3d_brain
 import pandas as pd
 import pickle
+import matplotlib
 import matplotlib.pyplot as plt
 # from simpl_eeg_capstone import topomap_3d_brain
 
@@ -47,17 +48,6 @@ with open('tests/test_data/test_stc.pickle', 'rb') as input:
 
 
 def test_plot_topomap_3d_brain_matplotlib():
-    """Test cases for plotting 3D image mapped to the brain """
-    input_epoch = epoch42
-    input_stc = test_stc
-
-    assert type(topomap_3d_brain.plot_topomap_3d_brain(input_epoch,
-                                                        input_stc,
-                                                        views="fro",
-                                                        backend='matplotlib')) == matplotlib.figure.Figure
-
-
-def test_plot_topomap_3d_brain_matplotlib_single():
     """Test cases for plotting 3D image mapped to the brain """
     input_epoch = epoch42
     input_stc = test_stc
@@ -150,13 +140,7 @@ def test_plot_topomap_3d_brain_matplotlib_single():
                                                                           backend = 'matplotlib')
 
     assert len(test_single_matplotlib_no_cb.axes) == 1
-
-
-def test_plot_topomap_3d_brain_matplotlib_multi():
-    """Test cases for plotting 3D image mapped to the brain """
-    input_epoch=epoch42
-    input_stc=test_stc
-
+    
     test_multi_matplotlib = topomap_3d_brain.plot_topomap_3d_brain(input_epoch,
                                                                    input_stc,
                                                                    views = ['lat', 'fro'],
@@ -178,10 +162,28 @@ def test_plot_topomap_3d_brain_matplotlib_multi():
     assert  len(test_multi_matplotlib_no_cb.axes) == 5
 
 
-def test_animate_topomap_3d_brain_matplotlib_single():
+def test_animate_topomap_3d_brain_matplotlib():
     """Test cases for plotting 3D image mapped to the brain """
     input_epoch = epoch42
     input_stc = test_stc
+    
+    with pytest.raises(TypeError):
+        topomap_3d_brain.animate_matplot_brain(
+                input_epoch,
+                stc = test_stc,
+                hemi = 'lh',
+                views = ['lat'],
+                timestamp = "not a timestamp"
+            );
+    
+    with pytest.raises(TypeError):
+        topomap_3d_brain.animate_matplot_brain(
+                input_epoch,
+                stc = test_stc,
+                hemi = 'lh',
+                views = ['lat'],
+                frame_rate = "not a frame rate"
+            );
     
     test_matplot_animate_single = topomap_3d_brain.animate_matplot_brain(
         input_epoch,
@@ -189,14 +191,8 @@ def test_animate_topomap_3d_brain_matplotlib_single():
         hemi = 'lh',
         views = ['lat']
     );
-
-    assert  type(test_matplot_animate_single) == matplotlib.animation.FuncAnimation 
-
-
-def test_animate_topomap_3d_brain_matplotlib_multi():
-    """Test cases for plotting 3D image mapped to the brain """
-    input_epoch = epoch42
-    input_stc = test_stc
+    
+    assert  type(test_matplot_animate_single) == matplotlib.animation.FuncAnimation
     
     test_matplot_animate_multi = topomap_3d_brain.animate_matplot_brain(
         input_epoch,
@@ -206,7 +202,7 @@ def test_animate_topomap_3d_brain_matplotlib_multi():
     );
 
     assert  type(test_matplot_animate_multi) == matplotlib.animation.FuncAnimation 
-
+    
 
 
 # def test_nonexistent_input_path():
