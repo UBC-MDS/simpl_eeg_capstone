@@ -434,6 +434,12 @@ def plot_topomap_3d_brain(
             raise TypeError(
                 """Colorbar value must be a bool (True or False)"""
             )
+    
+    if colormap_limit_type not in ['lims' or 'pos_lims']:
+            raise ValueError(
+                """Passed colormap_limit_type is not accepted, please pass one of 'lims' or 
+                'pos_lims'."""
+            )
 
     # Calculate stc if one is not provided
     if stc == 'auto':
@@ -781,11 +787,10 @@ def animate_matplot_brain(
             Specifies the 'smoothing_steps' parameter in the mne.SourceEstimate.plot() function. "The amount of smoothing".
             3 by default.
             
-    timestamp: 'auto' or bool
+    timestamp: bool
         Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-        is being shown. Only works with 'matplotlib' set to the backend. Defaults to 'auto' which be True
-        if a matplotlib backend is being used and False otherwise.
-            
+        is being shown. 
+        
     frame_rate: int
             The frame rate to render the animation at. Defautls to 12.
 
@@ -801,6 +806,18 @@ def animate_matplot_brain(
 
     if isinstance(views, str):
         views = [views]
+        
+    if type(timestamp) is not bool:
+        raise TypeError(
+            """Passed timestamp object is not in the correct format, 
+            please pass a bool (True/False) instead"""
+        )
+    
+    if type(frame_rate) is not int:
+        raise TypeError(
+            """Passed frame_rate object is not in the correct format, 
+            please pass an int object instead"""
+        )
 
     frames_to_show = epoch.times.shape[0]
     times_to_show = np.linspace(
