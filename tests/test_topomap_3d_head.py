@@ -196,6 +196,23 @@ def test_interpolated_time():
     assert output.shape == (343,)
     assert type(output) == numpy.ndarray
 
+def test_topo3dhead_plot():
+    test_df = pd.DataFrame({"x": [1]})
+    with pytest.raises(TypeError):
+        topomap_3d_head.topo3dhead_plot(test_df, 1)
+    with pytest.raises(TypeError):
+        topomap_3d_head.topo3dhead_plot(epoch42, "20")
+
+def test_save_gif():
+    test_df = pd.DataFrame({"x": [1]})
+    with pytest.raises(TypeError):
+        topomap_3d_head.save_gif(test_df, "save.gif", 500)
+    with pytest.raises(TypeError):
+        topomap_3d_head.save_gif(epoch42, 20, 500)
+    with pytest.raises(TypeError):
+        topomap_3d_head.save_gif(epoch42, "save.gif", "500")
+    
+
 
 if __name__ == "__main__":
     test_animate_3d_head()
@@ -205,4 +222,5 @@ if __name__ == "__main__":
     test_get_eeg_node()
     test_get_node_dataframe()
     test_interpolated_time()
+    test_topo3dhead_plot()
     print("All tests passed!")
