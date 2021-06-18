@@ -13,16 +13,15 @@ class EEG_File:
     """
     A class to import and store relevant eeg files
 
-    Attributes
-    ----------
-    folder_path : str
-        path to experiment folder
-    experiment : str
-        the experiment name (name of the folder containing experiment files)
-    mat : list(int)
-        a list of integers representing impact times
-    raw : mne.io.eeglab.eeglab.RawEEGLAB
-        raw experiment data in FIF format
+    Attributes:
+        folder_path (str):
+            path to experiment folder
+        experiment (str):
+            the name of the folder containing experiment files
+        mat ([[int]]):
+            a list of integers representing impact times
+        raw (mne.io.eeglab.eeglab.RawEEGLAB):
+            raw experiment data in FIF format
     """
 
     def __init__(self, folder_path, file_name="fixica"):
@@ -57,25 +56,23 @@ class Epochs:
     """
     A class to represent epochs and underlying data
 
-    Attributes
-    ----------
-    eeg_file : EEG_File
-        eeg file data
-    data : mne.Epochs
-        the generated epoch data
-    epoch : mne.Epochs
-        the selected epoch
+    Attributes:
+        eeg_file (EEG_File):
+            eeg file data
+        data (mne.Epochs):
+            the generated epoch data
+        epoch (mne.Epochs):
+            the selected epoch
 
-    Methods
-    -------
-    generate_epochs(duration, start_second):
-        Calculates epochs based on a duration and start second
-    set_nth_epoch(epoch_num):
-        Set the epoch of interest
-    get_nth_epoch(epoch_num):
-        Retrieves the nth epoch
-    get_frame(tmin, step_size, frame_number):
-        Calculates a subset of the epoch based on the step size and frame
+    Methods:
+        generate_epochs(duration, start_second):
+            Calculates epochs based on a duration and start second
+        set_nth_epoch(epoch_num):
+            Set the epoch of interest
+        get_nth_epoch(epoch_num):
+            Retrieves the nth epoch
+        get_frame(tmin, step_size, frame_number):
+            Calculates a subset of the epoch based on the step size and frame
     """
 
     def __init__(
