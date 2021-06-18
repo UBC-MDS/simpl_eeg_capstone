@@ -15,7 +15,7 @@
 # ### Data Folder Structure
 
 # ```{note}
-# To have data properly loaded to functions in this package, please make sure that the data is saved in the `data` folder. All files related to the same experiment should be included one subfolder under the `data` folder. Inside each experiment folder, there should be `fixedareas.mat` file, `fixica.fdt` file, `fixica.set` file and `impact locations.mat` file. Please refer to the screenshot below for setting up the data folder.
+# To have data properly loaded to functions in this package, please make sure that the data is saved in the `data` folder. All files related to the same experiment should be included as a subfolder under the `data` folder. Inside each experiment folder, there should be `fixedareas.mat` file, `fixica.fdt` file, `fixica.set` file and `impact locations.mat` file. Please refer to the screenshot below for setting up the data folder.
 # ```
 
 # ![](instruction_imgs/data_folder_structure.png)
@@ -38,7 +38,7 @@ from simpl_eeg import (
 
 
 # ```{note}
-# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**
+# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.
 # ```
 
 # In[2]:
