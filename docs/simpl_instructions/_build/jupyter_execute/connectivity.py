@@ -118,7 +118,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity(\n    epoch,\n    calc_type=calc_type,\n    steps=steps,\n    pair_list=pair_list,\n    threshold=threshold,\n    show_sphere=show_sphere,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
-# In[11]:
+# In[ ]:
 
 
 video
@@ -166,13 +166,13 @@ video
 
 # A detailed description of all parameters can be found in the `connectivity.animate_connectivity_circle` docstring:
 
-# In[12]:
+# In[ ]:
 
 
 help(connectivity.animate_connectivity_circle)
 
 
-# In[13]:
+# In[ ]:
 
 
 vmin = -1
@@ -186,19 +186,19 @@ max_connections = 50
 
 # ### Generating the animation
 
-# In[14]:
+# In[ ]:
 
 
 get_ipython().run_line_magic('matplotlib', 'notebook')
 
 
-# In[15]:
+# In[ ]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity_circle(\n    epoch,\n    calc_type=calc_type,\n    max_connections=max_connections,\n    steps=steps,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
-# In[16]:
+# In[ ]:
 
 
 video
@@ -244,13 +244,13 @@ video
 # ### Define parameters
 # A detailed description of all animation parameters can be found in the `connectivity.plot_connectivity` docstring:
 
-# In[17]:
+# In[ ]:
 
 
 help(connectivity.plot_connectivity)
 
 
-# In[18]:
+# In[ ]:
 
 
 vmin = -1
@@ -262,7 +262,7 @@ threshold = 0
 show_sphere = True
 
 
-# In[19]:
+# In[ ]:
 
 
 PAIR_OPTIONS = {
@@ -290,13 +290,13 @@ pair_list = PAIR_OPTIONS["far_coherence"]
 # Generating a plot will use the first frame in the epoch, so make sure to update your epoch object to contain your frame of interest. 
 # ```
 
-# In[20]:
+# In[ ]:
 
 
 get_ipython().run_cell_magic('capture', '', 'plot = connectivity.plot_connectivity(\n    epoch,\n)')
 
 
-# In[21]:
+# In[ ]:
 
 
 plot
@@ -317,13 +317,13 @@ plot
 # ### Define parameters
 # A detailed description of all animation parameters can be found in the `connectivity.plot_conn_circle` docstring:
 
-# In[22]:
+# In[ ]:
 
 
 help(connectivity.plot_conn_circle)
 
 
-# In[23]:
+# In[ ]:
 
 
 vmin = -1
@@ -340,13 +340,13 @@ max_connections = 50
 # Generating a plot will use the first frame in the epoch, so make sure to update your epoch object to contain your frame of interest. 
 # ```
 
-# In[24]:
+# In[ ]:
 
 
 get_ipython().run_cell_magic('capture', '', 'plot = connectivity.plot_conn_circle(\n    epoch,\n)')
 
 
-# In[25]:
+# In[ ]:
 
 
 plot

@@ -766,9 +766,8 @@ animate_matplot_brain(epoch, stc=&#39;auto&#39;, views=[&#39;lat&#39;, &#39;dor&
     Creates an animated view of all timestamp observations an mne.epochs.Epochs data using a matplotlib backend.
     If multiple views are used then speed becomes significantly slower. Colorbar placement may be inconsistent.
     
-    Parameters
-    ----------
-    epoch : mne.epochs.Epochs or mne.evoked.EvokedArray
+    Parameters:
+    epoch: mne.epochs.Epochs or mne.evoked.EvokedArray
             MNE epochs or evoked object containing portions of raw EEG data built around specified
             timestamp(s) The inverse solution will be built based on the data in the specified epoch.
     
@@ -833,11 +832,10 @@ animate_matplot_brain(epoch, stc=&#39;auto&#39;, views=[&#39;lat&#39;, &#39;dor&
             Specifies the &#39;smoothing_steps&#39; parameter in the mne.SourceEstimate.plot() function. &quot;The amount of smoothing&quot;.
             3 by default.
             
-    timestamp: &#39;auto&#39; or bool
+    timestamp: bool
         Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-        is being shown. Only works with &#39;matplotlib&#39; set to the backend. Defaults to &#39;auto&#39; which be True
-        if a matplotlib backend is being used and False otherwise.
-            
+        is being shown. 
+        
     frame_rate: int
             The frame rate to render the animation at. Defautls to 12.
     

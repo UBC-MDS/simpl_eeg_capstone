@@ -10,7 +10,7 @@ def add_timestamp(epoch, frame_number, xpos, ypos):
     Adds a timestamp to a matplotlib.image.AxesImage object
 
     Parameters:
-        epoch : mne.epochs.Epochs
+        epoch: mne.epochs.Epochs
             MNE epochs object containing the timestamps.
         frame_number: int
             The timestamp to plot
@@ -52,7 +52,7 @@ def plot_topomap_2d(
     2D topomap using the mne.viz.plot_topomap function
 
     Parameters:
-        epoch : mne.epochs.Epochs
+        epoch: mne.epochs.Epochs
             MNE epochs object containing portions of raw
             EEG data built around specified timestamp(s).
 
@@ -237,18 +237,18 @@ def animate_topomap_2d(
     function.
 
     Parameters:
-    epochs : mne.epochs.Epochs
+    epochs: mne.epochs.Epochs
         MNE epochs object containing portions of raw EEG data
         built around specified timestamp(s)
 
-    colormap : matplotlib colormap or None
+    colormap: matplotlib colormap or None
         Specifies the 'colormap' parameter in the mne.viz.plot_topomap() function.
 
-    mark : str
+    mark: str
         Specifies what kind of marker should be shown for each node on the topomap.
         Can be one of 'dot', 'r+' (for red +'s), 'channel_name', or 'none'.
 
-    contours : int | array of float
+    contours: int | array of float
         specifies the 'contours' parameter in the
         mne.viz.plot_topomap() function.
         "The number of contour lines to draw.
@@ -257,7 +257,7 @@ def animate_topomap_2d(
         The values are in µV for EEG, fT for magnetometers and fT/m
         for gradiometers."
 
-    sphere : float | array_like | instance of ConductorModel | None
+    sphere: float | array_like | instance of ConductorModel | None
         specifies the 'sphere' parameter in the mne.viz.plot_topomap() function.
         "The sphere parameters to use for the cartoon head.
         Can be array-like of shape (4,) to give the X/Y/Z origin and
@@ -266,44 +266,44 @@ def animate_topomap_2d(
         which will use the origin and radius.
         Can also be None (default) which is an alias for 0.095"
 
-    cmin : float
+    cmin: float
         Specifies the 'vmin' parameter in the mne.viz.plot_topomap() function.
         Sets the limits for the colors which will be used on the topomap. Value is
         in μV. Defaults to -10.
 
-    cmax : float
+    cmax: float
         Specifies the 'vmax' parameter in the mne.viz.plot_topomap() function.
         Sets the limits for the colors which will be used on the topomap.
         Value is in μV. Defaults to +10.
 
-    res : int
+    res: int
         Specifies the 'res' and parameters in the
         mne.viz.plot_topomap() function. "The
         resolution of the topomap image (n pixels along each side)."
 
-    extrapolate : str
+    extrapolate: str
         Specifies the 'extrapolate' and parameters in the
         mne.viz.plot_topomap() function. One of
         "box", "local", or "head".
 
-    outlines : ‘head’ or ‘skirt’ | dict | None
+    outlines: ‘head’ or ‘skirt’ | dict | None
         Specifies the 'outlines' parameter in the
         mne.viz.plot_topomap() function.
 
-    axes : instance of Axes | None
+    axes: instance of Axes | None
         Specifies the 'axes' parameter in the mne.viz.plot_topomap() function.
 
-    mask : ndarray of bool, shape (n_channels, n_times) | None
+    mask: ndarray of bool, shape (n_channels, n_times) | None
         Specifies the 'mask' parameter in the mne.viz.plot_topomap() function.
 
     mask_params: dict
         Specifies the 'mask_params' parameter in the
         mne.viz.plot_topomap() function.
 
-    colorbar : bool
+    colorbar: bool
         Specifies whether or not to include a colorbar in the animation.
 
-    timestamp : bool
+    timestamp: bool
         Specifies whether or not to show the timestamp on the plot
         relative to the time in the epoch that is being shown.
         Defaults to True.

@@ -18,7 +18,7 @@ def frame_args(duration):
     Return the frame arguments of the animated plot
 
     Parameters:
-        duration : int
+        duration: int
             The number of frames for the animated plot
     Returns:
         dict:
@@ -72,21 +72,21 @@ def interpolated_time(df, channel_names, node_coord, x, y, z, t):
     To interpolate EEG signals to locations points that don't have data
 
     Parameters:
-        df : dataframe
+        df: dataframe
             A dataframe that contains the EEG signal of
             each channels for each time stamps
-        channel_names : list
+        channel_names: list
             A list of channel names in the raw data
-        node_coord : array
+        node_coord: array
             A numpy array of (x, y, z) coordinates of
             all channels in the raw data
-        x : array
+        x: array
             A numpy array of X coordinates of all channels for interpolation
-        y : array
+        y: array
             A numpy array of Y coordinates of all channels for interpolation
-        z : array
+        z: array
             A numpy array of Z coordinates of all channels for interpolation
-        t : int
+        t: int
             The time stamp we want to interpolate EEG voltages for
 
     Returns:
@@ -134,11 +134,11 @@ def get_eeg_node(raw, standard_montage_list):
     Get the electrode location from the raw data
 
     Parameters:
-        raw : mne.epochs.Epochs
+        raw: mne.epochs.Epochs
             The raw epoch data
-        standard_montage_list : numpy.ndarray 
+        standard_montage_list: numpy.ndarray 
             The numpy array which contains the cartesian coordinate of standard node location
-    
+
     Returns:
         numpy.ndarray:
             The electrode location from the raw data
@@ -168,14 +168,14 @@ def get_node_dataframe(raw, montage):
     """
     Get the electrode name and electrode location from
     the raw data and save it in a dataframe
-    
+
     Parameters:
-        raw : mne.epochs.Epochs
+        raw: mne.epochs.Epochs
             The raw epoch data
-        montage : numpy.ndarray 
+        montage: numpy.ndarray 
             The numpy array which contains the cartesian coordinate 
             of standard node location
-    
+
     Returns:
         pandas.core.frame.DataFrame:
             A dataframe which contains the electrode name and electrode location from the raw data
@@ -215,19 +215,19 @@ def animate_3d_head(
     Plot an animated topographic map in a 3D head shape
 
     Parameters:
-        epoch : mne.epochs.Epochs
+        epoch: mne.epochs.Epochs
             An epoched file for the EEGLab data
-        plot_title : str (optional)
+        plot_title: str (optional)
             The title of the plot. Defaults to "".
-        color_title : str (optional)
+        color_title: str (optional)
             The title of the color bar. Defaults to "EEG MicroVolt".
-        color_min : int (optional)
+        color_min: int (optional)
             The minimum EEG voltage value to be shown on the color bar.
             Defaults to -50.
-        color_max : int (optional)
+        color_max: int (optional)
             The maximum EEG voltage value to be shown on the color bar.
             Defaults to 50.
-        colormap : str (optional)
+        colormap: str (optional)
             The colour scheme to use. Defaults to Bluered.
     Returns:
         plotly.graph_objs._figure.Figure:
@@ -347,7 +347,7 @@ def animate_3d_head(
             "x": 0.1,
             "y": 0,
             "currentvalue": {
-                "prefix": "Time stamp : ",
+                "prefix": "Time stamp: ",
                 "visible": True,
                 "xanchor": "center",
             },
@@ -410,19 +410,19 @@ def topo_3d_map(
     Plot a topographic map in a 3D head shape for a single time stamp
 
     Parameters:
-        epoch : mne.epochs.Epochs
+        epoch: mne.epochs.Epochs
             An epoched file for the EEGLab data
-        time_stamp : int
+        time_stamp: int
             The time stamp that is of interest
-        color_title : str (optional)
+        color_title: str (optional)
             The title of the color bar. Defaults to "EEG MicroVolt".
-        color_min : int (optional)
+        color_min: int (optional)
             The minimum EEG voltage value to be shown on the color bar.
             Defaults to -50.
-        color_max : int (optional)
+        color_max: int (optional)
             The maximum EEG voltage value to be shown on the color bar.
             Defaults to 50.
-        colormap : str (optional)
+        colormap: str (optional)
             The colour scheme to use. Defaults to Bluered.
 
     Returns:
@@ -520,22 +520,23 @@ def topo3dhead_plot(epoch, i):
     To generate a static image for each gif frame
 
     Parameters:
-        epoch : mne.epochs.Epochs 
+        epoch: mne.epochs.Epochs
             An epoched file for the EEGLab data
-        i : int 
+        i: int
             The time stamp that is of interest
-        
+
     Returns:
         plotly.graph_objs._figure.Figure:
             The 3D topograpic map on 3D shape
     """
     if type(epoch) is not mne.epochs.Epochs:
         raise TypeError(
-            "epoch is not an epoched data, please refer to eeg_objects to create an epoched data"
+            "epoch is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
         )
     if type(i) is not int and type(i) is not float:
         raise TypeError("i has to be a number")
-    
+
     fig = topo_3d_map(epoch, i)
     return fig
 
@@ -546,12 +547,12 @@ def save_gif(epoch, gifname, duration):
     Save the animated plot as gif file
 
     Parameters:
-        epoch : mne.epochs.Epochs
-            The epoch file for creating gif
-        gifname : str
+        epoch: mne.epochs.Epochs
+            The epoch file for creating gif.
+        gifname: str
             The file name.
-        duration : int
-            The duration (milliseconds) between each frame
+        duration: int
+            The duration (milliseconds) between each frame.
     """
 
     frames = []

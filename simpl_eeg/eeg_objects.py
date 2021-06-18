@@ -14,13 +14,13 @@ class EEG_File:
     A class to import and store relevant eeg files
 
     Attributes:
-        folder_path : str
+        folder_path: str
             path to experiment folder
-        experiment : str
+        experiment: str
             the name of the folder containing experiment files
-        mat : list of ints
+        mat: list of ints
             a list of integers representing impact times
-        raw : mne.io.eeglab.eeglab.RawEEGLAB
+        raw: mne.io.eeglab.eeglab.RawEEGLAB
             raw experiment data in FIF format
     """
 
@@ -29,9 +29,9 @@ class EEG_File:
         Imports and stores EEG data files
 
         Parameters:
-            folder_path : str
+            folder_path: str
                 The folder path containing the experiment data
-            file_name : str (optional)
+            file_name: str (optional)
                 The file name for the .set and .fdt file.
                 Defaults to "fixica".
         """
@@ -57,11 +57,11 @@ class Epochs:
     A class to represent epochs and underlying data
 
     Attributes:
-        eeg_file : EEG_File
+        eeg_file: EEG_File
             eeg file data
-        data : mne.Epochs
+        data: mne.Epochs
             the generated epoch data
-        epoch : mne.Epochs
+        epoch: mne.Epochs
             the selected epoch
 
     Methods:
@@ -88,17 +88,17 @@ class Epochs:
         Generates epochs and stores related information
 
         Parameters:
-            tmin : float
+            tmin: float
                 Number of seconds before the event time to include in epoch
-            tmax : float
+            tmax: float
                 Number of seconds after the event time to include in epoch
-            start_second : int | None
+            start_second: int | None
                 Second of the event time,
                 or None if autodetected event time should be used
-            file_name : str (optional)
+            file_name: str (optional)
                 The file name for the .set and .fdt file.
                 Defaults to "fixica".
-            **kwargs : dict (optional)
+            **kwargs: dict (optional)
                 Additional parameters to pass to the mne.Epochs() constructor
 
                 Full list of options available at
@@ -116,14 +116,14 @@ class Epochs:
         Generates an epoch object based on the given input
 
         Parameters:
-            tmin : float
+            tmin: float
                 Number of seconds before the event time to include in epoch
-            tmax : float
+            tmax: float
                 Number of seconds after the event time to include in epoch
-            start_second : int
+            start_second: int
                 Second of the event time,
                 or None if autodetected event time should be used
-            **kwargs : dict (optional)
+            **kwargs: dict (optional)
                 Additional parameters to pass to the mne.Epochs() constructor
 
                 Full list of options available at
@@ -179,7 +179,7 @@ class Epochs:
         Set the nth epoch from the raw data
 
         Parameters:
-            epoch_num : int
+            epoch_num: int
                 The epoch to select
         """
 
@@ -191,7 +191,7 @@ class Epochs:
         or current selected epoch if epoch_num is not given
 
         Parameters:
-            epoch_num : int
+            epoch_num: int
                 The epoch to select
         Returns:
             mne.Epoch:
@@ -207,7 +207,7 @@ class Epochs:
         Return new epoch containing every nth frame
 
         Parameters:
-        num_steps : int
+        num_steps: int
             The number of time steps to skip
 
         Returns:
