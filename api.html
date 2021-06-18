@@ -395,13 +395,15 @@ num_steps (int):</p>
 <span id="raw-voltage-module"></span><h2>Raw Voltage Module<a class="headerlink" href="#module-simpl_eeg.raw_voltage" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="simpl_eeg.raw_voltage.plot_voltage">
-<code class="sig-prename descclassname"><span class="pre">simpl_eeg.raw_voltage.</span></code><code class="sig-name descname"><span class="pre">plot_voltage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.raw_voltage.plot_voltage" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">simpl_eeg.raw_voltage.</span></code><code class="sig-name descname"><span class="pre">plot_voltage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.raw_voltage.plot_voltage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate raw voltage plot</p>
 <dl>
 <dt>Args:</dt><dd><dl>
 <dt>epoch (mne.epochs.Epochs):</dt><dd><p>Epoch(s) to display</p>
 </dd>
 <dt>remove_xlabel (bool, optional):</dt><dd><p>Whether to remove the x axis label. Defaults to False.</p>
+</dd>
+<dt>show_times (bool, optional):</dt><dd><p>Whether to show seconds on the x axis. Defaults to True.</p>
 </dd>
 <dt><a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs (dict, optional):</dt><dd><p>Optional arguments to pass to mne.Epochs.plot()</p>
 <p>Full list of options available at
@@ -839,7 +841,7 @@ function. Written to work with either a ‘pyvista’ or ‘matplotlib’ backen
 at the expense of the returned object being less compatible with other functions. The ‘matplotlib’ backend
 will return a matplotlib figure which is widely used in python.</p>
 <dl class="simple">
-<dt>epoch<span class="classifier">mne.epochs.Epochs or mne.evoked.EvokedArray</span></dt><dd><p>MNE epochs or evoked object containing portions of raw EEG data built around specified
+<dt>epoch<span class="classifier">mne.epochs.Epoch</span></dt><dd><p>MNE epochs object containing portions of raw EEG data built around specified
 timestamp(s) The inverse solution will be built based on the data in the specified epoch.</p>
 </dd>
 <dt>stc: mne.source_estimate.SourceEstimate or ‘auto’</dt><dd><p>‘inverse_solution’ to generate the plot from. If set to “auto” (default) then an stc will be
