@@ -1121,36 +1121,58 @@ traces”.</p>
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.connectivity.</span></code><code class="sig-name descname"><span class="pre">animate_connectivity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'correlation'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_sphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.connectivity.animate_connectivity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Animate 2d EEG nodes on scalp with lines representing connectivity</p>
 <dl>
-<dt>Args:</dt><dd><dl>
+<dt>Args:</dt><dd><dl class="simple">
 <dt>epochs: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>calc_type: str, optional</dt><dd><p>Connectivity calculation type. Defaults to “correlation”.</p>
-</dd>
-<dt>steps: int, optional</dt><dd><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
-</dd>
-<dt>pair_list: [str], optional</dt><dd><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
-</dd>
-<dt>threshold: int, optional</dt><dd><p>Unsigned connectivity threshold to display connection.
+</dl>
+<p>calc_type: str (optional)</p>
+<blockquote>
+<div><p>Connectivity calculation type. Defaults to “correlation”.</p>
+</div></blockquote>
+<p>steps: int (optional)</p>
+<blockquote>
+<div><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
+</div></blockquote>
+<p>pair_list: [str] (optional)</p>
+<blockquote>
+<div><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
+</div></blockquote>
+<p>threshold: int (optional)</p>
+<blockquote>
+<div><p>Unsigned connectivity threshold to display connection.
 Defaults to 0.</p>
-</dd>
-<dt>show_sphere: bool, optional</dt><dd><p>Whether to show the cartoon head or not. Defaults to True.</p>
-</dd>
-<dt>colormap: str, optional</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”</p>
-</dd>
-<dt>vmin: int, optional</dt><dd><p>The minimum for the scale. Defaults to None.</p>
-</dd>
-<dt>vmin: int, optional</dt><dd><p>The maximum for the scale. Defaults to None.</p>
-</dd>
-<dt>line_width: int, optional</dt><dd><p>The line width for the connections.
+</div></blockquote>
+<p>show_sphere: bool (optional)</p>
+<blockquote>
+<div><p>Whether to show the cartoon head or not. Defaults to True.</p>
+</div></blockquote>
+<p>colormap: str (optional)</p>
+<blockquote>
+<div><p>Colour scheme to use. Defaults to “RdBu_r”</p>
+</div></blockquote>
+<p>vmin: int (optional)</p>
+<blockquote>
+<div><p>The minimum for the scale. Defaults to None.</p>
+</div></blockquote>
+<p>vmin: int (optional)</p>
+<blockquote>
+<div><p>The maximum for the scale. Defaults to None.</p>
+</div></blockquote>
+<p>line_width: int (optional)</p>
+<blockquote>
+<div><p>The line width for the connections.
 Defaults to None for non-static width.</p>
-</dd>
-<dt>title: str, optional</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
-</dd>
-<dt><a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs: dict, optional</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
+</div></blockquote>
+<p>title: str (optional)</p>
+<blockquote>
+<div><p>The title to display on the plot. Defaults to None for no title.</p>
+</div></blockquote>
+<p><a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs: dict (optional)</p>
+<blockquote>
+<div><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_sensors.html">https://mne.tools/stable/generated/mne.viz.plot_sensors.html</a></p>
-</dd>
-</dl>
+</div></blockquote>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
 <dt>matplotlib.animation.Animation:</dt><dd><p>Animation of connectivity plot</p>
@@ -1165,30 +1187,48 @@ Defaults to None for non-static width.</p>
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.connectivity.</span></code><code class="sig-name descname"><span class="pre">animate_connectivity_circle</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'correlation'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.connectivity.animate_connectivity_circle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Animate connectivity circle</p>
 <dl>
-<dt>Args:</dt><dd><dl>
+<dt>Args:</dt><dd><dl class="simple">
 <dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>calc_type: str, optional</dt><dd><p>Connectivity calculation type. Defaults to “correlation”.</p>
-</dd>
-<dt>max_connections: int, optional</dt><dd><p>Number of connections to display. Defaults to 50.</p>
-</dd>
-<dt>steps: int, optional</dt><dd><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
-</dd>
-<dt>colormap: str, optional</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
-</dd>
-<dt>vmin: int, optional</dt><dd><p>The minimum for the scale. Defaults to None.</p>
-</dd>
-<dt>vmin: int, optional</dt><dd><p>The maximum for the scale. Defaults to None.</p>
-</dd>
-<dt>line_width: int, optional</dt><dd><p>The line width for the connections. Defaults to 1.5.</p>
-</dd>
-<dt>title: str, optional</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
-</dd>
-<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs: dict, optional</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
+</dl>
+<p>calc_type: str (optional)</p>
+<blockquote>
+<div><p>Connectivity calculation type. Defaults to “correlation”.</p>
+</div></blockquote>
+<p>max_connections: int (optional)</p>
+<blockquote>
+<div><p>Number of connections to display. Defaults to 50.</p>
+</div></blockquote>
+<p>steps: int (optional)</p>
+<blockquote>
+<div><p>Number of frames to use in correlation caluclation. Defaults to 20.</p>
+</div></blockquote>
+<p>colormap: str (optional)</p>
+<blockquote>
+<div><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
+</div></blockquote>
+<p>vmin: int (optional)</p>
+<blockquote>
+<div><p>The minimum for the scale. Defaults to None.</p>
+</div></blockquote>
+<p>vmin: int (optional)</p>
+<blockquote>
+<div><p>The maximum for the scale. Defaults to None.</p>
+</div></blockquote>
+<p>line_width: int (optional)</p>
+<blockquote>
+<div><p>The line width for the connections. Defaults to 1.5.</p>
+</div></blockquote>
+<p>title: str (optional)</p>
+<blockquote>
+<div><p>The title to display on the plot. Defaults to None for no title.</p>
+</div></blockquote>
+<p><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs: dict (optional)</p>
+<blockquote>
+<div><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html">https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html</a></p>
-</dd>
-</dl>
+</div></blockquote>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
 <dt>matplotlib.animation.Animation:</dt><dd><p>Animation of connectivity plot</p>
@@ -1202,18 +1242,20 @@ Defaults to None for non-static width.</p>
 <dt id="simpl_eeg.connectivity.calculate_connectivity">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.connectivity.</span></code><code class="sig-name descname"><span class="pre">calculate_connectivity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'correlation'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.connectivity.calculate_connectivity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate connectivity between nodes</p>
-<dl class="simple">
+<dl>
 <dt>Args:</dt><dd><dl class="simple">
 <dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to calculate connectivity for</p>
 </dd>
-<dt>calc_type: str, optional</dt><dd><p>Calculation type, one of
+</dl>
+<p>calc_type: str (optional)</p>
+<blockquote>
+<div><p>Calculation type, one of
 spectral_connectivity,
 envelope_correlation,
 covariance,
 correlation.
 Defaults to “correlation”.</p>
-</dd>
-</dl>
+</div></blockquote>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
 <dt>pandas.core.frame.DataFrame:</dt><dd><p>Data frame containing connectivity values</p>
@@ -1268,39 +1310,65 @@ Defaults to “correlation”.</p>
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.connectivity.</span></code><code class="sig-name descname"><span class="pre">plot_conn_circle</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'correlation'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ch_names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caption</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.connectivity.plot_conn_circle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot connectivity circle</p>
 <dl>
-<dt>Args:</dt><dd><dl>
+<dt>Args:</dt><dd><dl class="simple">
 <dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>fig: matplotlib.pyplot.figure, optional</dt><dd><p>Figure to plot on. Defaults to None.</p>
-</dd>
-<dt>calc_type: str, optional</dt><dd><p>Connectivity calculation type. Defaults to “correlation”</p>
-</dd>
-<dt>max_connections: int, optional</dt><dd><p>Maximum connections to plot. Defaults to 50.</p>
-</dd>
-<dt>ch_names: [str], optional</dt><dd><p>List of channel names to display.
+</dl>
+<p>fig: matplotlib.pyplot.figure (optional)</p>
+<blockquote>
+<div><p>Figure to plot on. Defaults to None.</p>
+</div></blockquote>
+<p>calc_type: str (optional)</p>
+<blockquote>
+<div><p>Connectivity calculation type. Defaults to “correlation”</p>
+</div></blockquote>
+<p>max_connections: int (optional)</p>
+<blockquote>
+<div><p>Maximum connections to plot. Defaults to 50.</p>
+</div></blockquote>
+<p>ch_names: [str] (optional)</p>
+<blockquote>
+<div><p>List of channel names to display.
 Defaults to [], which indicates all channels.</p>
-</dd>
-<dt>vmin: int, optional</dt><dd><p>The minimum for the scale. Defaults to None.</p>
-</dd>
-<dt>vmin: int, optional</dt><dd><p>The maximum for the scale. Defaults to None.</p>
-</dd>
-<dt>colormap: str, optional</dt><dd><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
-</dd>
-<dt>colormap: bool, optional</dt><dd><p>Whether to plot the colorbar. Defaults to True.</p>
-</dd>
-<dt>line_width: int, optional</dt><dd><p>The line width for the connections. Defaults to 1.5.</p>
-</dd>
-<dt>title: str, optional</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
-</dd>
-<dt>colorbar: bool, optional</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
-</dd>
-<dt>caption: str, optional</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
-</dd>
-<dt><a href="#id9"><span class="problematic" id="id10">**</span></a>kwargs: dict, optional</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
+</div></blockquote>
+<p>vmin: int (optional)</p>
+<blockquote>
+<div><p>The minimum for the scale. Defaults to None.</p>
+</div></blockquote>
+<p>vmin: int (optional)</p>
+<blockquote>
+<div><p>The maximum for the scale. Defaults to None.</p>
+</div></blockquote>
+<p>colormap: str (optional)</p>
+<blockquote>
+<div><p>Colour scheme to use. Defaults to “RdBu_r”.</p>
+</div></blockquote>
+<p>colormap: bool (optional)</p>
+<blockquote>
+<div><p>Whether to plot the colorbar. Defaults to True.</p>
+</div></blockquote>
+<p>line_width: int (optional)</p>
+<blockquote>
+<div><p>The line width for the connections. Defaults to 1.5.</p>
+</div></blockquote>
+<p>title: str (optional)</p>
+<blockquote>
+<div><p>The title to display on the plot. Defaults to None for no title.</p>
+</div></blockquote>
+<p>colorbar: bool (optional)</p>
+<blockquote>
+<div><p>Whether to display the colorbar or not. Defaults to True.</p>
+</div></blockquote>
+<p>caption: str (optional)</p>
+<blockquote>
+<div><p>The caption to display at the bottom of the plot. Defaults to None.</p>
+</div></blockquote>
+<p><a href="#id9"><span class="problematic" id="id10">**</span></a>kwargs: dict (optional)</p>
+<blockquote>
+<div><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html">https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html</a></p>
-</dd>
-</dl>
+</div></blockquote>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
 <dt>matplotlib.pyplot.figure:</dt><dd><p>Connectivity circle figure</p>
@@ -1315,42 +1383,70 @@ Defaults to [], which indicates all channels.</p>
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.connectivity.</span></code><code class="sig-name descname"><span class="pre">plot_connectivity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">locations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'correlation'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_sphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">caption</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.connectivity.plot_connectivity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot 2d EEG nodes on scalp with lines representing connectivity</p>
 <dl>
-<dt>Args:</dt><dd><dl>
+<dt>Args:</dt><dd><dl class="simple">
 <dt>epoch: mne.epochs.Epochs</dt><dd><p>Epoch to visualize</p>
 </dd>
-<dt>fig: matplotlib.pyplot.figure, optional</dt><dd><p>Figure to plot on. Defaults to None.</p>
-</dd>
-<dt>locations: [matplotlib.text.Text], optional</dt><dd><p>List of node locations. Defaults to None.</p>
-</dd>
+</dl>
+<p>fig: matplotlib.pyplot.figure (optional)</p>
+<blockquote>
+<div><p>Figure to plot on. Defaults to None.</p>
+</div></blockquote>
+<p>locations: [matplotlib.text.Text] (optional)</p>
+<blockquote>
+<div><p>List of node locations. Defaults to None.</p>
+</div></blockquote>
+<dl class="simple">
 <dt>calc_type: str</dt><dd><p>Connectivity calculation type</p>
 </dd>
-<dt>pair_list: [str], optional</dt><dd><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
-</dd>
-<dt>threshold: int, optional</dt><dd><p>Unsigned connectivity threshold to display connection.
+</dl>
+<p>pair_list: [str] (optional)</p>
+<blockquote>
+<div><p>List of node pairs. Defaults to [], which indicates all pairs.</p>
+</div></blockquote>
+<p>threshold: int (optional)</p>
+<blockquote>
+<div><p>Unsigned connectivity threshold to display connection.
 Defaults to 0.</p>
-</dd>
-<dt>show_sphere: bool, optional</dt><dd><p>Whether to show the cartoon head or not. Defaults to True.</p>
-</dd>
-<dt>colormap: str, optional</dt><dd><p>Colour scheme to use. Defaults to “RdBlu_r”.</p>
-</dd>
-<dt>vmin: int, optional</dt><dd><p>The minimum for the scale. Defaults to None.</p>
-</dd>
-<dt>vmin: int, optional</dt><dd><p>The maximum for the scale. Defaults to None.</p>
-</dd>
-<dt>line_width: int, optional</dt><dd><p>The line width for the connections.
+</div></blockquote>
+<p>show_sphere: bool (optional)</p>
+<blockquote>
+<div><p>Whether to show the cartoon head or not. Defaults to True.</p>
+</div></blockquote>
+<p>colormap: str (optional)</p>
+<blockquote>
+<div><p>Colour scheme to use. Defaults to “RdBlu_r”.</p>
+</div></blockquote>
+<p>vmin: int (optional)</p>
+<blockquote>
+<div><p>The minimum for the scale. Defaults to None.</p>
+</div></blockquote>
+<p>vmin: int (optional)</p>
+<blockquote>
+<div><p>The maximum for the scale. Defaults to None.</p>
+</div></blockquote>
+<p>line_width: int (optional)</p>
+<blockquote>
+<div><p>The line width for the connections.
 Defaults to None for non-static width.</p>
-</dd>
-<dt>title: str, optional</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
-</dd>
-<dt>colorbar: bool, optional</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
-</dd>
-<dt>caption: str, optional</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
-</dd>
-<dt><a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs: dict, optional</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
+</div></blockquote>
+<p>title: str (optional)</p>
+<blockquote>
+<div><p>The title to display on the plot. Defaults to None for no title.</p>
+</div></blockquote>
+<p>colorbar: bool (optional)</p>
+<blockquote>
+<div><p>Whether to display the colorbar or not. Defaults to True.</p>
+</div></blockquote>
+<p>caption: str (optional)</p>
+<blockquote>
+<div><p>The caption to display at the bottom of the plot. Defaults to None.</p>
+</div></blockquote>
+<p><a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs: dict (optional)</p>
+<blockquote>
+<div><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_sensors.html">https://mne.tools/stable/generated/mne.viz.plot_sensors.html</a></p>
-</dd>
-</dl>
+</div></blockquote>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
 <dt>matplotlib.pyplot.figure:</dt><dd><p>The generated connectivity figure</p>
