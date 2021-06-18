@@ -241,7 +241,7 @@ def plot_connectivity(
 
     x_list = []
     y_list = []
-
+    width = line_width
     for x1, y1, name1 in zip(node_df["x"], node_df["y"], node_df["name"]):
         for x2, y2, name2 in zip(node_df["x"], node_df["y"], node_df["name"]):
             if (name1, name2) in pair_list or not pair_list:
@@ -255,13 +255,13 @@ def plot_connectivity(
                     # use width based on connection measure if no width given
                     if not line_width:
                         var_width = math.log(1-min(abs(correlation), 0.999))
-                        line_width = 1.5+var_width
+                        width = 1.5 + var_width
 
                     ax.plot(
                         x_list,
                         y_list,
                         color=colour_array[row, col],
-                        linewidth=line_width,
+                        linewidth=width
                     )
 
     # add padding for names
