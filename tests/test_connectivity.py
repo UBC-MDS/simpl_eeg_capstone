@@ -4,10 +4,7 @@ import pandas as pd
 import numpy as np
 import pickle
 import matplotlib
-import warnings
 import matplotlib.pyplot as plt
-warnings.filterwarnings('ignore')
-
 
 # import the test data
 with open('tests/test_data/test_data.pkl', 'rb') as input:
@@ -24,7 +21,7 @@ def test_calculate_connectivity():
         test_df = pd.DataFrame({"x": [1]})
         connectivity.calculate_connectivity(test_df)
 
-    # reject non-string calc_type 
+    # reject non-string calc_type
     with pytest.raises(TypeError):
         connectivity.calculate_connectivity(EPOCH_1, calc_type=0)
 
@@ -99,7 +96,7 @@ def test_plot_conn_circle():
 
     # check output type is as expected
     output_fig = connectivity.plot_conn_circle(EPOCH_42)
-    assert output_fig, matplotlib.figure.Figure
+    assert isinstance(output_fig, matplotlib.figure.Figure)
     plt.close("all")
 
 
