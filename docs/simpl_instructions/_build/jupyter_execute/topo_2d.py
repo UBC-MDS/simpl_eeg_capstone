@@ -26,7 +26,7 @@ warnings.filterwarnings('ignore')
 
 
 # ```{note}
-# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**
+# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.
 # ```
 
 # In[3]:
@@ -177,7 +177,7 @@ plot;
 
 
 # ### Saving the plot
-# You can change the plot to different formats by changing the format argument in the function. It supports 'png', 'pdf', 'svg'.
+# You can change the file to different formats by changing the format argument in the function. It supports `png`, `pdf`, `svg`.
 # ```python
 # file_path = "examples/topo_2d.svg"
 # plot.figure.savefig(file_path)

@@ -28,7 +28,7 @@ warnings.filterwarnings('ignore')
 
 
 # ```{note}
-# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**
+# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.
 # ```
 
 # In[3]:
@@ -118,7 +118,7 @@ get_ipython().run_line_magic('matplotlib', 'inline')
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity(\n    epoch,\n    calc_type=calc_type,\n    steps=steps,\n    pair_list=pair_list,\n    threshold=threshold,\n    show_sphere=show_sphere,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
-# In[ ]:
+# In[11]:
 
 
 video
@@ -166,13 +166,13 @@ video
 
 # A detailed description of all parameters can be found in the `connectivity.animate_connectivity_circle` docstring:
 
-# In[ ]:
+# In[12]:
 
 
 help(connectivity.animate_connectivity_circle)
 
 
-# In[ ]:
+# In[13]:
 
 
 vmin = -1
@@ -186,19 +186,19 @@ max_connections = 50
 
 # ### Generating the animation
 
-# In[ ]:
+# In[14]:
 
 
 get_ipython().run_line_magic('matplotlib', 'notebook')
 
 
-# In[ ]:
+# In[15]:
 
 
 get_ipython().run_cell_magic('capture', '', '\nanim = connectivity.animate_connectivity_circle(\n    epoch,\n    calc_type=calc_type,\n    max_connections=max_connections,\n    steps=steps,\n    colormap=colormap,\n    vmin=vmin,\n    vmax=vmax,\n    line_width=line_width,\n)\n\nfrom IPython.display import HTML\n\nhtml_plot = anim.to_jshtml()\nvideo = HTML(html_plot)')
 
 
-# In[ ]:
+# In[16]:
 
 
 video
@@ -244,13 +244,13 @@ video
 # ### Define parameters
 # A detailed description of all animation parameters can be found in the `connectivity.plot_connectivity` docstring:
 
-# In[ ]:
+# In[17]:
 
 
 help(connectivity.plot_connectivity)
 
 
-# In[ ]:
+# In[18]:
 
 
 vmin = -1
@@ -262,7 +262,7 @@ threshold = 0
 show_sphere = True
 
 
-# In[ ]:
+# In[19]:
 
 
 PAIR_OPTIONS = {
@@ -290,20 +290,20 @@ pair_list = PAIR_OPTIONS["far_coherence"]
 # Generating a plot will use the first frame in the epoch, so make sure to update your epoch object to contain your frame of interest. 
 # ```
 
-# In[ ]:
+# In[20]:
 
 
 get_ipython().run_cell_magic('capture', '', 'plot = connectivity.plot_connectivity(\n    epoch,\n)')
 
 
-# In[ ]:
+# In[21]:
 
 
 plot
 
 
 # ### Saving the plot
-# You can change the plot to different formats by changing the format argument in the function. It supports 'png', 'pdf', 'svg'.
+# You can change the file to different formats by changing the format argument in the function. It supports `png`, `pdf`, `svg`.
 # ```python
 # file_path = "examples/connectivity.svg"
 # plot.figure.savefig(file_path)
@@ -317,13 +317,13 @@ plot
 # ### Define parameters
 # A detailed description of all animation parameters can be found in the `connectivity.plot_conn_circle` docstring:
 
-# In[ ]:
+# In[22]:
 
 
 help(connectivity.plot_conn_circle)
 
 
-# In[ ]:
+# In[23]:
 
 
 vmin = -1
@@ -340,21 +340,27 @@ max_connections = 50
 # Generating a plot will use the first frame in the epoch, so make sure to update your epoch object to contain your frame of interest. 
 # ```
 
-# In[ ]:
+# In[24]:
 
 
 get_ipython().run_cell_magic('capture', '', 'plot = connectivity.plot_conn_circle(\n    epoch,\n)')
 
 
-# In[ ]:
+# In[25]:
 
 
 plot
 
 
 # ### Saving the plot
-# You can change the plot to different formats by changing the format argument in the function. It supports 'png', 'pdf', 'svg'.
+# You can change the file to different formats by changing the format argument in the function. It supports `png`, `pdf`, `svg`.
 # ```python
 # file_path = "examples/connectivity_circle.svg"
 # plot.figure.savefig(file_path)
 # ```
+
+# In[ ]:
+
+
+
+
