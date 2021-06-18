@@ -13,7 +13,7 @@
 # 
 # Both plots can be generated as an animation to view changes over time or as a standalone plot.
 
-# ![](instruction_imgs/topomap_3d_brain.gif)
+# ![](instruction_imgs/presentattion_brain.gif)
 
 # ## General Setup
 # ### Import required modules
@@ -63,9 +63,9 @@ epoch = epochs.get_nth_epoch(nth_epoch)
 # ### Generate forward and inverse (optional)
 
 # ```{note}
-# - Before an animation or plot can be generated a **"forward"** and **"inverse"** (abbreviated as **"stc"**) must first be generated. If they are not provided to either of the plotting animations they will be automatically generated **HOWEVER** this will increase the time it takes to generate the figure.
+# - Before an animation or plot can be generated, a **"forward"** and **"inverse"** (abbreviated as **"stc"**) must first be generated. If they are not provided to either of the plotting animations they will be automatically generated, **HOWEVER** this will increase the time it takes to generate the figure.
 # 
-# - The forward/inverse are used to retrieve a brain model to attach the EEG data to and to do some of the mapping calculations. The forward downloads 'fsaverage' MRI data which represents a brain averaged out from dozens of different patients.
+# - The forward/inverse are used to retrieve a brain model to attach the EEG data and to do some of the mapping calculations. The forward downloads 'fsaverage' MRI data which represents a brain averaged out from dozens of different patients.
 # ```
 
 # #### Generate Forward
@@ -78,7 +78,7 @@ fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
 
 # #### Generate Inverse
 
-# In[7]:
+# In[ ]:
 
 
 stc = topomap_3d_brain.create_inverse_solution(epoch, fwd)
@@ -89,15 +89,15 @@ stc = topomap_3d_brain.create_inverse_solution(epoch, fwd)
 
 # ### Define parameters
 
-# A detailed description of all parameters can be found in the `topomap_2d.animate_topomap_2d` docstring:
+# A detailed description of all parameters can be found in the `topomap_3d_brain.animate_matplot_brain` docstring:
 
-# In[8]:
+# In[ ]:
 
 
 help(topomap_3d_brain.animate_matplot_brain)
 
 
-# In[9]:
+# In[ ]:
 
 
 colormap = "RdBu_r"
@@ -105,7 +105,7 @@ colormap = "RdBu_r"
 
 # #### Generate animation with matplotlib backend (slow but recommended)
 
-# In[10]:
+# In[ ]:
 
 
 get_ipython().run_cell_magic('capture', '', "\nmatplotlib_animation = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = 'lat', hemi = 'lh')\n\nfrom IPython.display import HTML\nvideo = HTML(matplotlib_animation.to_jshtml())")
@@ -156,7 +156,7 @@ get_ipython().run_cell_magic('capture', '', "matplot_brain_fig = topomap_3d_brai
 
 
 # ### Save the plot
-# You can change the plot to different formats by changing the format argument in the function. It supports 'png', 'pdf', 'svg'.
+# You can change the file to different formats by changing the format argument in the function. It supports `png`, `pdf`, `svg`.
 # ```python
 # file_path = "examples/topomap_3d_brain.svg"  
 # matplot_brain_fig.savefig(file_path, format='svg')

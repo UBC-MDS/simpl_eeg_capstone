@@ -20,7 +20,7 @@ warnings.filterwarnings('ignore')
 
 
 # ```{note}
-# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.**
+# Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.
 # ```
 
 # In[3]:

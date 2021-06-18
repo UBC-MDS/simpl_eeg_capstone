@@ -128,7 +128,7 @@ topo_3d_head.show()
 # ## Create a 3D topographic plot
 
 # ### Define parameters
-# A detailed description of all animation parameters can be found in the `topomap_2d.topo_3d_map` docstring:
+# A detailed description of all animation parameters can be found in the `topomap_3d_head.topo_3d_map` docstring:
 
 # In[10]:
 
@@ -167,7 +167,7 @@ topo_3d__head_static.show()
 
 
 # ### Saving the plot
-# You can change the plot to different formats by changing the format argument in the function. It supports 'png', 'pdf', 'svg'.
+# You can change the file to different formats by changing the format argument in the function. It supports `png`, `pdf`, `svg`.
 
 # #### Save as svg
 # ```python
