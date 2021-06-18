@@ -1,25 +1,49 @@
 import mne
-import matplotlib.pyplot as plt
-def plot_voltage(epoch, remove_xlabel=False, **kwargs):
+
+
+def plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs):
     """
-    Return interactive raw voltage plot
-    
-    Parameters
-    ----------
-    epoch (mne.epochs.Epochs): Epoch to display
-    remove_xlabel (bool, optional): Whether to remove the x axis label. Defaults to False.
-    **kwargs : arguments
-               raw, events=None, duration=10.0, start=0.0, n_channels=20, bgcolor='w', color=None, bad_color=(0.8, 0.8, 0.8), event_color='cyan', 
-               scalings=None, remove_dc=True, order=None, show_options=False, title=None, show=True, block=False, highpass=None, lowpass=None, 
-               filtorder=4, clipping=1.5, show_first_samp=False, proj=True, group_by='type', butterfly=False, decim='auto', noise_cov=None, 
-               event_id=None, show_scrollbars=True, show_scalebars=True, verbose=None)
+    Generate raw voltage plot
+
+    Parameters:
+        epoch: mne.epochs.Epochs
+            Epoch(s) to display
+        remove_xlabel: bool (optional)
+            Whether to remove the x axis label. Defaults to False.
+        show_times: bool (optional)
+            Whether to show seconds on the x axis. Defaults to True.
+        **kwargs: dict (optional)
+            Optional arguments to pass to mne.Epochs.plot()
+
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.Epochs.html#mne.Epochs.plot
+
+    Returns:
+        matplotlib.figure.Figure:
+            The raw voltage plot figure
     """
     if type(epoch) is not mne.epochs.Epochs:
-        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
-    fig = epoch.plot(**kwargs)
+        raise TypeError(
+            "epoch is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
+        )
 
+    fig = epoch.plot(**kwargs)
+    ax = fig.axes[0]
+
+    # remove "Epoch Number"
     if remove_xlabel:
-        fig.axes[0].get_xaxis().set_visible(False)
+        ax.set_xlabel("")
+        ax.minorticks_off()
+
+    # Show start and end time on x-axis
+    if show_times:
+        event_time = epoch.events[0][2]
+
+        ax.set_xticks([0, epoch.tmax-epoch.tmin])
+        ax.set_xticklabels([
+            "{:.2f} seconds".format(event_time+epoch.tmin),
+            "{:.2f} seconds".format(event_time+epoch.tmax)
+        ])
 
     return fig
-

@@ -1,21 +1,24 @@
 # -*- coding: utf-8 -*-
 
-"""Module for generating and animating EEG connectivity figures
+"""
+Module for reading and generating custom epochs
 """
 
 import matplotlib.pyplot as plt
 import matplotlib.animation as animation
-import matplotlib.colors as mpl_colors
 import pandas as pd
-import numpy as np
 import math
 import mne
 
+# common node pairs for convenient access
 PAIR_OPTIONS = {
     "all_pairs": [],
     "local_anterior": "Fp1-F7, Fp2-F8, F7-C3, F4-C4, C4-F8, F3-C3",
     "local_posterior": "T5-C3, T5-O1, C3-P3, C4-P4, C4-T6, T6-O2",
-    "far_coherence": "Fp1-T5, Fp2-T6, F7-T5, F7-P3, F7-O1, T5-F3, F3-P3, F4-P4, P4-F8, F8-T6, F8-O2, F4-T6",
+    "far_coherence": (
+        "Fp1-T5, Fp2-T6, F7-T5, F7-P3, F7-O1, T5-F3, "
+        "F3-P3, F4-P4, P4-F8, F8-T6, F8-O2, F4-T6"
+    ),
     "prefrontal_to_frontal_and_central": "Fp1-F3, Fp1-C3, Fp2-F4, Fp2-C4",
     "occipital_to_parietal_and_central": "C3-O1, P3-O1, C4-O2, P4-O4",
     "prefrontal_to_parietal": "Fp1-P3, Fp2-P4",
@@ -23,15 +26,17 @@ PAIR_OPTIONS = {
     "prefrontal_to_occipital": "Fp1-O1, Fp2-O2"
 }
 
-
 def convert_pairs(string_pairs):
-    """Convert pair names to usable format
+    """
+    Convert pair names to usable format
 
     Args:
-        string_pairs (str): Comma seperated node pairs in format "node1-node2"
+        string_pairs: str
+            Comma seperated node pairs in format "node1-node2"
 
     Returns:
-        [tuple]: List of tuples with node pair names
+        [tuple]:
+            List of tuples with node pair names
     """
     tuple_pairs = string_pairs
     if type(string_pairs) == str:
@@ -41,18 +46,30 @@ def convert_pairs(string_pairs):
 
 
 def calculate_connectivity(epoch, calc_type="correlation"):
-    """Calculate connectivity between nodes
+    """
+    Calculate connectivity between nodes
 
     Args:
-        epoch (mne.epochs.Epochs): Epoch to calculate connectivity for
-        calc_type (str, optional): Calculation type, one of spectral_connectivity, envelope_correlation, covariance, correlation. Defaults to "correlation".
+        epoch: mne.epochs.Epochs
+            Epoch to calculate connectivity for
+        calc_type: str (optional)
+            Calculation type, one of
+            spectral_connectivity,
+            envelope_correlation,
+            covariance,
+            correlation.
+            Defaults to "correlation".
 
     Returns:
-        pandas.core.frame.DataFrame: Data frame containing connectivity values
+        pandas.core.frame.DataFrame:
+            Data frame containing connectivity values
     """
 
     if type(epoch) is not mne.epochs.Epochs:
-        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+        raise TypeError(
+            "epoch is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
+        )
 
     if type(calc_type) is not str:
         raise TypeError("calc_type has to be a string")
@@ -66,7 +83,11 @@ def calculate_connectivity(epoch, calc_type="correlation"):
 
         if calc_type == "spectral_connectivity":
             conn = mne.connectivity.spectral_connectivity(
-                epoch, method="pli", mode="fourier", faverage=True, verbose=False
+                epoch,
+                method="pli",
+                mode="fourier",
+                faverage=True,
+                verbose=False
             )[0][:, :, 0]
 
         elif calc_type == "envelope_correlation":
@@ -76,7 +97,13 @@ def calculate_connectivity(epoch, calc_type="correlation"):
             conn = mne.compute_covariance(epoch, verbose=False).data
 
         else:
-            raise Exception("Invalid calculation type, calc_type could only be one of [correlation, spectral_connectivity, envelope_correlation, covariance]")
+            raise Exception(
+                "Invalid calculation type, calc_type can only be one of "
+                "correlation, "
+                "spectral_connectivity, "
+                "envelope_correlation, or"
+                "covariance"
+            )
 
         conn_df.iloc[-conn.shape[0]:, -conn.shape[1]:] = conn
 
@@ -84,15 +111,20 @@ def calculate_connectivity(epoch, calc_type="correlation"):
 
 
 def get_frame(epoch, step_size, frame_number):
-    """Crop an epoch based on a frame number
+    """
+    Crop an epoch based on a frame number
 
     Args:
-        epoch (mne.epochs.Epochs): Epoch to crop
-        steps (int): Number of time frames per step
-        frame_number (int): Current frame number
+        epoch: mne.epochs.Epochs
+            Epoch to crop
+        steps_size: int
+            Number of time frames per step
+        frame_number: int
+            Current frame number
 
     Returns:
-        mne.epochs.Epochs: Cropped epochs for the given frame
+        mne.epochs.Epochs:
+            Cropped epochs for the given frame
     """
     times = epoch.times
     max_index = len(times)-1
@@ -110,7 +142,7 @@ def get_frame(epoch, step_size, frame_number):
 
 
 def plot_connectivity(
-    data,
+    epoch,
     fig=None,
     locations=None,
     calc_type="correlation",
@@ -126,38 +158,66 @@ def plot_connectivity(
     caption=None,
     **kwargs
 ):
-    """Plot 2d EEG nodes on scalp with lines representing connectivity
+    """
+    Plot 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
-        data (mne.epochs.Epochs): Epoch to visualize
-        fig (matplotlib.pyplot.figure, optional): Figure to plot on. Defaults to None.
-        locations ([matplotlib.text.Text], optional): List of node locations. Defaults to None.
-        calc_type (str): Connectivity calculation type
-        pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
-        threshold (int, optional): Unsigned connectivity threshold to display connection. Defaults to 0.
-        show_sphere (bool, optional): Whether to show the cartoon head or not. Defaults to True.
-        colormap (str, optional): Colour scheme to use. Defaults to "RdBlu_r".
-        vmin (int, optional): The minimum for the scale. Defaults to None.
-        vmin (int, optional): The maximum for the scale. Defaults to None.
-        line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
-        title (str, optional): The title to display on the plot. Defaults to None for no title.
-        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_sensors().
+        epoch: mne.epochs.Epochs
+            Epoch to visualize
+        fig: matplotlib.pyplot.figure (optional)
+            Figure to plot on. Defaults to None.
+        locations: [matplotlib.text.Text] (optional)
+            List of node locations. Defaults to None.
+        calc_type: str
+            Connectivity calculation type
+        pair_list: [str] (optional)
+            List of node pairs. Defaults to [], which indicates all pairs.
+        threshold: int (optional)
+            Unsigned connectivity threshold to display connection.
+            Defaults to 0.
+        show_sphere: bool (optional)
+            Whether to show the cartoon head or not. Defaults to True.
+        colormap: str (optional)
+            Colour scheme to use. Defaults to "RdBlu_r".
+        vmin: int (optional)
+            The minimum for the scale. Defaults to None.
+        vmin: int (optional)
+            The maximum for the scale. Defaults to None.
+        line_width: int (optional)
+            The line width for the connections.
+            Defaults to None for non-static width.
+        title: str (optional)
+            The title to display on the plot. Defaults to None for no title.
+        colorbar: bool (optional)
+            Whether to display the colorbar or not. Defaults to True.
+        caption: str (optional)
+            The caption to display at the bottom of the plot. Defaults to None.
+        **kwargs: dict (optional)
+            Optional arguments to pass to mne.viz.plot_sensors()
+
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_sensors.html
 
     Returns:
-        matplotlib.pyplot.figure: Connectivity figure
+        matplotlib.pyplot.figure:
+            The generated connectivity figure
     """
-    if type(data) is not mne.epochs.Epochs:
-        raise TypeError("data is not an epoched data, please refer to eeg_objects to create an epoched data")
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError(
+            "data is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
+        )
 
     if locations is None:
-        sensor_locations = data.plot_sensors(show_names=True, show=False)
+        sensor_locations = epoch.plot_sensors(show_names=True, show=False)
         locations = sensor_locations.findobj(
             match=lambda x: type(x) == plt.Text and x.get_text() != ""
         )
+
     if fig is None:
         fig = plt.figure()
 
-    correlation_df = calculate_connectivity(data, calc_type)
+    correlation_df = calculate_connectivity(epoch, calc_type)
 
     cmap = plt.cm.ScalarMappable(cmap=colormap)
 
@@ -192,27 +252,36 @@ def plot_connectivity(
                     x_list = [x1, x2]
                     y_list = [y1, y2]
 
+                    # use width based on connection measure if no width given
+                    if not line_width:
+                        var_width = math.log(1-min(abs(correlation), 0.999))
+                        line_width = 1.5+var_width
+
                     ax.plot(
                         x_list,
                         y_list,
                         color=colour_array[row, col],
-                        linewidth=line_width if line_width else 1.5+math.log(1-min(abs(correlation), 0.999)),
+                        linewidth=line_width,
                     )
-    if colorbar:
-        fig.colorbar(cmap)
 
     # add padding for names
-    data.copy()
-    data = data.rename_channels(lambda x: "  "+str(x))
+    epoch.copy()
+    epoch = epoch.rename_channels(lambda x: "  "+str(x))
 
-    data.plot_sensors(
-        axes=ax,
-        show_names=True,
-        kind="topomap",
-        sphere=(9, -15, 0, 100) if show_sphere else None,
-        show=False,
-        **kwargs
-    )
+    # combine default settings with user specified settings
+    default_kwargs = {
+        "axes": ax,
+        "show_names": True,
+        "kind": "topomap",
+        "sphere": (9, -15, 0, 100) if show_sphere else None,
+        "show": False
+    }
+    kwargs = {**default_kwargs, **kwargs}
+
+    epoch.plot_sensors(**kwargs)
+
+    if colorbar:
+        fig.colorbar(cmap)
 
     if title:
         plt.title(title)
@@ -237,27 +306,49 @@ def animate_connectivity(
     title=None,
     **kwargs
 ):
-    """Animate 2d EEG nodes on scalp with lines representing connectivity
+    """
+    Animate 2d EEG nodes on scalp with lines representing connectivity
 
     Args:
-        epochs (mne.epochs.Epochs): Epoch to visualize
-        calc_type (str: Connectivity calculation type. Defaults to "correlation".
-        pair_list ([str], optional): List of node pairs. Defaults to [], which indicates all pairs.
-        threshold (int, optional): Unsigned connectivity threshold to display connection. Defaults to 0.
-        show_sphere (bool, optional): Whether to show the cartoon head or not. Defaults to True.
-        steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20.
-        colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r"
-        vmin (int, optional): The minimum for the scale. Defaults to None.
-        vmin (int, optional): The maximum for the scale. Defaults to None.
-        line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
-        title (str, optional): The title to display on the plot. Defaults to None for no title.
-        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_sensors().
+        epochs: mne.epochs.Epochs
+            Epoch to visualize
+        calc_type: str (optional)
+            Connectivity calculation type. Defaults to "correlation".
+        steps: int (optional)
+            Number of frames to use in correlation caluclation. Defaults to 20.
+        pair_list: [str] (optional)
+            List of node pairs. Defaults to [], which indicates all pairs.
+        threshold: int (optional)
+            Unsigned connectivity threshold to display connection.
+            Defaults to 0.
+        show_sphere: bool (optional)
+            Whether to show the cartoon head or not. Defaults to True.
+        colormap: str (optional)
+            Colour scheme to use. Defaults to "RdBu_r"
+        vmin: int (optional)
+            The minimum for the scale. Defaults to None.
+        vmin: int (optional)
+            The maximum for the scale. Defaults to None.
+        line_width: int (optional)
+            The line width for the connections.
+            Defaults to None for non-static width.
+        title: str (optional)
+            The title to display on the plot. Defaults to None for no title.
+        **kwargs: dict (optional)
+            Optional arguments to pass to mne.viz.plot_sensors()
+
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_sensors.html
 
     Returns:
-        matplotlib.animation.Animation: Animation of connectivity plot
+        matplotlib.animation.Animation:
+            Animation of connectivity plot
     """
     if type(epoch) is not mne.epochs.Epochs:
-        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+        raise TypeError(
+            "epoch is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
+        )
 
     sensor_locations = epoch.plot_sensors(show_names=True, show=False)
     locations = sensor_locations.findobj(
@@ -309,35 +400,62 @@ def plot_conn_circle(
     colormap="RdBu_r",
     vmin=None,
     vmax=None,
-    line_width=None,
+    line_width=1.5,
     title=None,
     colorbar=True,
     caption=None,
     **kwargs
 ):
-    """Plot connectivity circle
+    """
+    Plot connectivity circle
 
     Args:
-        epoch (mne.epochs.Epochs): Epoch to visualize
-        fig (matplotlib.pyplot.figure, optional): Figure to plot on. Defaults to None.
-        calc_type (str, optional): Connectivity calculation type. Defaults to "correlation"
-        max_connections (int, optional): Maximum connections to plot. Defaults to 50.
-        ch_names ([str], optional): List of channel names to display. Defaults to [], which indicates all channels.
-        vmin (int, optional): The minimum for the scale. Defaults to None.
-        vmin (int, optional): The maximum for the scale. Defaults to None.
-        colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
-        colormap (bool, optional): Whether to plot the colorbar. Defaults to True.
-        line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
-        title (str, optional): The title to display on the plot. Defaults to None for no title.
-        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_connectivity_circle().
+        epoch: mne.epochs.Epochs
+            Epoch to visualize
+        fig: matplotlib.pyplot.figure (optional)
+            Figure to plot on. Defaults to None.
+        calc_type: str (optional)
+            Connectivity calculation type. Defaults to "correlation"
+        max_connections: int (optional)
+            Maximum connections to plot. Defaults to 50.
+        ch_names: [str] (optional)
+            List of channel names to display.
+            Defaults to [], which indicates all channels.
+        vmin: int (optional)
+            The minimum for the scale. Defaults to None.
+        vmin: int (optional)
+            The maximum for the scale. Defaults to None.
+        colormap: str (optional)
+            Colour scheme to use. Defaults to "RdBu_r".
+        colormap: bool (optional)
+            Whether to plot the colorbar. Defaults to True.
+        line_width: int (optional)
+            The line width for the connections. Defaults to 1.5.
+        title: str (optional)
+            The title to display on the plot. Defaults to None for no title.
+        colorbar: bool (optional)
+            Whether to display the colorbar or not. Defaults to True.
+        caption: str (optional)
+            The caption to display at the bottom of the plot. Defaults to None.
+        **kwargs: dict (optional)
+            Optional arguments to pass to mne.viz.plot_connectivity_circle()
+
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html
 
     Returns:
-        matplotlib.pyplot.figure: Connectivity circle figure
+        matplotlib.pyplot.figure:
+            Connectivity circle figure
     """
     if type(epoch) is not mne.epochs.Epochs:
-        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+        raise TypeError(
+            "epoch is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
+        )
+
     if not fig:
         fig = plt.figure()
+
     if not ch_names:
         ch_names = epoch.ch_names
 
@@ -348,26 +466,28 @@ def plot_conn_circle(
 
     angles = mne.viz.circular_layout(ch_names, ch_names, start_pos=90)
 
-    if line_width is None:
-        line_width = 1.5
+    # combine default settings with user specified settings
+    default_kwargs = {
+        "n_lines": max_connections,
+        "fig": fig,
+        "node_angles": angles,
+        "facecolor": "w",
+        "textcolor": "black",
+        "colormap": colormap,
+        "node_colors": ["grey" for i in range(len(ch_names))],
+        "vmin": vmin,
+        "vmax": vmax,
+        "linewidth": line_width,
+        "title": title
+    }
+    kwargs = {**default_kwargs, **kwargs}
 
-    fig, ax = mne.viz.plot_connectivity_circle(
+    fig = mne.viz.plot_connectivity_circle(
         conn,
         ch_names,
-        n_lines=max_connections,
-        fig=fig,
-        node_angles=angles,
-        facecolor="w",
-        textcolor="black",
-        colormap=colormap,
-        node_colors=["grey" for i in range(len(ch_names))],
-        vmin=vmin,
-        vmax=vmax,
-        linewidth=line_width,
-        title=title,
         colorbar=False,
         **kwargs
-    )
+    )[0]
 
     if colorbar:
         cmap = plt.cm.ScalarMappable(cmap=colormap)
@@ -388,33 +508,63 @@ def animate_connectivity_circle(
     colormap="RdBu_r",
     vmin=None,
     vmax=None,
-    line_width=None,
+    line_width=1.5,
     title=None,
     **kwargs
 ):
-    """Animate connectivity circle
+    """
+    Animate connectivity circle
 
     Args:
-        epoch (mne.epochs.Epochs): Epoch to visualize
-        calc_type (str, optional): Connectivity calculation type. Defaults to "correlation".
-        max_connections (int, optional): Number of connections to display. Defaults to 50.
-        steps (int, optional): Number of frames to use in correlation caluclation. Defaults to 20.
-        colormap (str, optional): Colour scheme to use. Defaults to "RdBu_r".
-        vmin (int, optional): The minimum for the scale. Defaults to None.
-        vmin (int, optional): The maximum for the scale. Defaults to None.
-        line_width (int, optional): The line width for the connections. Defaults to None for non-static width.
-        title (str, optional): The title to display on the plot. Defaults to None for no title.
-        **kwargs (dict, optional): Optional arguments to pass to mne.viz.plot_connectivity_circle().
+        epoch: mne.epochs.Epochs
+            Epoch to visualize
+        calc_type: str (optional)
+            Connectivity calculation type. Defaults to "correlation".
+        max_connections: int (optional)
+            Number of connections to display. Defaults to 50.
+        steps: int (optional)
+            Number of frames to use in correlation caluclation. Defaults to 20.
+        colormap: str (optional)
+            Colour scheme to use. Defaults to "RdBu_r".
+        vmin: int (optional)
+            The minimum for the scale. Defaults to None.
+        vmin: int (optional)
+            The maximum for the scale. Defaults to None.
+        line_width: int (optional)
+            The line width for the connections. Defaults to 1.5.
+        title: str (optional)
+            The title to display on the plot. Defaults to None for no title.
+        **kwargs: dict (optional)
+            Optional arguments to pass to mne.viz.plot_connectivity_circle()
+
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html
 
     Returns:
-        matplotlib.animation.Animation: Animation of connectivity plot
+        matplotlib.animation.Animation:
+            Animation of connectivity plot
     """
     if type(epoch) is not mne.epochs.Epochs:
-        raise TypeError("epoch is not an epoched data, please refer to eeg_objects to create an epoched data")
+        raise TypeError(
+            "epoch is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
+        )
 
     fig = plt.figure()
 
     num_steps = math.ceil(len(epoch.times)/steps)
+
+    # combine default settings with user specified settings
+    default_kwargs = {
+        "calc_type": calc_type,
+        "max_connections": max_connections,
+        "colormap": colormap,
+        "vmin": vmin,
+        "vmax": vmax,
+        "line_width": line_width,
+        "title": title
+    }
+    kwargs = {**default_kwargs, **kwargs}
 
     def animate(frame_number):
         fig.clear()
@@ -429,13 +579,6 @@ def animate_connectivity_circle(
             plot_conn_circle(
                 frame_epoch,
                 fig,
-                calc_type=calc_type,
-                max_connections=max_connections,
-                colormap=colormap,
-                vmin=vmin,
-                vmax=vmax,
-                line_width=line_width,
-                title=title,
                 caption=caption,
                 **kwargs
             )
@@ -443,4 +586,3 @@ def animate_connectivity_circle(
 
     anim = animation.FuncAnimation(fig, animate, num_steps, blit=True)
     return anim
-

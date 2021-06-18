@@ -49,10 +49,11 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Creating EEG Objects" href="eeg_objects.html" />
-    <link rel="prev" title="Install guide" href="installation.html" />
+    <link rel="prev" title="User Interface" href="user_interface.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -90,6 +91,11 @@
  </li>
 </ul>
 <ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="user_interface.html">
+   User Interface
+  </a>
+ </li>
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Package Introduction
@@ -126,8 +132,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="user_interface.html">
-   User Interface
+  <a class="reference internal" href="api.html">
+   API documentation
   </a>
  </li>
 </ul>
@@ -219,23 +225,22 @@
                 <ul class="visible nav section-nav flex-column">
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#background">
-   <strong>
-    Background
-   </strong>
+   Background
   </a>
  </li>
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#instructions">
-   <strong>
-    Instructions
-   </strong>
+   Instructions
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#data-folder-structure">
+     Data Folder Structure
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#import">
-     <strong>
-      Import
-     </strong>
+     Import
     </a>
    </li>
   </ul>
@@ -254,15 +259,23 @@
   <div class="section" id="package-introduction">
 <h1>Package Introduction<a class="headerlink" href="#package-introduction" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="background">
-<h2><strong>Background</strong><a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
+<h2>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h2>
 <p>Electroencephalograms (EEG) is an electrophysiological measurement method used to examine the electrical activity of the brain and represent it as location-based channels of waves and frequencies. EEG benefits from being inexpensive and unobtrusive, leading to its widespread use in diagnosing brain disorders such as epilepsy and brain damage from head injuries. EEG data is recorded with high dimensionality, so the use of visualizations and metrics is essential for the data to be easily interpreted by humans. Currently, the options for visualizing EEG data require the use of complicated packages or software and the functionally is often limited.</p>
 <p><code class="docutils literal notranslate"><span class="pre">simpl_eeg</span></code> package is developed by students from the <strong>Master of Data Science program of University of British Columbia</strong> to provide the ability to conveniently produce advanced visualizations and metrics for specified time ranges of EEG data.
 <br></p>
 </div>
 <div class="section" id="instructions">
-<h2><strong>Instructions</strong><a class="headerlink" href="#instructions" title="Permalink to this headline">¶</a></h2>
+<h2>Instructions<a class="headerlink" href="#instructions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="data-folder-structure">
+<h3>Data Folder Structure<a class="headerlink" href="#data-folder-structure" title="Permalink to this headline">¶</a></h3>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>To have data properly loaded to functions in this package, please make sure that the data is saved in the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder. All files related to the same experiment should be included one subfolder under the <code class="docutils literal notranslate"><span class="pre">data</span></code> folder. Inside each experiment folder, there should be <code class="docutils literal notranslate"><span class="pre">fixedareas.mat</span></code> file, <code class="docutils literal notranslate"><span class="pre">fixica.fdt</span></code> file, <code class="docutils literal notranslate"><span class="pre">fixica.set</span></code> file and <code class="docutils literal notranslate"><span class="pre">impact</span> <span class="pre">locations.mat</span></code> file. Please refer to the screenshot below for setting up the data folder.</p>
+</div>
+<p><img alt="" src="_images/data_folder_structure.png" /></p>
+</div>
 <div class="section" id="import">
-<h3><strong>Import</strong><a class="headerlink" href="#import" title="Permalink to this headline">¶</a></h3>
+<h3>Import<a class="headerlink" href="#import" title="Permalink to this headline">¶</a></h3>
 <p>There are six modules in this package. Each of them contains functions for different visualizations. The <code class="docutils literal notranslate"><span class="pre">eeg_objects</span></code> module contains functions to convert the raw data into epoched data with specified time ranges.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -325,7 +338,7 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="installation.html" title="previous page"><strong>Install guide</strong></a>
+    <a class='left-prev' id="prev-link" href="user_interface.html" title="previous page">User Interface</a>
     <a class='right-next' id="next-link" href="eeg_objects.html" title="next page">Creating EEG Objects</a>
 
         </div>

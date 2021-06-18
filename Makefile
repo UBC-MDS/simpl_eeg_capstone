@@ -15,6 +15,16 @@ install :
 test :
 	poetry run pytest
 
+clean_docs :
+	jb clean docs/simpl_instructions/
+
+build_docs :
+	jb build docs/simpl_instructions/
+
+update_docs :
+	jb build docs/simpl_instructions/
+	ghp-import -n -p -f docs/simpl_instructions/_build/html
+
 clean :
 	rm -f reports/images/viz_example.png
 	rm -f reports/Proposal.pdf

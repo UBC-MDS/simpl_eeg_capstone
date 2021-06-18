@@ -49,14 +49,18 @@ st.markdown(
 
 @st.cache(show_spinner=False)
 def calculate_timeframe(start_time, raw):
-    """Parse time from string and determine position in raw data
+    """
+    Parse time from string and determine position in raw data
 
-    Args:
-        start_time (str): The start time in format H:M:S
-        raw (mne.Raw): The full experiment data
+    Parameters:
+        start_time : str
+            The start time in format H:M:S
+        raw : mne.io.Raw
+            The full experiment data
 
     Returns:
-        tuple(int, int): The time in seconds and the index
+        tuple of length 2:
+            The time in seconds and the index
     """
     if re.match('^0{1,}:0{1,}:0{1,}$', start_time):
         return True, -1
@@ -75,39 +79,54 @@ def calculate_timeframe(start_time, raw):
 
 @st.cache(show_spinner=False)
 def generate_stc_epoch(epoch):
-    """Helper function for 3D brain map - generate inverse solution from forward"""
+    """
+    Helper function for 3D brain map
+    generate inverse solution from forward
+    """
     fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
     return (topomap_3d_brain.create_inverse_solution(epoch, fwd))
 
 
 @st.cache(show_spinner=False)
 def generate_stc_fwd(epoch, fwd):
-    """Helper function for 3D brain map - Generate forward solution"""
+    """
+    Helper function for 3D brain map - Generate forward solution
+    """
     return (topomap_3d_brain.create_inverse_solution(epoch, fwd))
 
 
 @st.cache(show_spinner=False)
 def animate_ui_2d_head(epoch, **kwargs):
-    """Caching wrapper function to call topomap_2d.animate_topomap_2d"""
+    """
+    Caching wrapper function to call topomap_2d.animate_topomap_2d
+    """
     anim = topomap_2d.animate_topomap_2d(epoch, **kwargs)
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
 def animate_ui_3d_head(epoch, **kwargs):
-    """Caching wrapper function to call topomap_3d_head.animate_3d_head"""
+    """
+    Caching wrapper function to call topomap_3d_head.animate_3d_head
+    """
     return topomap_3d_head.animate_3d_head(epoch, **kwargs)
+
 
 @st.cache(show_spinner=False)
 def animate_ui_3d_brain(epoch, **kwargs):
-    """Caching wrapper function to call topomap_3d_brain.animate_matplot_brain"""
+    """
+    Caching wrapper function to call
+    topomap_3d_brain.animate_matplot_brain
+    """
     anim = topomap_3d_brain.animate_matplot_brain(epoch, **kwargs)
     return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
 def animate_ui_connectivity(epoch, connection_type, **kwargs):
-    """Caching wrapper function to call connectivity.animate_connectivity"""
+    """
+    Caching wrapper function to call connectivity.animate_connectivity
+    """
     anim = connectivity.animate_connectivity(
         epoch,
         connection_type,
@@ -118,7 +137,10 @@ def animate_ui_connectivity(epoch, connection_type, **kwargs):
 
 @st.cache(show_spinner=False)
 def animate_ui_connectivity_circle(epoch, connection_type, **kwargs):
-    """Caching wrapper function to call connectivity.animate_connectivity_circle"""
+    """
+    Caching wrapper function to call
+    connectivity.animate_connectivity_circle
+    """
     anim = connectivity.animate_connectivity_circle(
         epoch,
         connection_type,
@@ -129,7 +151,9 @@ def animate_ui_connectivity_circle(epoch, connection_type, **kwargs):
 
 @st.cache(show_spinner=False)
 def generate_eeg_file(experiment_num):
-    """Helper function for creating standalone eeg_file object"""
+    """
+    Helper function for creating standalone eeg_file object
+    """
     gen_eeg_file = eeg_objects.EEG_File(
         DATA_FOLDER+experiment_num
     )
@@ -138,17 +162,24 @@ def generate_eeg_file(experiment_num):
 
 @st.cache(show_spinner=False)
 def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
-    """Generate a custom epoch
+    """
+    Generate a custom epoch
 
-    Args:
-        experiment_num (str): Folder name of experiment
-        tmin (float): Seconds before the event time
-        tmax (float): Seconds after the event time
-        start_second (int): The second of event
-        epoch_num (int, optional): An epoch of interest to store.
+    Parameters:
+        experiment_num : str
+            Folder name of experiment
+        tmin : float
+            Seconds before the event time
+        tmax : float
+            Seconds after the event time
+        start_second : int
+            The second of event
+        epoch_num : int (optional)
+            An epoch of interest to store.
 
     Returns:
-        eeg_objects.Epoch: The generated epoch object
+        eeg_objects.Epoch:
+            The generated epoch object
     """
 
     epoch_obj = eeg_objects.Epochs(
@@ -162,7 +193,10 @@ def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
 
 
 def get_shared_conn_widgets(epoch, frame_steps, key):
-    """Helper function for producing shared widgets for connectivity sections"""
+    """
+    Helper function for producing shared widgets for
+    connectivity sections
+    """
 
     key = str(key)
 
@@ -181,8 +215,7 @@ def get_shared_conn_widgets(epoch, frame_steps, key):
         connectivity_methods,
         key=label+key,
         format_func=lambda name: name.replace("_", " ").capitalize(),
-        help="""
-        Calculation type, one of
+        help="""Calculation type, one of
         spectral connectivity, envelope correlation,
         covariance, correlation.
         Envelope correlation is only available with 100 or more timesteps
@@ -199,7 +232,7 @@ def get_shared_conn_widgets(epoch, frame_steps, key):
         label,
         value=default_cmin,
         key=label+key,
-        help = "The minimum for the scale."
+        help="The minimum for the scale."
     )
 
     label = "Maximum Value"
@@ -241,18 +274,37 @@ def main():
         default=[
             render_options[0]
         ],
-        help="""Select which figures you wish to have rendered in their respective dropdowns. Any
-        selected views will begin to render automatically except for the 3D brain map which must
+        help="""Select which figures you wish to have rendered in their
+        respective dropdowns. Any selected views will begin to render
+        automatically except for the 3D brain map which must
         be activated in its dropdown due to a slow render time.
         """
     )
 
+    experiment_list = []
+    for name in os.listdir("data/"):
+        curr_path = os.path.join("data", name)
+        if os.path.isdir(curr_path):
+            for fname in os.listdir(curr_path):
+                if fname.endswith('.set'):
+                    experiment_list.append(name)
+
+    if not experiment_list:
+        raise FileNotFoundError(
+            """
+            Please move at least one experiment folder
+            to the data folder to use this app.
+            At a minimum the folder must contain a .set file.
+            """
+        )
+
     col1_exp, col2_exp = st.sidebar.beta_columns((2, 1))
     experiment_num = col1_exp.selectbox(
         "Select experiment",
-        [ name for name in os.listdir("data/") if os.path.isdir(os.path.join("data", name)) ],
-        help="""List of folders contained in the "data" folder. Each folder should represent one
-        experiment and contain files labelled "fixica.fdt", "fixica.set", and "impact locations.mat".
+        experiment_list,
+        help="""List of folders contained in the "data" folder.
+        Each folder should represent one experiment and contain files labelled
+        "fixica.fdt", "fixica.set", and "impact locations.mat".
         The selected experiment will have its data used to render the figures.
         """
     )
@@ -266,7 +318,6 @@ def main():
     max_time = str(datetime.timedelta(seconds=max_secs-1)).split(".")[0]
 
     col2_exp.text(
-        #"""----------\nExperiment\nlength:\n{}\n----------""".format(exp_len)
         """----------\nExperiment\nlength:\n{}""".format(exp_len)
     )
 
@@ -274,8 +325,10 @@ def main():
     time_select = col1.radio(
         "Timestamp type",
         ["Epoch", "Time"],
-        help="""Select "Epoch" to render figures based around the timestamps specified in the "impact locations.mat".
-        Select "Time" to specify a custom timestamp to render the animation from.
+        help="""Select "Epoch" to render figures based around the timestamps
+        specified in the "impact locations.mat".
+        Select "Time" to specify a custom timestamp to
+        render the animation from.
         """
     )
 
@@ -284,19 +337,28 @@ def main():
             "Custom event time",
             value="0:00:05",
             max_chars=7,
-            help="""The timestamp to render the figures around. Must be entered in the format "H:MM:SS".
-            The max time with the currently selected experiment is "{}" (one second before the total length
+            help="""The timestamp to render the figures around.
+            Must be entered in the format "H:MM:SS".
+            The max time with the currently selected experiment is "{}"
+            (one second before the total length
             of the experiment).""".format(max_time)
         )
         start_second, in_timeframe = calculate_timeframe(start_time, raw_epoch_obj.raw)
-        if start_second == None:
+        if start_second is None:
             st.error('Time is in wrong format please use H:MM:SS')
         if in_timeframe == 0:
-            st.error("Input time exceeds max timestamp of the current experiment ({}).".format(max_time))
+            st.error(
+                "Input time exceeds max timestamp of "
+                f"the current experiment ({max_time})."
+            )
         if in_timeframe == -1:
-            st.error("""Specified event time cannot be 0:00:00. If you wish to see the experiment from the
-            earliest time possible then please specify an event time of 00:00:01 and a "Seconds before event"
-            value of 1.0""")
+            st.error(
+                """Specified event time cannot be 0:00:00.
+                If you wish to see the experiment from the earliest time
+                possible then please specify an event time of
+                00:00:01 and a "Seconds before event"
+                value of 1.0"""
+            )
         epoch_num = 0
     else:
         start_second = None
@@ -316,19 +378,25 @@ def main():
             "Event",
             options = list(epoch_times.keys()),
             format_func=lambda key: epoch_times[key],
-            help="""The number epoch to use in all of the figures. Epochs are generated in sequence based
+            help="""The number epoch to use in all of the figures.
+            Epochs are generated in sequence based
             on the order of events in the "event locations.mat" file.
             """
         )
 
+    max_tmax = 10.0
+    curr_max = min(float(start_second), max_tmax) if start_second else max_tmax
     tmin = st.sidebar.number_input(
         "Seconds before event",
         value=0.3,
-        min_value=0.01,
-        max_value=min(float(start_second), 10.0) if start_second else 10.0,
-        help="""The number of seconds prior to the specified timestamp to start the figures from. Min = 0.01,
-        max = 10 (also cannot be a value that will cause the timestamp to go beyond 00:00:00).
-        """
+        min_value=0.0,
+        max_value=curr_max,
+        help="""The number of seconds prior to the specified timestamp
+        to start the figures from.
+        Min = 0.0, max = {}
+        (also cannot be a value that will cause the
+        timestamp to go beyond 00:00:00).
+        """.format(curr_max)
     )
 
     tmax_max_value = 10.0
@@ -342,8 +410,10 @@ def main():
         value=0.7,
         min_value=0.01,
         max_value=tmax_max_value,
-        help="""The number of seconds after to the specified timestamp to end the epoch at. Cannot be a value that will cause
-        the timestamp to go beyond the max time. Min = 0.01, max = {} (with current settings).
+        help="""The number of seconds after to the specified timestamp to end the epoch at.
+        Cannot be a value that will cause
+        the timestamp to go beyond the max time. Min = 0.01, max = {}
+        (with current settings).
         """.format(tmax_max_value)
     )
 
@@ -360,13 +430,16 @@ def main():
     frame_steps = col1_step.number_input(
         "Number of timesteps per frame",
         value=50,
-        min_value=0,
-        help ="""The number of recordings in the data to skip between each rendered frame in the figures.
-        For example, if an experiment is recorded at 2048 Hz (2048 recordings per second) then setting
-        this value to 1 will show ever second recording in the data and 1024 frames will be rendered
-        for every second of data. A value of 0 will lead to every recorded value being rendered as a frame.
-        "Num. frames to render" represents how many frames of animation will be rendered in each figure.
-        Min = 0.
+        min_value=1,
+        help="""The number of recordings in the data to skip between
+        each rendered frame in the figures. For example, if an experiment is
+        recorded at 2048 Hz (2048 recordings per second) then setting
+        this value to 2 will show ever second recording in the data and
+        1024 frames will be rendered for every second of data.
+        A value of 1 will lead to every recorded value being rendered
+        as a frame. "Num. frames to render" represents how many frames of
+        animation will be rendered in each figure.
+        Min = 1.
         """
     )
 
@@ -376,8 +449,10 @@ def main():
 
     stc_generated = False
 
-    min_voltage_message = "The minimum value (in μV) to show on the plot"
-    max_voltage_message = "The maximum value (in μV) to show on the plot"
+    if plot_epoch.times.shape[0] <= 2:
+        st.warning("""WARNING: At least 3 frames must be rendered for
+        the 3D brain plot to work due
+        to neccesary pre-processing steps.""")
 
     col2_step.text(
         """-----------\nNum. frames\nto render:\n{}
@@ -449,13 +524,16 @@ def main():
             )
 
         def generate_file_name(self, file_type="html"):
-            """Generate an export file name and success message function
+            """
+            Generate an export file name and success message function
 
-            Args:
-                file_type (str, optional): File extension. Defaults to "html".
+            Parameters:
+                file_type : str (optional)
+                    File extension. Defaults to "html".
 
             Returns:
-                tuple(str, function): The generated file name and success message function
+                tuple of str, function:
+                    The generated file name and success message function
             """
 
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M%S")
@@ -480,7 +558,8 @@ def main():
             Prints success message to screen
 
             Args:
-                html_plot (html): The plot to export
+                html_plot : html
+                    The plot to export
             """
 
             file_name, send_message = self.generate_file_name()
@@ -497,12 +576,13 @@ def main():
     expander_connectivity = Section("connectivity")
     expander_connectivity_circle = Section("connectivity_circle")
 
-    #### WIDGETS ####
+    # WIDGETS
     with expander_raw.widget_col:
         st.title("")
         noise_select = st.checkbox(
             "Whiten with noise covarience",
-            help="""Check to estimate noise covariance matrix from the currently loaded epoch."""
+            help="""Check to estimate noise covariance matrix
+            from the currently loaded epoch."""
         )
         noise_cov = mne.compute_covariance(
             epoch,
@@ -512,8 +592,10 @@ def main():
         auto_scale = st.checkbox(
             "Use automatic scaling",
             value=True,
-            help = """Whether or not to use the automatic MNE scaling. Checking this causes the scaling
-            factor to match the 99.5th percentile of a subset of the corresponding data."""
+            help = """Whether or not to use the automatic MNE scaling.
+            Checking this causes the scaling
+            factor to match the 99.5th percentile of a subset of the
+            corresponding data."""
         )
         if auto_scale:
             scaling = "auto"
@@ -528,6 +610,9 @@ def main():
                 scaling = scaling * 1e-1
             else:
                 scaling = scaling * 1e-6
+
+    min_voltage_message = "The minimum value (in μV) to show on the plot"
+    max_voltage_message = "The maximum value (in μV) to show on the plot"
 
     with expander_2d_head.widget_col:
         vmin_2d_head = st.number_input(
@@ -545,7 +630,10 @@ def main():
         # Doesn't currently work for whatever reason.
         # Can't compare two number inputs.
         if vmax_2d_head < vmin_2d_head:
-            st.error("ERROR: Minimum Voltage Set higher than Maximum Voltage. Please enter a valid input")
+            st.error(
+                "ERROR: Minimum Voltage Set higher than Maximum Voltage."
+                "Please enter a valid input"
+            )
 
         mark_options = [
             "dot",
@@ -559,10 +647,22 @@ def main():
             index=0,
             help="The type of mark to show for each electrode on the topomap"
         )
-        advanced_options_2d = st.checkbox("Advanced Options", value=False, key="2dAO")
+        advanced_options_2d = st.checkbox(
+            "Advanced Options",
+            value=False,
+            key="2dAO"
+        )
         if advanced_options_2d:
-            colorbar_2d_headmap = st.checkbox("Include colorbar", value=True)
-            timestamps_2d_headmap = st.checkbox("Include timestamps", value=True)
+            colorbar_2d_headmap = st.checkbox(
+                "Include colorbar",
+                value=True,
+                key="cbar_2d"
+            )
+            timestamps_2d_headmap = st.checkbox(
+                "Include timestamps",
+                value=True,
+                key="tstamp_2d"
+            )
             contours_2d = st.number_input(
                 "Number of contours",
                 value=0,
@@ -575,14 +675,16 @@ def main():
                 value=100,
                 min_value=80,
                 max_value=120,
-                help="The sphere parameters to use for the cartoon head. Min = 80, max = 120."
+                help="""The sphere parameters to use for the cartoon head.
+                Min = 80, max = 120."""
             )
             heat_res_2d = st.number_input(
                 "Heatmap resolution",
                 value=100,
                 min_value=1,
                 max_value=1000,
-                help="The resolution of the topomap image(n pixels along each side). Min = 0, max = 1000."
+                help="""The resolution of the topomap image (n pixels along each side).
+                Min = 0, max = 1000."""
             )
             extrapolate_options_2d = [
                 "head",
@@ -594,10 +696,12 @@ def main():
                 extrapolate_options_2d,
                 index=0,
                 help="""HEAD- Extrapolate out to the edges of the clipping circle.
-                LOCAL- Extrapolate only to nearby points (approximately to points
-                closer than median inter-electrode distance). BOX- Extrapolate to four
-                points placed to form a square encompassing all data points, where each
-                side of the square is three times the range of the data in the respective dimension.
+                LOCAL- Extrapolate only to nearby points (approximately to
+                points closer than median inter-electrode distance).
+                BOX- Extrapolate to four points placed to form a square
+                encompassing all data points, where each
+                side of the square is three times the range
+                of the data in the respective dimension.
                 """
             )
         else:
@@ -648,8 +752,10 @@ def main():
             options=list(view_option_dict.keys()),
             format_func=lambda key: view_option_dict[key],
             default=["lat"],
-            help = """The viewing angle of the brain to render. Note that a different (slightly slower) figure
-            rendering method is used whenever more than one view is selected OR if brain hemi is set to "both".
+            help="""The viewing angle of the brain to render.
+            Note that a different (slightly slower) figure
+            rendering method is used whenever more than one view is
+            selected OR if brain hemi is set to "both".
             """
         )
         hemi_options_dict = {
@@ -661,42 +767,57 @@ def main():
             "Select brain hemisphere",
             options=list(hemi_options_dict.keys()),
             format_func=lambda key: hemi_options_dict[key],
-            help="""
-            The side of the brain to render.
-            If "both" is selected the right hemi of the brain will be rendered for
-            the entire top row with the left hemi rendered in the bottom row.
+            help="""The side of the brain to render.
+            If "both" is selected the right hemi of the brain will be rendered
+            for the entire top row with the left hemi rendered in the bottom row.
             Note that a different (slightly slower) figure
             rendering method is used whenever more than one view is selected
             OR if brain hemi is set to "both".
             """
         )
-        advanced_options_brain = st.checkbox("Advanced Options", value=False, key="brainAO")
+        spacing_value = st.selectbox(
+            "Spacing type",
+            ["oct4", "oct5", "oct6", "oct7", "ico3", "ico4", "ico5", "ico6"],
+            index=1,
+            help="""The spacing to use for the source space. "oct" uses a recursively
+            subdivided octahedron and "ico" uses a recursively subdivided
+            icosahedron.Reccomend using oct5 for speed and oct6 for more
+            detail. Increasing the number leads to an exponential increase in
+            render time.
+            """
+        )
+        advanced_options_brain = st.checkbox(
+            "Advanced Options",
+            value=False,
+            key="brainAO"
+        )
         if advanced_options_brain:
-            spacing_value = st.selectbox(
-                "Spacing type",
-                ["oct4", "oct5", "oct6", "oct7", "ico3", "ico4", "ico5", "ico6"],
-                index=1,
-                help="""The spacing to use for the source space. "oct" uses a recursively subdivided 
-                octahedron and "ico" uses a recursively subdivided icosahedron. Reccomend using oct5 for speed
-                and oct6 for more detail. Increasing the number leads to an exponential increase in render time.
-                """
+            colorbar_brain = st.checkbox(
+                "Include colorbar",
+                value=True,
+                key="cbar_brain"
             )
+            timestamps_brain = st.checkbox("Include timestamps", value=True, key = "tstamp_brain")
+
             smoothing_amount = st.number_input(
                 "Number of smoothing steps",
                 value=2,
                 min_value=1,
-                help = """The amount of smoothing to apply to the brain model.
+                help="""The amount of smoothing to apply to the brain model."""
+            )
+            use_non_MNE_colours = st.checkbox(
+                "Use non-MNE colour palette",
+                value=False,
+                key="braincolour",
+                help="""The default MNE color palette is reccomended
+                for this figure as it includes texturing on the brain.
+                Select this if you still wish to use the color palette
+                specified in the sidebar.
                 """
             )
-            use_non_MNE_colours = st.checkbox("Use non-MNE colour palette",
-                                             value=False,
-                                             key="braincolour",
-                                             help = """The default MNE color palette is reccomended
-                                             for this figure as it includes texturing on the brain.
-                                             Select this if you still wish to use the color palette specified
-                                             in the sidebar.
-                                             """)
         else:
+            colorbar_brain = True
+            timestamps_brain = True
             spacing_value = "oct5"
             smoothing_amount = 2
             use_non_MNE_colours = False
@@ -718,7 +839,9 @@ def main():
             node_pair_options,
             index=1,
             format_func=lambda name: name.replace("_", " ").capitalize(),
-            help="""Node pairs"""
+            help="""Select node pairs template to show only selected nodes.
+            These can be further customized after selecting the template
+            in the node pair textbox below"""
         )
 
         selected_pairs = []
@@ -737,29 +860,37 @@ def main():
         # Line width widgets
         line_width_type = st.checkbox(
             "Set static line width",
-            False
+            False,
+            help="""Use static line width rather than dynamic line
+            width based on connectivity score"""
         )
 
         conn_line_width = None
         if line_width_type is True:
             conn_line_width = st.slider(
                 "Select line width",
-                min_value=1,
-                max_value=5,
-                value=2
+                min_value=0.5,
+                max_value=5.0,
+                value=1.5,
+                help="Select a custom line width"
             )
 
     with expander_connectivity_circle.widget_col:
 
         # Connection type and min/max value widgets
-        conn_type_circle, cmin_circle, cmax_circle = get_shared_conn_widgets(epoch, frame_steps, "circle")
+        conn_type_circle, cmin_circle, cmax_circle = get_shared_conn_widgets(
+            epoch,
+            frame_steps,
+            "circle"
+        )
 
         # Line width widget
         conn_circle_line_width = st.slider(
             "Select line width ",
             min_value=1,
             max_value=5,
-            value=2
+            value=2,
+            help="Select a custom line width"
         )
 
         # Maximum connections widget
@@ -767,10 +898,11 @@ def main():
             "Maximum connections to display",
             min_value=0,
             max_value=len(epoch.ch_names)*len(epoch.ch_names),
-            value=20
+            value=20,
+            help="Select the maximum number of connection measurements to show"
         )
 
-    #### PLOTS ####
+    # PLOTS
 
     def default_message(name):
         """Returns a message for non-rendered plots for a given section name"""
@@ -781,7 +913,8 @@ def main():
                 Select your customizations,
                 then add "%s" to the list of figures to render on the sidebar.
                 \n
-                **WARNING:depending on your settings, rendering may take a while...**
+                **WARNING:depending on your settings,
+                rendering may take a while...**
                 \n
             """ % name
         )
@@ -801,7 +934,9 @@ def main():
 
             export = expander_raw.export_button()
             if export:
-                file_name, send_message = expander_raw.generate_file_name("svg")
+                file_name, send_message = expander_raw.generate_file_name(
+                    "svg"
+                )
                 plot.savefig(file_name)
                 send_message()
         else:
@@ -881,6 +1016,7 @@ def main():
                         colormap_brain = "mne"
                     else:
                         colormap_brain = colormap
+
                     html_plot = animate_ui_3d_brain(
                         epoch=plot_epoch,
                         views=view_selection,
@@ -890,7 +1026,9 @@ def main():
                         cmin=vmin_3d_brain,
                         cmax=vmax_3d_brain,
                         spacing=spacing_value,
-                        smoothing_steps=smoothing_amount
+                        smoothing_steps=smoothing_amount,
+                        colorbar=colorbar_brain,
+                        timestamp=timestamps_brain
                     )
                     components.html(
                         html_plot,
@@ -954,4 +1092,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    

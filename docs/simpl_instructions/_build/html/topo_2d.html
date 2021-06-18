@@ -49,6 +49,7 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="3D Brain Visualizations" href="topo_3d_brain.html" />
@@ -91,6 +92,11 @@
 </ul>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="user_interface.html">
+   User Interface
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="introduction.html">
    Package Introduction
   </a>
@@ -126,8 +132,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="user_interface.html">
-   User Interface
+  <a class="reference internal" href="api.html">
+   API documentation
   </a>
  </li>
 </ul>
@@ -419,78 +425,89 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function animate_topomap_2d in module simpl_eeg.topomap_2d:
 
 animate_topomap_2d(epoch, colormap=&#39;RdBu_r&#39;, mark=&#39;dot&#39;, contours=0, sphere=100, cmin=-30, cmax=30, res=100, extrapolate=&#39;head&#39;, outlines=&#39;head&#39;, axes=None, mask=None, mask_params=None, colorbar=True, timestamp=True, frame_rate=12)
-    Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
+    Plots a still image mne.epochs.
+    Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
     function.
     
-    Parameters
-    ----------
-    epochs : mne.epochs.Epochs
-        MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
+    Parameters:
+    epochs: mne.epochs.Epochs
+        MNE epochs object containing portions of raw EEG data
+        built around specified timestamp(s)
     
     colormap: matplotlib colormap or None
         Specifies the &#39;colormap&#39; parameter in the mne.viz.plot_topomap() function.
     
     mark: str
-        Specifies what kind of marker should be shown for each node on the topomap. Can be one of
-        &#39;dot&#39;, &#39;r+&#39; (for red +&#39;s), &#39;channel_name&#39;, or &#39;none&#39;.
+        Specifies what kind of marker should be shown for each node on the topomap.
+        Can be one of &#39;dot&#39;, &#39;r+&#39; (for red +&#39;s), &#39;channel_name&#39;, or &#39;none&#39;.
     
-    contours: int or array of float
-        specifies the &#39;contours&#39; parameter in the mne.viz.plot_topomap() function. &quot;The number of
-        contour lines to draw. If 0, no contours will be drawn. If an array, the values represent
-        the levels for the contours. The values are in µV for EEG, fT for magnetometers and fT/m
+    contours: int | array of float
+        specifies the &#39;contours&#39; parameter in the
+        mne.viz.plot_topomap() function.
+        &quot;The number of contour lines to draw.
+        If 0, no contours will be drawn.
+        If an array, the values represent the levels for the contours.
+        The values are in µV for EEG, fT for magnetometers and fT/m
         for gradiometers.&quot;
     
-    sphere: float or array_like or instance of ConductorModel
-        specifies the &#39;sphere&#39; parameter in the mne.viz.plot_topomap() function. &quot;The sphere
-        parameters to use for the cartoon head. Can be array-like of shape (4,) to give the
-        X/Y/Z origin and radius in meters, or a single float to give the radius (origin
-        assumed 0, 0, 0). Can also be a spherical ConductorModel, which will use the origin
-        and radius. Can also be None (default) which is an alias for 0.095&quot;
+    sphere: float | array_like | instance of ConductorModel | None
+        specifies the &#39;sphere&#39; parameter in the mne.viz.plot_topomap() function.
+        &quot;The sphere parameters to use for the cartoon head.
+        Can be array-like of shape (4,) to give the X/Y/Z origin and
+        radius in meters, or a single float to give the radius (origin
+        assumed 0, 0, 0). Can also be a spherical ConductorModel,
+        which will use the origin and radius.
+        Can also be None (default) which is an alias for 0.095&quot;
     
     cmin: float
         Specifies the &#39;vmin&#39; parameter in the mne.viz.plot_topomap() function.
         Sets the limits for the colors which will be used on the topomap. Value is
         in μV. Defaults to -10.
-        
+    
     cmax: float
         Specifies the &#39;vmax&#39; parameter in the mne.viz.plot_topomap() function.
-        Sets the limits for the colors which will be used on the topomap. Value is
-        in μV. Defaults to +10.
+        Sets the limits for the colors which will be used on the topomap.
+        Value is in μV. Defaults to +10.
     
     res: int
-        Specifies the &#39;res&#39; and parameters in the mne.viz.plot_topomap() function. &quot;The
+        Specifies the &#39;res&#39; and parameters in the
+        mne.viz.plot_topomap() function. &quot;The
         resolution of the topomap image (n pixels along each side).&quot;
     
     extrapolate: str
-        Specifies the &#39;extrapolate&#39; and parameters in the mne.viz.plot_topomap() function. One of
+        Specifies the &#39;extrapolate&#39; and parameters in the
+        mne.viz.plot_topomap() function. One of
         &quot;box&quot;, &quot;local&quot;, or &quot;head&quot;.
     
-    outlines: ‘head’ or ‘skirt’ or dict or None
-        Specifies the &#39;outlines&#39; parameter in the mne.viz.plot_topomap() function.
+    outlines: ‘head’ or ‘skirt’ | dict | None
+        Specifies the &#39;outlines&#39; parameter in the
+        mne.viz.plot_topomap() function.
     
-    axes: instance of Axes or None
+    axes: instance of Axes | None
         Specifies the &#39;axes&#39; parameter in the mne.viz.plot_topomap() function.
     
-    mask: ndarray of bool, shape (n_channels, n_times) or None
+    mask: ndarray of bool, shape (n_channels, n_times) | None
         Specifies the &#39;mask&#39; parameter in the mne.viz.plot_topomap() function.
     
     mask_params: dict
-        Specifies the &#39;mask_params&#39; parameter in the mne.viz.plot_topomap() function.
+        Specifies the &#39;mask_params&#39; parameter in the
+        mne.viz.plot_topomap() function.
     
     colorbar: bool
         Specifies whether or not to include a colorbar in the animation.
     
     timestamp: bool
-        Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-        is being shown. Defaults to True.
+        Specifies whether or not to show the timestamp on the plot
+        relative to the time in the epoch that is being shown.
+        Defaults to True.
     
     frame_rate: int
         The frame rate to genearte the final animation with.
     
-    Returns
-    -------
-    ani: matplotlib.animation.FuncAnimation
-        matplotlib funcanimation of a 2d topographic map based on the input epoch data
+    Returns:
+        matplotlib.animation.FuncAnimation:
+            matplotlib funcanimation of a 2d topographic map
+            based on the input epoch data.
 </pre></div>
 </div>
 </div>
@@ -743,42 +760,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_img867e3fba373948c68e5247ee45ed5723">
+  <img id="_anim_img849a07d911724cfc9750ef042c719ea6">
   <div class="anim-controls">
-    <input id="_anim_slider867e3fba373948c68e5247ee45ed5723" type="range" class="anim-slider"
+    <input id="_anim_slider849a07d911724cfc9750ef042c719ea6" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="anim867e3fba373948c68e5247ee45ed5723.set_frame(parseInt(this.value));"></input>
+           oninput="anim849a07d911724cfc9750ef042c719ea6.set_frame(parseInt(this.value));"></input>
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim867e3fba373948c68e5247ee45ed5723.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim849a07d911724cfc9750ef042c719ea6.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="anim867e3fba373948c68e5247ee45ed5723.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="anim849a07d911724cfc9750ef042c719ea6.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="anim867e3fba373948c68e5247ee45ed5723.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="anim849a07d911724cfc9750ef042c719ea6.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="anim867e3fba373948c68e5247ee45ed5723.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="anim849a07d911724cfc9750ef042c719ea6.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="anim867e3fba373948c68e5247ee45ed5723.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="anim849a07d911724cfc9750ef042c719ea6.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="anim867e3fba373948c68e5247ee45ed5723.play_animation()">
+      <button title="Play" aria-label="Play" onclick="anim849a07d911724cfc9750ef042c719ea6.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="anim867e3fba373948c68e5247ee45ed5723.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="anim849a07d911724cfc9750ef042c719ea6.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="anim867e3fba373948c68e5247ee45ed5723.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="anim849a07d911724cfc9750ef042c719ea6.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="anim867e3fba373948c68e5247ee45ed5723.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="anim849a07d911724cfc9750ef042c719ea6.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select867e3fba373948c68e5247ee45ed5723"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select849a07d911724cfc9750ef042c719ea6"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_867e3fba373948c68e5247ee45ed5723"
+      <input type="radio" name="state" value="once" id="_anim_radio1_849a07d911724cfc9750ef042c719ea6"
              >
-      <label for="_anim_radio1_867e3fba373948c68e5247ee45ed5723">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_867e3fba373948c68e5247ee45ed5723"
+      <label for="_anim_radio1_849a07d911724cfc9750ef042c719ea6">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_849a07d911724cfc9750ef042c719ea6"
              checked>
-      <label for="_anim_radio2_867e3fba373948c68e5247ee45ed5723">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_867e3fba373948c68e5247ee45ed5723"
+      <label for="_anim_radio2_849a07d911724cfc9750ef042c719ea6">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_849a07d911724cfc9750ef042c719ea6"
              >
-      <label for="_anim_radio3_867e3fba373948c68e5247ee45ed5723">Reflect</label>
+      <label for="_anim_radio3_849a07d911724cfc9750ef042c719ea6">Reflect</label>
     </form>
   </div>
 </div>
@@ -788,9 +805,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_img867e3fba373948c68e5247ee45ed5723";
-    var slider_id = "_anim_slider867e3fba373948c68e5247ee45ed5723";
-    var loop_select_id = "_anim_loop_select867e3fba373948c68e5247ee45ed5723";
+    var img_id = "_anim_img849a07d911724cfc9750ef042c719ea6";
+    var slider_id = "_anim_slider849a07d911724cfc9750ef042c719ea6";
+    var loop_select_id = "_anim_loop_select849a07d911724cfc9750ef042c719ea6";
     var frames = new Array(41);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -23823,7 +23840,7 @@ JUrAFAqFQhFKlIApFAqFIpQoAVMoFApFKFECplAoFIpQ8v/kd03+dx9wBQAAAABJRU5ErkJggg==\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anim867e3fba373948c68e5247ee45ed5723 = new Animation(frames, img_id, slider_id, 83.0,
+        anim849a07d911724cfc9750ef042c719ea6 = new Animation(frames, img_id, slider_id, 83.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -23888,81 +23905,101 @@ JUrAFAqFQhFKlIApFAqFIpQoAVMoFApFKFECplAoFIpQ8v/kd03+dx9wBQAAAABJRU5ErkJggg==\
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function plot_topomap_2d in module simpl_eeg.topomap_2d:
 
 plot_topomap_2d(epoch, plotting_data=None, recording_number=0, colormap=&#39;RdBu_r&#39;, colorbar=True, cmin=-30, cmax=30, mark=&#39;dot&#39;, contours=0, sphere=100, res=100, extrapolate=&#39;head&#39;, outlines=&#39;head&#39;, axes=None, mask=None, mask_params=None, timestamp=True)
-    Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
-    function.
+    Plots a still image mne.epochs.Epochs EEG data as a
+    2D topomap using the mne.viz.plot_topomap function
     
-    Parameters
-    ----------
-    epoch : mne.epochs.Epochs
-        MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
+    Parameters:
+        epoch: mne.epochs.Epochs
+            MNE epochs object containing portions of raw
+            EEG data built around specified timestamp(s).
     
-    plotting_data: numpy.ndarray
-        array of the EEG data from a measurement (not a time interval) to be plotted
+        plotting_data: numpy.ndarray
+            array of the EEG data from a measurement
+            (not a time interval) to be plotted.
     
-    recording_number: int
-        The &quot;frame&quot; of the epoch to show in the plot.
+        recording_number: int
+            The &quot;frame&quot; of the epoch to show in the plot.
     
-    colormap: matplotlib colormap or None
-        Specifies the &#39;colormap&#39; parameter in the mne.viz.plot_topomap() function.
+        colormap: matplotlib colormap | None
+            Specifies the &#39;colormap&#39; parameter in the 
+            mne.viz.plot_topomap() function.
     
-    colorbar: bool
-        Specifies whether to include a colorbar or not. Removing it will improve performance.
+        colorbar: bool
+            Specifies whether to include a colorbar or not.
+            Removing it will improve performance.
     
-    cmin: float
-        Specifies the &#39;vmin&#39; parameter in the mne.viz.plot_topomap() function.
-        Sets the limits for the colors which will be used on the topomap. Value is
-        in μV. Defaults to -10.
-        
-    cmax: float
-        Specifies the &#39;vmax&#39; parameter in the mne.viz.plot_topomap() function.
-        Sets the limits for the colors which will be used on the topomap. Value is
-        in μV. Defaults to +10.
+        cmin: float
+            Specifies the &#39;vmin&#39; parameter in the
+            mne.viz.plot_topomap() function.
+            Sets the limits for the colors which will be used on the topomap.
+            Value is in μV. Defaults to -10.
     
-    mark: str
-        Specifies what kind of marker should be shown for each node on the topomap. Can be one of
-        &#39;dot&#39;, &#39;r+&#39; (for red +&#39;s), &#39;channel_name&#39;, or &#39;none&#39;.
+        cmax: float
+            Specifies the &#39;vmax&#39; parameter in the
+            mne.viz.plot_topomap() function.
+            Sets the limits for the colors which will be used on the topomap.
+            Value is in μV. Defaults to +10.
     
-    contours: int or array of float
-        specifies the &#39;contours&#39; parameter in the mne.viz.plot_topomap() function. &quot;The number of
-        contour lines to draw. If 0, no contours will be drawn. If an array, the values represent
-        the levels for the contours. The values are in µV for EEG, fT for magnetometers and fT/m
-        for gradiometers.&quot;
+        mark: str
+            Specifies what kind of marker should be shown for
+            each node on the topomap. Can be one of
+            &#39;dot&#39;, &#39;r+&#39; (for red +&#39;s), &#39;channel_name&#39;, or &#39;none&#39;.
     
-    sphere: float or array_like or instance of ConductorModel
-        specifies the &#39;sphere&#39; parameter in the mne.viz.plot_topomap() function. &quot;The sphere
-        parameters to use for the cartoon head. Can be array-like of shape (4,) to give the
-        X/Y/Z origin and radius in meters, or a single float to give the radius (origin
-        assumed 0, 0, 0). Can also be a spherical ConductorModel, which will use the origin
-        and radius. Can also be None (default) which is an alias for 0.095&quot;
+        contours: int or array of float
+            specifies the &#39;contours&#39; parameter in the
+            mne.viz.plot_topomap() function. &quot;The number of
+            contour lines to draw. If 0, no contours will be drawn.
+            If an array, the values represent
+            the levels for the contours.
+            The values are in µV for EEG, fT for magnetometers and fT/m
+            for gradiometers.&quot;
     
-    res: int
-        Specifies the &#39;res&#39; and parameters in the mne.viz.plot_topomap() function. &quot;The
-        resolution of the topomap image (n pixels along each side).&quot;
+        sphere: float or array_like or instance of ConductorModel
+            specifies the &#39;sphere&#39; parameter in the
+            mne.viz.plot_topomap() function. &quot;The sphere
+            parameters to use for the cartoon head.
+            Can be array-like of shape (4,) to give the
+            X/Y/Z origin and radius in meters, or a single
+            float to give the radius (origin
+            assumed 0, 0, 0). Can also be a spherical ConductorModel,
+            which will use the origin
+            and radius. Can also be None (default) which is an alias for 0.095&quot;
     
-    extrapolate: str
-        Specifies the &#39;extrapolate&#39; and parameters in the mne.viz.plot_topomap() function. One of
-        &quot;box&quot;, &quot;local&quot;, or &quot;head&quot;.
+        res: int
+            Specifies the &#39;res&#39; and parameters in the
+            mne.viz.plot_topomap() function. &quot;The
+            resolution of the topomap image (n pixels along each side).&quot;
     
-    outlines: ‘head’ or ‘skirt’ or dict or None
-        Specifies the &#39;outlines&#39; parameter in the mne.viz.plot_topomap() function.
+        extrapolate: str
+            Specifies the &#39;extrapolate&#39; and parameters in the
+            mne.viz.plot_topomap() function. One of
+            &quot;box&quot;, &quot;local&quot;, or &quot;head&quot;.
     
-    axes: instance of Axes or None
-        Specifies the &#39;axes&#39; parameter in the mne.viz.plot_topomap() function.
+        outlines: ‘head’ or ‘skirt’ | dict | None
+            Specifies the &#39;outlines&#39; parameter in the
+            mne.viz.plot_topomap() function.
     
-    mask: ndarray of bool, shape (n_channels, n_times) or None
-        Specifies the &#39;mask&#39; parameter in the mne.viz.plot_topomap() function.
+        axes: instance of Axes | None
+            Specifies the &#39;axes&#39; parameter in the
+            mne.viz.plot_topomap() function.
     
-    mask_params: dict
-        Specifies the &#39;mask_params&#39; parameter in the mne.viz.plot_topomap() function.
-        
-    timestamp: bool
-        Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-        is being shown. Defaults to true.
+        mask: ndarray of bool, shape (n_channels, n_times) | None
+            Specifies the &#39;mask&#39; parameter in the
+            mne.viz.plot_topomap() function.
     
-    Returns
-    -------
-    topo_2d_fig: matplotlib.image.AxesImage
-        matplotlib image plot of a 2d topographic map based on the input epoch data
+        mask_params: dict
+            Specifies the &#39;mask_params&#39; parameter in the
+            mne.viz.plot_topomap() function.
+            
+        timestamp: bool
+            Specifies whether or not to show the timestamp on the plot
+            relative to the time in the epoch that
+            is being shown. Defaults to true.
+    
+    Returns:
+        matplotlib.image.AxesImage
+            matplotlib image plot of a 2d topographic map based
+            on the input epoch data
 </pre></div>
 </div>
 </div>

@@ -1,6 +1,7 @@
 format: jb-article
 root: installation
 sections:
+- file: user_interface
 - file: introduction
 - file: eeg_objects
 - file: raw_voltage
@@ -8,4 +9,4 @@ sections:
 - file: topo_3d_brain
 - file: topo_3d_head
 - file: connectivity
-- file: user_interface
+- file: api

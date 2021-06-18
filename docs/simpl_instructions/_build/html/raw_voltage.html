@@ -49,6 +49,7 @@
         const thebe_selector_output = ".output"
     </script>
     <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="2D Head Visualizations" href="topo_2d.html" />
@@ -91,6 +92,11 @@
 </ul>
 <ul class="current nav bd-sidenav">
  <li class="toctree-l1">
+  <a class="reference internal" href="user_interface.html">
+   User Interface
+  </a>
+ </li>
+ <li class="toctree-l1">
   <a class="reference internal" href="introduction.html">
    Package Introduction
   </a>
@@ -126,8 +132,8 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="user_interface.html">
-   User Interface
+  <a class="reference internal" href="api.html">
+   API documentation
   </a>
  </li>
 </ul>
@@ -264,6 +270,7 @@
                 
   <div class="section" id="raw-voltage-visualization">
 <h1>Raw Voltage Visualization<a class="headerlink" href="#raw-voltage-visualization" title="Permalink to this headline">¶</a></h1>
+<p><a id="plot"></a></p>
 <div class="section" id="raw-voltage-plot">
 <h2>Raw voltage plot<a class="headerlink" href="#raw-voltage-plot" title="Permalink to this headline">¶</a></h2>
 <p><img alt="" src="_images/voltage_plot.svg" /></p>
@@ -312,18 +319,25 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function plot_voltage in module simpl_eeg.raw_voltage:
 
-plot_voltage(epoch, remove_xlabel=False, **kwargs)
-    Return interactive raw voltage plot
+plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs)
+    Generate raw voltage plot
     
-    Parameters
-    ----------
-    epoch (mne.epochs.Epochs): Epoch to display
-    remove_xlabel (bool, optional): Whether to remove the x axis label. Defaults to False.
-    **kwargs : arguments
-               raw, events=None, duration=10.0, start=0.0, n_channels=20, bgcolor=&#39;w&#39;, color=None, bad_color=(0.8, 0.8, 0.8), event_color=&#39;cyan&#39;, 
-               scalings=None, remove_dc=True, order=None, show_options=False, title=None, show=True, block=False, highpass=None, lowpass=None, 
-               filtorder=4, clipping=1.5, show_first_samp=False, proj=True, group_by=&#39;type&#39;, butterfly=False, decim=&#39;auto&#39;, noise_cov=None, 
-               event_id=None, show_scrollbars=True, show_scalebars=True, verbose=None)
+    Parameters:
+        epoch: mne.epochs.Epochs
+            Epoch(s) to display
+        remove_xlabel: bool (optional)
+            Whether to remove the x axis label. Defaults to False.
+        show_times: bool (optional)
+            Whether to show seconds on the x axis. Defaults to True.
+        **kwargs: dict (optional)
+            Optional arguments to pass to mne.Epochs.plot()
+    
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.Epochs.html#mne.Epochs.plot
+    
+    Returns:
+        matplotlib.figure.Figure:
+            The raw voltage plot figure
 </pre></div>
 </div>
 </div>
