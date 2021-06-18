@@ -31,10 +31,12 @@ def convert_pairs(string_pairs):
     Convert pair names to usable format
 
     Args:
-        string_pairs (str): Comma seperated node pairs in format "node1-node2"
+        string_pairs (str):
+            Comma seperated node pairs in format "node1-node2"
 
     Returns:
-        [tuple]: List of tuples with node pair names
+        [tuple]:
+            List of tuples with node pair names
     """
     tuple_pairs = string_pairs
     if type(string_pairs) == str:

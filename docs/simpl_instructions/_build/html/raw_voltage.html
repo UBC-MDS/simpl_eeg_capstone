@@ -131,6 +131,11 @@
    Connectivity Visualizations
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="api.html">
+   API documentation
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -315,17 +320,22 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function plot_voltage in module simpl_eeg.raw_voltage:
 
 plot_voltage(epoch, remove_xlabel=False, **kwargs)
-    Return interactive raw voltage plot
+    Generate raw voltage plot
     
-    Parameters
-    ----------
-    epoch (mne.epochs.Epochs): Epoch to display
-    remove_xlabel (bool, optional): Whether to remove the x axis label. Defaults to False.
-    **kwargs : arguments
-               raw, events=None, duration=10.0, start=0.0, n_channels=20, bgcolor=&#39;w&#39;, color=None, bad_color=(0.8, 0.8, 0.8), event_color=&#39;cyan&#39;, 
-               scalings=None, remove_dc=True, order=None, show_options=False, title=None, show=True, block=False, highpass=None, lowpass=None, 
-               filtorder=4, clipping=1.5, show_first_samp=False, proj=True, group_by=&#39;type&#39;, butterfly=False, decim=&#39;auto&#39;, noise_cov=None, 
-               event_id=None, show_scrollbars=True, show_scalebars=True, verbose=None)
+    Args:
+        epoch (mne.epochs.Epochs):
+            Epoch(s) to display
+        remove_xlabel (bool, optional):
+            Whether to remove the x axis label. Defaults to False.
+        **kwargs (dict, optional):
+            Optional arguments to pass to mne.Epochs.plot()
+    
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.Epochs.html#mne.Epochs.plot
+    
+    Returns:
+        matplotlib.figure.Figure:
+            The raw voltage plot figure
 </pre></div>
 </div>
 </div>

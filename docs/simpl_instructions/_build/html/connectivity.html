@@ -52,6 +52,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API documentation" href="api.html" />
     <link rel="prev" title="3D Head Visualizations" href="topo_3d_head.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -128,6 +129,11 @@
  <li class="toctree-l1 current active">
   <a class="current reference internal" href="#">
    Connectivity Visualizations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="api.html">
+   API documentation
   </a>
  </li>
 </ul>
@@ -517,7 +523,10 @@ animate_connectivity(epoch, calc_type=&#39;correlation&#39;, steps=20, pair_list
         title (str, optional):
             The title to display on the plot. Defaults to None for no title.
         **kwargs (dict, optional):
-            Optional arguments to pass to mne.viz.plot_sensors().
+            Optional arguments to pass to mne.viz.plot_sensors()
+    
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_sensors.html
     
     Returns:
         matplotlib.animation.Animation:
@@ -790,42 +799,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_imgb409064322a641c18694bd983109fe0e">
+  <img id="_anim_img9a06a92dc4f4435bb43e5980b302a9cb">
   <div class="anim-controls">
-    <input id="_anim_sliderb409064322a641c18694bd983109fe0e" type="range" class="anim-slider"
+    <input id="_anim_slider9a06a92dc4f4435bb43e5980b302a9cb" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="animb409064322a641c18694bd983109fe0e.set_frame(parseInt(this.value));"></input>
+           oninput="anim9a06a92dc4f4435bb43e5980b302a9cb.set_frame(parseInt(this.value));"></input>
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="animb409064322a641c18694bd983109fe0e.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim9a06a92dc4f4435bb43e5980b302a9cb.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="animb409064322a641c18694bd983109fe0e.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="anim9a06a92dc4f4435bb43e5980b302a9cb.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="animb409064322a641c18694bd983109fe0e.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="anim9a06a92dc4f4435bb43e5980b302a9cb.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="animb409064322a641c18694bd983109fe0e.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="anim9a06a92dc4f4435bb43e5980b302a9cb.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="animb409064322a641c18694bd983109fe0e.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="anim9a06a92dc4f4435bb43e5980b302a9cb.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="animb409064322a641c18694bd983109fe0e.play_animation()">
+      <button title="Play" aria-label="Play" onclick="anim9a06a92dc4f4435bb43e5980b302a9cb.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="animb409064322a641c18694bd983109fe0e.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="anim9a06a92dc4f4435bb43e5980b302a9cb.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="animb409064322a641c18694bd983109fe0e.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="anim9a06a92dc4f4435bb43e5980b302a9cb.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="animb409064322a641c18694bd983109fe0e.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="anim9a06a92dc4f4435bb43e5980b302a9cb.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectb409064322a641c18694bd983109fe0e"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select9a06a92dc4f4435bb43e5980b302a9cb"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_b409064322a641c18694bd983109fe0e"
+      <input type="radio" name="state" value="once" id="_anim_radio1_9a06a92dc4f4435bb43e5980b302a9cb"
              >
-      <label for="_anim_radio1_b409064322a641c18694bd983109fe0e">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_b409064322a641c18694bd983109fe0e"
+      <label for="_anim_radio1_9a06a92dc4f4435bb43e5980b302a9cb">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_9a06a92dc4f4435bb43e5980b302a9cb"
              checked>
-      <label for="_anim_radio2_b409064322a641c18694bd983109fe0e">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_b409064322a641c18694bd983109fe0e"
+      <label for="_anim_radio2_9a06a92dc4f4435bb43e5980b302a9cb">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_9a06a92dc4f4435bb43e5980b302a9cb"
              >
-      <label for="_anim_radio3_b409064322a641c18694bd983109fe0e">Reflect</label>
+      <label for="_anim_radio3_9a06a92dc4f4435bb43e5980b302a9cb">Reflect</label>
     </form>
   </div>
 </div>
@@ -835,9 +844,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_imgb409064322a641c18694bd983109fe0e";
-    var slider_id = "_anim_sliderb409064322a641c18694bd983109fe0e";
-    var loop_select_id = "_anim_loop_selectb409064322a641c18694bd983109fe0e";
+    var img_id = "_anim_img9a06a92dc4f4435bb43e5980b302a9cb";
+    var slider_id = "_anim_slider9a06a92dc4f4435bb43e5980b302a9cb";
+    var loop_select_id = "_anim_loop_select9a06a92dc4f4435bb43e5980b302a9cb";
     var frames = new Array(41);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -16667,7 +16676,7 @@ MMdxHKcqcQFzHMdxqpL/B6xQv+FelLQzAAAAAElFTkSuQmCC\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        animb409064322a641c18694bd983109fe0e = new Animation(frames, img_id, slider_id, 200.0,
+        anim9a06a92dc4f4435bb43e5980b302a9cb = new Animation(frames, img_id, slider_id, 200.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -16753,7 +16762,10 @@ animate_connectivity_circle(epoch, calc_type=&#39;correlation&#39;, max_connecti
         title (str, optional):
             The title to display on the plot. Defaults to None for no title.
         **kwargs (dict, optional):
-            Optional arguments to pass to mne.viz.plot_connectivity_circle().
+            Optional arguments to pass to mne.viz.plot_connectivity_circle()
+    
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html
     
     Returns:
         matplotlib.animation.Animation:
@@ -17000,42 +17012,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_imgc2ca69cd3c584e9e8f1aecc7ca2ee9d7">
+  <img id="_anim_img436f71feb31841ee855c016f1728d2c4">
   <div class="anim-controls">
-    <input id="_anim_sliderc2ca69cd3c584e9e8f1aecc7ca2ee9d7" type="range" class="anim-slider"
+    <input id="_anim_slider436f71feb31841ee855c016f1728d2c4" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="animc2ca69cd3c584e9e8f1aecc7ca2ee9d7.set_frame(parseInt(this.value));"></input>
+           oninput="anim436f71feb31841ee855c016f1728d2c4.set_frame(parseInt(this.value));"></input>
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="animc2ca69cd3c584e9e8f1aecc7ca2ee9d7.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim436f71feb31841ee855c016f1728d2c4.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="animc2ca69cd3c584e9e8f1aecc7ca2ee9d7.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="anim436f71feb31841ee855c016f1728d2c4.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="animc2ca69cd3c584e9e8f1aecc7ca2ee9d7.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="anim436f71feb31841ee855c016f1728d2c4.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="animc2ca69cd3c584e9e8f1aecc7ca2ee9d7.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="anim436f71feb31841ee855c016f1728d2c4.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="animc2ca69cd3c584e9e8f1aecc7ca2ee9d7.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="anim436f71feb31841ee855c016f1728d2c4.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="animc2ca69cd3c584e9e8f1aecc7ca2ee9d7.play_animation()">
+      <button title="Play" aria-label="Play" onclick="anim436f71feb31841ee855c016f1728d2c4.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="animc2ca69cd3c584e9e8f1aecc7ca2ee9d7.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="anim436f71feb31841ee855c016f1728d2c4.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="animc2ca69cd3c584e9e8f1aecc7ca2ee9d7.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="anim436f71feb31841ee855c016f1728d2c4.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="animc2ca69cd3c584e9e8f1aecc7ca2ee9d7.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="anim436f71feb31841ee855c016f1728d2c4.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectc2ca69cd3c584e9e8f1aecc7ca2ee9d7"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select436f71feb31841ee855c016f1728d2c4"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_c2ca69cd3c584e9e8f1aecc7ca2ee9d7"
+      <input type="radio" name="state" value="once" id="_anim_radio1_436f71feb31841ee855c016f1728d2c4"
              >
-      <label for="_anim_radio1_c2ca69cd3c584e9e8f1aecc7ca2ee9d7">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_c2ca69cd3c584e9e8f1aecc7ca2ee9d7"
+      <label for="_anim_radio1_436f71feb31841ee855c016f1728d2c4">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_436f71feb31841ee855c016f1728d2c4"
              checked>
-      <label for="_anim_radio2_c2ca69cd3c584e9e8f1aecc7ca2ee9d7">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_c2ca69cd3c584e9e8f1aecc7ca2ee9d7"
+      <label for="_anim_radio2_436f71feb31841ee855c016f1728d2c4">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_436f71feb31841ee855c016f1728d2c4"
              >
-      <label for="_anim_radio3_c2ca69cd3c584e9e8f1aecc7ca2ee9d7">Reflect</label>
+      <label for="_anim_radio3_436f71feb31841ee855c016f1728d2c4">Reflect</label>
     </form>
   </div>
 </div>
@@ -17045,9 +17057,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_imgc2ca69cd3c584e9e8f1aecc7ca2ee9d7";
-    var slider_id = "_anim_sliderc2ca69cd3c584e9e8f1aecc7ca2ee9d7";
-    var loop_select_id = "_anim_loop_selectc2ca69cd3c584e9e8f1aecc7ca2ee9d7";
+    var img_id = "_anim_img436f71feb31841ee855c016f1728d2c4";
+    var slider_id = "_anim_slider436f71feb31841ee855c016f1728d2c4";
+    var loop_select_id = "_anim_loop_select436f71feb31841ee855c016f1728d2c4";
     var frames = new Array(41);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -52658,7 +52670,7 @@ lEuUgCkUCoWiXKIETKFQKBTlkv8DYKy8dsvA0SMAAAAASUVORK5CYII=\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        animc2ca69cd3c584e9e8f1aecc7ca2ee9d7 = new Animation(frames, img_id, slider_id, 200.0,
+        anim436f71feb31841ee855c016f1728d2c4 = new Animation(frames, img_id, slider_id, 200.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -52755,7 +52767,10 @@ plot_connectivity(epoch, fig=None, locations=None, calc_type=&#39;correlation&#3
         caption (str, optional):
             The caption to display at the bottom of the plot. Defaults to None.
         **kwargs (dict, optional):
-            Optional arguments to pass to mne.viz.plot_sensors().
+            Optional arguments to pass to mne.viz.plot_sensors()
+    
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_sensors.html
     
     Returns:
         matplotlib.pyplot.figure:
@@ -53796,7 +53811,7 @@ if (IPython.notebook.kernel !== null) {
         mpl.mpl_figure_comm
     );
 }
-</script><div class="output text_html"><div id='0384f77d-88e8-4397-b8bb-490865e87318'></div></div></div>
+</script><div class="output text_html"><div id='0192602c-9f21-4d2e-a6e6-9faee5a15074'></div></div></div>
 </div>
 </div>
 <div class="section" id="saving-the-plot">
@@ -53855,7 +53870,10 @@ plot_conn_circle(epoch, fig=None, calc_type=&#39;correlation&#39;, max_connectio
         caption (str, optional):
             The caption to display at the bottom of the plot. Defaults to None.
         **kwargs (dict, optional):
-            Optional arguments to pass to mne.viz.plot_connectivity_circle().
+            Optional arguments to pass to mne.viz.plot_connectivity_circle()
+    
+            Full list of options available at
+            https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html
     
     Returns:
         matplotlib.pyplot.figure:
@@ -54872,7 +54890,7 @@ if (IPython.notebook.kernel !== null) {
         mpl.mpl_figure_comm
     );
 }
-</script><div class="output text_html"><div id='17b33d28-ebc0-44c0-a2cf-5c75e26abe03'></div></div></div>
+</script><div class="output text_html"><div id='ed3b7c4c-f980-451a-8a1b-8a7ab7de87f6'></div></div></div>
 </div>
 </div>
 <div class="section" id="id10">
@@ -54912,6 +54930,7 @@ if (IPython.notebook.kernel !== null) {
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="topo_3d_head.html" title="previous page">3D Head Visualizations</a>
+    <a class='right-next' id="next-link" href="api.html" title="next page">API documentation</a>
 
         </div>
         
