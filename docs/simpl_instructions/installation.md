@@ -55,7 +55,7 @@ cd simpl_eeg_capstone
 After navigating to the root of the directory in terminal (i.e. being within the `simpl_eeg_capstone` folder) Run the following commands...
 
 ```bash
-conda create -name simpl_eeg
+conda create --name simpl_eeg
 ```
 (then press "y" to accept when prompted)
 
