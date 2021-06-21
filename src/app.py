@@ -257,11 +257,15 @@ def main():
         """
         Select the figures you wish to see in the sidebar to the left
         and they will render in the dropdowns below.
-        Settings that will be applied to each of the figures such as
+        Settings for all figures such as
         the timeframe to plot and color scheme can be specified in the sidebar.
-        Individual settings for each of the figures can be changed
+        Settings for individual figures can be specified
         in their respective dropdowns.
-        """
+        For more information on this product please refer to documentation at
+        <a href='https://ubc-mds.github.io/simpl_eeg_capstone/user_interface.html'
+        target="_blank">this link</a>.
+        """,
+        unsafe_allow_html=True
     )
 
     st.sidebar.header("Global Settings")
@@ -345,7 +349,10 @@ def main():
         )
         start_second, in_timeframe = calculate_timeframe(start_time, raw_epoch_obj.raw)
         if start_second is None:
-            st.error('Time is in wrong format please use H:MM:SS')
+            st.error(
+                "Time is in wrong format please use H:MM:SS.\n\n"
+                "Rendering below is made with previous settings."
+            )
         if in_timeframe == 0:
             st.error(
                 "Input time exceeds max timestamp of "
@@ -557,15 +564,15 @@ def main():
             Generate a file name and export a plot as html
             Prints success message to screen
 
-            Args:
+            Parameters:
                 html_plot : html
                     The plot to export
             """
 
             file_name, send_message = self.generate_file_name()
-            Html_file = open(file_name, "w")
-            Html_file.write(html_plot)
-            Html_file.close()
+            html_file = open(file_name, "w")
+            html_file.write(html_plot)
+            html_file.close()
             send_message()
 
     # set up expander sections
@@ -618,22 +625,14 @@ def main():
         vmin_2d_head = st.number_input(
             "Minimum Voltage (μV)",
             value=-40.0,
-            help = min_voltage_message
+            help=min_voltage_message
         )
         vmax_2d_head = st.number_input(
             "Maximum Voltage (μV)",
             value=40.0,
             min_value=vmin_2d_head,
-            help = max_voltage_message
+            help=max_voltage_message
         )
-
-        # Doesn't currently work for whatever reason.
-        # Can't compare two number inputs.
-        if vmax_2d_head < vmin_2d_head:
-            st.error(
-                "ERROR: Minimum Voltage Set higher than Maximum Voltage."
-                "Please enter a valid input"
-            )
 
         mark_options = [
             "dot",
@@ -728,12 +727,12 @@ def main():
     with expander_3d_brain.widget_col:
         vmin_3d_brain = st.number_input(
             "Minimum Voltage (μV)",
-            value=-5.0,
+            value=-0.5,
             help=min_voltage_message
         )
         vmax_3d_brain = st.number_input(
             "Maximum Voltage (μV)",
-            value=5.0,
+            value=0.5,
             min_value=vmin_3d_brain,
             help=max_voltage_message
         )
