@@ -142,37 +142,37 @@ def create_inverse_solution(
     corresponding to the measured EEG or MEG.
 
     Parameters:
-    epoch: mne.epochs.Epochs | mne.evoked.EvokedArray
-            MNE epochs or evoked object containing portions of raw EEG data built around specified
-            timestamp(s). The inverse solution will be built based on the data in the specified epoch.
+        epoch: mne.epochs.Epochs | mne.evoked.EvokedArray
+                MNE epochs or evoked object containing portions of raw EEG data built around specified
+                timestamp(s). The inverse solution will be built based on the data in the specified epoch.
 
-    forward: mne.forward.forward.Forward
-        Specifies the 'forward' parameter in the mne.minimum_norm.make_inverse_operator() function.
+        forward: mne.forward.forward.Forward
+            Specifies the 'forward' parameter in the mne.minimum_norm.make_inverse_operator() function.
 
-    epoch_num: int | str
-        If input is an 'int' then this specifies which epoch in the 'epochs' number to build an
-        inverse solution from. If input is "all" then an inverse solution will be built from all
-        epochs.
+        epoch_num: int | str
+            If input is an 'int' then this specifies which epoch in the 'epochs' number to build an
+            inverse solution from. If input is "all" then an inverse solution will be built from all
+            epochs.
 
-    covariance_method: list
-        Specifies the 'method' parameter in the mne.compute_covariance() function.
+        covariance_method: list
+            Specifies the 'method' parameter in the mne.compute_covariance() function.
 
-    loose: float
-        Specifies the 'loose' parameter in the mne.minimum_norm.make_inverse_operator() function
+        loose: float
+            Specifies the 'loose' parameter in the mne.minimum_norm.make_inverse_operator() function
 
-    depth: float
-        Specifies the 'depth' parameter in the mne.minimum_norm.make_inverse_operator() function
+        depth: float
+            Specifies the 'depth' parameter in the mne.minimum_norm.make_inverse_operator() function
 
-    snr: float
-        Used to calculate 'lambda2' in the equation 'lambda2 = 1.0 / snr ** 2'
+        snr: float
+            Used to calculate 'lambda2' in the equation 'lambda2 = 1.0 / snr ** 2'
 
-    inverse_epochs_method: str
-        Specifies the 'method' parameter in mne.minimum_norm.apply_inverse_epochs() (if using epochs)
-        or mne.minimum_norm.apply_inverse() (if using evoked data).
+        inverse_epochs_method: str
+            Specifies the 'method' parameter in mne.minimum_norm.apply_inverse_epochs() (if using epochs)
+            or mne.minimum_norm.apply_inverse() (if using evoked data).
 
-    pick_ori: str
-        Specifies the 'pick_ori' parameter in mne.minimum_norm.apply_inverse_epochs() (if using epochs)
-        or mne.minimum_norm.apply_inverse() (if using evoked data).
+        pick_ori: str
+            Specifies the 'pick_ori' parameter in mne.minimum_norm.apply_inverse_epochs() (if using epochs)
+            or mne.minimum_norm.apply_inverse() (if using evoked data).
 
     Returns:
         mne.source_estimate.SourceEstimate:
@@ -423,7 +423,7 @@ def plot_topomap_3d_brain(
                 """Colorbar value must be a bool (True or False)"""
             )
     
-    if colormap_limit_type not in ['lims' or 'pos_lims']:
+    if colormap_limit_type not in ['lims', 'pos_lims']:
             raise ValueError(
                 """Passed colormap_limit_type is not accepted, please pass one of 'lims' or 
                 'pos_lims'."""
@@ -668,6 +668,7 @@ def save_animated_topomap_3d_brain(
         time_viewer: bool
             'time_dilation' parameter in mne.viz.Brain.save_movie() function. "If True, include time viewer
             traces".
+    Returns:
     """
 
     brain.save_movie(filename,
