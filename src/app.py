@@ -61,12 +61,19 @@ def format_kwargs_list(**kwargs):
         args.append(f"{i}={value}")
     return args
 
-def format_code(function_name, main_param_list, **kwargs):
+def format_code(func, main_param_list, **kwargs):
     """Helper function to format code for printing"""
     extra_params = format_kwargs_list(**kwargs)
 
     all_params = ", \n\t".join(main_param_list + extra_params)
-    return f"{function_name}(\n\t{all_params}\n)"
+    code = f"{func.__module__}.{func.__name__}(\n\t{all_params}\n)"
+    # show_code = st.checkbox("View Source Code", key=func.__name__+"_code")
+    # show_docs = st.checkbox("View Function Documentation", key=func.__name__+"docs")
+    # if show_code:
+    #     st.code(code)
+    # if show_docs:
+    #     st.help(func)
+    return code
 
 
 @st.cache(show_spinner=False)
@@ -123,11 +130,11 @@ def render_raw_voltage_plot(epoch, **kwargs):
     """
     plot = raw_voltage.plot_voltage(epoch, **kwargs)
     code = format_code(
-        "raw_voltage.plot_voltage",
+        raw_voltage.plot_voltage,
         ["epoch"],
         **kwargs
     )
-    return plot, code
+    return plot
 
 
 @st.cache(show_spinner=False)
@@ -137,11 +144,11 @@ def animate_ui_2d_head(epoch, **kwargs):
     """
     anim = topomap_2d.animate_topomap_2d(epoch, **kwargs)
     code = format_code(
-        "topomap_2d.animate_topomap_2d",
+        topomap_2d.animate_topomap_2d,
         ["epoch"],
         **kwargs
     )
-    return anim.to_jshtml(), code
+    return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
@@ -151,11 +158,11 @@ def animate_ui_3d_head(epoch, **kwargs):
     """
     anim = topomap_3d_head.animate_3d_head(epoch, **kwargs)
     code = format_code(
-        "topomap_3d_head.animate_3d_head",
+        topomap_3d_head.animate_3d_head,
         ["epoch"],
         **kwargs
     )
-    return anim, code
+    return anim
 
 
 @st.cache(show_spinner=False)
@@ -166,11 +173,11 @@ def animate_ui_3d_brain(epoch, **kwargs):
     """
     anim = topomap_3d_brain.animate_matplot_brain(epoch, **kwargs)
     code = format_code(
-        "topomap_3d_brain.animate_matplot_brain",
+        topomap_3d_brain.animate_matplot_brain,
         ["epoch"],
         **kwargs
     )
-    return anim.to_jshtml(), code
+    return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
@@ -184,11 +191,11 @@ def animate_ui_connectivity(epoch, connection_type, **kwargs):
         **kwargs
     )
     code = format_code(
-        "connectivity.animate_connectivity",
+        connectivity.animate_connectivity,
         ["epoch", f"'{connection_type}'"],
         **kwargs
     )
-    return anim.to_jshtml(), code
+    return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
@@ -203,11 +210,11 @@ def animate_ui_connectivity_circle(epoch, connection_type, **kwargs):
         **kwargs
     )
     code = format_code(
-        "connectivity.animate_connectivity",
+        connectivity.animate_connectivity,
         ["epoch", f"'{connection_type}'"],
         **kwargs
     )
-    return anim.to_jshtml(), code
+    return anim.to_jshtml()
 
 
 @st.cache(show_spinner=False)
@@ -1051,7 +1058,7 @@ def main():
 
     with expander_raw.plot_col:
         if expander_raw.render:
-            plot, code = render_raw_voltage_plot(
+            plot = render_raw_voltage_plot(
                 epoch,
                 remove_xlabel=True,
                 show_scrollbars=False,
@@ -1061,8 +1068,6 @@ def main():
                 event_id=epoch.event_id
             )
             expander_raw.plot_col.pyplot(plot)
-            st.code(code)
-            st.help(raw_voltage.plot_voltage)
 
             export = expander_raw.export_button()
             if export:
@@ -1077,7 +1082,7 @@ def main():
     with expander_2d_head.plot_col:
         if expander_2d_head.render:
             with st.spinner(SPINNER_MESSAGE):
-                html_plot, code = animate_ui_2d_head(
+                html_plot = animate_ui_2d_head(
                     plot_epoch,
                     colormap=colormap,
                     cmin=vmin_2d_head,
@@ -1095,7 +1100,6 @@ def main():
                     height=600,
                     width=700
                 )
-                st.code(code)
 
             export = expander_2d_head.export_button()
             if export:
@@ -1106,7 +1110,7 @@ def main():
     with expander_3d_head.plot_col:
         if expander_3d_head.render:
             with st.spinner(SPINNER_MESSAGE):
-                plot, code = animate_ui_3d_head(
+                plot = animate_ui_3d_head(
                     plot_epoch,
                     colormap=colormap,
                     color_min=vmin_3d_head,
@@ -1116,7 +1120,6 @@ def main():
                     plot,
                     use_container_width=True
                 )
-                st.code(code)
         else:
             default_message(expander_3d_head.section_name)
 
@@ -1152,7 +1155,7 @@ def main():
                     else:
                         colormap_brain = colormap
 
-                    html_plot, code = animate_ui_3d_brain(
+                    html_plot = animate_ui_3d_brain(
                         epoch=plot_epoch,
                         views=view_selection,
                         stc=stc,
@@ -1170,7 +1173,6 @@ def main():
                         height=600,
                         width=600
                     )
-                    st.code(code)
 
                     export = expander_3d_brain.export_button()
                     if export:
@@ -1181,7 +1183,7 @@ def main():
     with expander_connectivity.plot_col:
         if expander_connectivity.render:
             with st.spinner(SPINNER_MESSAGE):
-                html_plot, code = animate_ui_connectivity(
+                html_plot = animate_ui_connectivity(
                     epoch,
                     connection_type,
                     steps=frame_steps,
@@ -1199,7 +1201,6 @@ def main():
                     height=600,
                     width=600
                 )
-                st.code(code)
 
                 export = expander_connectivity.export_button()
                 if export:
@@ -1209,7 +1210,7 @@ def main():
 
     with expander_connectivity_circle.plot_col:
         if expander_connectivity_circle.render:
-            html_plot, code = animate_ui_connectivity_circle(
+            html_plot = animate_ui_connectivity_circle(
                 epoch,
                 conn_type_circle,
                 steps=frame_steps,
@@ -1227,7 +1228,6 @@ def main():
                     height=600,
                     width=600
                 )
-                st.code(code)
 
             export = expander_connectivity_circle.export_button()
             if export:
