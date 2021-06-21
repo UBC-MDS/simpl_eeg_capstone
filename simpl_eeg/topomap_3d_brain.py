@@ -423,7 +423,7 @@ def plot_topomap_3d_brain(
                 """Colorbar value must be a bool (True or False)"""
             )
     
-    if colormap_limit_type not in ['lims' or 'pos_lims']:
+    if colormap_limit_type not in ['lims', 'pos_lims']:
             raise ValueError(
                 """Passed colormap_limit_type is not accepted, please pass one of 'lims' or 
                 'pos_lims'."""
