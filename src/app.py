@@ -468,7 +468,7 @@ def main():
 
     col1, col2 = st.sidebar.beta_columns((2, 1))
     colormap = col1.selectbox(
-        "Select Colour Scheme",
+        "Select color Scheme",
         ["RdBu_r", "PiYG", "PuOr", "BrBG", "Spectral", "turbo"],
         format_func=lambda name: name.capitalize(),
         help="""The color scheme to use on all of the figures."""
@@ -683,7 +683,7 @@ def main():
                 min_value=1,
                 max_value=1000,
                 help="""The resolution of the topomap image (n pixels along each side).
-                Min = 0, max = 1000."""
+                Min = 1, max = 1000."""
             )
             extrapolate_options_2d = [
                 "head",
@@ -727,12 +727,12 @@ def main():
     with expander_3d_brain.widget_col:
         vmin_3d_brain = st.number_input(
             "Minimum Voltage (μV)",
-            value=-0.5,
+            value=-2,
             help=min_voltage_message
         )
         vmax_3d_brain = st.number_input(
             "Maximum Voltage (μV)",
-            value=0.5,
+            value=2,
             min_value=vmin_3d_brain,
             help=max_voltage_message
         )
@@ -804,10 +804,10 @@ def main():
                 min_value=1,
                 help="""The amount of smoothing to apply to the brain model."""
             )
-            use_non_MNE_colours = st.checkbox(
-                "Use non-MNE colour palette",
+            use_non_MNE_colors = st.checkbox(
+                "Use non-MNE color palette",
                 value=False,
-                key="braincolour",
+                key="braincolor",
                 help="""The default MNE color palette is reccomended
                 for this figure as it includes texturing on the brain.
                 Select this if you still wish to use the color palette
@@ -819,7 +819,7 @@ def main():
             timestamps_brain = True
             spacing_value = "oct5"
             smoothing_amount = 2
-            use_non_MNE_colours = False
+            use_non_MNE_colors = False
 
     with expander_connectivity.widget_col:
 
@@ -856,23 +856,57 @@ def main():
             )
             selected_pairs = custom_pair_selection
 
-        # Line width widgets
-        line_width_type = st.checkbox(
-            "Set static line width",
-            False,
-            help="""Use static line width rather than dynamic line
-            width based on connectivity score"""
+        # Advanced options
+        advanced_options_conn = st.checkbox(
+            "Advanced Options",
+            value=False,
+            key="connAO"
         )
 
-        conn_line_width = None
-        if line_width_type is True:
-            conn_line_width = st.slider(
-                "Select line width",
-                min_value=0.5,
-                max_value=5.0,
-                value=1.5,
-                help="Select a custom line width"
+        if advanced_options_conn:
+            # Line width widgets
+            line_width_type = st.checkbox(
+                "Set static line width",
+                False,
+                help="""Use static line width rather than dynamic line
+                width based on connectivity score"""
             )
+
+            conn_line_width = None
+            if line_width_type is True:
+                conn_line_width = st.slider(
+                    "Select line width",
+                    min_value=0.5,
+                    max_value=5.5,
+                    value=1.5,
+                    help="Select a custom line width"
+                )
+
+            colorbar_conn = st.checkbox(
+                "Include colorbar",
+                value=True,
+                key="conn_colorbar",
+                help="Show colorbar on plot"
+            )
+
+            timestamps_conn = st.checkbox(
+                "Include timestamps",
+                value=True,
+                key="conn_timestamps",
+                help="Show timestamps on plot"
+            )
+
+            show_sphere_conn = st.checkbox(
+                "Show sphere",
+                value=True,
+                key="conn_sphere",
+                help="Show sphere to represent head"
+            )
+        else:
+            conn_line_width = None
+            colorbar_conn = True
+            timestamps_conn = True
+            show_sphere_conn = True
 
     with expander_connectivity_circle.widget_col:
 
@@ -883,15 +917,6 @@ def main():
             "circle"
         )
 
-        # Line width widget
-        conn_circle_line_width = st.slider(
-            "Select line width ",
-            min_value=1,
-            max_value=5,
-            value=2,
-            help="Select a custom line width"
-        )
-
         # Maximum connections widget
         max_connections = st.number_input(
             "Maximum connections to display",
@@ -900,6 +925,44 @@ def main():
             value=20,
             help="Select the maximum number of connection measurements to show"
         )
+
+        # Advanced options
+        advanced_options_circle = st.checkbox(
+            "Advanced Options",
+            value=False,
+            key="circleAO"
+        )
+
+        if advanced_options_circle:
+
+            # Line width widget
+            conn_circle_line_width = st.slider(
+                "Select line width ",
+                min_value=1,
+                max_value=5,
+                value=2,
+                help="Select a custom line width"
+            )
+
+            colorbar_circle = st.checkbox(
+                "Include colorbar",
+                value=True,
+                key="circle_colorbar",
+                help="Show colorbar on plot"
+            )
+
+            timestamps_circle = st.checkbox(
+                "Include timestamps",
+                value=True,
+                key="circle_timestamps",
+                help="Show timestamps on plot"
+            )
+
+        else:
+            conn_circle_line_width = 2
+            colorbar_circle = True
+            timestamps_circle = True
+
 
     # PLOTS
 
@@ -1011,7 +1074,7 @@ def main():
                     if stc_generated is False:
                         stc = generate_stc_epoch(plot_epoch)
                         stc_generated = True
-                    if use_non_MNE_colours is False:
+                    if use_non_MNE_colors is False:
                         colormap_brain = "mne"
                     else:
                         colormap_brain = colormap
@@ -1051,7 +1114,10 @@ def main():
                     colormap=colormap,
                     vmin=cmin,
                     vmax=cmax,
-                    line_width=conn_line_width
+                    line_width=conn_line_width,
+                    colorbar=colorbar_conn,
+                    timestamp=timestamps_conn,
+                    show_sphere=show_sphere_conn
                 )
                 components.html(
                     html_plot,
@@ -1074,7 +1140,9 @@ def main():
                 vmin=cmin_circle,
                 vmax=cmax_circle,
                 line_width=conn_circle_line_width,
-                max_connections=max_connections
+                max_connections=max_connections,
+                colorbar=colorbar_circle,
+                timestamp=timestamps_circle
             )
             with st.spinner(SPINNER_MESSAGE):
                 components.html(
