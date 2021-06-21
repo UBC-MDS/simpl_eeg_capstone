@@ -7,6 +7,8 @@ Python package and web application for visualizing EEG data
 # Helpful Links
 - [Proposal Presentation](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Capstone_Proposal_Presentation.pdf)
 - [Proposal Report](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Proposal.pdf)
+- [Final Presentation](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Capstone_Final_Presentation.pdf)
+- [Final Report](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Final_Report.pdf)
 - [Meeting Agendas and Minutes](https://github.com/UBC-MDS/simpl_eeg_capstone/tree/main/docs/minutes/_posts)
 - [Product Documentation](https://ubc-mds.github.io/simpl_eeg_capstone/)
 
