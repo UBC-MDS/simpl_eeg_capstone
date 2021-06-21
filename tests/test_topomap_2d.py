@@ -17,12 +17,39 @@ def test_plot_topomap_2d():
     output_fig = topomap_2d.plot_topomap_2d(EPOCH_42)
     assert isinstance(output_fig, matplotlib.image.AxesImage)
 
+    with pytest.raises(TypeError):
+        topomap_2d.plot_topomap_2d('not an epoch')
+    
+    with pytest.raises(TypeError):
+        topomap_2d.plot_topomap_2d(EPOCH_42, plotting_data = 'not plotting data')
+    
+    with pytest.raises(ValueError):
+        topomap_2d.plot_topomap_2d(EPOCH_42, plotting_data = np.array([[1, 2, 3], [4, 5, 6]]))
+    
+    with pytest.raises(TypeError):
+        topomap_2d.plot_topomap_2d(EPOCH_42, recording_number = 'not a recording number')
+    
+    with pytest.raises(TypeError):
+        topomap_2d.plot_topomap_2d(EPOCH_42, timestamp = 'not a bool')
+    
+    with pytest.raises(TypeError):
+        topomap_2d.plot_topomap_2d(EPOCH_42, colorbar = 'not a bool')
+
 
 def test_animate_topomap_2d():
     """Test animated plot"""
 
     output_ani = topomap_2d.animate_topomap_2d(EPOCH_42)
     assert isinstance(output_ani, matplotlib.animation.FuncAnimation)
+
+    with pytest.raises(TypeError):
+        topomap_2d.animate_topomap_2d(EPOCH_42, frame_rate = 'not a frame_rate')
+    
+    with pytest.raises(TypeError):
+        topomap_2d.animate_topomap_2d(EPOCH_42, timestamp = 'not a bool')
+    
+    with pytest.raises(TypeError):
+        topomap_2d.animate_topomap_2d(EPOCH_42, colorbar = 'not a bool')
 
 
 def test_add_timestamp():
