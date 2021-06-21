@@ -36,7 +36,12 @@ DATA_FOLDER = "data/"
 HEADER_EPOCH_PATH = "src/pre_saved/epochs/header_epoch.pickle"
 HEADER_FWD_PATH = "src/pre_saved/forward/header_fwd.pickle"
 
-st.set_page_config(layout="wide")
+st.set_page_config(
+    page_title="SimPL EEG App",
+    page_icon="docs/simpl_instructions/logo.png",
+    layout="wide"
+)
+
 st.markdown(
     """
     <style>
@@ -45,6 +50,30 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
+def format_kwargs_list(**kwargs):
+    """Helper function to format kwargs for printing"""
+    args = []
+    for i in kwargs:
+        value = kwargs[i]
+        if type(value) == str:
+            value = f"'{value}'"
+        args.append(f"{i}={value}")
+    return args
+
+def format_code(func, main_param_list, **kwargs):
+    """Helper function to format code for printing"""
+    extra_params = format_kwargs_list(**kwargs)
+
+    all_params = ", \n\t".join(main_param_list + extra_params)
+    code = f"{func.__module__}.{func.__name__}(\n\t{all_params}\n)"
+    # show_code = st.checkbox("View Source Code", key=func.__name__+"_code")
+    # show_docs = st.checkbox("View Function Documentation", key=func.__name__+"docs")
+    # if show_code:
+    #     st.code(code)
+    # if show_docs:
+    #     st.help(func)
+    return code
 
 
 @st.cache(show_spinner=False)
@@ -95,12 +124,30 @@ def generate_stc_fwd(epoch, fwd):
     return (topomap_3d_brain.create_inverse_solution(epoch, fwd))
 
 
+def render_raw_voltage_plot(epoch, **kwargs):
+    """
+    Caching wrapper function to call topomap_2d.animate_topomap_2d
+    """
+    plot = raw_voltage.plot_voltage(epoch, **kwargs)
+    code = format_code(
+        raw_voltage.plot_voltage,
+        ["epoch"],
+        **kwargs
+    )
+    return plot
+
+
 @st.cache(show_spinner=False)
 def animate_ui_2d_head(epoch, **kwargs):
     """
     Caching wrapper function to call topomap_2d.animate_topomap_2d
     """
     anim = topomap_2d.animate_topomap_2d(epoch, **kwargs)
+    code = format_code(
+        topomap_2d.animate_topomap_2d,
+        ["epoch"],
+        **kwargs
+    )
     return anim.to_jshtml()
 
 
@@ -109,7 +156,13 @@ def animate_ui_3d_head(epoch, **kwargs):
     """
     Caching wrapper function to call topomap_3d_head.animate_3d_head
     """
-    return topomap_3d_head.animate_3d_head(epoch, **kwargs)
+    anim = topomap_3d_head.animate_3d_head(epoch, **kwargs)
+    code = format_code(
+        topomap_3d_head.animate_3d_head,
+        ["epoch"],
+        **kwargs
+    )
+    return anim
 
 
 @st.cache(show_spinner=False)
@@ -119,6 +172,11 @@ def animate_ui_3d_brain(epoch, **kwargs):
     topomap_3d_brain.animate_matplot_brain
     """
     anim = topomap_3d_brain.animate_matplot_brain(epoch, **kwargs)
+    code = format_code(
+        topomap_3d_brain.animate_matplot_brain,
+        ["epoch"],
+        **kwargs
+    )
     return anim.to_jshtml()
 
 
@@ -130,6 +188,11 @@ def animate_ui_connectivity(epoch, connection_type, **kwargs):
     anim = connectivity.animate_connectivity(
         epoch,
         connection_type,
+        **kwargs
+    )
+    code = format_code(
+        connectivity.animate_connectivity,
+        ["epoch", f"'{connection_type}'"],
         **kwargs
     )
     return anim.to_jshtml()
@@ -144,6 +207,11 @@ def animate_ui_connectivity_circle(epoch, connection_type, **kwargs):
     anim = connectivity.animate_connectivity_circle(
         epoch,
         connection_type,
+        **kwargs
+    )
+    code = format_code(
+        connectivity.animate_connectivity,
+        ["epoch", f"'{connection_type}'"],
         **kwargs
     )
     return anim.to_jshtml()
@@ -257,11 +325,15 @@ def main():
         """
         Select the figures you wish to see in the sidebar to the left
         and they will render in the dropdowns below.
-        Settings that will be applied to each of the figures such as
+        Settings for all figures such as
         the timeframe to plot and color scheme can be specified in the sidebar.
-        Individual settings for each of the figures can be changed
+        Settings for individual figures can be specified
         in their respective dropdowns.
-        """
+        For more information on this product please refer to documentation at
+        <a href='https://ubc-mds.github.io/simpl_eeg_capstone/user_interface.html'
+        target="_blank">this link</a>.
+        """,
+        unsafe_allow_html=True
     )
 
     st.sidebar.header("Global Settings")
@@ -345,7 +417,10 @@ def main():
         )
         start_second, in_timeframe = calculate_timeframe(start_time, raw_epoch_obj.raw)
         if start_second is None:
-            st.error('Time is in wrong format please use H:MM:SS')
+            st.error(
+                "Time is in wrong format please use H:MM:SS.\n\n"
+                "Rendering below is made with previous settings."
+            )
         if in_timeframe == 0:
             st.error(
                 "Input time exceeds max timestamp of "
@@ -461,7 +536,7 @@ def main():
 
     col1, col2 = st.sidebar.beta_columns((2, 1))
     colormap = col1.selectbox(
-        "Select Colour Scheme",
+        "Select color Scheme",
         ["RdBu_r", "PiYG", "PuOr", "BrBG", "Spectral", "turbo"],
         format_func=lambda name: name.capitalize(),
         help="""The color scheme to use on all of the figures."""
@@ -523,6 +598,14 @@ def main():
                 help="Export to the `simpl_eeg/exports` folder"
             )
 
+        def show_code(self):
+            """Add an export button to the bottom of widget column"""
+            return self.widget_col.button(
+                "Show Code",
+                key=self.section_name+"_code",
+                help="Show or hide code to generate this figure"
+            )
+
         def generate_file_name(self, file_type="html"):
             """
             Generate an export file name and success message function
@@ -557,15 +640,15 @@ def main():
             Generate a file name and export a plot as html
             Prints success message to screen
 
-            Args:
+            Parameters:
                 html_plot : html
                     The plot to export
             """
 
             file_name, send_message = self.generate_file_name()
-            Html_file = open(file_name, "w")
-            Html_file.write(html_plot)
-            Html_file.close()
+            html_file = open(file_name, "w")
+            html_file.write(html_plot)
+            html_file.close()
             send_message()
 
     # set up expander sections
@@ -618,22 +701,14 @@ def main():
         vmin_2d_head = st.number_input(
             "Minimum Voltage (μV)",
             value=-40.0,
-            help = min_voltage_message
+            help=min_voltage_message
         )
         vmax_2d_head = st.number_input(
             "Maximum Voltage (μV)",
             value=40.0,
             min_value=vmin_2d_head,
-            help = max_voltage_message
+            help=max_voltage_message
         )
-
-        # Doesn't currently work for whatever reason.
-        # Can't compare two number inputs.
-        if vmax_2d_head < vmin_2d_head:
-            st.error(
-                "ERROR: Minimum Voltage Set higher than Maximum Voltage."
-                "Please enter a valid input"
-            )
 
         mark_options = [
             "dot",
@@ -684,7 +759,7 @@ def main():
                 min_value=1,
                 max_value=1000,
                 help="""The resolution of the topomap image (n pixels along each side).
-                Min = 0, max = 1000."""
+                Min = 1, max = 1000."""
             )
             extrapolate_options_2d = [
                 "head",
@@ -728,12 +803,12 @@ def main():
     with expander_3d_brain.widget_col:
         vmin_3d_brain = st.number_input(
             "Minimum Voltage (μV)",
-            value=-5.0,
+            value=-2,
             help=min_voltage_message
         )
         vmax_3d_brain = st.number_input(
             "Maximum Voltage (μV)",
-            value=5.0,
+            value=2,
             min_value=vmin_3d_brain,
             help=max_voltage_message
         )
@@ -805,10 +880,10 @@ def main():
                 min_value=1,
                 help="""The amount of smoothing to apply to the brain model."""
             )
-            use_non_MNE_colours = st.checkbox(
-                "Use non-MNE colour palette",
+            use_non_MNE_colors = st.checkbox(
+                "Use non-MNE color palette",
                 value=False,
-                key="braincolour",
+                key="braincolor",
                 help="""The default MNE color palette is reccomended
                 for this figure as it includes texturing on the brain.
                 Select this if you still wish to use the color palette
@@ -820,7 +895,7 @@ def main():
             timestamps_brain = True
             spacing_value = "oct5"
             smoothing_amount = 2
-            use_non_MNE_colours = False
+            use_non_MNE_colors = False
 
     with expander_connectivity.widget_col:
 
@@ -857,23 +932,57 @@ def main():
             )
             selected_pairs = custom_pair_selection
 
-        # Line width widgets
-        line_width_type = st.checkbox(
-            "Set static line width",
-            False,
-            help="""Use static line width rather than dynamic line
-            width based on connectivity score"""
+        # Advanced options
+        advanced_options_conn = st.checkbox(
+            "Advanced Options",
+            value=False,
+            key="connAO"
         )
 
-        conn_line_width = None
-        if line_width_type is True:
-            conn_line_width = st.slider(
-                "Select line width",
-                min_value=0.5,
-                max_value=5.0,
-                value=1.5,
-                help="Select a custom line width"
+        if advanced_options_conn:
+            # Line width widgets
+            line_width_type = st.checkbox(
+                "Set static line width",
+                False,
+                help="""Use static line width rather than dynamic line
+                width based on connectivity score"""
             )
+
+            conn_line_width = None
+            if line_width_type is True:
+                conn_line_width = st.slider(
+                    "Select line width",
+                    min_value=0.5,
+                    max_value=5.5,
+                    value=1.5,
+                    help="Select a custom line width"
+                )
+
+            colorbar_conn = st.checkbox(
+                "Include colorbar",
+                value=True,
+                key="conn_colorbar",
+                help="Show colorbar on plot"
+            )
+
+            timestamps_conn = st.checkbox(
+                "Include timestamps",
+                value=True,
+                key="conn_timestamps",
+                help="Show timestamps on plot"
+            )
+
+            show_sphere_conn = st.checkbox(
+                "Show sphere",
+                value=True,
+                key="conn_sphere",
+                help="Show sphere to represent head"
+            )
+        else:
+            conn_line_width = None
+            colorbar_conn = True
+            timestamps_conn = True
+            show_sphere_conn = True
 
     with expander_connectivity_circle.widget_col:
 
@@ -882,15 +991,6 @@ def main():
             epoch,
             frame_steps,
             "circle"
-        )
-
-        # Line width widget
-        conn_circle_line_width = st.slider(
-            "Select line width ",
-            min_value=1,
-            max_value=5,
-            value=2,
-            help="Select a custom line width"
         )
 
         # Maximum connections widget
@@ -902,8 +1002,45 @@ def main():
             help="Select the maximum number of connection measurements to show"
         )
 
-    # PLOTS
+        # Advanced options
+        advanced_options_circle = st.checkbox(
+            "Advanced Options",
+            value=False,
+            key="circleAO"
+        )
 
+        if advanced_options_circle:
+
+            # Line width widget
+            conn_circle_line_width = st.slider(
+                "Select line width ",
+                min_value=1,
+                max_value=5,
+                value=2,
+                help="Select a custom line width"
+            )
+
+            colorbar_circle = st.checkbox(
+                "Include colorbar",
+                value=True,
+                key="circle_colorbar",
+                help="Show colorbar on plot"
+            )
+
+            timestamps_circle = st.checkbox(
+                "Include timestamps",
+                value=True,
+                key="circle_timestamps",
+                help="Show timestamps on plot"
+            )
+
+        else:
+            conn_circle_line_width = 2
+            colorbar_circle = True
+            timestamps_circle = True
+
+
+    # PLOTS
     def default_message(name):
         """Returns a message for non-rendered plots for a given section name"""
 
@@ -921,14 +1058,14 @@ def main():
 
     with expander_raw.plot_col:
         if expander_raw.render:
-            plot = raw_voltage.plot_voltage(
+            plot = render_raw_voltage_plot(
                 epoch,
                 remove_xlabel=True,
                 show_scrollbars=False,
                 events=np.array(events),
                 scalings=scaling,
                 noise_cov=noise_cov,
-                event_id=epoch.event_id,
+                event_id=epoch.event_id
             )
             expander_raw.plot_col.pyplot(plot)
 
@@ -973,13 +1110,14 @@ def main():
     with expander_3d_head.plot_col:
         if expander_3d_head.render:
             with st.spinner(SPINNER_MESSAGE):
+                plot = animate_ui_3d_head(
+                    plot_epoch,
+                    colormap=colormap,
+                    color_min=vmin_3d_head,
+                    color_max=vmax_3d_head
+                )
                 st.plotly_chart(
-                    animate_ui_3d_head(
-                        plot_epoch,
-                        colormap=colormap,
-                        color_min=vmin_3d_head,
-                        color_max=vmax_3d_head
-                    ),
+                    plot,
                     use_container_width=True
                 )
         else:
@@ -1012,7 +1150,7 @@ def main():
                     if stc_generated is False:
                         stc = generate_stc_epoch(plot_epoch)
                         stc_generated = True
-                    if use_non_MNE_colours is False:
+                    if use_non_MNE_colors is False:
                         colormap_brain = "mne"
                     else:
                         colormap_brain = colormap
@@ -1035,6 +1173,7 @@ def main():
                         height=600,
                         width=600
                     )
+
                     export = expander_3d_brain.export_button()
                     if export:
                         expander_3d_brain.html_export(html_plot)
@@ -1052,13 +1191,17 @@ def main():
                     colormap=colormap,
                     vmin=cmin,
                     vmax=cmax,
-                    line_width=conn_line_width
+                    line_width=conn_line_width,
+                    colorbar=colorbar_conn,
+                    timestamp=timestamps_conn,
+                    show_sphere=show_sphere_conn
                 )
                 components.html(
                     html_plot,
                     height=600,
                     width=600
                 )
+
                 export = expander_connectivity.export_button()
                 if export:
                     expander_connectivity.html_export(html_plot)
@@ -1075,7 +1218,9 @@ def main():
                 vmin=cmin_circle,
                 vmax=cmax_circle,
                 line_width=conn_circle_line_width,
-                max_connections=max_connections
+                max_connections=max_connections,
+                colorbar=colorbar_circle,
+                timestamp=timestamps_circle
             )
             with st.spinner(SPINNER_MESSAGE):
                 components.html(
@@ -1083,6 +1228,7 @@ def main():
                     height=600,
                     width=600
                 )
+
             export = expander_connectivity_circle.export_button()
             if export:
                 expander_connectivity_circle.html_export(html_plot)

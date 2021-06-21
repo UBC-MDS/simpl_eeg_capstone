@@ -189,7 +189,7 @@ def plot_connectivity(
         title: str (optional)
             The title to display on the plot. Defaults to None for no title.
         colorbar: bool (optional)
-            Whether to display the colorbar or not. Defaults to True.
+            Whether to display the colorbar. Defaults to True.
         caption: str (optional)
             The caption to display at the bottom of the plot. Defaults to None.
         **kwargs: dict (optional)
@@ -304,6 +304,8 @@ def animate_connectivity(
     vmax=None,
     line_width=None,
     title=None,
+    colorbar=True,
+    timestamp=True,
     **kwargs
 ):
     """
@@ -334,6 +336,10 @@ def animate_connectivity(
             Defaults to None for non-static width.
         title: str (optional)
             The title to display on the plot. Defaults to None for no title.
+        colorbar: bool (optional)
+            Whether to show the colorbar. Defaults to True.
+        timestamp: bool (optional)
+            Whether to show the timestamp caption. Defaults to True.
         **kwargs: dict (optional)
             Optional arguments to pass to mne.viz.plot_sensors()
 
@@ -367,7 +373,10 @@ def animate_connectivity(
 
         start_time = frame_epoch.tmin
         end_time = frame_epoch.tmax
-        caption = f"time: {'%.3f' % start_time}s to {'%.3f' % end_time}s"
+
+        caption = None
+        if timestamp is True:
+            caption = f"time: {'%.3f' % start_time}s to {'%.3f' % end_time}s"
 
         return [
             plot_connectivity(
@@ -383,6 +392,7 @@ def animate_connectivity(
                 vmax=vmax,
                 line_width=line_width,
                 title=title,
+                colorbar=colorbar,
                 caption=caption,
                 **kwargs
             )
@@ -510,6 +520,8 @@ def animate_connectivity_circle(
     vmax=None,
     line_width=1.5,
     title=None,
+    colorbar=True,
+    timestamp=True,
     **kwargs
 ):
     """
@@ -534,6 +546,10 @@ def animate_connectivity_circle(
             The line width for the connections. Defaults to 1.5.
         title: str (optional)
             The title to display on the plot. Defaults to None for no title.
+        colorbar: bool (optional)
+            Whether to display the colorbar or not. Defaults to True.
+        timestamp: bool (optional)
+            Whether to display the timestamp caption. Defaults to True.
         **kwargs: dict (optional)
             Optional arguments to pass to mne.viz.plot_connectivity_circle()
 
@@ -573,12 +589,16 @@ def animate_connectivity_circle(
 
         start_time = frame_epoch.tmin
         end_time = frame_epoch.tmax
-        caption = f"time: {'%.3f' % start_time}s to {'%.3f' % end_time}s"
+
+        caption = None
+        if timestamp is True:
+            caption = f"time: {'%.3f' % start_time}s to {'%.3f' % end_time}s"
 
         return [
             plot_conn_circle(
                 frame_epoch,
                 fig,
+                colorbar=colorbar,
                 caption=caption,
                 **kwargs
             )
