@@ -38,7 +38,9 @@ Our partner SimPL is a research lab that explores research questions concerning 
 
 2) An interactive web app to provide a user interface for the package
 
-We also proposed a stretch goal of building a data pipeline for detecting underlying structure in EEG data using unsupervised learning methods such as clustering.
+Stretch Goal: 
+
+1) Unsupervised machine learning model to cluster and identify patterns in the EEG data
 
 ## 3.2 Introduction
 Electroencephalograms (EEG) is an electrophysiological measurement method used to examine the electrical activity of the brain and represent it as location-based channels of waves and frequencies. EEG benefits from being inexpensive and unobtrusive, leading to its widespread use in diagnosing brain disorders such as epilepsy and brain damage from head injuries. EEG data is recorded with high dimensionality, so the use of visualizations is essential for the data to be easily interpreted by humans. Currently, the options for visualizing EEG data require the use of complicated packages or software and the functionally is often limited.
@@ -49,6 +51,8 @@ Our team was approached to design novel solutions and methods to simplify the pr
 
 ![Example of a Standard Visualization for Two Seconds of 19 Channel EEG Raw Voltage Values](images/viz_example.png){ height=15% }
 
+
+
 \newpage
 
 ## 3.3. Data Science Methods
@@ -56,7 +60,7 @@ The Python visualization package was mainly developed using the open source libr
 
 For the interactive user interface (UI) we used an open source framework called [Streamlit](https://streamlit.io/) which is designed for creating web apps from Python scripts. Streamlit benefits from being lightweight and requiring no front-end experience, which will facilitate ease of updating in the future. The downsides to Streamlit is reduced flexibility, only certain types of figures can be used and customization of styling is limited. However, for the purposes of this project we believe that the simplicity and ease of maintenance outweighs the need for additional features.
 
-For the unsupervised clustering method, we have tried both KMeans clustering model and Hidden Markov model to identify potential brain states in the data across different time periods. Brain states are considered as similar patterns of 19 electrodes over a period of time in the raw EEG data. The KMeans clustering method utilizes the [KMeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) model from [Scikit-learn](https://scikit-learn.org/stable/index.html) to separate data from each time periods into different clusters based on its distance from the center of the entire dataset. The Hidden Markov model method uses the GaussianHMM model from [hmmlearn](https://hmmlearn.readthedocs.io/en/latest/) to learn the Gaussian distribution of the EEG signals and update the transmission probability matrix based on the changes of the distribution as it transitions from one time section to another. 
+For the unsupervised clustering method, we have tried both KMeans clustering model and Hidden Markov model to identify potential brain states in the data across different time periods. Brain states are considered as similar patterns of 19 electrodes over a period of time in the raw EEG data. The KMeans clustering method utilizes the [KMeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) model from [Scikit-learn](https://scikit-learn.org/stable/index.html) to separate data from each time periods into different clusters based on its distance from the center of the entire dataset. The Hidden Markov model method uses the GaussianHMM model from [hmmlearn](https://hmmlearn.readthedocs.io/en/latest/) to learn the Gaussian distribution of the EEG signals and update the transmission probability matrix based on the changes of the distribution as it transitions from one time section to another. Furthermore, we looked into expanding our analysis to methods beyond what we covered in MDS such as Self Organizing Maps (SOM) and K-means and Dynamic Time Warping using `tslean`. 
 
 
 ## 3.4 Data Product and Results
@@ -104,7 +108,35 @@ In addition to the package we built an interactive web application to serve as a
 \newpage
 ### 3.4.2 Stretch goal
 ----------UPDATE----------
-If sufficient time is available after completing the main deliverable we will complete an additional deliverable. Our stretch goal is to create a data pipeline for identifying patterns using clustering, which is an unsupervised learning method. The purpose is to distinguish structures of node signals and patterns in the brain indicating the effect of an impact at specific timestamps. It might involve decomposing the signal into alpha, beta, theta, and delta waves to look for structure, and then use a Markov model or hidden Markov model to carry out the clustering task. 
+
+Jupyter Notebooks So as a stretch goal we decided to include an unsupervised machine learning script to identify and cluster patterns in the EEG data. The goal is look for different brain states within the same cluster and to distinguish structures of node signals and patterns in the brain indicating the effect of an impact at specific timestamps. Brain states are activities of the brain. Here we can see groups of neurons firing at the same time in the same frequency creating different states. (Include image from presentation). Since it is unsupervised approach, we do not have target values which make it difficult to objectively measure the effectiveness of the algorithms. In fact, there no definitive approach. 
+
+Today, scientists and labs who are dealing with EEG data use advanced algorithms and models such as Multi-Variate Auto-Regressive or use intense simulations models to find the optimal value of K in other word the number of clustering groups. For now, it’s extremely difficult to define brain states in order to cluster them probably. Having said that, we have used methods that we learned in MDS to evaluate and justify the K values we choose. 
+
+We took two directions to solve this problem. Analyzing the data set as single stimestamps and range of timestamps. We have used diffrent methods in order to identify the optimal number of clusters and patterns. 
+
+K-Means Algorithm: 
+
+- Elbow method
+
+With the Elbow method we can test and evaluate range of K value and the algortihm will detarmine the optimal value of K. This method looks at the sum inertia and its distances, the inertia decreases as K increases.
+
+- Silhouette method
+
+This method is not dependent on cluster centers. It uses the mean intra-cluster distance and mean nearest cluster distance for each sample. The Silhouette score represent how well separated the clusters are. 
+
+
+- PCA: 
+
+
+
+Hidden Markov Model: 
+
+- HMM
+
+
+
+
 
 ## 3.5 Conclusions and Recommendations
 
