@@ -10,22 +10,20 @@ def add_timestamp(epoch, frame_number, xpos, ypos):
     """
     Adds a timestamp to a matplotlib.image.AxesImage object
     
-    Parameters
-    ----------
-    epoch : mne.epochs.Epochs
-        MNE epochs object containing the timestamps.
+    Parameters:
+        epoch : mne.epochs.Epochs
+            MNE epochs object containing the timestamps.
 
-    frame_number: int
-        The timestamp to plot.
-    
-    xpos: float
-        The matplotlib x coordinate of the timestamp.
-
-    ypos: float
-        The matplotlib y coordinate of the timestamp.
+        frame_number: int
+            The timestamp to plot.
         
-    Returns
-    -------
+        xpos: float
+            The matplotlib x coordinate of the timestamp.
+
+        ypos: float
+            The matplotlib y coordinate of the timestamp.
+        
+    Returns:
     """
     
     time = epoch.times[frame_number]
@@ -51,60 +49,56 @@ def plot_topomap_2d(epoch,
     Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
     function.
 
-    Parameters
-    ----------
-    epoch : mne.epochs.Epochs
-        MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
+    Parameters:
+        epoch: mne.epochs.Epochs
+            MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
 
-    plotting_data: numpy.ndarray or None
-        array of the EEG data from a measurement (not a time interval) to be plotted
-    
-    recording_number: int
-        The "frame" of the epoch to show in the plot.
-
-    colormap: matplotlib colormap or None
-        Specifies the 'colormap' parameter in the mne.viz.plot_topomap() function.
-    
-    colorbar: bool
-        Specifies whether to include a colorbar or not. Removing it will improve performance.
-    
-    cmin: float
-        Specifies the 'vmin' parameter in the mne.viz.plot_topomap() function.
-        Sets the limits for the colors which will be used on the topomap. Value is
-        in μV. Defaults to -10.
+        plotting_data: numpy.ndarray or None
+            array of the EEG data from a measurement (not a time interval) to be plotted
         
-    cmax: float
-        Specifies the 'vmax' parameter in the mne.viz.plot_topomap() function.
-        Sets the limits for the colors which will be used on the topomap. Value is
-        in μV. Defaults to +10.
+        recording_number: int
+            The "frame" of the epoch to show in the plot.
 
-    mark: str
-        Specifies what kind of marker should be shown for each node on the topomap. Can be one of
-        'dot', 'r+' (for red +'s), 'channel_name', or 'none'.
+        colormap: matplotlib colormap or None
+            Specifies the 'colormap' parameter in the mne.viz.plot_topomap() function.
         
-    timestamp: bool
-        Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-        is being shown. Defaults to true.
-    
-    **kwargs: various
-        Additional arguments from the 'mne.viz.plot_topomap' function
-        (https://mne.tools/stable/generated/mne.viz.plot_topomap.html) may be provided. Since this function
-        is used under the hood most of these arguments should work exactly as they do in their original
-        function. The exact list of avalible arguments includes: [contours, sphere, res, extrapolate, outlines,
-        axes, mask, mask_params, image_interp, show, onselect, border, ch_type].
+        colorbar: bool
+            Specifies whether to include a colorbar or not. Removing it will improve performance.
+        
+        cmin: float
+            Specifies the 'vmin' parameter in the mne.viz.plot_topomap() function.
+            Sets the limits for the colors which will be used on the topomap. Value is
+            in μV. Defaults to -10.
+            
+        cmax: float
+            Specifies the 'vmax' parameter in the mne.viz.plot_topomap() function.
+            Sets the limits for the colors which will be used on the topomap. Value is
+            in μV. Defaults to +10.
 
-    Returns
-    -------
-    topo_2d_fig: matplotlib.image.AxesImage
-        matplotlib image plot of a 2d topographic map based on the input epoch data
+        mark: str
+            Specifies what kind of marker should be shown for each node on the topomap. Can be one of
+            'dot', 'r+' (for red +'s), 'channel_name', or 'none'.
+            
+        timestamp: bool
+            Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+            is being shown. Defaults to true.
+        
+        **kwargs: various
+            Additional arguments from the 'mne.viz.plot_topomap' function
+            (https://mne.tools/stable/generated/mne.viz.plot_topomap.html) may be provided. Since this function
+            is used under the hood most of these arguments should work exactly as they do in their original
+            function. The exact list of avalible arguments includes: [contours, sphere, res, extrapolate, outlines,
+            axes, mask, mask_params, image_interp, show, onselect, border, ch_type].
+
+    Returns:
+        topo_2d_fig: matplotlib.image.AxesImage
+            matplotlib image plot of a 2d topographic map based on the input epoch data
     """
     
     defaultKwargs = {'contours': 0, 'sphere': 100, 'res': 64, 'extrapolate': 'head', 'outlines': 'head',
                      'axes': None, 'mask': None, 'mask_params': None, 'image_interp': 'bilinear', 'show': False,
                      'onselect': None, 'border' : 'mean', 'ch_type': 'eeg'}
     kwargs = { **defaultKwargs, **kwargs }    
-
-    # Need to decide whether to keep plotting_data as a parameter or not
     
     if type(plotting_data) != numpy.ndarray and plotting_data is not None:
         raise TypeError(
@@ -154,8 +148,6 @@ def plot_topomap_2d(epoch,
                 """Passed colorbar object is not in the correct format, 
                 please pass a bool (True or False) instead"""
             )
-    
-    recording_number
 
     names_value = False
     sensor_value = True
@@ -203,8 +195,6 @@ def plot_topomap_2d(epoch,
             label='µV',
             bgcolor='0'
         )
-        
-
 
     return topo_2d_fig
 
@@ -222,54 +212,52 @@ def animate_topomap_2d(epoch,
     Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
     function.
 
-    Parameters
-    ----------
-    epochs : mne.epochs.Epochs
-        MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
+    Parameters:
+        epochs: mne.epochs.Epochs
+            MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
 
-    colormap: matplotlib colormap or None
-        Specifies the 'colormap' parameter in the mne.viz.plot_topomap() function.
+        colormap: matplotlib colormap or None
+            Specifies the 'colormap' parameter in the mne.viz.plot_topomap() function.
 
-    mark: str
-        Specifies what kind of marker should be shown for each node on the topomap. Can be one of
-        'dot', 'r+' (for red +'s), 'channel_name', or 'none'.
+        mark: str
+            Specifies what kind of marker should be shown for each node on the topomap. Can be one of
+            'dot', 'r+' (for red +'s), 'channel_name', or 'none'.
 
-    cmin: float
-        Specifies the 'vmin' parameter in the mne.viz.plot_topomap() function.
-        Sets the limits for the colors which will be used on the topomap. Value is
-        in μV. Defaults to -10.
+        cmin: float
+            Specifies the 'vmin' parameter in the mne.viz.plot_topomap() function.
+            Sets the limits for the colors which will be used on the topomap. Value is
+            in μV. Defaults to -10.
+            
+        cmax: float
+            Specifies the 'vmax' parameter in the mne.viz.plot_topomap() function.
+            Sets the limits for the colors which will be used on the topomap. Value is
+            in μV. Defaults to +10.
+
+        res: int
+            Specifies the 'res' and parameters in the mne.viz.plot_topomap() function. "The
+            resolution of the topomap image (n pixels along each side)."
+
+        colorbar: bool
+            Specifies whether or not to include a colorbar in the animation.
         
-    cmax: float
-        Specifies the 'vmax' parameter in the mne.viz.plot_topomap() function.
-        Sets the limits for the colors which will be used on the topomap. Value is
-        in μV. Defaults to +10.
+        timestamp: bool
+            Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+            is being shown. Defaults to True.
 
-    res: int
-        Specifies the 'res' and parameters in the mne.viz.plot_topomap() function. "The
-        resolution of the topomap image (n pixels along each side)."
+        frame_rate: int
+            The frame rate to genearte the final animation with.
+        
+        **kwargs: various
+            Additional arguments from the 'mne.viz.plot_topomap' function
+            (https://mne.tools/stable/generated/mne.viz.plot_topomap.html) may be provided. Since this function
+            is used under the hood most of these arguments should work exactly as they do in their original
+            function. The exact list of avalible arguments includes: [contours, sphere, res, extrapolate, outlines,
+            mask, mask_params, image_interp, show, onselect, border, ch_type]. The 'axes' argument is not avalible
+            since it does not work with animations.
 
-    colorbar: bool
-        Specifies whether or not to include a colorbar in the animation.
-    
-    timestamp: bool
-        Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-        is being shown. Defaults to True.
-
-    frame_rate: int
-        The frame rate to genearte the final animation with.
-    
-    **kwargs: various
-        Additional arguments from the 'mne.viz.plot_topomap' function
-        (https://mne.tools/stable/generated/mne.viz.plot_topomap.html) may be provided. Since this function
-        is used under the hood most of these arguments should work exactly as they do in their original
-        function. The exact list of avalible arguments includes: [contours, sphere, res, extrapolate, outlines,
-        mask, mask_params, image_interp, show, onselect, border, ch_type]. The 'axes' argument is not avalible
-        since it does not work with animations.
-
-    Returns
-    -------
-    ani: matplotlib.animation.FuncAnimation
-        matplotlib funcanimation of a 2d topographic map based on the input epoch data
+    Returns:
+        ani: matplotlib.animation.FuncAnimation
+            matplotlib funcanimation of a 2d topographic map based on the input epoch data
     """
     
     defaultKwargs = {'contours': 0, 'sphere': 100, 'res': 64, 'extrapolate': 'head', 'outlines': 'head',
