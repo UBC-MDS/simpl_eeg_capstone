@@ -44,7 +44,7 @@ streamlit run src/app.py
 ```
 
 # Updating JupyterBook Documentation
-Make sure you have `jupyter-book` and `ghp-impor`t installed. If you do not you can install them by running the following commands: 
+Make sure you have `jupyter-book` and `ghp-import` installed. If you do not you can install them by running the following commands: 
 ```bash
 pip install -U jupyter-book
 pip install ghp-import
