@@ -203,14 +203,6 @@ def test_topo3dhead_plot():
     with pytest.raises(TypeError):
         topomap_3d_head.topo3dhead_plot(epoch42, "20")
 
-def test_save_gif():
-    test_df = pd.DataFrame({"x": [1]})
-    with pytest.raises(TypeError):
-        topomap_3d_head.save_gif(test_df, "save.gif", 500)
-    with pytest.raises(TypeError):
-        topomap_3d_head.save_gif(epoch42, 20, 500)
-    with pytest.raises(TypeError):
-        topomap_3d_head.save_gif(epoch42, "save.gif", "500")
     
 
 
