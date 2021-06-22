@@ -41,11 +41,11 @@ requires = [
     "poetry-core>=1.0.0", 
     "setuptools>=42",
     "wheel",
-    'pandas', 
-    'numpy', 
-    'mne', 
-    'scipy', 
-    'matplotlib',  
-    'plotly'
+    "pandas", 
+    "numpy", 
+    "mne", 
+    "scipy", 
+    "matplotlib",  
+    "plotly"
     ]
 build-backend = "poetry.core.masonry.api"
