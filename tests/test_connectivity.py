@@ -4,11 +4,14 @@ import pandas as pd
 import numpy as np
 import pickle
 import matplotlib
-import matplotlib.pyplot as plt
+
+# prevent figure window from popping up
+matplotlib.use("Agg")
 
 # import the test data
 with open('tests/test_data/test_data.pkl', 'rb') as input:
     EPOCH_1 = pickle.load(input)
+
 with open('tests/test_data/test_data1.pkl', 'rb') as input:
     EPOCH_42 = pickle.load(input)
 
@@ -53,7 +56,6 @@ def test_plot_connectivity():
     # check all outpus are as expected
     output_fig = connectivity.plot_connectivity(EPOCH_42)
     assert isinstance(output_fig, matplotlib.figure.Figure)
-    plt.close("all")
 
 
 def test_animate_connectivity():
@@ -67,7 +69,6 @@ def test_animate_connectivity():
     # check all outpus are as expected
     output_ani = connectivity.animate_connectivity(EPOCH_42)
     assert isinstance(output_ani, matplotlib.animation.FuncAnimation)
-    plt.close("all")
 
 
 def test_connectivity_circle():
@@ -83,7 +84,6 @@ def test_connectivity_circle():
     # check all outpus are as expected
     output_ani = connectivity.animate_connectivity_circle(EPOCH_42)
     assert isinstance(output_ani, matplotlib.animation.FuncAnimation)
-    plt.close("all")
 
 
 def test_plot_conn_circle():
@@ -97,7 +97,6 @@ def test_plot_conn_circle():
     # check output type is as expected
     output_fig = connectivity.plot_conn_circle(EPOCH_42)
     assert isinstance(output_fig, matplotlib.figure.Figure)
-    plt.close("all")
 
 
 def test_convert_pairs_1():

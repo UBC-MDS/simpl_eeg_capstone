@@ -54,10 +54,10 @@ get_ipython().run_line_magic('autoreload', '2')
 
 
 experiment_folder = "../../data/109"
-nth_epoch = 0
-
 epochs = eeg_objects.Epochs(experiment_folder)
-epoch = epochs.get_nth_epoch(nth_epoch)
+
+frame_steps = 100
+epoch = epochs.skip_n_steps(frame_steps)
 
 
 # ### Generate forward and inverse (optional)
@@ -78,7 +78,7 @@ fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
 
 # #### Generate Inverse
 
-# In[ ]:
+# In[7]:
 
 
 stc = topomap_3d_brain.create_inverse_solution(epoch, fwd)
@@ -91,13 +91,13 @@ stc = topomap_3d_brain.create_inverse_solution(epoch, fwd)
 
 # A detailed description of all parameters can be found in the `topomap_3d_brain.animate_matplot_brain` docstring:
 
-# In[ ]:
+# In[8]:
 
 
 help(topomap_3d_brain.animate_matplot_brain)
 
 
-# In[ ]:
+# In[9]:
 
 
 colormap = "RdBu_r"
@@ -105,13 +105,13 @@ colormap = "RdBu_r"
 
 # #### Generate animation with matplotlib backend (slow but recommended)
 
-# In[ ]:
+# In[10]:
 
 
 get_ipython().run_cell_magic('capture', '', "\nmatplotlib_animation = topomap_3d_brain.animate_matplot_brain(epoch, stc = stc, views = 'lat', hemi = 'lh')\n\nfrom IPython.display import HTML\nvideo = HTML(matplotlib_animation.to_jshtml())")
 
 
-# In[ ]:
+# In[11]:
 
 
 video
@@ -145,11 +145,11 @@ video
 # clip.write_videofile(mp4_file_path)
 # ```
 
-# ## Create a matplotlib 3D brain figure (recommended)
+# ## Create a matplotlib 3D brain figure
 
 # ### Generating a matplotlib plot
 
-# In[ ]:
+# In[12]:
 
 
 get_ipython().run_cell_magic('capture', '', "matplot_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc=stc, backend='matplotlib')")
@@ -165,18 +165,14 @@ get_ipython().run_cell_magic('capture', '', "matplot_brain_fig = topomap_3d_brai
 # <a id="pyvista"></a>
 # ## Create a pyVista 3D brain animation
 
-# ### Generate figure with pyvista backend (NOT CURRENTLY WORKING)
+# ### Generate figure with pyvista backend
 
-# In[ ]:
+# ```python
+# pyvista_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc = stc, backend = 'pyvista')
+# ```
 
+# ### Save animation with pyvista backend
 
-#pyvista_brain_fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, stc = stc, backend = 'pyvista')
-
-
-# ### Save animation with pyvista backend (NOT CURRENTLY WORKING)
-
-# In[ ]:
-
-
-#topomap_3d_brain.save_animated_topomap_3d_brain(pyvista_brain_fig, filename = "brain_animation.gif")
-
+# ```python
+# topomap_3d_brain.save_animated_topomap_3d_brain(pyvista_brain_fig, filename = "brain_animation.gif")
+# ```
