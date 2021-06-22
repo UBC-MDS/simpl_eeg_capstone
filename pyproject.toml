@@ -33,6 +33,7 @@ pyqt5-qt5 = ">=5.12.2"
 PyQt5 = "5.15.4"
 pyvistaqt = ">=0.4"
 pyvista = "^0.31.2"
+vtk = "^9.0.1"
 
 [tool.poetry.dev-dependencies]
 
