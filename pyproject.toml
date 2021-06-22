@@ -1,29 +1,7 @@
 [build-system]
 requires = [
     "setuptools >= 42",
-    "wheel >= 0.36.1",
-    "flake8 >= 3.9.2",
-    "pytest >= 6.2.4",
-    "pandas >= 1.2.4",
-    "numpy >= 1.20.2",
-    "mne >= 0.23.0",
-    "scipy >= 1.6.3",
-    "matplotlib >= 3.4.1",
-    "plotly >= 4.14.3",
-    "streamlit >= 0.82.0",
-    "ipywidgets >= 7.5",
-    "kaleido == 0.2.0",
-    "gif == 3.0.0",
-    "moviepy == 1.0.3",
-    "scikit-learn == 0.24.2",
-    "nibabel == 3.2.1",
-    "ffmpeg >= 1.4",
-    "jupyter >= 1.0.0",
-    "tornado >= 6.1",
-    "pyqt5-qt5 >= 5.12.2",
-    "PyQt5 == 5.15.4",
-    "pyvista >= 0.30",
-    "pyvistaqt >= 0.4"
+    "wheel >= 0.36.1"
 ]
 
 build-backend = "setuptools.build_meta"

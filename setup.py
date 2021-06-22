@@ -5,7 +5,6 @@ with open("README.md", "r", encoding="utf-8") as fh:
 
 setuptools.setup(
     name="simpl_eeg",
-    version="0.0.1",
     author="Matthew Pin, Mo Garoub, Yiki Su, Sasha Babicki",
     description="Package for visualizing EEG data",
     long_description=long_description,
@@ -19,7 +18,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    package_dir={"": "simpl_eeg"},
+    package_dir={"": "."},
     packages=setuptools.find_packages(where="simpl_eeg"),
     python_requires=">=3.7",
 )
