@@ -116,13 +116,13 @@
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="topo_3d_brain.html">
-   3D Brain Visualizations
+  <a class="reference internal" href="topo_3d_head.html">
+   3D Head Visualizations
   </a>
  </li>
  <li class="toctree-l1">
-  <a class="reference internal" href="topo_3d_head.html">
-   3D Head Visualizations
+  <a class="reference internal" href="topo_3d_brain.html">
+   3D Brain Visualizations
   </a>
  </li>
  <li class="toctree-l1">
@@ -433,7 +433,7 @@ num_steps: int</p>
 <dt>Parameters:</dt><dd><dl class="simple">
 <dt>epoch: mne.epochs.Epochs</dt><dd><p>MNE epochs object containing the timestamps.</p>
 </dd>
-<dt>frame_number: int</dt><dd><p>The timestamp to plot</p>
+<dt>frame_number: int</dt><dd><p>The timestamp to plot.</p>
 </dd>
 <dt>xpos: float</dt><dd><p>The matplotlib x coordinate of the timestamp.</p>
 </dd>
@@ -442,79 +442,52 @@ num_steps: int</p>
 </dl>
 </dd>
 </dl>
+<p>Returns:</p>
 </dd></dl>
 
 <dl class="py function">
 <dt id="simpl_eeg.topomap_2d.animate_topomap_2d">
-<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_2d.</span></code><code class="sig-name descname"><span class="pre">animate_topomap_2d</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">res</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extrapolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'head'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outlines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'head'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_2d.animate_topomap_2d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots a still image mne.epochs.
-Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
+<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_2d.</span></code><code class="sig-name descname"><span class="pre">animate_topomap_2d</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotting_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">frame_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">12</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_2d.animate_topomap_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
 function.</p>
-<p>Parameters:
-epochs: mne.epochs.Epochs</p>
-<blockquote>
-<div><p>MNE epochs object containing portions of raw EEG data
-built around specified timestamp(s)</p>
-</div></blockquote>
 <dl class="simple">
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epochs: mne.epochs.Epochs</dt><dd><p>MNE epochs object containing portions of raw EEG data built around specified timestamp(s)</p>
+</dd>
 <dt>colormap: matplotlib colormap or None</dt><dd><p>Specifies the ‘colormap’ parameter in the mne.viz.plot_topomap() function.</p>
 </dd>
-<dt>mark: str</dt><dd><p>Specifies what kind of marker should be shown for each node on the topomap.
-Can be one of ‘dot’, ‘r+’ (for red +’s), ‘channel_name’, or ‘none’.</p>
-</dd>
-<dt>contours: int | array of float</dt><dd><p>specifies the ‘contours’ parameter in the
-mne.viz.plot_topomap() function.
-“The number of contour lines to draw.
-If 0, no contours will be drawn.
-If an array, the values represent the levels for the contours.
-The values are in µV for EEG, fT for magnetometers and fT/m
-for gradiometers.”</p>
-</dd>
-<dt>sphere: float | array_like | instance of ConductorModel | None</dt><dd><p>specifies the ‘sphere’ parameter in the mne.viz.plot_topomap() function.
-“The sphere parameters to use for the cartoon head.
-Can be array-like of shape (4,) to give the X/Y/Z origin and
-radius in meters, or a single float to give the radius (origin
-assumed 0, 0, 0). Can also be a spherical ConductorModel,
-which will use the origin and radius.
-Can also be None (default) which is an alias for 0.095”</p>
+<dt>mark: str</dt><dd><p>Specifies what kind of marker should be shown for each node on the topomap. Can be one of
+‘dot’, ‘r+’ (for red +’s), ‘channel_name’, or ‘none’.</p>
 </dd>
 <dt>cmin: float</dt><dd><p>Specifies the ‘vmin’ parameter in the mne.viz.plot_topomap() function.
 Sets the limits for the colors which will be used on the topomap. Value is
 in μV. Defaults to -10.</p>
 </dd>
 <dt>cmax: float</dt><dd><p>Specifies the ‘vmax’ parameter in the mne.viz.plot_topomap() function.
-Sets the limits for the colors which will be used on the topomap.
-Value is in μV. Defaults to +10.</p>
+Sets the limits for the colors which will be used on the topomap. Value is
+in μV. Defaults to +10.</p>
 </dd>
-<dt>res: int</dt><dd><p>Specifies the ‘res’ and parameters in the
-mne.viz.plot_topomap() function. “The
+<dt>res: int</dt><dd><p>Specifies the ‘res’ and parameters in the mne.viz.plot_topomap() function. “The
 resolution of the topomap image (n pixels along each side).”</p>
-</dd>
-<dt>extrapolate: str</dt><dd><p>Specifies the ‘extrapolate’ and parameters in the
-mne.viz.plot_topomap() function. One of
-“box”, “local”, or “head”.</p>
-</dd>
-<dt>outlines: ‘head’ or ‘skirt’ | dict | None</dt><dd><p>Specifies the ‘outlines’ parameter in the
-mne.viz.plot_topomap() function.</p>
-</dd>
-<dt>axes: instance of Axes | None</dt><dd><p>Specifies the ‘axes’ parameter in the mne.viz.plot_topomap() function.</p>
-</dd>
-<dt>mask: ndarray of bool, shape (n_channels, n_times) | None</dt><dd><p>Specifies the ‘mask’ parameter in the mne.viz.plot_topomap() function.</p>
-</dd>
-<dt>mask_params: dict</dt><dd><p>Specifies the ‘mask_params’ parameter in the
-mne.viz.plot_topomap() function.</p>
 </dd>
 <dt>colorbar: bool</dt><dd><p>Specifies whether or not to include a colorbar in the animation.</p>
 </dd>
-<dt>timestamp: bool</dt><dd><p>Specifies whether or not to show the timestamp on the plot
-relative to the time in the epoch that is being shown.
-Defaults to True.</p>
+<dt>timestamp: bool</dt><dd><p>Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+is being shown. Defaults to True.</p>
 </dd>
 <dt>frame_rate: int</dt><dd><p>The frame rate to genearte the final animation with.</p>
 </dd>
+<dt><a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs: various</dt><dd><p>Additional arguments from the ‘mne.viz.plot_topomap’ function
+(<a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_topomap.html">https://mne.tools/stable/generated/mne.viz.plot_topomap.html</a>) may be provided. Since this function
+is used under the hood most of these arguments should work exactly as they do in their original
+function. The exact list of avalible arguments includes: [contours, sphere, res, extrapolate, outlines,
+mask, mask_params, image_interp, show, onselect, border, ch_type]. The ‘axes’ argument is not avalible
+since it does not work with animations.</p>
+</dd>
+</dl>
+</dd>
 <dt>Returns:</dt><dd><dl class="simple">
-<dt>matplotlib.animation.FuncAnimation:</dt><dd><p>matplotlib funcanimation of a 2d topographic map
-based on the input epoch data.</p>
+<dt>ani: matplotlib.animation.FuncAnimation</dt><dd><p>matplotlib funcanimation of a 2d topographic map based on the input epoch data</p>
 </dd>
 </dl>
 </dd>
@@ -523,86 +496,47 @@ based on the input epoch data.</p>
 
 <dl class="py function">
 <dt id="simpl_eeg.topomap_2d.plot_topomap_2d">
-<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_2d.</span></code><code class="sig-name descname"><span class="pre">plot_topomap_2d</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotting_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recording_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">contours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">res</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">100</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">extrapolate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'head'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">outlines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'head'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">axes</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mask_params</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_2d.plot_topomap_2d" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plots a still image mne.epochs.Epochs EEG data as a
-2D topomap using the mne.viz.plot_topomap function</p>
+<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_2d.</span></code><code class="sig-name descname"><span class="pre">plot_topomap_2d</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plotting_data</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recording_number</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">30</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mark</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dot'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_2d.plot_topomap_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plots a still image mne.epochs.Epochs EEG data as a 2D topomap using the mne.viz.plot_topomap
+function.</p>
 <dl class="simple">
 <dt>Parameters:</dt><dd><dl class="simple">
-<dt>epoch: mne.epochs.Epochs</dt><dd><p>MNE epochs object containing portions of raw
-EEG data built around specified timestamp(s).</p>
+<dt>epoch: mne.epochs.Epochs</dt><dd><p>MNE epochs object containing portions of raw EEG data built around specified timestamp(s)</p>
 </dd>
-<dt>plotting_data: numpy.ndarray</dt><dd><p>array of the EEG data from a measurement
-(not a time interval) to be plotted.</p>
+<dt>plotting_data: numpy.ndarray or None</dt><dd><p>Array of the EEG data from a measurement (not a time interval) to be plotted should be in
+the format (num_channels, ) i.e. a single row of values for the only timestamp you plan
+to plot.</p>
 </dd>
 <dt>recording_number: int</dt><dd><p>The “frame” of the epoch to show in the plot.</p>
 </dd>
-<dt>colormap: matplotlib colormap | None</dt><dd><p>Specifies the ‘colormap’ parameter in the 
-mne.viz.plot_topomap() function.</p>
+<dt>colormap: matplotlib colormap or None</dt><dd><p>Specifies the ‘colormap’ parameter in the mne.viz.plot_topomap() function.</p>
 </dd>
-<dt>colorbar: bool</dt><dd><p>Specifies whether to include a colorbar or not.
-Removing it will improve performance.</p>
+<dt>colorbar: bool</dt><dd><p>Specifies whether to include a colorbar or not. Removing it will improve performance.</p>
 </dd>
-<dt>cmin: float</dt><dd><p>Specifies the ‘vmin’ parameter in the
-mne.viz.plot_topomap() function.
-Sets the limits for the colors which will be used on the topomap.
-Value is in μV. Defaults to -10.</p>
+<dt>cmin: float</dt><dd><p>Specifies the ‘vmin’ parameter in the mne.viz.plot_topomap() function.
+Sets the limits for the colors which will be used on the topomap. Value is
+in μV. Defaults to -10.</p>
 </dd>
-<dt>cmax: float</dt><dd><p>Specifies the ‘vmax’ parameter in the
-mne.viz.plot_topomap() function.
-Sets the limits for the colors which will be used on the topomap.
-Value is in μV. Defaults to +10.</p>
+<dt>cmax: float</dt><dd><p>Specifies the ‘vmax’ parameter in the mne.viz.plot_topomap() function.
+Sets the limits for the colors which will be used on the topomap. Value is
+in μV. Defaults to +10.</p>
 </dd>
-<dt>mark: str</dt><dd><p>Specifies what kind of marker should be shown for
-each node on the topomap. Can be one of
+<dt>mark: str</dt><dd><p>Specifies what kind of marker should be shown for each node on the topomap. Can be one of
 ‘dot’, ‘r+’ (for red +’s), ‘channel_name’, or ‘none’.</p>
 </dd>
-<dt>contours: int or array of float</dt><dd><p>specifies the ‘contours’ parameter in the
-mne.viz.plot_topomap() function. “The number of
-contour lines to draw. If 0, no contours will be drawn.
-If an array, the values represent
-the levels for the contours.
-The values are in µV for EEG, fT for magnetometers and fT/m
-for gradiometers.”</p>
-</dd>
-<dt>sphere: float or array_like or instance of ConductorModel</dt><dd><p>specifies the ‘sphere’ parameter in the
-mne.viz.plot_topomap() function. “The sphere
-parameters to use for the cartoon head.
-Can be array-like of shape (4,) to give the
-X/Y/Z origin and radius in meters, or a single
-float to give the radius (origin
-assumed 0, 0, 0). Can also be a spherical ConductorModel,
-which will use the origin
-and radius. Can also be None (default) which is an alias for 0.095”</p>
-</dd>
-<dt>res: int</dt><dd><p>Specifies the ‘res’ and parameters in the
-mne.viz.plot_topomap() function. “The
-resolution of the topomap image (n pixels along each side).”</p>
-</dd>
-<dt>extrapolate: str</dt><dd><p>Specifies the ‘extrapolate’ and parameters in the
-mne.viz.plot_topomap() function. One of
-“box”, “local”, or “head”.</p>
-</dd>
-<dt>outlines: ‘head’ or ‘skirt’ | dict | None</dt><dd><p>Specifies the ‘outlines’ parameter in the
-mne.viz.plot_topomap() function.</p>
-</dd>
-<dt>axes: instance of Axes | None</dt><dd><p>Specifies the ‘axes’ parameter in the
-mne.viz.plot_topomap() function.</p>
-</dd>
-<dt>mask: ndarray of bool, shape (n_channels, n_times) | None</dt><dd><p>Specifies the ‘mask’ parameter in the
-mne.viz.plot_topomap() function.</p>
-</dd>
-<dt>mask_params: dict</dt><dd><p>Specifies the ‘mask_params’ parameter in the
-mne.viz.plot_topomap() function.</p>
-</dd>
-<dt>timestamp: bool</dt><dd><p>Specifies whether or not to show the timestamp on the plot
-relative to the time in the epoch that
+<dt>timestamp: bool</dt><dd><p>Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
 is being shown. Defaults to true.</p>
+</dd>
+<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs: various</dt><dd><p>Additional arguments from the ‘mne.viz.plot_topomap’ function
+(<a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_topomap.html">https://mne.tools/stable/generated/mne.viz.plot_topomap.html</a>) may be provided. Since this function
+is used under the hood most of these arguments should work exactly as they do in their original
+function. The exact list of avalible arguments includes: [contours, sphere, res, extrapolate, outlines,
+axes, mask, mask_params, image_interp, show, onselect, border, ch_type].</p>
 </dd>
 </dl>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
-<dt>matplotlib.image.AxesImage</dt><dd><p>matplotlib image plot of a 2d topographic map based
-on the input epoch data</p>
+<dt>topo_2d_fig: matplotlib.image.AxesImage</dt><dd><p>matplotlib image plot of a 2d topographic map based on the input epoch data</p>
 </dd>
 </dl>
 </dd>
@@ -946,13 +880,11 @@ MRI (fsaverage).</p>
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_brain.</span></code><code class="sig-name descname"><span class="pre">create_inverse_solution</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">forward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">covariance_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['empirical',</span> <span class="pre">'shrunk']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">apply_inverse_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'dSPM'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">loose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.8</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">snr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pick_ori</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'normal'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_brain.create_inverse_solution" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the inverse solution, which is an Estimation of the unknown sources
 corresponding to the measured EEG or MEG.</p>
-<p>Parameters:
-epoch: mne.epochs.Epochs | mne.evoked.EvokedArray</p>
-<blockquote>
-<div><p>MNE epochs or evoked object containing portions of raw EEG data built around specified
-timestamp(s). The inverse solution will be built based on the data in the specified epoch.</p>
-</div></blockquote>
 <dl class="simple">
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>epoch: mne.epochs.Epochs | mne.evoked.EvokedArray</dt><dd><p>MNE epochs or evoked object containing portions of raw EEG data built around specified
+timestamp(s). The inverse solution will be built based on the data in the specified epoch.</p>
+</dd>
 <dt>forward: mne.forward.forward.Forward</dt><dd><p>Specifies the ‘forward’ parameter in the mne.minimum_norm.make_inverse_operator() function.</p>
 </dd>
 <dt>epoch_num: int | str</dt><dd><p>If input is an ‘int’ then this specifies which epoch in the ‘epochs’ number to build an
@@ -972,6 +904,8 @@ or mne.minimum_norm.apply_inverse() (if using evoked data).</p>
 </dd>
 <dt>pick_ori: str</dt><dd><p>Specifies the ‘pick_ori’ parameter in mne.minimum_norm.apply_inverse_epochs() (if using epochs)
 or mne.minimum_norm.apply_inverse() (if using evoked data).</p>
+</dd>
+</dl>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
 <dt>mne.source_estimate.SourceEstimate:</dt><dd><p>Forward operator built from the user_input epochs and the fsaverage brain.</p>
@@ -1110,6 +1044,7 @@ traces”.</p>
 </dl>
 </dd>
 </dl>
+<p>Returns:</p>
 </dd></dl>
 
 </div>
@@ -1118,7 +1053,7 @@ traces”.</p>
 <p>Module for reading and generating custom epochs</p>
 <dl class="py function">
 <dt id="simpl_eeg.connectivity.animate_connectivity">
-<code class="sig-prename descclassname"><span class="pre">simpl_eeg.connectivity.</span></code><code class="sig-name descname"><span class="pre">animate_connectivity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'correlation'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_sphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.connectivity.animate_connectivity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">simpl_eeg.connectivity.</span></code><code class="sig-name descname"><span class="pre">animate_connectivity</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'correlation'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pair_list</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_sphere</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.connectivity.animate_connectivity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Animate 2d EEG nodes on scalp with lines representing connectivity</p>
 <dl>
 <dt>Args:</dt><dd><dl>
@@ -1146,7 +1081,11 @@ Defaults to None for non-static width.</p>
 </dd>
 <dt>title: str (optional)</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
 </dd>
-<dt><a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
+<dt>colorbar: bool (optional)</dt><dd><p>Whether to show the colorbar. Defaults to True.</p>
+</dd>
+<dt>timestamp: bool (optional)</dt><dd><p>Whether to show the timestamp caption. Defaults to True.</p>
+</dd>
+<dt><a href="#id9"><span class="problematic" id="id10">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_sensors.html">https://mne.tools/stable/generated/mne.viz.plot_sensors.html</a></p>
 </dd>
@@ -1162,7 +1101,7 @@ Defaults to None for non-static width.</p>
 
 <dl class="py function">
 <dt id="simpl_eeg.connectivity.animate_connectivity_circle">
-<code class="sig-prename descclassname"><span class="pre">simpl_eeg.connectivity.</span></code><code class="sig-name descname"><span class="pre">animate_connectivity_circle</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'correlation'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.connectivity.animate_connectivity_circle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">simpl_eeg.connectivity.</span></code><code class="sig-name descname"><span class="pre">animate_connectivity_circle</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'correlation'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_connections</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'RdBu_r'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmin</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vmax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">line_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colorbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">timestamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.connectivity.animate_connectivity_circle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Animate connectivity circle</p>
 <dl>
 <dt>Args:</dt><dd><dl>
@@ -1184,7 +1123,11 @@ Defaults to None for non-static width.</p>
 </dd>
 <dt>title: str (optional)</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
 </dd>
-<dt><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
+<dt>colorbar: bool (optional)</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
+</dd>
+<dt>timestamp: bool (optional)</dt><dd><p>Whether to display the timestamp caption. Defaults to True.</p>
+</dd>
+<dt><a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html">https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html</a></p>
 </dd>
@@ -1296,7 +1239,7 @@ Defaults to [], which indicates all channels.</p>
 </dd>
 <dt>caption: str (optional)</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
 </dd>
-<dt><a href="#id9"><span class="problematic" id="id10">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
+<dt><a href="#id13"><span class="problematic" id="id14">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_connectivity_circle()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html">https://mne.tools/stable/generated/mne.viz.plot_connectivity_circle.html</a></p>
 </dd>
@@ -1342,11 +1285,11 @@ Defaults to None for non-static width.</p>
 </dd>
 <dt>title: str (optional)</dt><dd><p>The title to display on the plot. Defaults to None for no title.</p>
 </dd>
-<dt>colorbar: bool (optional)</dt><dd><p>Whether to display the colorbar or not. Defaults to True.</p>
+<dt>colorbar: bool (optional)</dt><dd><p>Whether to display the colorbar. Defaults to True.</p>
 </dd>
 <dt>caption: str (optional)</dt><dd><p>The caption to display at the bottom of the plot. Defaults to None.</p>
 </dd>
-<dt><a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
+<dt><a href="#id15"><span class="problematic" id="id16">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.viz.plot_sensors()</p>
 <p>Full list of options available at
 <a class="reference external" href="https://mne.tools/stable/generated/mne.viz.plot_sensors.html">https://mne.tools/stable/generated/mne.viz.plot_sensors.html</a></p>
 </dd>

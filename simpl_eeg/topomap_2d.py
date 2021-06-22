@@ -11,7 +11,7 @@ def add_timestamp(epoch, frame_number, xpos, ypos):
     Adds a timestamp to a matplotlib.image.AxesImage object
     
     Parameters:
-        epoch : mne.epochs.Epochs
+        epoch: mne.epochs.Epochs
             MNE epochs object containing the timestamps.
 
         frame_number: int
@@ -99,7 +99,7 @@ def plot_topomap_2d(epoch,
     
     defaultKwargs = {'contours': 0, 'sphere': 100, 'res': 64, 'extrapolate': 'head', 'outlines': 'head',
                      'axes': None, 'mask': None, 'mask_params': None, 'image_interp': 'bilinear', 'show': False,
-                     'onselect': None, 'border' : 'mean', 'ch_type': 'eeg'}
+                     'onselect': None, 'border': 'mean', 'ch_type': 'eeg'}
     kwargs = { **defaultKwargs, **kwargs }    
     
     if type(plotting_data) != numpy.ndarray and plotting_data is not None:
@@ -273,7 +273,7 @@ def animate_topomap_2d(epoch,
     
     defaultKwargs = {'contours': 0, 'sphere': 100, 'res': 64, 'extrapolate': 'head', 'outlines': 'head',
                     'mask': None, 'mask_params': None, 'image_interp': 'bilinear', 'show': False,
-                    'onselect': None, 'border' : 'mean', 'ch_type': 'eeg'}
+                    'onselect': None, 'border': 'mean', 'ch_type': 'eeg'}
     kwargs = { **defaultKwargs, **kwargs }   
 
     # Generate array of all frames to be shown based on parameters
