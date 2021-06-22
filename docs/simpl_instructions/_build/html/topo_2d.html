@@ -726,42 +726,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_img8b0913a027944dde99c802ae4cc4e209">
+  <img id="_anim_imgc048d18a4d474c4898f99c875ad6bbbb">
   <div class="anim-controls">
-    <input id="_anim_slider8b0913a027944dde99c802ae4cc4e209" type="range" class="anim-slider"
+    <input id="_anim_sliderc048d18a4d474c4898f99c875ad6bbbb" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="anim8b0913a027944dde99c802ae4cc4e209.set_frame(parseInt(this.value));"></input>
+           oninput="animc048d18a4d474c4898f99c875ad6bbbb.set_frame(parseInt(this.value));"></input>
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim8b0913a027944dde99c802ae4cc4e209.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="animc048d18a4d474c4898f99c875ad6bbbb.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="anim8b0913a027944dde99c802ae4cc4e209.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="animc048d18a4d474c4898f99c875ad6bbbb.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="anim8b0913a027944dde99c802ae4cc4e209.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="animc048d18a4d474c4898f99c875ad6bbbb.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="anim8b0913a027944dde99c802ae4cc4e209.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="animc048d18a4d474c4898f99c875ad6bbbb.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="anim8b0913a027944dde99c802ae4cc4e209.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="animc048d18a4d474c4898f99c875ad6bbbb.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="anim8b0913a027944dde99c802ae4cc4e209.play_animation()">
+      <button title="Play" aria-label="Play" onclick="animc048d18a4d474c4898f99c875ad6bbbb.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="anim8b0913a027944dde99c802ae4cc4e209.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="animc048d18a4d474c4898f99c875ad6bbbb.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="anim8b0913a027944dde99c802ae4cc4e209.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="animc048d18a4d474c4898f99c875ad6bbbb.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="anim8b0913a027944dde99c802ae4cc4e209.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="animc048d18a4d474c4898f99c875ad6bbbb.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select8b0913a027944dde99c802ae4cc4e209"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selectc048d18a4d474c4898f99c875ad6bbbb"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_8b0913a027944dde99c802ae4cc4e209"
+      <input type="radio" name="state" value="once" id="_anim_radio1_c048d18a4d474c4898f99c875ad6bbbb"
              >
-      <label for="_anim_radio1_8b0913a027944dde99c802ae4cc4e209">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_8b0913a027944dde99c802ae4cc4e209"
+      <label for="_anim_radio1_c048d18a4d474c4898f99c875ad6bbbb">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_c048d18a4d474c4898f99c875ad6bbbb"
              checked>
-      <label for="_anim_radio2_8b0913a027944dde99c802ae4cc4e209">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_8b0913a027944dde99c802ae4cc4e209"
+      <label for="_anim_radio2_c048d18a4d474c4898f99c875ad6bbbb">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_c048d18a4d474c4898f99c875ad6bbbb"
              >
-      <label for="_anim_radio3_8b0913a027944dde99c802ae4cc4e209">Reflect</label>
+      <label for="_anim_radio3_c048d18a4d474c4898f99c875ad6bbbb">Reflect</label>
     </form>
   </div>
 </div>
@@ -771,9 +771,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_img8b0913a027944dde99c802ae4cc4e209";
-    var slider_id = "_anim_slider8b0913a027944dde99c802ae4cc4e209";
-    var loop_select_id = "_anim_loop_select8b0913a027944dde99c802ae4cc4e209";
+    var img_id = "_anim_imgc048d18a4d474c4898f99c875ad6bbbb";
+    var slider_id = "_anim_sliderc048d18a4d474c4898f99c875ad6bbbb";
+    var loop_select_id = "_anim_loop_selectc048d18a4d474c4898f99c875ad6bbbb";
     var frames = new Array(41);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -23806,7 +23806,7 @@ JUrAFAqFQhFKlIApFAqFIpQoAVMoFApFKFECplAoFIpQ8v/kd03+dx9wBQAAAABJRU5ErkJggg==\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anim8b0913a027944dde99c802ae4cc4e209 = new Animation(frames, img_id, slider_id, 83.0,
+        animc048d18a4d474c4898f99c875ad6bbbb = new Animation(frames, img_id, slider_id, 83.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -23926,7 +23926,7 @@ plot_topomap_2d(epoch, plotting_data=None, recording_number=0, colormap=&#39;RdB
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">timestamp</span><span class="o">=</span><span class="kc">None</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">timestamp</span><span class="o">=</span><span class="kc">True</span>
 </pre></div>
 </div>
 </div>
@@ -23949,26 +23949,7 @@ plot_topomap_2d(epoch, plotting_data=None, recording_number=0, colormap=&#39;RdB
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">3</span><span class="n">b1df23f1b5a</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">plot</span> <span class="o">=</span> <span class="n">topomap_2d</span><span class="o">.</span><span class="n">plot_topomap_2d</span><span class="p">(</span>
-<span class="g g-Whitespace">      </span><span class="mi">2</span>     <span class="n">epoch</span><span class="p">,</span>
-<span class="g g-Whitespace">      </span><span class="mi">3</span>     <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span>
-<span class="g g-Whitespace">      </span><span class="mi">4</span> <span class="p">)</span>
-<span class="g g-Whitespace">      </span><span class="mi">5</span> <span class="n">plot</span><span class="p">;</span>
-
-<span class="nn">~/mds/simpl_eeg_capstone/simpl_eeg/topomap_2d.py</span> in <span class="ni">plot_topomap_2d</span><span class="nt">(epoch, plotting_data, recording_number, colormap, colorbar, cmin, cmax, mark, timestamp, **kwargs)</span>
-<span class="g g-Whitespace">    </span><span class="mi">149</span> 
-<span class="g g-Whitespace">    </span><span class="mi">150</span>     <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">timestamp</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">bool</span><span class="p">:</span>
-<span class="ne">--&gt; </span><span class="mi">151</span>         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span>
-<span class="g g-Whitespace">    </span><span class="mi">152</span>                 <span class="sd">&quot;&quot;&quot;Passed timestamp object is not in the correct format, </span>
-<span class="g g-Whitespace">    </span><span class="mi">153</span><span class="sd">                 please pass a bool (True or False) instead&quot;&quot;&quot;</span>
-
-<span class="ne">TypeError</span>: Passed timestamp object is not in the correct format, 
-                <span class="n">please</span> <span class="k">pass</span> <span class="n">a</span> <span class="nb">bool</span> <span class="p">(</span><span class="kc">True</span> <span class="ow">or</span> <span class="kc">False</span><span class="p">)</span> <span class="n">instead</span>
-</pre></div>
-</div>
+<img alt="_images/topo_2d_32_0.png" src="_images/topo_2d_32_0.png" />
 </div>
 </div>
 </div>

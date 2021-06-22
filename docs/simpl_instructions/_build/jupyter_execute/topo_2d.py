@@ -157,7 +157,7 @@ help(topomap_2d.plot_topomap_2d)
 # In[11]:
 
 
-timestamp=None
+timestamp=True
 
 
 # ### Generating a standalone plot
