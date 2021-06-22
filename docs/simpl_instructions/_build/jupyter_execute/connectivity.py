@@ -109,6 +109,7 @@ pair_list = PAIR_OPTIONS["far_coherence"]
 # In[9]:
 
 
+# for displaying animation in jupyter notebook
 get_ipython().run_line_magic('matplotlib', 'inline')
 
 
@@ -189,6 +190,7 @@ max_connections = 50
 # In[14]:
 
 
+# for displaying animation in jupyter notebook
 get_ipython().run_line_magic('matplotlib', 'notebook')
 
 
@@ -293,10 +295,17 @@ pair_list = PAIR_OPTIONS["far_coherence"]
 # In[20]:
 
 
-get_ipython().run_cell_magic('capture', '', 'plot = connectivity.plot_connectivity(\n    epoch,\n)')
+# for displaying plot in jupyter notebook
+get_ipython().run_line_magic('matplotlib', 'inline')
 
 
 # In[21]:
+
+
+get_ipython().run_cell_magic('capture', '', 'plot = connectivity.plot_connectivity(\n    epoch,\n)')
+
+
+# In[22]:
 
 
 plot
@@ -317,13 +326,13 @@ plot
 # ### Define parameters
 # A detailed description of all animation parameters can be found in the `connectivity.plot_conn_circle` docstring:
 
-# In[22]:
+# In[23]:
 
 
 help(connectivity.plot_conn_circle)
 
 
-# In[23]:
+# In[24]:
 
 
 vmin = -1
@@ -340,13 +349,20 @@ max_connections = 50
 # Generating a plot will use the first frame in the epoch, so make sure to update your epoch object to contain your frame of interest. 
 # ```
 
-# In[24]:
-
-
-get_ipython().run_cell_magic('capture', '', 'plot = connectivity.plot_conn_circle(\n    epoch,\n)')
-
-
 # In[25]:
+
+
+# for displaying plot in jupyter notebook
+get_ipython().run_line_magic('matplotlib', 'inline')
+
+
+# In[26]:
+
+
+get_ipython().run_cell_magic('capture', '', '\nplot = connectivity.plot_conn_circle(\n    epoch,\n)')
+
+
+# In[27]:
 
 
 plot
