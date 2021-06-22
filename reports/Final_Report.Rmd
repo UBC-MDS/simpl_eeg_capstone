@@ -24,7 +24,7 @@ epochs = eeg_objects.Epochs(example_path)
 epoch = epochs.epoch
 ```
 
-# DSCI 591: Capstone Project -- Proposal Report for Sensing in Biomechanical Processes Lab (SimPL)
+# DSCI 591: Capstone Project - Proposal Report for Sensing in Biomechanical Processes Lab (SimPL)
 
 **Team members**: Matthew Pin, Mo Garoub, Sasha Babicki, Zhanyi (Yiki) Su
 
@@ -36,13 +36,13 @@ epoch = epochs.epoch
 
 Our partner SimPL is a research lab that explores research questions concerning the human brain. The purpose of our project was to to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. After learning about SimPL's problem with limited visualization methods, we proposed the following deliverables:
 
-1)  A Python package for generating advanced EEG visualizations and metrics
+1) A Python package for generating advanced EEG visualizations and metrics
 
-2)  An interactive web app to provide a user interface for the package
+2) An interactive web app to provide a user interface for the package
 
 Stretch Goal:
 
-1)  Unsupervised machine learning model to cluster and identify patterns in the EEG data
+1) Unsupervised machine learning model to cluster and identify patterns in the EEG data
 
 ## 3.2 Introduction
 
@@ -62,8 +62,6 @@ The Python visualization package was mainly developed using the open source libr
 
 For the interactive user interface (UI) we used an open source framework called [Streamlit](https://streamlit.io/) which is designed for creating web apps from Python scripts. Streamlit benefits from being lightweight and requiring no front-end experience, which will facilitate ease of updating in the future. The downsides to Streamlit is reduced flexibility, only certain types of figures can be used and customization of styling is limited. However, for the purposes of this project we believe that the simplicity and ease of maintenance outweighs the need for additional features.
 
-For the unsupervised clustering method, we have tried both KMeans clustering model and Hidden Markov model to identify potential brain states in the data across different time periods. Brain states are considered as similar patterns of 19 electrodes over a period of time in the raw EEG data. The KMeans clustering method utilizes the [KMeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) model from [Scikit-learn](https://scikit-learn.org/stable/index.html) to separate data from each time periods into different clusters based on its distance from the center of the entire dataset. The Hidden Markov model method uses the GaussianHMM model from [hmmlearn](https://hmmlearn.readthedocs.io/en/latest/) to learn the Gaussian distribution of the EEG signals and update the transmission probability matrix based on the changes of the distribution as it transitions from one time section to another. Furthermore, we looked into expanding our analysis to methods beyond what we didn't cover in Master of Data Science program such as Self Organizing Maps (SOM) and K-means and Dynamic Time Warping using `tslean` package. 
-
 With the goal of identifying multiple unique "brain states" in the data both KMeans and Hidden Markov model unsupervised clustering methods have been tested and utilized. In this context, "brain states" refer to specific patterns of electrical activity within the 19 channel EEG data. The KMeans clustering method utilizes the [KMeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) model from [Scikit-learn](https://scikit-learn.org/stable/index.html) to cluster data from each provided time period based on distance from the center of the entire dataset. The Hidden Markov model method uses the GaussianHMM model from [hmmlearn](https://hmmlearn.readthedocs.io/en/latest/) to calculate the Gaussian distribution of the EEG signals and creates a transmission probability matrix based on the transitions between provided time sections. Furthermore, we have also looked into expanding our analysis to methods beyond what we covered in MDS such as Self Organizing Maps (SOM) and K-means and Dynamic Time Warping using `tslean`.
 
 ## 3.4 Data Product and Results
@@ -72,37 +70,37 @@ With the goal of identifying multiple unique "brain states" in the data both KMe
 
 The `simpl_eeg` Python package is able to produce advanced visualizations for specified time ranges of EEG data. The following visualization types are available:
 
-1)  Raw voltage plot - visualize raw voltage values changes over time for each node
+1) Raw voltage plot - visualize raw voltage values changes over time for each node
 
 ```{python raw_voltage}
 #raw_voltage.plot_voltage(epoch)
 ```
 
-2)  2D head map - visualize a topographic heatmap of the voltage values mapped to a 2D model of a skull
+2) 2D head map - visualize a topographic heatmap of the voltage values mapped to a 2D model of a skull
 
 ```{python 2d_head}
 #topomap_3d_head.topo_3d_map(epoch, 0)
 ```
 
-3)  3D head map - visualize a topographic heatmap of voltage values mapped to a 3D model of skull
+3) 3D head map - visualize a topographic heatmap of voltage values mapped to a 3D model of skull
 
 ```{python 3d_head}
 topomap_2d.plot_topomap_2d(epoch)
 ```
 
-4)  3D brain map - visualize a topographic heatmap of interpolated voltage values mapped to their presumed position on a 3D model of a brain
+4) 3D brain map - visualize a topographic heatmap of interpolated voltage values mapped to their presumed position on a 3D model of a brain
 
 ```{python 3d_brain}
 #topomap_3d_brain.plot_topomap_3d_brain(epoch, backend='matplotlib')
 ```
 
-5)  Connectivity - visualize pairwise connectivity measurements between nodes for specified time ranges
+5) Connectivity - visualize pairwise connectivity measurements between nodes for specified time ranges
 
 ```{python connectivity}
 #connectivity.plot_connectivity(epoch)
 ```
 
-6)  Connectivity Circle - alternative perspective for visualizing pairwise connectivity measurements
+6) Connectivity Circle - alternative perspective for visualizing pairwise connectivity measurements
 
 ```{python connectivity_circle}
 #connectivity.plot_conn_circle(epoch)
@@ -120,7 +118,7 @@ In addition to the package we built an interactive web application to serve as a
 
 ### 3.4.2 Stretch goal
 
-Although we have tried different approaches for the stretch goal, due to the limited time and efforts we could allocate to the stretch goal so far, we haven't concluded any significant findings yet. However, we do think it would be useful to document all approaches we have tried so far to serve the partner as a good reference point to continue to work on the stretch goal in the future. Hence, we have decided to create a Jupyter notebook file for each approaches to outline the workflow from data preprocessing, model fitting to output visualization for each approaches. We have also included a section called `Next steps` in some applicable notebooks to let the partner know that there are some next steps potentially useful in finding the significant results but we haven't had time to implement yet, such as using rolling means and sliding windows as feature engineering or including a customized visualization function for visualizing clustering outcome. 
+Although we have tried different approaches for the stretch goal, due to the limited time and efforts we could allocate to the stretch goal so far, we haven't concluded any significant findings yet. However, we do think it would be useful to document all approaches we have tried so far to serve the partner as a good reference point to continue to work on the stretch goal in the future. Hence, we have decided to create a Jupyter notebook file for each approaches to outline the workflow from data preprocessing, model fitting to output visualization for each approaches. We have also included a section called `Next steps` in some applicable notebooks to let the partner know that there are some next steps potentially useful in finding the significant results but we haven't had time to implement yet, such as using rolling means and sliding windows as feature engineering or including a customized visualization function for visualizing clustering outcome.
 
 ## 3.5 Conclusions and Recommendations
 
