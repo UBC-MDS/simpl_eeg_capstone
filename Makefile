@@ -24,7 +24,7 @@ install :
 	python -m pip install -e .
 
 test :
-	poetry run pytest
+	pytest tests
 
 clean_docs :
 	jb clean docs/simpl_instructions/
