@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "simpl_eeg"
 version = "0.1.0"
-description = "A package to generate animated visualization for EEG data"
+description = "A package to generate visualizations for EEG data"
 authors =  ["Matthew Pin", "Mo Garoub", "Yiki Su", "Sasha Babicki"]
 license = "MIT"
 readme = "README.md"
@@ -10,6 +10,7 @@ repository = "https://github.com/UBC-MDS/simpl_eeg_capstone"
 
 [tool.poetry.dependencies]
 python = ">=3.8,<3.10"
+pip = "^21.1.2"
 flake8 = "^3.9.2"
 pytest = "^6.2.4"
 pandas = "^1.2.4"
@@ -18,34 +19,29 @@ mne = "^0.23.0"
 scipy = "^1.6.3"
 matplotlib = "^3.4.1"
 plotly = "4.14.3"
-streamlit = "0.82.0"
+streamlit = "^0.83.0"
 ipywidgets = "^7.5"
 kaleido = "0.2.0"
 gif = "3.0.0"
 moviepy = "1.0.3"
 scikit-learn = "0.24.2"
-nibabel = "3.2.1"
-ffmpeg = "^1.4"
 jupyter = "^1.0.0"
 poetry = "^1.1.6"
 tornado = "^6.1"
+pandoc = "^1.0.2"
+
+[tool.poetry.dev-dependencies]
+nibabel = "3.2.1"
+ffmpeg = "^1.4"
 pyqt5-qt5 = ">=5.12.2"
 PyQt5 = "5.15.4"
 pyvista = ">=0.30"
 pyvistaqt = ">=0.4"
 
-[tool.poetry.dev-dependencies]
-
 [build-system]
 requires = [
     "poetry-core>=1.0.0", 
     "setuptools>=42",
-    "wheel",
-    "pandas", 
-    "numpy", 
-    "mne", 
-    "scipy", 
-    "matplotlib",  
-    "plotly"
+    "wheel>=0.36.1"
     ]
 build-backend = "poetry.core.masonry.api"
