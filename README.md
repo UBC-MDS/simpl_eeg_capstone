@@ -24,6 +24,8 @@ If you have no experience working with the unix shell click [here](https://ubc-m
 # Package Installation Instructions
 Run the following command from the root folder of the project:
 ```bash
+pip install poetry
+poetry install --no-dev
 pip install -e .
 ```
 
