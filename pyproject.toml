@@ -28,6 +28,7 @@ scikit-learn = "0.24.2"
 jupyter = "^1.0.0"
 poetry = "^1.1.6"
 tornado = "^6.1"
+pandoc = "^1.0.2"
 
 [tool.poetry.dev-dependencies]
 nibabel = "3.2.1"

@@ -4,27 +4,7 @@ output:
 geometry: margin=2.5cm
 ---
 
-```{r setup, include=FALSE}
-library(reticulate)
-use_condaenv("simpl_eeg")
-```
-
-```{python import, include=FALSE}
-from simpl_eeg import (
-    eeg_objects,
-    raw_voltage,
-    connectivity,
-    topomap_2d,
-    topomap_3d_brain,
-    topomap_3d_head
-)
-
-example_path = "../data/927"
-epochs = eeg_objects.Epochs(example_path)
-epoch = epochs.epoch
-```
-
-# DSCI 591: Capstone Project - Proposal Report for Sensing in Biomechanical Processes Lab (SimPL)
+# DSCI 591: Capstone Project - Final Report for Sensing in Biomechanical Processes Lab (SimPL)
 
 **Team members**: Matthew Pin, Mo Garoub, Sasha Babicki, Zhanyi (Yiki) Su
 
@@ -52,7 +32,7 @@ SimPL is a research lab in the department of Mechanical Engineering at UBC which
 
 Our team was approached to design novel solutions and methods to simplify the process of extracting and visualizing the human brain state using EEG data. Our goal was to extend the number of visualizations available to researchers, including those with a with minimal programming background. Making multiple visualizations convenient to access and view simultaneously will allow for an intuitive understanding of the broad picture of brain function. Additionally, future iterations of our machine learning stretch goal could uncover patterns in the data which could not be determined based on visualization alone.
 
-![Example of a Standard Visualization for Two Seconds of 19 Channel EEG Raw Voltage Values](images/viz_example.png){height="15%"}
+![Example of a Standard Visualization for Two Seconds of 19 Channel EEG Raw Voltage Values](images/viz_example.png){height=15% width=75%}
 
 \newpage
 
@@ -72,41 +52,33 @@ The `simpl_eeg` Python package is able to produce advanced visualizations for sp
 
 1) Raw voltage plot - visualize raw voltage values changes over time for each node
 
-```{python raw_voltage}
-#raw_voltage.plot_voltage(epoch)
-```
+![Raw voltage plot](images/raw_voltage.png){ height=20% width=75%}
 
-2) 2D head map - visualize a topographic heatmap of the voltage values mapped to a 2D model of a skull
+2) 2D topographic head map - visualize a topographic heatmap of the voltage values mapped to a 2D model of a skull
 
-```{python 2d_head}
-#topomap_3d_head.topo_3d_map(epoch, 0)
-```
+![2D topographic head map](images/2d_head.png){ height=20% }
 
 3) 3D head map - visualize a topographic heatmap of voltage values mapped to a 3D model of skull
 
-```{python 3d_head}
-topomap_2d.plot_topomap_2d(epoch)
-```
+![3D topographic head map](images/3d_head){ height=20% }
 
 4) 3D brain map - visualize a topographic heatmap of interpolated voltage values mapped to their presumed position on a 3D model of a brain
 
-```{python 3d_brain}
-#topomap_3d_brain.plot_topomap_3d_brain(epoch, backend='matplotlib')
-```
+![3D topographic brain map](images/3d_brain.png){ height=20% }
 
-5) Connectivity - visualize pairwise connectivity measurements between nodes for specified time ranges
+5) Connectivity plot - visualize pairwise connectivity measurements between nodes for specified time ranges
 
-```{python connectivity}
-#connectivity.plot_connectivity(epoch)
-```
+![Connectivity plot](images/connectivity.png){ height=20% }
 
 6) Connectivity Circle - alternative perspective for visualizing pairwise connectivity measurements
 
-```{python connectivity_circle}
-#connectivity.plot_conn_circle(epoch)
-```
+![Connectivity circle plot](images/connectivity_circle.png){ height=20% }
 
 With the exception of the Raw voltage plot, each visualization can be created as an animation to view changes over time or as a standalone plot. Detailed instructions on how to use the package can be found in our [documentation](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html).
+
+Multiple visualization techniques were included in order to allow the data to be viewed from different perspectives. Each visualization type comes with its own advantages and drawbacks, detailed in the table below. 
+
+![Visualization comparison](images/comparison.png){ height=20% }
 
 ### 3.4.2 User Interface
 
@@ -118,7 +90,7 @@ In addition to the package we built an interactive web application to serve as a
 
 ### 3.4.2 Stretch goal
 
-Although we have tried different approaches for the stretch goal, due to the limited time and efforts we could allocate to the stretch goal so far, we haven't concluded any significant findings yet. However, we do think it would be useful to document all approaches we have tried so far to serve the partner as a good reference point to continue to work on the stretch goal in the future. Hence, we have decided to create a Jupyter notebook file for each approaches to outline the workflow from data preprocessing, model fitting to output visualization for each approaches. We have also included a section called `Next steps` in some applicable notebooks to let the partner know that there are some next steps potentially useful in finding the significant results but we haven't had time to implement yet, such as using rolling means and sliding windows as feature engineering or including a customized visualization function for visualizing clustering outcome.
+Although we have tried different approaches for the stretch goal, due to the limited time we haven't concluded any significant findings yet. However, we do think it would be useful to document all approaches we have tried so far to serve the partner as a good reference point to continue to work on the stretch goal in the future. Hence, we have decided to create a Jupyter notebook file for each approaches to outline the workflow from data preprocessing, model fitting to output visualization for each approaches. We have also included a section called `Next steps` in some applicable notebooks to let the partner know that there are some next steps potentially useful in finding the significant results but we haven't had time to implement yet, such as using rolling means and sliding windows as feature engineering or including a customized visualization function for visualizing clustering outcome.
 
 ## 3.5 Conclusions and Recommendations
 
