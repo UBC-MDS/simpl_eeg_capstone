@@ -25,7 +25,7 @@ jobs:
     - name: Install dependencies
       run: |
         pip install -e .
-    - name: Check style
-      run: flake8 . --exit-zero --exclude=docs*
+    # - name: Check style
+    #   run: flake8 . --exit-zero --exclude=docs*
     # - name: Test with pytest
     #  run: poetry run pytest
