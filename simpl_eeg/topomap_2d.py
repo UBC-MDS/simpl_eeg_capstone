@@ -54,7 +54,9 @@ def plot_topomap_2d(epoch,
             MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
 
         plotting_data: numpy.ndarray or None
-            array of the EEG data from a measurement (not a time interval) to be plotted
+            Array of the EEG data from a measurement (not a time interval) to be plotted should be in
+            the format (num_channels, ) i.e. a single row of values for the only timestamp you plan
+            to plot.
         
         recording_number: int
             The "frame" of the epoch to show in the plot.
@@ -105,31 +107,39 @@ def plot_topomap_2d(epoch,
             """Passed plotting_data object is not in the correct format, 
             please pass an numpy.ndarray object instead"""
         )
-        
-    if type(plotting_data) == numpy.ndarray:
-        if len(plotting_data.shape) > 1:
-            raise ValueError(
-                """Passed plotting_data object does not have the correct shape. 
-                Please pass a numpy.ndarray of a single set of voltage readings for each node used in the data.
-                For example, if your data has 19 nodes, then the shape should be (19,)"""
-            )
     
     if type(recording_number) != int:
         raise TypeError(
             """Passed plotting_data object is not in the correct format, 
             please pass an int instead"""
         )
-
-    if isinstance(epoch, mne.epochs.Epochs):
-        plotting_data = epoch.get_data()[
-            0][:, recording_number]
-    elif isinstance(epoch, mne.evoked.EvokedArray):
-        plotting_data = epoch.data[:, recording_number]
-    else:
+    
+    if type(epoch) is not mne.epochs.Epochs and type(epoch) is not mne.evoked.EvokedArray:
         raise TypeError(
             """Passed epoch object is not in the correct format, 
             please pass an mne.epochs.Epochs or mne.evoked.EvokedArray object instead"""
         )
+    
+    if plotting_data is None:
+        if isinstance(epoch, mne.epochs.Epochs):
+            plotting_data = epoch.get_data()[0][:, recording_number]
+        elif isinstance(epoch, mne.evoked.EvokedArray):
+            plotting_data = epoch.data[:, recording_number]
+    
+    if type(plotting_data) == numpy.ndarray:
+        if plotting_data.shape[0] != user_epoch.info['nchan']:
+            raise ValueError(
+                """Passed plotting_data object does not match the number of channels in the epoch data. 
+                Please pass a numpy.ndarray of a single set of voltage readings for each node used in the data.
+                For example, if your data has 19 channels, then the shape should be (19,)"""
+            )
+        if len(plotting_data.shape) > 1:
+            raise ValueError(
+                """Passed plotting_data object contains more than a single row. 
+                Please pass a numpy.ndarray of a single set of voltage readings for each node used in the data.
+                For example, if your data has 19 channels, then the shape should be (19,)"""
+            )
+    
     
     if mark not in ['dot', 'r+', 'channel_name', 'none']:
         raise ValueError(
@@ -171,9 +181,9 @@ def plot_topomap_2d(epoch,
         vmin=cmin / 1e6,  # Convert back to volts
         vmax=cmax / 1e6,
         cmap=colormap, 
-        sensors=sensor_value,  # True=black dots, "r+"=red + 
-        names=names_value,  # Feed in channel names
-        show_names=show_names_value,  # Show channel names at each location 
+        sensors=sensor_value,  
+        names=names_value, 
+        show_names=show_names_value,
         **kwargs
     )[0]
     
@@ -200,6 +210,7 @@ def plot_topomap_2d(epoch,
 
 
 def animate_topomap_2d(epoch,
+                       plotting_data=None,
                        colormap='RdBu_r',
                        mark='dot',
                        cmin=-30,
@@ -260,10 +271,10 @@ def animate_topomap_2d(epoch,
             matplotlib funcanimation of a 2d topographic map based on the input epoch data
     """
     
-    defaultKwargs = {'contours': 0, 'sphere': 100, 'res': 64, 'extrapolate': 'head', 'outlines': 'head',
-                    'mask': None, 'mask_params': None, 'image_interp': 'bilinear', 'show': False,
-                     'onselect': None, 'border' : 'mean', 'ch_type': 'eeg'}
-    kwargs = { **defaultKwargs, **kwargs }   
+#     defaultKwargs = {'contours': 0, 'sphere': 100, 'res': 64, 'extrapolate': 'head', 'outlines': 'head',
+#                     'mask': None, 'mask_params': None, 'image_interp': 'bilinear', 'show': False,
+#                     'onselect': None, 'border' : 'mean', 'ch_type': 'eeg'}
+#     kwargs = { **defaultKwargs, **kwargs }   
 
     # Generate array of all frames to be shown based on parameters
     # if epoch data is passed then extract a specific epoch number
@@ -286,8 +297,16 @@ def animate_topomap_2d(epoch,
                 """Passed colorbar object is not in the correct format, 
                 please pass a bool (True or False) instead"""
             )
+    
+    if type(plotting_data) is not numpy.ndarray and plotting_data is not None:
+        raise TypeError(
+                """Passed plotting_data object is not in the correct format, 
+                please pass a numpy.ndarray instead"""
+            )
 
-    if isinstance(epoch, mne.epochs.Epochs):
+    if type(plotting_data) == numpy.ndarray:
+        frames_to_show = np.arange(0, plotting_data.shape[1], 1)
+    elif isinstance(epoch, mne.epochs.Epochs):
         frames_to_show = np.arange(0, epoch.get_data()[0].shape[1], 1)
         plotting_data = epoch.get_data()[0]
     elif isinstance(epoch, mne.evoked.EvokedArray):
@@ -313,17 +332,15 @@ def animate_topomap_2d(epoch,
             plotting_data=plotting_data[:, frame_number],
             colormap=colormap,
             mark=mark,
-            colorbar=False,
             cmin = cmin,
             cmax = cmax,
             timestamp = False,
+            colorbar=False,
             **kwargs
         )
         
         if timestamp:
             add_timestamp(epoch, frame_number, -35, -130)
-        
-        topomap_2d = plt.plot(1,2)
 
         if colorbar:
             cax = ax_divider.append_axes("right", size=0.1, pad="0%")

@@ -29,6 +29,10 @@ ffmpeg = "^1.4"
 jupyter = "^1.0.0"
 poetry = "^1.1.6"
 tornado = "^6.1"
+pyqt5-qt5 = ">=5.12.2"
+PyQt5 = "5.15.4"
+pyvista = ">=0.30"
+pyvistaqt = ">=0.4"
 
 [tool.poetry.dev-dependencies]
 
