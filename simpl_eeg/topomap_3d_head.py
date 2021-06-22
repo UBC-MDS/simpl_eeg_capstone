@@ -554,6 +554,15 @@ def save_gif(epoch, gifname, duration):
         duration: int
             The duration (milliseconds) between each frame.
     """
+    if type(epoch) is not mne.epochs.Epochs:
+        raise TypeError(
+            "epoch is not an epoched data, "
+            "please refer to eeg_objects to create an epoched data"
+        )
+    if type(gifname) is not str:
+        raise TypeError("gifname has to be a string")
+    if type(duration) is not int:
+        raise TypeError("duration has to be a number")
 
     frames = []
     starting = epoch.to_data_frame()["time"].min()

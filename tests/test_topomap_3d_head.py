@@ -206,11 +206,11 @@ def test_topo3dhead_plot():
 def test_save_gif():
     test_df = pd.DataFrame({"x": [1]})
     with pytest.raises(TypeError):
-        topomap_3d_head.save_gif(test_df, "save.gif", 500)
+        topomap_3d_head.save_gif(test_df, "1", 200)
     with pytest.raises(TypeError):
-        topomap_3d_head.save_gif(epoch42, 20, 500)
+        topomap_3d_head.save_gif(test_df, 1, 200)
     with pytest.raises(TypeError):
-        topomap_3d_head.save_gif(epoch42, "save.gif", "500")
+        topomap_3d_head.save_gif(epoch42, "20", 200.05)
     
 
 
@@ -223,4 +223,5 @@ if __name__ == "__main__":
     test_get_node_dataframe()
     test_interpolated_time()
     test_topo3dhead_plot()
+    test_save_gif()
     print("All tests passed!")
