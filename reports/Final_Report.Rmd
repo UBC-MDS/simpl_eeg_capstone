@@ -98,9 +98,13 @@ Although we have tried different approaches for the stretch goal, due to the lim
 
 ## 3.5 Conclusions and Recommendations
 
-Both main goals have been completed. The package functionality allows for generation of all the figures laid out in our initial proposal with a variety of options available for fine-tuning and customization for each visualization method. Each figure has a unique combination of strengths and weaknesses which provide unique options regardless of what the researcher desires. The Streamlit UI has an intuitive and uncluttered interface that enables straightforward generation of any of these figures and allows for tweaking of most of our visualization options. The UI can be further improved to allow users to specify custom file paths from within the interface. It could also be deployed on a webpage to allow for access without the installation of any local files, however, privacy and security of research data are potential hurdles in this process.
+Both main goals have been completed and the stretch goal has been partially completed. A full list of recommendations can be found in the [Product Enhancement Ideas GitHub issue](https://github.com/UBC-MDS/simpl_eeg_capstone/issues/142).
 
-The stretch goal has been started but will require further development from the partner. 
+The package functionality allows for generation of all the figures laid out in our initial proposal with a variety of options available for fine-tuning and customization for each visualization method. Each figure has a unique combination of strengths and weaknesses which provide unique options regardless of what the researcher desires. We recommend to the partner to improve the package by adding further functionality such as offering additional file type support. 
+
+The Streamlit UI has an intuitive and uncluttered interface that enables straightforward generation of any of these figures and allows for tweaking of most of our visualization options. We recommend for the partner to update the UI to allow users to specify custom data file paths from within the interface. We also recommend deploying the application as a publically hosted web application to allow for access without the installation of any local files, however, privacy and security of research data are potential hurdles in this process.
+
+The stretch goal has been started but will require further development from the partner. Our progress so far has been exploring different unsupervised clustering methods. Our detailed notebooks provide a good overview of potential useful pre-processing steps, available models and outcome visualization methods for EEG clustering tasks. We recommend the partner continue the machine learning analysis from where we left off, particularly with the SOM method which we deem to be the most promising. 
 
 \newpage
 
