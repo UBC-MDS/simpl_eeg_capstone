@@ -77,6 +77,8 @@ conda install nb_conda_kernels
 Finally, double check that you are in the simple\_eeg\_capstone directory and install the package contents using...
 
 ```bash 
+pip install poetry
+poetry install --no-dev
 pip install -e .
 ```
 

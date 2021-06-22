@@ -362,7 +362,9 @@
 </div>
 <p>(then press “y” to accept)</p>
 <p>Finally, double check that you are in the simple_eeg_capstone directory and install the package contents using…</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -e .
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install poetry
+poetry install --no-dev
+pip install -e .
 </pre></div>
 </div>
 <p>So what have we done? We created an environment to contain the package that we have prepared. This environment can be activated in any terminal window using the <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">simple_eeg</span></code> command (this must be done every time you re-open the app/terminal window). You will know that you are in this environment when the bracketed words in the terminal say <code class="docutils literal notranslate"><span class="pre">(simple_eeg)</span></code> like such…</p>
