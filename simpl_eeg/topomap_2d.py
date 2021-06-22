@@ -127,7 +127,7 @@ def plot_topomap_2d(epoch,
             plotting_data = epoch.data[:, recording_number]
     
     if type(plotting_data) == numpy.ndarray:
-        if plotting_data.shape[0] != user_epoch.info['nchan']:
+        if plotting_data.shape[0] != epoch.info['nchan']:
             raise ValueError(
                 """Passed plotting_data object does not match the number of channels in the epoch data. 
                 Please pass a numpy.ndarray of a single set of voltage readings for each node used in the data.
