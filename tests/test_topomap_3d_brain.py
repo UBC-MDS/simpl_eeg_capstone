@@ -38,14 +38,12 @@ with open('tests/test_data/test_stc.pickle', 'rb') as input:
 
 # def test_plot_topomap_3d_brain_pyvista():
 #     """Test cases for plotting 3D image mapped to the brain """
-#     input_epoch = epoch42
-#     expected_output = mne.viz._brain._brain.Brain #read the output figure
+#     expected_output = mne.viz._brain._brain.Brain
 
-#     assert  plot_topomap_3d_brain(input_epoch,
-#                                   input_stc,
+#     assert  type(topomap_3d_brain.plot_topomap_3d_brain(epoch42[0],
+#                                   test_stc,
 #                                   views = "fro",
-#                                   backend = 'pyvista') == expected_ouput
-
+#                                   backend = 'pyvista')) == expected_output
 
 def test_plot_topomap_3d_brain_matplotlib():
     """Test cases for plotting 3D image mapped to the brain """
@@ -89,8 +87,9 @@ def test_plot_topomap_3d_brain_matplotlib():
     with pytest.raises(ValueError):
         topomap_3d_brain.plot_topomap_3d_brain(input_epoch,
                                                input_stc,
-                                               views = [
-    "not a valid view", "not a valid view 2"],
+                                               views=["not a valid view",
+                                                        "not a valid view 2"
+                                                     ],
                                                backend = 'matplotlib')
 
     with pytest.raises(ValueError):
