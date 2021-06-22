@@ -31,9 +31,8 @@ poetry = "^1.1.6"
 tornado = "^6.1"
 pyqt5-qt5 = ">=5.12.2"
 PyQt5 = "5.15.4"
-pyvista = ">=0.31"
 pyvistaqt = ">=0.4"
-watchdog = "^2.1.2"
+pyvista = "^0.31.2"
 
 [tool.poetry.dev-dependencies]
 
