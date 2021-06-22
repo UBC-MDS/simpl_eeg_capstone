@@ -271,10 +271,10 @@ def animate_topomap_2d(epoch,
             matplotlib funcanimation of a 2d topographic map based on the input epoch data
     """
     
-#     defaultKwargs = {'contours': 0, 'sphere': 100, 'res': 64, 'extrapolate': 'head', 'outlines': 'head',
-#                     'mask': None, 'mask_params': None, 'image_interp': 'bilinear', 'show': False,
-#                     'onselect': None, 'border' : 'mean', 'ch_type': 'eeg'}
-#     kwargs = { **defaultKwargs, **kwargs }   
+    defaultKwargs = {'contours': 0, 'sphere': 100, 'res': 64, 'extrapolate': 'head', 'outlines': 'head',
+                    'mask': None, 'mask_params': None, 'image_interp': 'bilinear', 'show': False,
+                    'onselect': None, 'border' : 'mean', 'ch_type': 'eeg'}
+    kwargs = { **defaultKwargs, **kwargs }   
 
     # Generate array of all frames to be shown based on parameters
     # if epoch data is passed then extract a specific epoch number
