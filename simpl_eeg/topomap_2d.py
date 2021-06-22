@@ -147,7 +147,7 @@ def plot_topomap_2d(epoch,
                 'channel_name', or 'none'"""
             )
     
-    if type(timestamp) is not bool:
+    if type(timestamp) is not bool and timestamp is not none:
         raise TypeError(
                 """Passed timestamp object is not in the correct format, 
                 please pass a bool (True or False) instead"""
