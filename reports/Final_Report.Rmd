@@ -3,6 +3,7 @@ output:
   pdf_document: default
 geometry: margin=2.5cm
 ---
+
 ```{r setup, include=FALSE}
 library(reticulate)
 use_condaenv("simpl_eeg")
@@ -23,7 +24,7 @@ epochs = eeg_objects.Epochs(example_path)
 epoch = epochs.epoch
 ```
 
-# DSCI 591: Capstone Project – Proposal Report for Sensing in Biomechanical Processes Lab (SimPL)
+# DSCI 591: Capstone Project -- Proposal Report for Sensing in Biomechanical Processes Lab (SimPL)
 
 **Team members**: Matthew Pin, Mo Garoub, Sasha Babicki, Zhanyi (Yiki) Su
 
@@ -32,117 +33,119 @@ epoch = epochs.epoch
 **Date**: June 22, 2021
 
 ## 3.1. Executive Summary
-Our partner SimPL is a research lab that explores research questions concerning the human brain. The purpose of our project was to to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. After learning about SimPL’s problem with limited visualization methods, we proposed the following deliverables:
 
-1) A Python package for generating advanced EEG visualizations and metrics
+Our partner SimPL is a research lab that explores research questions concerning the human brain. The purpose of our project was to to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. After learning about SimPL's problem with limited visualization methods, we proposed the following deliverables:
 
-2) An interactive web app to provide a user interface for the package
+1)  A Python package for generating advanced EEG visualizations and metrics
 
-Stretch Goal: 
+2)  An interactive web app to provide a user interface for the package
 
-1) Unsupervised machine learning model to cluster and identify patterns in the EEG data
+Stretch Goal:
+
+1)  Unsupervised machine learning model to cluster and identify patterns in the EEG data
 
 ## 3.2 Introduction
+
 Electroencephalograms (EEG) is an electrophysiological measurement method used to examine the electrical activity of the brain and represent it as location-based channels of waves and frequencies. EEG benefits from being inexpensive and unobtrusive, leading to its widespread use in diagnosing brain disorders such as epilepsy and brain damage from head injuries. EEG data is recorded with high dimensionality, so the use of visualizations is essential for the data to be easily interpreted by humans. Currently, the options for visualizing EEG data require the use of complicated packages or software and the functionally is often limited.
 
 SimPL is a research lab in the department of Mechanical Engineering at UBC which focuses on developing quantitative and sensitive methods to evaluate the electrophysiological changes after sport head injuries. The underlying mechanisms of brain dysfunction are not fully understood, in part because concussion and brain injuries are generally invisible. EEG technology has proven particularly useful for their research purposes.
 
 Our team was approached to design novel solutions and methods to simplify the process of extracting and visualizing the human brain state using EEG data. Our goal was to extend the number of visualizations available to researchers, including those with a with minimal programming background. Making multiple visualizations convenient to access and view simultaneously will allow for an intuitive understanding of the broad picture of brain function. Additionally, future iterations of our machine learning stretch goal could uncover patterns in the data which could not be determined based on visualization alone.
 
-![Example of a Standard Visualization for Two Seconds of 19 Channel EEG Raw Voltage Values](images/viz_example.png){ height=15% }
-
-
+![Example of a Standard Visualization for Two Seconds of 19 Channel EEG Raw Voltage Values](images/viz_example.png){height="15%"}
 
 \newpage
 
 ## 3.3. Data Science Methods
-The Python visualization package was mainly developed using the open source library [MNE](https://mne.tools/stable/index.html), which is designed for visualizing and analyzing human neurophysiological data. Custom visualizations were built with [Matplotlib](https://matplotlib.org/) and [Plotly](https://plotly.com/). The functions in our package were developed to improve ease-of-use over using MNE, Matplotlib, and Plotly directly. Clear [documentation](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html) was generated using [JupyterBook](https://jupyterbook.org/intro.html) and the [code](https://github.com/UBC-MDS/simpl_eeg_capstone) is tested and documented to allow package functionality to easily be updated following the completion of the Capstone.
+
+The Python visualization package was mainly developed using the open source library [MNE](https://mne.tools/stable/index.html), which is designed for visualizing and analyzing human neurophysiological data (MEG, EEG, MRI, etc.). Custom visualizations were built with [Matplotlib](https://matplotlib.org/) and [Plotly](https://plotly.com/). The functions in our package were developed to improve ease-of-use over using MNE, Matplotlib, and Plotly directly. Clear [documentation](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html) was generated using [JupyterBook](https://jupyterbook.org/intro.html) and the [code](https://github.com/UBC-MDS/simpl_eeg_capstone) is tested and documented to allow package functionality to easily be updated following the completion of the Capstone.
 
 For the interactive user interface (UI) we used an open source framework called [Streamlit](https://streamlit.io/) which is designed for creating web apps from Python scripts. Streamlit benefits from being lightweight and requiring no front-end experience, which will facilitate ease of updating in the future. The downsides to Streamlit is reduced flexibility, only certain types of figures can be used and customization of styling is limited. However, for the purposes of this project we believe that the simplicity and ease of maintenance outweighs the need for additional features.
 
-For the unsupervised clustering method, we have tried both KMeans clustering model and Hidden Markov model to identify potential brain states in the data across different time periods. Brain states are considered as similar patterns of 19 electrodes over a period of time in the raw EEG data. The KMeans clustering method utilizes the [KMeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) model from [Scikit-learn](https://scikit-learn.org/stable/index.html) to separate data from each time periods into different clusters based on its distance from the center of the entire dataset. The Hidden Markov model method uses the GaussianHMM model from [hmmlearn](https://hmmlearn.readthedocs.io/en/latest/) to learn the Gaussian distribution of the EEG signals and update the transmission probability matrix based on the changes of the distribution as it transitions from one time section to another. Furthermore, we looked into expanding our analysis to methods beyond what we covered in MDS such as Self Organizing Maps (SOM) and K-means and Dynamic Time Warping using `tslean`. 
-
+With the goal of identifying multiple unique "brain states" in the data both KMeans and Hidden Markov model unsupervised clustering methods have been tested and utilized. In this context, "brain states" refer to specific patterns of electrical activity within the 19 channel EEG data. The KMeans clustering method utilizes the [KMeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) model from [Scikit-learn](https://scikit-learn.org/stable/index.html) to cluster data from each provided time period based on distance from the center of the entire dataset. The Hidden Markov model method uses the GaussianHMM model from [hmmlearn](https://hmmlearn.readthedocs.io/en/latest/) to calculate the Gaussian distribution of the EEG signals and creates a transmission probability matrix based on the transitions between provided time sections. Furthermore, we have also looked into expanding our analysis to methods beyond what we covered in MDS such as Self Organizing Maps (SOM) and K-means and Dynamic Time Warping using `tslean`.
 
 ## 3.4 Data Product and Results
-### 3.4.1 Python Package
-The `simpl_eeg` Python package is able to produce advanced visualizations for specified time ranges of EEG data. The following visualization types are available: 
 
-1) Raw voltage plot - visualize raw voltage values changes over time for each node
+### 3.4.1 Python Package
+
+The `simpl_eeg` Python package is able to produce advanced visualizations for specified time ranges of EEG data. The following visualization types are available:
+
+1)  Raw voltage plot - visualize raw voltage values changes over time for each node
+
 ```{python raw_voltage}
 #raw_voltage.plot_voltage(epoch)
 ```
 
-2) 2D head map - visualize a topographic heatmap of the voltage values mapped to a 2D model of a skull
+2)  2D head map - visualize a topographic heatmap of the voltage values mapped to a 2D model of a skull
+
 ```{python 2d_head}
 #topomap_3d_head.topo_3d_map(epoch, 0)
 ```
 
-3) 3D head map - visualize a topographic heatmap of voltage values mapped to a 3D model of skull
+3)  3D head map - visualize a topographic heatmap of voltage values mapped to a 3D model of skull
+
 ```{python 3d_head}
 topomap_2d.plot_topomap_2d(epoch)
 ```
 
-4) 3D brain map - visualize a topographic heatmap of interpolated voltage values mapped to their presumed position on a 3D model of a brain
+4)  3D brain map - visualize a topographic heatmap of interpolated voltage values mapped to their presumed position on a 3D model of a brain
+
 ```{python 3d_brain}
 #topomap_3d_brain.plot_topomap_3d_brain(epoch, backend='matplotlib')
 ```
 
-5) Connectivity - visualize pairwise connectivity measurements between nodes for specified time ranges
+5)  Connectivity - visualize pairwise connectivity measurements between nodes for specified time ranges
+
 ```{python connectivity}
 #connectivity.plot_connectivity(epoch)
 ```
 
-6) Connectivity Circle - alternative perspective for visualizing pairwise connectivity measurements
+6)  Connectivity Circle - alternative perspective for visualizing pairwise connectivity measurements
+
 ```{python connectivity_circle}
 #connectivity.plot_conn_circle(epoch)
 ```
 
-
-With the exception of the Raw voltage plot, each visualization can be created as an animation to view changes over time or as a standalone plot. Detailed instructions on how to use the package can be found in our [documentation](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html). 
+With the exception of the Raw voltage plot, each visualization can be created as an animation to view changes over time or as a standalone plot. Detailed instructions on how to use the package can be found in our [documentation](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html).
 
 ### 3.4.2 User Interface
-In addition to the package we built an interactive web application to serve as a UI for the package. The UI requires no coding experience, and is accessible by running a simple command. It also has the benefit of providing all the main visualizations in one place, so you can easily look at your data from several different perspectives. Customizing settings is made easy through the widgets available, which include the most widely used options for each package function.
+
+In addition to the package we built an interactive web application to serve as a UI for the package. The UI requires no coding experience, and is made accessible by launching with a single command. It also has the benefit of providing all the main visualizations in one place, allowing for data to be easily examined from several different perspectives. Intuitive widgets and entry fields that allow for tweaking of the most widely used options in each package function make customization easy.
 
 ![Streamlit User Interface](images/ui.png)
 
 \newpage
+
 ### 3.4.2 Stretch goal
+
 ----------UPDATE----------
 
-Jupyter Notebooks So as a stretch goal we decided to include an unsupervised machine learning script to identify and cluster patterns in the EEG data. The goal is look for different brain states within the same cluster and to distinguish structures of node signals and patterns in the brain indicating the effect of an impact at specific timestamps. Brain states are activities of the brain. Here we can see groups of neurons firing at the same time in the same frequency creating different states. (Include image from presentation). Since it is unsupervised approach, we do not have target values which make it difficult to objectively measure the effectiveness of the algorithms. In fact, there no definitive approach. 
+Jupyter Notebooks So as a stretch goal we decided to include an unsupervised machine learning script to identify and cluster patterns in the EEG data. The goal is look for different brain states within the same cluster and to distinguish structures of node signals and patterns in the brain indicating the effect of an impact at specific timestamps. Brain states are activities of the brain. Here we can see groups of neurons firing at the same time in the same frequency creating different states. (Include image from presentation). Since it is unsupervised approach, we do not have target values which make it difficult to objectively measure the effectiveness of the algorithms. In fact, there no definitive approach.
 
-Today, scientists and labs who are dealing with EEG data use advanced algorithms and models such as Multi-Variate Auto-Regressive or use intense simulations models to find the optimal value of K in other word the number of clustering groups. For now, it’s extremely difficult to define brain states in order to cluster them probably. Having said that, we have used methods that we learned in MDS to evaluate and justify the K values we choose. 
+Today, scientists and labs who are dealing with EEG data use advanced algorithms and models such as Multi-Variate Auto-Regressive or use intense simulations models to find the optimal value of K in other word the number of clustering groups. For now, it's extremely difficult to define brain states in order to cluster them probably. Having said that, we have used methods that we learned in MDS to evaluate and justify the K values we choose.
 
-We took two directions to solve this problem. Analyzing the data set as single stimestamps and range of timestamps. We have used diffrent methods in order to identify the optimal number of clusters and patterns. 
+We took two directions to solve this problem. Analyzing the data set as single stimestamps and range of timestamps. We have used diffrent methods in order to identify the optimal number of clusters and patterns.
 
-K-Means Algorithm: 
+K-Means Algorithm:
 
-- Elbow method
+-   Elbow method
 
 With the Elbow method we can test and evaluate range of K value and the algortihm will detarmine the optimal value of K. This method looks at the sum inertia and its distances, the inertia decreases as K increases.
 
-- Silhouette method
+-   Silhouette method
 
-This method is not dependent on cluster centers. It uses the mean intra-cluster distance and mean nearest cluster distance for each sample. The Silhouette score represent how well separated the clusters are. 
+This method is not dependent on cluster centers. It uses the mean intra-cluster distance and mean nearest cluster distance for each sample. The Silhouette score represent how well separated the clusters are.
 
+-   PCA:
 
-- PCA: 
+Hidden Markov Model:
 
-
-
-Hidden Markov Model: 
-
-- HMM
-
-
-
-
+-   HMM
 
 ## 3.5 Conclusions and Recommendations
 
 \newpage
+
 ## References
 
-Asgari, Shadnaz PhD1,2; Adams, Hadie MD3; Kasprowicz, Magdalena PhD4; Czosnyka, Marek PhD3,5; Smielewski, Peter PhD3; Ercole, Ari MB BChir, PhD6 Feasibility of Hidden Markov Models for the Description of Time-Varying Physiologic State After Severe Traumatic Brain Injury, Critical Care Medicine: November 2019 - Volume 47 - Issue 11 - p e880-e885
-doi: 10.1097/CCM.0000000000003966 
- 
+Asgari, Shadnaz PhD1,2; Adams, Hadie MD3; Kasprowicz, Magdalena PhD4; Czosnyka, Marek PhD3,5; Smielewski, Peter PhD3; Ercole, Ari MB BChir, PhD6 Feasibility of Hidden Markov Models for the Description of Time-Varying Physiologic State After Severe Traumatic Brain Injury, Critical Care Medicine: November 2019 - Volume 47 - Issue 11 - p e880-e885 doi: 10.1097/CCM.0000000000003966
