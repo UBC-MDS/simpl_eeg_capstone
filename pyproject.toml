@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "simpl_eeg"
 version = "0.1.0"
-description = "A package to generate animated visualization for EEG data"
+description = "A package to generate visualizations for EEG data"
 authors =  ["Matthew Pin", "Mo Garoub", "Yiki Su", "Sasha Babicki"]
 license = "MIT"
 readme = "README.md"
@@ -9,8 +9,8 @@ homepage = "https://github.com/UBC-MDS/simpl_eeg_capstone"
 repository = "https://github.com/UBC-MDS/simpl_eeg_capstone"
 
 [tool.poetry.dependencies]
-pip = "^21.1.2"
 python = ">=3.8,<3.10"
+pip = "^21.1.2"
 flake8 = "^3.9.2"
 pytest = "^6.2.4"
 pandas = "^1.2.4"
