@@ -62,6 +62,8 @@ The Python visualization package was mainly developed using the open source libr
 
 For the interactive user interface (UI) we used an open source framework called [Streamlit](https://streamlit.io/) which is designed for creating web apps from Python scripts. Streamlit benefits from being lightweight and requiring no front-end experience, which will facilitate ease of updating in the future. The downsides to Streamlit is reduced flexibility, only certain types of figures can be used and customization of styling is limited. However, for the purposes of this project we believe that the simplicity and ease of maintenance outweighs the need for additional features.
 
+For the unsupervised clustering method, we have tried both KMeans clustering model and Hidden Markov model to identify potential brain states in the data across different time periods. Brain states are considered as similar patterns of 19 electrodes over a period of time in the raw EEG data. The KMeans clustering method utilizes the [KMeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) model from [Scikit-learn](https://scikit-learn.org/stable/index.html) to separate data from each time periods into different clusters based on its distance from the center of the entire dataset. The Hidden Markov model method uses the GaussianHMM model from [hmmlearn](https://hmmlearn.readthedocs.io/en/latest/) to learn the Gaussian distribution of the EEG signals and update the transmission probability matrix based on the changes of the distribution as it transitions from one time section to another. Furthermore, we looked into expanding our analysis to methods beyond what we didn't cover in Master of Data Science program such as Self Organizing Maps (SOM) and K-means and Dynamic Time Warping using `tslean` package. 
+
 With the goal of identifying multiple unique "brain states" in the data both KMeans and Hidden Markov model unsupervised clustering methods have been tested and utilized. In this context, "brain states" refer to specific patterns of electrical activity within the 19 channel EEG data. The KMeans clustering method utilizes the [KMeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) model from [Scikit-learn](https://scikit-learn.org/stable/index.html) to cluster data from each provided time period based on distance from the center of the entire dataset. The Hidden Markov model method uses the GaussianHMM model from [hmmlearn](https://hmmlearn.readthedocs.io/en/latest/) to calculate the Gaussian distribution of the EEG signals and creates a transmission probability matrix based on the transitions between provided time sections. Furthermore, we have also looked into expanding our analysis to methods beyond what we covered in MDS such as Self Organizing Maps (SOM) and K-means and Dynamic Time Warping using `tslean`.
 
 ## 3.4 Data Product and Results
@@ -118,29 +120,7 @@ In addition to the package we built an interactive web application to serve as a
 
 ### 3.4.2 Stretch goal
 
-----------UPDATE----------
-
-Jupyter Notebooks So as a stretch goal we decided to include an unsupervised machine learning script to identify and cluster patterns in the EEG data. The goal is look for different brain states within the same cluster and to distinguish structures of node signals and patterns in the brain indicating the effect of an impact at specific timestamps. Brain states are activities of the brain. Here we can see groups of neurons firing at the same time in the same frequency creating different states. (Include image from presentation). Since it is unsupervised approach, we do not have target values which make it difficult to objectively measure the effectiveness of the algorithms. In fact, there no definitive approach.
-
-Today, scientists and labs who are dealing with EEG data use advanced algorithms and models such as Multi-Variate Auto-Regressive or use intense simulations models to find the optimal value of K in other word the number of clustering groups. For now, it's extremely difficult to define brain states in order to cluster them probably. Having said that, we have used methods that we learned in MDS to evaluate and justify the K values we choose.
-
-We took two directions to solve this problem. Analyzing the data set as single stimestamps and range of timestamps. We have used diffrent methods in order to identify the optimal number of clusters and patterns.
-
-K-Means Algorithm:
-
--   Elbow method
-
-With the Elbow method we can test and evaluate range of K value and the algortihm will detarmine the optimal value of K. This method looks at the sum inertia and its distances, the inertia decreases as K increases.
-
--   Silhouette method
-
-This method is not dependent on cluster centers. It uses the mean intra-cluster distance and mean nearest cluster distance for each sample. The Silhouette score represent how well separated the clusters are.
-
--   PCA:
-
-Hidden Markov Model:
-
--   HMM
+Although we have tried different approaches for the stretch goal, due to the limited time and efforts we could allocate to the stretch goal so far, we haven't concluded any significant findings yet. However, we do think it would be useful to document all approaches we have tried so far to serve the partner as a good reference point to continue to work on the stretch goal in the future. Hence, we have decided to create a Jupyter notebook file for each approaches to outline the workflow from data preprocessing, model fitting to output visualization for each approaches. We have also included a section called `Next steps` in some applicable notebooks to let the partner know that there are some next steps potentially useful in finding the significant results but we haven't had time to implement yet, such as using rolling means and sliding windows as feature engineering or including a customized visualization function for visualizing clustering outcome. 
 
 ## 3.5 Conclusions and Recommendations
 
