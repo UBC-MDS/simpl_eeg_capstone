@@ -16,10 +16,13 @@ with open("tests/test_data/test_data1.pkl", "rb") as input:
 def test_animate_3d_head():
     """Test cases for plotting the animated topographic map in a 3D head shape"""
     test_df = pd.DataFrame({"x": [1]})
+    test_array = numpy.array([0, 0, 2])
 
-    # reject non-epoch data
+    # reject non-epoch data or non-df data
     with pytest.raises(TypeError):
         topomap_3d_head.animate_3d_head(test_df)
+    with pytest.raises(TypeError):
+        topomap_3d_head.animate_3d_head(raw, test_array)
 
     # reject non-string plot_title
     with pytest.raises(TypeError):
@@ -50,28 +53,31 @@ def test_animate_3d_head():
 def test_topo_3d_map():
     """Test cases for plotting the static topographic map in a 3D head shape"""
     test_df = pd.DataFrame({"x": [1]})
+    test_array = numpy.array([0, 0, 2])
 
-    # reject non-epoch data
+    # reject non-epoch data or non-df data
     with pytest.raises(TypeError):
-        topomap_3d_head.topo_3d_map(test_df)
+        topomap_3d_head.topo_3d_map(test_df, 0)
+    with pytest.raises(TypeError):
+        topomap_3d_head.topo_3d_map(raw, time_stamp=0, data_df=test_array)
 
     # reject non-string plot_title
     with pytest.raises(TypeError):
-        topomap_3d_head.topo_3d_map(raw, plot_title=0)
+        topomap_3d_head.topo_3d_map(raw, time_stamp=0, plot_title=0)
 
     # reject non-string color_title
     with pytest.raises(TypeError):
-        topomap_3d_head.topo_3d_map(raw, color_title=0)
+        topomap_3d_head.topo_3d_map(raw, time_stamp=0, color_title=0)
 
     # reject non-string color_map
     with pytest.raises(TypeError):
-        topomap_3d_head.topo_3d_map(raw, colormap=0)
+        topomap_3d_head.topo_3d_map(raw, time_stamp=0, colormap=0)
 
     # reject non-numeric inputs for color_min and color_max
     with pytest.raises(TypeError):
-        topomap_3d_head.topo_3d_map(raw, color_min="0")
+        topomap_3d_head.topo_3d_map(raw, time_stamp=0, color_min="0")
     with pytest.raises(TypeError):
-        topomap_3d_head.topo_3d_map(raw, color_max="0")
+        topomap_3d_head.topo_3d_map(raw, time_stamp=0, color_max="0")
 
     # check all outputs are as expected
     ani = topomap_3d_head.topo_3d_map(epoch42, time_stamp=0)
