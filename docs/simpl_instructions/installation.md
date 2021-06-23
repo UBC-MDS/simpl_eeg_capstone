@@ -54,6 +54,8 @@ cd simpl_eeg_capstone
 
 After navigating to the root of the directory in terminal (i.e. being within the `simpl_eeg_capstone` folder) Run the following commands...
 
+*OPTIONAL* If you use python for other programming on your computer it is reccomended you create a new environment. Environments are used to place python packages in their own isolated file space and are useful if you need different versions of different packages (i.e. Python 2 and Python 3). If you don't do any other python programming you may skip straight to `conda install ipykernel` if you want.
+
 ```bash
 conda create --name simpl_eeg
 ```
@@ -112,7 +114,7 @@ When you are done (or if you need to restart the app) simply navigate back to th
 
 Every subsequent time you open the UI remember to activate the simple\_eeg environment and open it from the correct location (the root of the directory).
 
-You can set your current environment for the terminal tab you're in using the following command...
+If you made an environment when first setting up (you can check if you did by running `conda env list` in the terminal and seeing if 'simpl_eeg' is listed) you can set your current environment for the currently open terminal tab using the following command...
 
 ```bash
 conda activate simpl_eeg
