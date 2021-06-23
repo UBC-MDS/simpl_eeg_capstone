@@ -797,7 +797,7 @@ def animate_matplot_brain(
             please pass a bool (True/False) instead"""
         )
     
-    if type(frame_rate) is not int:
+    if type(frame_rate) is not int and type(frame_rate) is not float:
         raise TypeError(
             """Passed frame_rate object is not in the correct format, 
             please pass an int object instead"""
