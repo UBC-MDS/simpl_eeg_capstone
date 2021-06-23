@@ -18,7 +18,7 @@ Clone the repository:
 git clone https://github.com/UBC-MDS/simpl_eeg_capstone.git
 cd simpl_eeg_capstone
 ```
-If you have no experience working with the unix shell click [here](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html) for detailed instructions on installation and launching the streamlit app.
+If you have no experience working with the unix shell click [here](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html) for detailed instructions on installation and launching the Streamlit app.
 
 # Package Installation Instructions
 Run the following command from the root folder of the project:
