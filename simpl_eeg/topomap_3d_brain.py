@@ -775,7 +775,7 @@ def animate_matplot_brain(
         Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
         is being shown. 
 
-        frame_rate: int
+        frame_rate: int or float
             The frame rate to render the animation at. Defautls to 12.
 
     Returns:

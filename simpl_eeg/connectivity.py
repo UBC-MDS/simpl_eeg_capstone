@@ -306,6 +306,7 @@ def animate_connectivity(
     title=None,
     colorbar=True,
     timestamp=True,
+    frame_rate=12.0,
     **kwargs
 ):
     """
@@ -340,6 +341,8 @@ def animate_connectivity(
             Whether to show the colorbar. Defaults to True.
         timestamp: bool (optional)
             Whether to show the timestamp caption. Defaults to True.
+        frame_rate: int or float (optional)
+            The frame rate to genearte the final animation with. Defaults to 12.0.
         **kwargs: dict (optional)
             Optional arguments to pass to mne.viz.plot_sensors()
 
@@ -355,6 +358,12 @@ def animate_connectivity(
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
         )
+    
+    if type(frame_rate) is not int and type(frame_rate) is not float:
+        raise TypeError(
+                """Passed frame_rate object is not in the correct format, 
+                please pass an int or float instead"""
+            )
 
     sensor_locations = epoch.plot_sensors(show_names=True, show=False)
     locations = sensor_locations.findobj(
@@ -363,6 +372,7 @@ def animate_connectivity(
 
     pair_list = convert_pairs(pair_list)
     num_steps = math.ceil(len(epoch.times)/steps)
+    ms_between_frames = 1000 / frame_rate
 
     fig = plt.figure()
 
@@ -397,7 +407,13 @@ def animate_connectivity(
                 **kwargs
             )
         ]
-    anim = animation.FuncAnimation(fig, animate, num_steps, blit=True)
+    anim = animation.FuncAnimation(
+        fig,
+        animate,
+        num_steps,
+        interval = ms_between_frames,
+        blit=True
+    )
     return anim
 
 
@@ -522,6 +538,7 @@ def animate_connectivity_circle(
     title=None,
     colorbar=True,
     timestamp=True,
+    frame_rate = 12.0,
     **kwargs
 ):
     """
@@ -550,6 +567,8 @@ def animate_connectivity_circle(
             Whether to display the colorbar or not. Defaults to True.
         timestamp: bool (optional)
             Whether to display the timestamp caption. Defaults to True.
+        frame_rate: int or float (optional)
+            The frame rate to genearte the final animation with. Defaults to 12.0.
         **kwargs: dict (optional)
             Optional arguments to pass to mne.viz.plot_connectivity_circle()
 
@@ -565,6 +584,14 @@ def animate_connectivity_circle(
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
         )
+    
+    if type(frame_rate) is not int and type(frame_rate) is not float:
+        raise TypeError(
+                """Passed frame_rate object is not in the correct format, 
+                please pass an int or float instead"""
+            )
+    
+    ms_between_frames = 1000 / frame_rate
 
     fig = plt.figure()
 
@@ -604,5 +631,11 @@ def animate_connectivity_circle(
             )
         ]
 
-    anim = animation.FuncAnimation(fig, animate, num_steps, blit=True)
+    anim = animation.FuncAnimation(
+        fig,
+        animate,
+        num_steps,
+        interval = ms_between_frames,
+        blit=True
+    )
     return anim

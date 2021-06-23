@@ -91,19 +91,28 @@ def calculate_timeframe(start_time, raw):
         tuple of length 2:
             The time in seconds and the index
     """
-    if re.match('^0{1,}:0{1,}:0{1,}$', start_time):
-        return True, -1
     if re.match('^[0-9]{1,}:[0-9]{1,}:[0-9]{1,}$', start_time):
         start = datetime.datetime.strptime(start_time, '%H:%M:%S')
         zero = datetime.datetime.strptime('0:00:00', '%H:%M:%S')
         seconds = (start-zero).total_seconds()
-        if seconds >= raw.times[-1]:
-            in_timeframe = 0
+        if re.match('^0{1,}:0{1,}:0{1,}$', start_time):
+            # Timestamp is zero
+            in_timeframe = "min"
+        elif seconds < 0:
+            in_timeframe = "negative"
+        elif seconds > raw.times[-1]:
+            # Timestamp exceeds max time
+            in_timeframe = "exceeds"
+        elif (raw.times[-1] - seconds) < 1:
+            # Timestamp matches max time
+            in_timeframe = "max"
         else:
-            in_timeframe = 1
+            in_timeframe = "yes"
+        # return start second, and whether or not in timeframe
         return int(seconds), in_timeframe
     else:
-        return None, 1
+        # No start time, timstamp in wrong timeframe
+        return None, "wrong_format"
 
 
 @st.cache(show_spinner=False)
@@ -314,6 +323,23 @@ def get_shared_conn_widgets(epoch, frame_steps, key):
 
     return connection_type, cmin, cmax
 
+def get_f_rate_widget(key):
+    """
+    Helper function for producing shared widgets for
+    frame rate adjusters
+    """
+    f_rate_widget = st.number_input(
+        "Animation frame rate (fps)",
+        value=12.0,
+        min_value=1.0,
+        help="""The framerate that the animation will play at in frames per second.
+                        Setting higher values will make the animation play faster.""",
+        key = key
+    )
+    
+    return f_rate_widget
+
+
 
 def main():
     """
@@ -387,7 +413,7 @@ def main():
     max_secs = raw_epoch_obj.raw.times[-1]
     el1, el2 = str(datetime.timedelta(seconds=max_secs)).split(".")
     exp_len = el1 + "." + el2[0:2]
-    max_time = str(datetime.timedelta(seconds=max_secs-1)).split(".")[0]
+    max_time = str(datetime.timedelta(seconds=max_secs)).split(".")[0]
 
     col2_exp.text(
         """----------\nExperiment\nlength:\n{}""".format(exp_len)
@@ -411,32 +437,28 @@ def main():
             max_chars=7,
             help="""The timestamp to render the figures around.
             Must be entered in the format "H:MM:SS".
-            The max time with the currently selected experiment is "{}"
-            (one second before the total length
-            of the experiment).""".format(max_time)
+            The max time with the currently selected experiment is "{}".
+            """.format(max_time)
         )
         start_second, in_timeframe = calculate_timeframe(start_time, raw_epoch_obj.raw)
-        if start_second is None:
+        if in_timeframe == "wrong_format":
             st.error(
                 "Time is in wrong format please use H:MM:SS.\n\n"
                 "Rendering below is made with previous settings."
             )
-        if in_timeframe == 0:
+        if in_timeframe == "exceeds":
             st.error(
                 "Input time exceeds max timestamp of "
                 f"the current experiment ({max_time})."
             )
-        if in_timeframe == -1:
+        if in_timeframe == "negative":
             st.error(
-                """Specified event time cannot be 0:00:00.
-                If you wish to see the experiment from the earliest time
-                possible then please specify an event time of
-                00:00:01 and a "Seconds before event"
-                value of 1.0"""
+                """Specified event time cannot be less than 0:00:00"""
             )
         epoch_num = 0
     else:
         start_second = None
+        in_timeframe = "epoch"
 
         refresh_rate = raw_epoch_obj.raw.info.get('sfreq')
         event_times = raw_epoch_obj.mat['elecmax1'][0]
@@ -459,37 +481,42 @@ def main():
             """
         )
 
-    max_tmax = 10.0
-    curr_max = min(float(start_second), max_tmax) if start_second else max_tmax
+    tmin_max = 10.0
+    tmin_default = 0.3
+    if in_timeframe == "yes" or in_timeframe == "min":
+        tmin_max = min(float(start_second), 10.0)
+    if in_timeframe == "min":
+        tmin_default = 0.0
+    
     tmin = st.sidebar.number_input(
         "Seconds before event",
-        value=0.3,
+        value=tmin_default,
         min_value=0.0,
-        max_value=curr_max,
+        max_value=tmin_max,
         help="""The number of seconds prior to the specified timestamp
         to start the figures from.
         Min = 0.0, max = {}
-        (also cannot be a value that will cause the
-        timestamp to go beyond 00:00:00).
-        """.format(curr_max)
+        (with current settings).
+        """.format(tmin_max)
     )
 
-    tmax_max_value = 10.0
-    if start_second != None:
-        seconds_to_end = round(max_secs - start_second,2) - 0.01
+    tmax_max = 10.0
+    tmax_value_default = 0.7
+    if in_timeframe == "yes" or in_timeframe == "max":
+        seconds_to_end = round(max_secs - start_second, 2) - 0.01
         if seconds_to_end < 10.0:
-            tmax_max_value = seconds_to_end
+            tmax_max = seconds_to_end
+        if seconds_to_end < 0.7:
+            tmax_value_default = seconds_to_end
 
     tmax = st.sidebar.number_input(
         "Seconds after event",
-        value=0.7,
+        value=tmax_value_default,
         min_value=0.01,
-        max_value=tmax_max_value,
+        max_value=tmax_max,
         help="""The number of seconds after to the specified timestamp to end the epoch at.
-        Cannot be a value that will cause
-        the timestamp to go beyond the max time. Min = 0.01, max = {}
-        (with current settings).
-        """.format(tmax_max_value)
+         Min = 0.01, max = {} (with current settings).
+        """.format(tmax_max)
     )
 
     # Create epoch
@@ -620,6 +647,14 @@ def main():
             """
 
             timestamp = datetime.datetime.now().strftime("%Y-%m-%d-%H%M%S")
+
+            try:
+                # make exports folder
+                os.makedirs("exports")
+            except FileExistsError:
+                # directory already exists
+                pass
+
             folder = "exports"
             file_name = self.section_name.replace(" ", "_")+"_"+timestamp
             file_name = folder+"/"+file_name+"."+file_type
@@ -697,6 +732,7 @@ def main():
     min_voltage_message = "The minimum value (in μV) to show on the plot"
     max_voltage_message = "The maximum value (in μV) to show on the plot"
 
+
     with expander_2d_head.widget_col:
         vmin_2d_head = st.number_input(
             "Minimum Voltage (μV)",
@@ -709,7 +745,7 @@ def main():
             min_value=vmin_2d_head,
             help=max_voltage_message
         )
-
+        f_rate_2d_head = get_f_rate_widget("f_rate_2d_head")
         mark_options = [
             "dot",
             "r+",
@@ -720,7 +756,7 @@ def main():
             "Select mark",
             mark_options,
             index=0,
-            help="The type of mark to show for each electrode on the topomap"
+            help="The type of mark to show for each node on the topomap."
         )
         advanced_options_2d = st.checkbox(
             "Advanced Options",
@@ -743,22 +779,23 @@ def main():
                 value=0,
                 min_value=0,
                 max_value=50,
-                help="The number of contour lines to draw. Min = 0, max = 50."
+                help="The number of contour lines to draw on the heatmap. Min = 0, max = 50."
             )
             sphere_2d = st.number_input(
                 "Sphere size",
                 value=100,
                 min_value=80,
                 max_value=120,
-                help="""The sphere parameters to use for the cartoon head.
-                Min = 80, max = 120."""
+                help="""The sphere parameters to use for the cartoon head. 100 is
+                the reccomended value. Min = 80, max = 120."""
             )
             heat_res_2d = st.number_input(
                 "Heatmap resolution",
                 value=100,
                 min_value=1,
                 max_value=1000,
-                help="""The resolution of the topomap image (n pixels along each side).
+                help="""The resolution of the topomap heatmap image. Does not effect the resolution
+                of the entire image but rather the heatmap itself (n pixels along each side).
                 Min = 1, max = 1000."""
             )
             extrapolate_options_2d = [
@@ -812,6 +849,7 @@ def main():
             min_value=vmin_3d_brain,
             help=max_voltage_message
         )
+        f_rate_3d_brain = get_f_rate_widget("f_rate_3d_brain")
         view_option_dict = {
             "lat": "Lateral",
             "dor": "Dorsal",
@@ -845,7 +883,7 @@ def main():
             help="""The side of the brain to render.
             If "both" is selected the right hemi of the brain will be rendered
             for the entire top row with the left hemi rendered in the bottom row.
-            Note that a different (slightly slower) figure
+            Note that a different (slower) figure
             rendering method is used whenever more than one view is selected
             OR if brain hemi is set to "both".
             """
@@ -905,6 +943,8 @@ def main():
             frame_steps,
             "conn"
         )
+
+        f_rate_connectivity = get_f_rate_widget("f_rate_connectivity")
 
         # Node pair widgets
         node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
@@ -992,6 +1032,8 @@ def main():
             frame_steps,
             "circle"
         )
+
+        f_rate_circle= get_f_rate_widget("f_rate_circle")
 
         # Maximum connections widget
         max_connections = st.number_input(
@@ -1093,7 +1135,8 @@ def main():
                     extrapolate=extrapolate_2d,
                     contours=contours_2d,
                     sphere=sphere_2d,
-                    res=heat_res_2d
+                    res=heat_res_2d,
+                    frame_rate = f_rate_2d_head
                 )
                 components.html(
                     html_plot,
@@ -1166,7 +1209,8 @@ def main():
                         spacing=spacing_value,
                         smoothing_steps=smoothing_amount,
                         colorbar=colorbar_brain,
-                        timestamp=timestamps_brain
+                        timestamp=timestamps_brain,
+                        frame_rate=f_rate_3d_brain
                     )
                     components.html(
                         html_plot,
@@ -1194,7 +1238,8 @@ def main():
                     line_width=conn_line_width,
                     colorbar=colorbar_conn,
                     timestamp=timestamps_conn,
-                    show_sphere=show_sphere_conn
+                    show_sphere=show_sphere_conn,
+                    frame_rate=f_rate_connectivity
                 )
                 components.html(
                     html_plot,
@@ -1220,7 +1265,8 @@ def main():
                 line_width=conn_circle_line_width,
                 max_connections=max_connections,
                 colorbar=colorbar_circle,
-                timestamp=timestamps_circle
+                timestamp=timestamps_circle,
+                frame_rate=f_rate_circle
             )
             with st.spinner(SPINNER_MESSAGE):
                 components.html(
