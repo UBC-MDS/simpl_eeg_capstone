@@ -860,12 +860,12 @@ def main():
     with expander_3d_brain.widget_col:
         vmin_3d_brain = st.number_input(
             "Minimum Voltage (μV)",
-            value=-2,
+            value=-2.0,
             help=min_voltage_message
         )
         vmax_3d_brain = st.number_input(
             "Maximum Voltage (μV)",
-            value=2,
+            value=2.0,
             min_value=vmin_3d_brain,
             help=max_voltage_message
         )
