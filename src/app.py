@@ -710,7 +710,7 @@ def main():
         auto_scale = st.checkbox(
             "Use automatic scaling",
             value=True,
-            help = """Whether or not to use the automatic MNE scaling.
+            help="""Whether or not to use the automatic MNE scaling.
             Checking this causes the scaling
             factor to match the 99.5th percentile of a subset of the
             corresponding data."""
@@ -728,10 +728,30 @@ def main():
                 scaling = scaling * 1e-1
             else:
                 scaling = scaling * 1e-6
+        set_dim = st.checkbox(
+            "Set custom plot dimensions",
+            value=False,
+            help="Set a custom width and height for the plot"
+        )
+        if set_dim:
+            raw_height = st.slider(
+                "Height (inches)",
+                min_value=5.0,
+                max_value=10.0,
+                value=5.0
+            )
+            raw_width = st.slider(
+                "Width (inches)",
+                min_value=5.0,
+                max_value=10.0,
+                value=7.0
+            )
+        else:
+            raw_height = None
+            raw_width = None
 
     min_voltage_message = "The minimum value (in μV) to show on the plot"
     max_voltage_message = "The maximum value (in μV) to show on the plot"
-
 
     with expander_2d_head.widget_col:
         vmin_2d_head = st.number_input(
@@ -840,12 +860,12 @@ def main():
     with expander_3d_brain.widget_col:
         vmin_3d_brain = st.number_input(
             "Minimum Voltage (μV)",
-            value=-2,
+            value=-2.0,
             help=min_voltage_message
         )
         vmax_3d_brain = st.number_input(
             "Maximum Voltage (μV)",
-            value=2,
+            value=2.0,
             min_value=vmin_3d_brain,
             help=max_voltage_message
         )
@@ -1104,6 +1124,8 @@ def main():
                 epoch,
                 remove_xlabel=True,
                 show_scrollbars=False,
+                height=raw_height,
+                width=raw_width,
                 events=np.array(events),
                 scalings=scaling,
                 noise_cov=noise_cov,

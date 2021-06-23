@@ -29,14 +29,11 @@ jupyter = "^1.0.0"
 poetry = "^1.1.6"
 tornado = "^6.1"
 pandoc = "^1.0.2"
+ipykernel = "^5.5.5"
 
 [tool.poetry.dev-dependencies]
 nibabel = "3.2.1"
 ffmpeg = "^1.4"
-pyqt5-qt5 = ">=5.12.2"
-PyQt5 = "5.15.4"
-pyvista = ">=0.30"
-pyvistaqt = ">=0.4"
 
 [build-system]
 requires = [
