@@ -1,7 +1,7 @@
 import mne
+import matplotlib.pyplot as plt
 
-
-def plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs):
+def plot_voltage(epoch, remove_xlabel=False, show_times=True, height=None, width=None, **kwargs):
     """
     Generate raw voltage plot
 
@@ -12,6 +12,10 @@ def plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs):
             Whether to remove the x axis label. Defaults to False.
         show_times: bool (optional)
             Whether to show seconds on the x axis. Defaults to True.
+        height: float | None (optional)
+            Height of the plot in inches. Defaults to None for automatic.
+        width: float | None (optional)
+            Width of the plot in inches. Defaults to None for automatic.
         **kwargs: dict (optional)
             Optional arguments to pass to mne.Epochs.plot()
 
@@ -45,5 +49,8 @@ def plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs):
             "{:.2f} seconds".format(event_time+epoch.tmin),
             "{:.2f} seconds".format(event_time+epoch.tmax)
         ])
+
+    if height and width:
+        ax.figure.set_size_inches(width, height)
 
     return fig
