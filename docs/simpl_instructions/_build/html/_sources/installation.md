@@ -52,35 +52,11 @@ cd simpl_eeg_capstone
 
 ![](instruction_imgs/navigation2.png)
 
-After navigating to the root of the directory in terminal (i.e. being within the `simpl_eeg_capstone` folder) Run the following commands...
-
-*OPTIONAL* If you use python for other programming on your computer it is reccomended you create a new environment. Environments are used to place python packages in their own isolated file space and are useful if you need different versions of different packages (i.e. Python 2 and Python 3). If you don't do any other python programming you may skip straight to `conda install ipykernel` if you want.
-
-```bash
-conda create --name simpl_eeg
-```
-(then press "y" to accept when prompted)
-
-```bash
-conda activate simpl_eeg
-```
-(this activates the newly created environment).
-
-```bash
-conda install ipykernel
-```
-(then press "y" to accept)
-
-```bash
-conda install nb_conda_kernels
-```
-(then press "y" to accept)
+*OPTIONAL* If you use python for other programming on your computer it is recommended you create a new environment. See [Conda Environment](#conda-environment) section for details. 
 
 Finally, double check that you are in the simple\_eeg\_capstone directory and install the package contents using...
 
 ```bash 
-pip install poetry
-poetry install --no-dev
 pip install -e .
 ```
 
@@ -126,11 +102,35 @@ For example...
 
 `(simpl_eeg) mpin@Matthews-MacBook-Pro:~/Documents/MDS/capstone/simpl_eeg_capstone$`
 
+## Conda Environments
+
+### Setting up an environment
+Environments are used to place python packages in their own isolated file space and are useful if you need different versions of different packages (i.e. Python 2 and Python 3). If you don't do any other python programming you may want to skip this section.
+
+Create a new environment:
+```bash
+conda create --name simpl_eeg python=3.8
+```
+(then press "y" to accept when prompted)
+
+Activate the environment: 
+```bash
+conda activate simpl_eeg
+```
+
+If you plan on using JupyterLab, make sure to also run the line below to have access to your environment in Jupyter.
+
+```bash
+conda install nb_conda_kernels
+```
+(then press "y" to accept)
+
 ## JupyterLab
 
 ### Using the package in JupyterLab
 
 Please complete the JuptyerLab setup section in the following link if you have not installed it yet (<https://ubc-mds.github.io/resources_pages/installation_instructions/>)
+
 
 The instructions for how to use the package are in a JupyterNotebook stored in `simpl_eeg_capstone/simple_instructions/instructions.ipynb`. After installing JuptyerLab you should be able to open the program by typing...
 

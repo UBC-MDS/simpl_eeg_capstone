@@ -68,7 +68,7 @@ nth_epoch = 0
 
 
 epochs = eeg_objects.Epochs(experiment_path)
-epoch = epochs.get_nth_epoch(nth_epoch)
+epoch = epochs.get_epoch(nth_epoch)
 
 
 # </br>
@@ -83,7 +83,7 @@ epoch = epochs.get_nth_epoch(nth_epoch)
 
 
 # multiple epochs
-raw_voltage.plot_voltage(epochs.data, n_epochs=2);
+raw_voltage.plot_voltage(epochs.all_epochs, n_epochs=2);
 
 
 # In[9]:

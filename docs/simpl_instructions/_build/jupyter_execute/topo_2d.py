@@ -52,7 +52,7 @@ nth_epoch = 0
 num_steps = 50  # number of steps to skip to shorten epoch
 
 epochs = eeg_objects.Epochs(experiment_folder)
-epoch = epochs.get_nth_epoch(nth_epoch)
+epoch = epochs.get_epoch(nth_epoch)
 shortened_epoch = epochs.skip_n_steps(num_steps)
 
 
@@ -182,9 +182,3 @@ plot;
 # file_path = "examples/topo_2d.svg"
 # plot.figure.savefig(file_path)
 # ```
-
-# In[ ]:
-
-
-
-

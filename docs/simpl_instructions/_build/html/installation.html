@@ -262,6 +262,18 @@
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#conda-environments">
+   Conda Environments
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#setting-up-an-environment">
+     Setting up an environment
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#jupyterlab">
    JupyterLab
   </a>
@@ -344,28 +356,9 @@
 </pre></div>
 </div>
 <p><img alt="" src="_images/navigation2.png" /></p>
-<p>After navigating to the root of the directory in terminal (i.e. being within the <code class="docutils literal notranslate"><span class="pre">simpl_eeg_capstone</span></code> folder) Run the following commands…</p>
-<p><em>OPTIONAL</em> If you use python for other programming on your computer it is reccomended you create a new environment. Environments are used to place python packages in their own isolated file space and are useful if you need different versions of different packages (i.e. Python 2 and Python 3). If you don’t do any other python programming you may skip straight to <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">install</span> <span class="pre">ipykernel</span></code> if you want.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create --name simpl_eeg
-</pre></div>
-</div>
-<p>(then press “y” to accept when prompted)</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate simpl_eeg
-</pre></div>
-</div>
-<p>(this activates the newly created environment).</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install ipykernel
-</pre></div>
-</div>
-<p>(then press “y” to accept)</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install nb_conda_kernels
-</pre></div>
-</div>
-<p>(then press “y” to accept)</p>
+<p><em>OPTIONAL</em> If you use python for other programming on your computer it is recommended you create a new environment. See <a class="reference external" href="#conda-environment">Conda Environment</a> section for details.</p>
 <p>Finally, double check that you are in the simple_eeg_capstone directory and install the package contents using…</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install poetry
-poetry install --no-dev
-pip install -e .
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip install -e .
 </pre></div>
 </div>
 <p>So what have we done? We created an environment to contain the package that we have prepared. This environment can be activated in any terminal window using the <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">activate</span> <span class="pre">simple_eeg</span></code> command (this must be done every time you re-open the app/terminal window). You will know that you are in this environment when the bracketed words in the terminal say <code class="docutils literal notranslate"><span class="pre">(simple_eeg)</span></code> like such…</p>
@@ -399,6 +392,27 @@ pip install -e .
 <p>Being in the root of the directory means that your location in terminal should end with <code class="docutils literal notranslate"><span class="pre">simpl_eeg_capstone$</span></code></p>
 <p>For example…</p>
 <p><code class="docutils literal notranslate"><span class="pre">(simpl_eeg)</span> <span class="pre">mpin&#64;Matthews-MacBook-Pro:~/Documents/MDS/capstone/simpl_eeg_capstone$</span></code></p>
+</div>
+</div>
+<div class="section" id="conda-environments">
+<h2>Conda Environments<a class="headerlink" href="#conda-environments" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="setting-up-an-environment">
+<h3>Setting up an environment<a class="headerlink" href="#setting-up-an-environment" title="Permalink to this headline">¶</a></h3>
+<p>Environments are used to place python packages in their own isolated file space and are useful if you need different versions of different packages (i.e. Python 2 and Python 3). If you don’t do any other python programming you may want to skip this section.</p>
+<p>Create a new environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda create --name simpl_eeg <span class="nv">python</span><span class="o">=</span><span class="m">3</span>.8
+</pre></div>
+</div>
+<p>(then press “y” to accept when prompted)</p>
+<p>Activate the environment:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda activate simpl_eeg
+</pre></div>
+</div>
+<p>If you plan on using JupyterLab, make sure to also run the line below to have access to your environment in Jupyter.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>conda install nb_conda_kernels
+</pre></div>
+</div>
+<p>(then press “y” to accept)</p>
 </div>
 </div>
 <div class="section" id="jupyterlab">
