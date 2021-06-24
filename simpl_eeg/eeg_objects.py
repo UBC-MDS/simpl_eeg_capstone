@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Module for generating and animating EEG connectivity figures
+Module for creating custom epoch objects
 """
 
 import mne
@@ -59,20 +59,18 @@ class Epochs:
     Attributes:
         eeg_file: EEG_File
             eeg file data
-        data: mne.Epochs
+        all_epochs: mne.Epochs
             the generated epoch data
         epoch: mne.Epochs
-            the selected epoch
+            the selected epoch of interest
 
     Methods:
         generate_epochs(duration, start_second):
             Calculates epochs based on a duration and start second
-        set_nth_epoch(epoch_num):
-            Set the epoch of interest
-        get_nth_epoch(epoch_num):
-            Retrieves the nth epoch
-        get_frame(tmin, step_size, frame_number):
-            Calculates a subset of the epoch based on the step size and frame
+        get_epoch(epoch_num):
+            Set and return the epoch of interest
+        skip_n_steps(num_steps):
+            Returns a subset of the epoch by skipping records in increments of num_steps
     """
 
     def __init__(
@@ -108,8 +106,10 @@ class Epochs:
             raise Exception("Please increase the time between tmin and tmax")
 
         self.eeg_file = EEG_File(folder_path, file_name=file_name)
-        self.data = self.generate_epochs(tmin, tmax, start_second, **kwargs)
-        self.set_nth_epoch(0)
+        self.all_epochs = self.generate_epochs(tmin, tmax, start_second, **kwargs)
+
+        # set first epoch to be the default selection
+        self.get_epoch(0)
 
     def generate_epochs(self, tmin, tmax, start_second, **kwargs):
         """
@@ -131,7 +131,7 @@ class Epochs:
 
         Returns:
             mne.Epochs:
-                The generated epoch
+                The generated epoch(s)
         """
 
         # get sampling frequency to convert time steps into seconds
@@ -174,21 +174,10 @@ class Epochs:
 
         return epochs
 
-    def set_nth_epoch(self, epoch_num):
-        """
-        Set the nth epoch from the raw data
 
-        Parameters:
-            epoch_num: int
-                The epoch to select
+    def get_epoch(self, epoch_num):
         """
-
-        self.epoch = self.data[epoch_num]
-
-    def get_nth_epoch(self, epoch_num=None):
-        """
-        Return the nth epoch from the raw data,
-        or current selected epoch if epoch_num is not given
+        Get the nth epoch from the genertated epochs
 
         Parameters:
             epoch_num: int
@@ -197,22 +186,33 @@ class Epochs:
             mne.Epoch:
                 The epoch of interest
         """
+        if epoch_num > len(self.all_epochs):
+            raise Exception(
+                "Invalid selection, "
+                "epoch_num must be between 0 and "+len(self.all_epochs)
+            )
 
-        if epoch_num:
-            self.set_nth_epoch(epoch_num)
+        self.epoch = self.all_epochs[epoch_num]
         return self.epoch
 
-    def skip_n_steps(self, num_steps):
+
+    def skip_n_steps(self, num_steps, use_single=True):
         """
         Return new epoch containing every nth frame
 
         Parameters:
-        num_steps: int
-            The number of time steps to skip
+            num_steps: int
+                The number of time steps to skip
+            use_single: bool (optional)
+                Whether to apply the skipping to all epochs or the
+                current selected epoch only
 
         Returns:
             mne.Epochs:
                 The reduced size epoch
         """
-
-        return self.epoch.copy().decimate(num_steps)
+        if use_single:
+            epochs = self.epoch
+        else:
+            epochs = self.all_epochs
+        return epochs.copy().decimate(num_steps)

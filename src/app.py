@@ -236,7 +236,7 @@ def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
         tmax=tmax,
         start_second=start_second
     )
-    epoch_obj.set_nth_epoch(epoch_num)
+    epoch_obj.get_epoch(epoch_num)
     return epoch_obj
 
 
@@ -515,7 +515,7 @@ def main():
         """
     )
 
-    events = epoch_obj.data.events
+    events = epoch_obj.all_epochs.events
     epoch = epoch_obj.epoch
     plot_epoch = epoch_obj.skip_n_steps(frame_steps)
 
