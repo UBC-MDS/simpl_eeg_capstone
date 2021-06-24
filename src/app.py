@@ -191,7 +191,7 @@ def animate_ui_connectivity_circle(epoch, **kwargs):
     func = connectivity.animate_connectivity_circle
     anim = func(epoch, **kwargs)
     code = format_code(func, **kwargs)
-    return anim.to_jshtml()
+    return anim.to_jshtml(), code
 
 
 @st.cache(show_spinner=False)
@@ -537,6 +537,18 @@ def main():
         help="""The color scheme to use on all of the figures."""
     )
 
+    show_code = st.sidebar.checkbox(
+        "Show Code",
+        value=True,
+        help="Show the source code used to generate rendered figures"
+    )
+    
+    show_help = st.sidebar.checkbox(
+        "Show Documentation",
+        value=False,
+        help="Show full documentation for functions used to generate rendered figures"
+    )
+
     with col2:
         fig = plt.figure()
         ax = fig.add_subplot(1, 1, 1)
@@ -583,27 +595,12 @@ def main():
                 self.plot_col, self.widget_col = st.beta_columns((3, 1))
 
         def export_button(self, code):
-            """Add an export button to the bottom of widget column"""
-            show_code = self.widget_col.checkbox(
-                "Show Code",
-                value=False,
-                key=self.section_name+"_code",
-                help="Show the source code used to generate this figure"
-            )
+            
             if show_code:
                 self.expander.code(code)
-            
-            """Add an export button to the bottom of widget column"""
-            show_help = self.widget_col.checkbox(
-                "Show Documentation",
-                value=False,
-                key=self.section_name+"_help",
-                help="Show documentation for the function used to generate this figure"
-            )
             if show_help:
-                print(code.split("(")[0])
                 self.expander.help(eval(code.replace("simpl_eeg.","").split("(")[0]))
-
+            
             return self.widget_col.button(
                 "Export",
                 key=self.section_name,
