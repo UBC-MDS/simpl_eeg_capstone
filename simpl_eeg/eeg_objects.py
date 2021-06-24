@@ -195,10 +195,10 @@ class Epochs:
         self.epoch = self.all_epochs[epoch_num]
         return self.epoch
 
-
     def skip_n_steps(self, num_steps, use_single=True):
         """
         Return new epoch containing every nth frame
+        Skips steps between frames
 
         Parameters:
             num_steps: int
@@ -216,3 +216,39 @@ class Epochs:
         else:
             epochs = self.all_epochs
         return epochs.copy().decimate(num_steps)
+
+    def average_n_steps(self, num_steps):
+        """
+        Return new epoch containing every nth frame for the selected epoch
+        Averages steps bewteen frames
+
+        Parameters:
+            num_steps: int
+                The number of time steps to average
+
+        Returns:
+            mne.Evoked:
+                The reduced size epoch in evoked format
+        """
+        # calculate rolling average one step at a time
+        def roll_average(x):
+            epoch = x[0]
+            arr = epoch*0.0
+
+            for channel in range(epoch.shape[0]):
+                for row in range(epoch.shape[1]):
+                    arr[channel, row] = epoch[
+                        channel,
+                        max(row-num_steps//2,0):min(row+num_steps//2+1,epoch.shape[1])
+                        ].mean()
+            return arr
+
+        # only use every nth average
+        epochs = self.epoch
+        evoked = epochs.copy().average(method=roll_average).decimate(num_steps)
+
+        # give evoked data the get_data attribute
+        # so it can be used in same way as epochs
+        setattr(evoked, 'get_data', lambda: evoked.data)
+
+        return evoked
