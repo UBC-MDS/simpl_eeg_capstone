@@ -372,6 +372,23 @@ python-versions = ">=3.6"
 gitdb = ">=4.0.1,<5"
 
 [[package]]
+name = "hmmlearn"
+version = "0.2.5"
+description = "Hidden Markov Models in Python with scikit-learn like API"
+category = "main"
+optional = false
+python-versions = ">=3.5"
+
+[package.dependencies]
+numpy = ">=1.10"
+scikit-learn = ">=0.16"
+scipy = ">=0.19"
+
+[package.extras]
+docs = ["sphinx", "sphinx-gallery", "pillow", "matplotlib"]
+tests = ["pytest"]
+
+[[package]]
 name = "html5lib"
 version = "1.1"
 description = "HTML parser based on the WHATWG HTML specification"
@@ -1424,6 +1441,20 @@ python-versions = ">=3.7,<3.10"
 numpy = ">=1.16.5,<1.23.0"
 
 [[package]]
+name = "seaborn"
+version = "0.11.1"
+description = "seaborn: statistical data visualization"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+matplotlib = ">=2.2"
+numpy = ">=1.15"
+pandas = ">=0.23"
+scipy = ">=1.0"
+
+[[package]]
 name = "secretstorage"
 version = "3.3.1"
 description = "Python bindings to FreeDesktop.org Secret Service API"
@@ -1693,7 +1724,7 @@ notebook = ">=4.4.1"
 [metadata]
 lock-version = "1.1"
 python-versions = ">=3.8,<3.10"
-content-hash = "c311c3f1ffffcdc98d72ec6a87a8d87d62fc01aad148d33536c4ea304667275c"
+content-hash = "7ffc77abaafa320a4f44a217a38d1e1e50577da6857ddb1b47ed6c904a8a504c"
 
 [metadata.files]
 altair = [
@@ -1909,6 +1940,24 @@ gitdb = [
 gitpython = [
     {file = "GitPython-3.1.18-py3-none-any.whl", hash = "sha256:fce760879cd2aebd2991b3542876dc5c4a909b30c9d69dfc488e504a8db37ee8"},
     {file = "GitPython-3.1.18.tar.gz", hash = "sha256:b838a895977b45ab6f0cc926a9045c8d1c44e2b653c1fcc39fe91f42c6e8f05b"},
+]
+hmmlearn = [
+    {file = "hmmlearn-0.2.5-cp35-cp35m-macosx_10_14_x86_64.whl", hash = "sha256:f5c967e4c629c3fc11f0eee47bf687b35714a7ddc8fd0bb4eafe588ff54812c8"},
+    {file = "hmmlearn-0.2.5-cp35-cp35m-manylinux1_x86_64.whl", hash = "sha256:74d012985a7a85d293fbbcf3405f7b97234f20c7540c342cf6a5e9e4ba3168ec"},
+    {file = "hmmlearn-0.2.5-cp35-cp35m-win_amd64.whl", hash = "sha256:f443a0384a6e384fa17e0cd9ca91647bf4552dc01dc65b44520e76de7c0db454"},
+    {file = "hmmlearn-0.2.5-cp36-cp36m-macosx_10_14_x86_64.whl", hash = "sha256:4c7e8213715fb635539fd7a0f5a0d0a5c69858380027155412d6b3dd5aaa100c"},
+    {file = "hmmlearn-0.2.5-cp36-cp36m-manylinux1_x86_64.whl", hash = "sha256:7cef566e7867071b7f07c7ca7aadfed3b839651bdb5546fd53f892e4ab128a85"},
+    {file = "hmmlearn-0.2.5-cp36-cp36m-win_amd64.whl", hash = "sha256:8d4c1d3c7405256978edb35e39cb8fea8bd742a92364e8bb55e2f5d67e40268b"},
+    {file = "hmmlearn-0.2.5-cp37-cp37m-macosx_10_14_x86_64.whl", hash = "sha256:91836caf33dee19ccc55fd2f44c880a1025f703759d448334d816e320d4cc146"},
+    {file = "hmmlearn-0.2.5-cp37-cp37m-manylinux1_x86_64.whl", hash = "sha256:a0691bb9a716ef460ef0203819c4b9052648a384e6b86ef20a5d00d512987f6f"},
+    {file = "hmmlearn-0.2.5-cp37-cp37m-win_amd64.whl", hash = "sha256:160665f63a66f276a72c1b7fbffb7e26e2ebfaf86aeab66a400e76177fb5af5a"},
+    {file = "hmmlearn-0.2.5-cp38-cp38-macosx_10_14_x86_64.whl", hash = "sha256:1a5b0025438c5b451fe1f9eff40f30feb99871fb67677052bbb24a9f2e8ce2a8"},
+    {file = "hmmlearn-0.2.5-cp38-cp38-manylinux1_x86_64.whl", hash = "sha256:94936c340ab606ec84790b4d88adf4f5f02dc7d60e0f7f2dba9f2aa304a35140"},
+    {file = "hmmlearn-0.2.5-cp38-cp38-win_amd64.whl", hash = "sha256:4e03be5ba70e179a7777d1825b4cfed21683ea3a92938f1c2cc0fc46face62c6"},
+    {file = "hmmlearn-0.2.5-cp39-cp39-macosx_10_14_x86_64.whl", hash = "sha256:dc594a9fca782dde3110c64c2941d1e76b1b1f7ffa50561496624bbc71d5b72e"},
+    {file = "hmmlearn-0.2.5-cp39-cp39-manylinux1_x86_64.whl", hash = "sha256:b96a662a93fe31c64e4f1662036c5cc237294b329721198a95ac4ce0a9742d63"},
+    {file = "hmmlearn-0.2.5-cp39-cp39-win_amd64.whl", hash = "sha256:baa508987389311203744b748bb14201d3ebfa61a837238c23fa02eeabc5745c"},
+    {file = "hmmlearn-0.2.5.tar.gz", hash = "sha256:14fb4ad3fb7529785844a25fae5d32272619fb5973cc02c8784018055470ca01"},
 ]
 html5lib = [
     {file = "html5lib-1.1-py2.py3-none-any.whl", hash = "sha256:0d78f8fde1c230e99fe37986a60526d7049ed4bf8a9fadbad5f00e22e58e041d"},
@@ -2556,6 +2605,10 @@ scipy = [
     {file = "scipy-1.7.0-cp39-cp39-win32.whl", hash = "sha256:5a983d3cebc27294897951a494cebd78af2eae37facf75d9e4ad4f1f62229860"},
     {file = "scipy-1.7.0-cp39-cp39-win_amd64.whl", hash = "sha256:aef6e922aea6f2e6bbb539b413c85210a9ee32757535b84204ebd22723e69704"},
     {file = "scipy-1.7.0.tar.gz", hash = "sha256:998c5e6ea649489302de2c0bc026ed34284f531df89d2bdc8df3a0d44d165739"},
+]
+seaborn = [
+    {file = "seaborn-0.11.1-py3-none-any.whl", hash = "sha256:4e1cce9489449a1c6ff3c567f2113cdb41122f727e27a984950d004a88ef3c5c"},
+    {file = "seaborn-0.11.1.tar.gz", hash = "sha256:44e78eaed937c5a87fc7a892c329a7cc091060b67ebd1d0d306b446a74ba01ad"},
 ]
 secretstorage = [
     {file = "SecretStorage-3.3.1-py3-none-any.whl", hash = "sha256:422d82c36172d88d6a0ed5afdec956514b189ddbfb72fefab0c8a1cee4eaf71f"},
