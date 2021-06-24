@@ -31,7 +31,7 @@ SECTION_NAMES = {
 }
 
 SPINNER_MESSAGE = "Rendering..."
-DEFAULT_FRAME_RATE = 12
+DEFAULT_FRAME_RATE = 12.0
 
 DATA_FOLDER = "data/"
 HEADER_EPOCH_PATH = "src/pre_saved/epochs/header_epoch.pickle"
@@ -301,11 +301,11 @@ def get_f_rate_widget(key):
     """
     f_rate_widget = st.number_input(
         "Animation frame rate (fps)",
-        value=12.0,
+        value=DEFAULT_FRAME_RATE,
         min_value=1.0,
         help="""The frame rate that the animation will play at in frames per second.
         Setting higher values will make the animation play faster.""",
-        key = key
+        key=key
     )
     
     return f_rate_widget
@@ -1168,6 +1168,10 @@ def main():
                     use_container_width=True
                 )
                 export = expander_3d_head.on_render(code)
+                if export:
+                    file_name, send_message = expander_3d_head.generate_file_name()
+                    plot.write_html(file_name)
+                    send_message()
         else:
             default_message(expander_3d_head.section_name)
 
