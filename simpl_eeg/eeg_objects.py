@@ -189,7 +189,7 @@ class Epochs:
         if epoch_num > len(self.all_epochs):
             raise Exception(
                 "Invalid selection, "
-                "epoch_num must be between 0 and "+len(self.all_epochs)
+                "epoch_num must be between 0 and "+str(len(self.all_epochs))
             )
 
         self.epoch = self.all_epochs[epoch_num]

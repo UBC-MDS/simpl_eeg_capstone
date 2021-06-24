@@ -36,7 +36,7 @@ def test_Epoch():
 
     # check attribute types
     assert isinstance(epochs.eeg_file, eeg_objects.EEG_File)
-    assert isinstance(epochs.data, mne.Epochs)
+    assert isinstance(epochs.all_epochs, mne.Epochs)
     assert isinstance(epochs.epoch, mne.Epochs)
 
 
