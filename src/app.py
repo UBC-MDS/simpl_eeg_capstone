@@ -58,6 +58,8 @@ def format_kwargs_list(**kwargs):
         value = kwargs[i]
         if type(value) == str:
             value = f"'{value}'"
+        elif type(value) == np.ndarray:
+            value = [list(i) for i in value]
         args.append(f"{i}={value}")
     return args
 
@@ -301,7 +303,7 @@ def get_f_rate_widget(key):
         value=12.0,
         min_value=1.0,
         help="""The framerate that the animation will play at in frames per second.
-                        Setting higher values will make the animation play faster.""",
+        Setting higher values will make the animation play faster.""",
         key = key
     )
     
@@ -958,11 +960,10 @@ def main():
             selected_pairs = connectivity.PAIR_OPTIONS[pair_selection]
         else:
             custom_pair_selection = st.text_area(
-                """
-                Enter comma separated pairs below in format
-                Node1-Node2, Node3-Node4 to customize
-                """,
-                connectivity.PAIR_OPTIONS[pair_selection]
+                "Customize pairs to render",
+                connectivity.PAIR_OPTIONS[pair_selection],
+                help="""Enter comma separated pairs below in format
+                Node1-Node2, Node3-Node4 to customize selection"""
             )
             selected_pairs = custom_pair_selection
 
