@@ -31,6 +31,7 @@ SECTION_NAMES = {
 }
 
 SPINNER_MESSAGE = "Rendering..."
+DEFAULT_FRAME_RATE = 12
 
 DATA_FOLDER = "data/"
 HEADER_EPOCH_PATH = "src/pre_saved/epochs/header_epoch.pickle"
@@ -302,13 +303,12 @@ def get_f_rate_widget(key):
         "Animation frame rate (fps)",
         value=12.0,
         min_value=1.0,
-        help="""The framerate that the animation will play at in frames per second.
+        help="""The frame rate that the animation will play at in frames per second.
         Setting higher values will make the animation play faster.""",
         key = key
     )
     
     return f_rate_widget
-
 
 
 def main():
@@ -578,8 +578,9 @@ def main():
                 the right column for the widgets related to the section
 
         Methods:
-            export_button():
-                Adds an export button to the bottom of section's widget column
+            on_render():
+                Prints help and
+                adds an export button to the bottom of section's widget column
             generate_file_name(file_type="html"):
                 Generates an export file name and success message function
             html_export(self, html_plot):
@@ -596,7 +597,7 @@ def main():
             with self.expander:
                 self.plot_col, self.widget_col = st.beta_columns((3, 1))
 
-        def export_button(self, code):
+        def on_render(self, code):
             
             if show_code:
                 self.expander.code(code)
@@ -741,7 +742,6 @@ def main():
             min_value=vmin_2d_head,
             help=max_voltage_message
         )
-        f_rate_2d_head = get_f_rate_widget("f_rate_2d_head")
         mark_options = [
             "dot",
             "r+",
@@ -760,6 +760,8 @@ def main():
             key="2dAO"
         )
         if advanced_options_2d:
+            f_rate_2d_head = get_f_rate_widget("f_rate_2d_head")
+
             colorbar_2d_headmap = st.checkbox(
                 "Include colorbar",
                 value=True,
@@ -813,6 +815,7 @@ def main():
                 """
             )
         else:
+            f_rate_2d_head = 12
             colorbar_2d_headmap = True
             timestamps_2d_headmap = True
             contours_2d = 0
@@ -845,7 +848,6 @@ def main():
             min_value=vmin_3d_brain,
             help=max_voltage_message
         )
-        f_rate_3d_brain = get_f_rate_widget("f_rate_3d_brain")
         view_option_dict = {
             "lat": "Lateral",
             "dor": "Dorsal",
@@ -901,6 +903,7 @@ def main():
             key="brainAO"
         )
         if advanced_options_brain:
+            f_rate_3d_brain = get_f_rate_widget("f_rate_3d_brain")
             colorbar_brain = st.checkbox(
                 "Include colorbar",
                 value=True,
@@ -925,6 +928,7 @@ def main():
                 """
             )
         else:
+            f_rate_3d_brain = DEFAULT_FRAME_RATE
             colorbar_brain = True
             timestamps_brain = True
             spacing_value = "oct5"
@@ -940,15 +944,13 @@ def main():
             "conn"
         )
 
-        f_rate_connectivity = get_f_rate_widget("f_rate_connectivity")
-
         # Node pair widgets
         node_pair_options = list(connectivity.PAIR_OPTIONS.keys())
 
         pair_selection = st.selectbox(
             "Select node pair template",
             node_pair_options,
-            index=1,
+            index=2,
             format_func=lambda name: name.replace("_", " ").capitalize(),
             help="""Select node pairs template to show only selected nodes.
             These can be further customized after selecting the template
@@ -975,6 +977,8 @@ def main():
         )
 
         if advanced_options_conn:
+            f_rate_connectivity = get_f_rate_widget("f_rate_connectivity")
+
             # Line width widgets
             line_width_type = st.checkbox(
                 "Set static line width",
@@ -1014,6 +1018,7 @@ def main():
                 help="Show sphere to represent head"
             )
         else:
+            f_rate_connectivity = DEFAULT_FRAME_RATE
             conn_line_width = None
             colorbar_conn = True
             timestamps_conn = True
@@ -1027,8 +1032,6 @@ def main():
             frame_steps,
             "circle"
         )
-
-        f_rate_circle= get_f_rate_widget("f_rate_circle")
 
         # Maximum connections widget
         max_connections = st.number_input(
@@ -1047,6 +1050,7 @@ def main():
         )
 
         if advanced_options_circle:
+            f_rate_circle = get_f_rate_widget("f_rate_circle")
 
             # Line width widget
             conn_circle_line_width = st.slider(
@@ -1072,6 +1076,7 @@ def main():
             )
 
         else:
+            f_rate_circle = DEFAULT_FRAME_RATE
             conn_circle_line_width = 2
             colorbar_circle = True
             timestamps_circle = True
@@ -1109,7 +1114,7 @@ def main():
 
             expander_raw.plot_col.pyplot(plot)
 
-            export = expander_raw.export_button(code)
+            export = expander_raw.on_render(code)
             if export:
                 file_name, send_message = expander_raw.generate_file_name(
                     "svg"
@@ -1143,7 +1148,7 @@ def main():
                     width=700
                 )
 
-            export = expander_2d_head.export_button(code)
+            export = expander_2d_head.on_render(code)
             if export:
                 expander_2d_head.html_export(html_plot)
         else:
@@ -1162,7 +1167,7 @@ def main():
                     plot,
                     use_container_width=True
                 )
-                export = expander_3d_head.export_button(code)
+                export = expander_3d_head.on_render(code)
         else:
             default_message(expander_3d_head.section_name)
 
@@ -1218,7 +1223,7 @@ def main():
                         width=600
                     )
 
-                    export = expander_3d_brain.export_button(code)
+                    export = expander_3d_brain.on_render(code)
                     if export:
                         expander_3d_brain.html_export(html_plot)
         else:
@@ -1247,7 +1252,7 @@ def main():
                     width=600
                 )
 
-                export = expander_connectivity.export_button(code)
+                export = expander_connectivity.on_render(code)
                 if export:
                     expander_connectivity.html_export(html_plot)
         else:
@@ -1275,7 +1280,7 @@ def main():
                     width=600
                 )
 
-            export = expander_connectivity_circle.export_button(code)
+            export = expander_connectivity_circle.on_render(code)
             if export:
                 expander_connectivity_circle.html_export(html_plot)
         else:
