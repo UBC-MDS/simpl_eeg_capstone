@@ -19,7 +19,7 @@ def frame_args(duration):
 
     Parameters:
         duration: int
-            The number of frames for the animated plot
+            The number of seconds per frame for the animated plot
     Returns:
         dict:
             A dictionary of frame arguments
@@ -205,40 +205,22 @@ def get_node_dataframe(raw, montage):
 
 def animate_3d_head(
     epoch,
+    data_df=None,
     plot_title="",
     color_title="EEG MicroVolt",
     color_min=-50,
     color_max=50,
     colormap="Bluered",
 ):
-    """
-    Plot an animated topographic map in a 3D head shape
-
-    Parameters:
-        epoch: mne.epochs.Epochs
-            An epoched file for the EEGLab data
-        plot_title: str (optional)
-            The title of the plot. Defaults to "".
-        color_title: str (optional)
-            The title of the color bar. Defaults to "EEG MicroVolt".
-        color_min: int (optional)
-            The minimum EEG voltage value to be shown on the color bar.
-            Defaults to -50.
-        color_max: int (optional)
-            The maximum EEG voltage value to be shown on the color bar.
-            Defaults to 50.
-        colormap: str (optional)
-            The colour scheme to use. Defaults to Bluered.
-    Returns:
-        plotly.graph_objs._figure.Figure:
-            An animated topographic map in a 3D head shape
-    """
 
     if type(epoch) is not mne.epochs.Epochs:
         raise TypeError(
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
         )
+    
+    if data_df is not None and type(data_df) is not pd.core.frame.DataFrame:
+        raise TypeError("data_df is not a data frame")
 
     if type(plot_title) is not str:
         raise TypeError("plot_title has to be a string")
@@ -258,13 +240,6 @@ def animate_3d_head(
     # find out the channel names
     channel_names = epoch.ch_names
 
-    # change the raw epoched data to a dataframe
-    df = epoch.to_data_frame().groupby("time").mean().reset_index()
-    df = df.loc[
-        (df[channel_names] != 0).all(axis=1)
-    ].reset_index()  # remove rows with 0 values for all columns
-    nb_frame = len(df)  # calculate the number of frames
-
     # get the standard montage coordinates
     standard_montage, standard_coord = get_standard_coord()
     x = np.array(standard_coord)[:, 0]
@@ -274,6 +249,17 @@ def animate_3d_head(
     # get the coordinates of the electrodes from the raw data
     node_coord = get_eeg_node(epoch, standard_montage)
     node_df = get_node_dataframe(epoch, standard_montage)
+
+    if data_df is None:
+        # change the raw epoched data to a dataframe
+        df = epoch.to_data_frame().groupby("time").mean().reset_index()
+    elif data_df is not None:
+        df = data_df.groupby("time").mean().reset_index()
+
+    df = df.loc[
+        (df[channel_names] != 0).all(axis=1)
+    ].reset_index()  # remove rows with 0 values for all columns
+    nb_frame = len(df)  # calculate the number of frames
 
     # get the interpolated values for all electrode locations
     interpolated_values_dict = {}
@@ -299,11 +285,9 @@ def animate_3d_head(
                     alphahull=1,  # can't be changed
                     opacity=1,
                 ),
-                # you need to name the frame for the 
+                # you need to name the frame for the
                 # animation to behave properly
-                name=format(
-                    epoch.times[k], ".4f"
-                ),  
+                name=format(epoch.times[k], ".4f"),
             )
             for k in range(nb_frame)
         ]
@@ -340,28 +324,51 @@ def animate_3d_head(
     )
 
     # set up slider for the animated plot
-    sliders = [
-        {
-            "pad": {"b": 0, "t": 0},
-            "len": 0.9,
-            "x": 0.1,
-            "y": 0,
-            "currentvalue": {
-                "prefix": "Time stamp: ",
-                "visible": True,
-                "xanchor": "center",
-            },
-            "steps": [
-                {
-                    "args": [[f.name], frame_args(0)],
-                    "label": f.name + "(s)",
-                    "method": "animate",
-                }
-                for k, f in enumerate(fig.frames)
-            ],
-            "transition": {"duration": 0, "easing": "linear"},
-        }
-    ]
+    if data_df is None:
+        sliders = [
+            {
+                "pad": {"b": 0, "t": 0},
+                "len": 0.9,
+                "x": 0.1,
+                "y": 0,
+                "currentvalue": {
+                    "prefix": "Time stamp: ",
+                    "visible": True,
+                    "xanchor": "center",
+                },
+                "steps": [
+                    {
+                        "args": [[f.name], frame_args(0)],
+                        "label": f.name + "(s)",
+                        "method": "animate",
+                    }
+                    for k, f in enumerate(fig.frames)
+                ],
+                "transition": {"duration": 0, "easing": "linear"},
+            }
+        ]
+    elif data_df is not None:
+        sliders = [
+            {
+                "pad": {"b": 0, "t": 0},
+                "len": 0.9,
+                "x": 0.1,
+                "y": 0,
+                "currentvalue": {
+                    "visible": True,
+                    "xanchor": "center",
+                },
+                "steps": [
+                    {
+                        "args": [[f.name], frame_args(0)],
+                        "label": " ",
+                        "method": "animate",
+                    }
+                    for k, f in enumerate(fig.frames)
+                ],
+                "transition": {"duration": 0, "easing": "linear"},
+            }
+        ]
 
     fig.update_layout(
         title=plot_title,
@@ -401,6 +408,7 @@ def animate_3d_head(
 def topo_3d_map(
     epoch,
     time_stamp,
+    data_df=None,
     color_title="EEG MicroVolt",
     color_min=-50,
     color_max=50,
@@ -413,7 +421,12 @@ def topo_3d_map(
         epoch: mne.epochs.Epochs
             An epoched file for the EEGLab data
         time_stamp: int
-            The time stamp that is of interest
+            The time stamp that is of interest if using epoched
+            data, the row number that is of interest if using
+            data frame
+        data_df: pd.core.frame.DataFrame
+            A data frame of EEG data if epoched data is not of
+            interest
         color_title: str (optional)
             The title of the color bar. Defaults to "EEG MicroVolt".
         color_min: int (optional)
@@ -435,6 +448,9 @@ def topo_3d_map(
             "please refer to eeg_objects to create an epoched data"
         )
 
+    if data_df is not None and type(data_df) is not pd.core.frame.DataFrame:
+        raise TypeError("data_df is not a data frame")
+
     if type(color_title) is not str:
         raise TypeError("color_title has to be a string")
 
@@ -450,11 +466,6 @@ def topo_3d_map(
     # find out the channel names
     channel_names = epoch.ch_names
 
-    # change the raw epoched data to a dataframe
-    df = epoch.to_data_frame().groupby("time").mean().reset_index()
-    df = df.loc[(df[channel_names] != 0).all(axis=1)].reset_index()
-    nb_frame = len(df)
-
     # get the standard montage coordinates
     standard_montage, standard_coord = get_standard_coord()
     x = np.array(standard_coord)[:, 0]
@@ -465,8 +476,21 @@ def topo_3d_map(
     node_coord = get_eeg_node(epoch, standard_montage)
     node_df = get_node_dataframe(epoch, standard_montage)
 
-    # get the index
-    time_index = df[df["time"] == time_stamp].index.values[0]
+    if data_df is None:
+        # change the raw epoched data to a dataframe
+        df = epoch.to_data_frame().groupby("time").mean().reset_index()
+    elif data_df is not None:
+        df = data_df.groupby("time").mean().reset_index()
+
+    # change the raw epoched data to a dataframe
+    df = df.loc[(df[channel_names] != 0).all(axis=1)].reset_index()
+    nb_frame = len(df)
+
+    if data_df is None:
+        # get the index
+        time_index = df[df["time"] == time_stamp].index.values[0]
+    elif data_df is not None:
+        time_index = time_stamp
 
     # generate the animated plot
     fig = go.Figure(
@@ -503,25 +527,39 @@ def topo_3d_map(
     # time stamp
     title_time = format(epoch.times[time_index], ".4f")
 
-    fig.update_layout(
-        title="Time stamp: " + str(title_time) + "s",
-        width=1000,
-        height=600,
-        scene=dict(
-            aspectratio=dict(x=1.5, y=1.5, z=1),
-        ),
-    )
+    if data_df is None:
+        fig.update_layout(
+            title="Time stamp: " + str(title_time) + "s",
+            width=1000,
+            height=600,
+            scene=dict(
+                aspectratio=dict(x=1.5, y=1.5, z=1),
+            ),
+        )
+    elif data_df is not None:
+        fig.update_layout(
+            title=" ",
+            width=1000,
+            height=600,
+            scene=dict(
+                aspectratio=dict(x=1.5, y=1.5, z=1),
+            ),
+        )
+
     return fig
 
-
+# To save the animated plot as a gif
 @gif.frame
-def topo3dhead_plot(epoch, i):
+def topo3dhead_plot(epoch, i, data_df=None):
     """
     To generate a static image for each gif frame
 
     Parameters:
         epoch: mne.epochs.Epochs
             An epoched file for the EEGLab data
+        data_df: pd.core.frame.DataFrame
+            A data frame of EEG data if epoched data is not of
+            interest
         i: int
             The time stamp that is of interest
 
@@ -534,15 +572,20 @@ def topo3dhead_plot(epoch, i):
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
         )
+    if data_df is not None and type(data_df) is not pd.core.frame.DataFrame:
+        raise TypeError("data_df is not a data frame")
     if type(i) is not int and type(i) is not float:
         raise TypeError("i has to be a number")
 
-    fig = topo_3d_map(epoch, i)
+    if data_df is None:
+        fig = topo_3d_map(epoch, i)
+    elif data_df is not None:
+        fig = topo_3d_map(epoch, i, data_df)
     return fig
 
 
 # To save the animated plot as a gif
-def save_gif(epoch, gifname, duration):
+def save_gif(epoch, gifname, duration, data_df=None):
     """
     Save the animated plot as gif file
 
@@ -553,6 +596,9 @@ def save_gif(epoch, gifname, duration):
             The file name.
         duration: int
             The duration (milliseconds) between each frame.
+        data_df: pd.core.frame.DataFrame
+            A data frame of EEG data if epoched data is not of
+            interest
     """
     if type(epoch) is not mne.epochs.Epochs:
         raise TypeError(
@@ -563,14 +609,28 @@ def save_gif(epoch, gifname, duration):
         raise TypeError("gifname has to be a string")
     if type(duration) is not int:
         raise TypeError("duration has to be a number")
+    if data_df is not None and type(data_df) is not pd.core.frame.DataFrame:
+        raise TypeError("data_df is not a data frame")
 
     frames = []
-    starting = epoch.to_data_frame()["time"].min()
-    ending = epoch.to_data_frame()["time"].max()
+    if data_df is None:
+        starting = epoch.to_data_frame()["time"].min()
+        ending = epoch.to_data_frame()["time"].max()
 
-    # for iterate over each timestamps in the dataframe
-    # to generate a plot, and then save it as animated gif
-    for i in range(starting, ending, 1):
-        frame = topo3dhead_plot(epoch, i)
-        frames.append(frame)
-    gif.save(frames, f"{gifname}.gif", duration=duration)
+        # for iterate over each timestamps in the dataframe
+        # to generate a plot, and then save it as animated gif
+        for i in range(starting, ending, 1):
+            frame = topo3dhead_plot(epoch, i)
+            frames.append(frame)
+        gif.save(frames, f"{gifname}.gif", duration=duration)
+
+    elif data_df is not None:
+        starting = data_df.time.tolist()[0]
+        ending = data_df.time.tolist()[-1]
+
+        # for iterate over each timestamps in the dataframe
+        # to generate a plot, and then save it as animated gif
+        for i in range(starting, ending, 1):
+            frame = topo3dhead_plot(epoch, i, data_df)
+            frames.append(frame)
+        gif.save(frames, f"{gifname}.gif", duration=duration)
