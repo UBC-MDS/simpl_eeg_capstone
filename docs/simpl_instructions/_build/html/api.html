@@ -268,7 +268,7 @@
 <p>A complete catalogue of all package functions can be found on this page.</p>
 <div class="section" id="module-simpl_eeg.eeg_objects">
 <span id="eeg-objects-module"></span><h2>EEG Objects Module<a class="headerlink" href="#module-simpl_eeg.eeg_objects" title="Permalink to this headline">¶</a></h2>
-<p>Module for generating and animating EEG connectivity figures</p>
+<p>Module for creating custom epoch objects</p>
 <dl class="py class">
 <dt id="simpl_eeg.eeg_objects.EEG_File">
 <em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">simpl_eeg.eeg_objects.</span></code><code class="sig-name descname"><span class="pre">EEG_File</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">folder_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'fixica'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.eeg_objects.EEG_File" title="Permalink to this definition">¶</a></dt>
@@ -296,20 +296,18 @@
 <dt>Attributes:</dt><dd><dl class="simple">
 <dt>eeg_file: EEG_File</dt><dd><p>eeg file data</p>
 </dd>
-<dt>data: mne.Epochs</dt><dd><p>the generated epoch data</p>
+<dt>all_epochs: mne.Epochs</dt><dd><p>the generated epoch data</p>
 </dd>
-<dt>epoch: mne.Epochs</dt><dd><p>the selected epoch</p>
+<dt>epoch: mne.Epochs</dt><dd><p>the selected epoch of interest</p>
 </dd>
 </dl>
 </dd>
 <dt>Methods:</dt><dd><dl class="simple">
 <dt>generate_epochs(duration, start_second):</dt><dd><p>Calculates epochs based on a duration and start second</p>
 </dd>
-<dt>set_nth_epoch(epoch_num):</dt><dd><p>Set the epoch of interest</p>
+<dt>get_epoch(epoch_num):</dt><dd><p>Set and return the epoch of interest</p>
 </dd>
-<dt>get_nth_epoch(epoch_num):</dt><dd><p>Retrieves the nth epoch</p>
-</dd>
-<dt>get_frame(tmin, step_size, frame_number):</dt><dd><p>Calculates a subset of the epoch based on the step size and frame</p>
+<dt>skip_n_steps(num_steps):</dt><dd><p>Returns a subset of the epoch by skipping records in increments of num_steps</p>
 </dd>
 </dl>
 </dd>
@@ -334,7 +332,7 @@ or None if autodetected event time should be used</p>
 </dl>
 </dd>
 <dt>Returns:</dt><dd><dl class="simple">
-<dt>mne.Epochs:</dt><dd><p>The generated epoch</p>
+<dt>mne.Epochs:</dt><dd><p>The generated epoch(s)</p>
 </dd>
 </dl>
 </dd>
@@ -342,10 +340,9 @@ or None if autodetected event time should be used</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="simpl_eeg.eeg_objects.Epochs.get_nth_epoch">
-<code class="sig-name descname"><span class="pre">get_nth_epoch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch_num</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.eeg_objects.Epochs.get_nth_epoch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return the nth epoch from the raw data,
-or current selected epoch if epoch_num is not given</p>
+<dt id="simpl_eeg.eeg_objects.Epochs.get_epoch">
+<code class="sig-name descname"><span class="pre">get_epoch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch_num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.eeg_objects.Epochs.get_epoch" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the nth epoch from the genertated epochs</p>
 <dl class="simple">
 <dt>Parameters:</dt><dd><dl class="simple">
 <dt>epoch_num: int</dt><dd><p>The epoch to select</p>
@@ -361,28 +358,18 @@ or current selected epoch if epoch_num is not given</p>
 </dd></dl>
 
 <dl class="py method">
-<dt id="simpl_eeg.eeg_objects.Epochs.set_nth_epoch">
-<code class="sig-name descname"><span class="pre">set_nth_epoch</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch_num</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.eeg_objects.Epochs.set_nth_epoch" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the nth epoch from the raw data</p>
+<dt id="simpl_eeg.eeg_objects.Epochs.skip_n_steps">
+<code class="sig-name descname"><span class="pre">skip_n_steps</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_single</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.eeg_objects.Epochs.skip_n_steps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return new epoch containing every nth frame</p>
 <dl class="simple">
 <dt>Parameters:</dt><dd><dl class="simple">
-<dt>epoch_num: int</dt><dd><p>The epoch to select</p>
+<dt>num_steps: int</dt><dd><p>The number of time steps to skip</p>
+</dd>
+<dt>use_single: bool (optional)</dt><dd><p>Whether to apply the skipping to all epochs or the
+current selected epoch only</p>
 </dd>
 </dl>
 </dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="simpl_eeg.eeg_objects.Epochs.skip_n_steps">
-<code class="sig-name descname"><span class="pre">skip_n_steps</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_steps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.eeg_objects.Epochs.skip_n_steps" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return new epoch containing every nth frame</p>
-<p>Parameters:
-num_steps: int</p>
-<blockquote>
-<div><p>The number of time steps to skip</p>
-</div></blockquote>
-<dl class="simple">
 <dt>Returns:</dt><dd><dl class="simple">
 <dt>mne.Epochs:</dt><dd><p>The reduced size epoch</p>
 </dd>
@@ -398,7 +385,7 @@ num_steps: int</p>
 <span id="raw-voltage-module"></span><h2>Raw Voltage Module<a class="headerlink" href="#module-simpl_eeg.raw_voltage" title="Permalink to this headline">¶</a></h2>
 <dl class="py function">
 <dt id="simpl_eeg.raw_voltage.plot_voltage">
-<code class="sig-prename descclassname"><span class="pre">simpl_eeg.raw_voltage.</span></code><code class="sig-name descname"><span class="pre">plot_voltage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.raw_voltage.plot_voltage" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">simpl_eeg.raw_voltage.</span></code><code class="sig-name descname"><span class="pre">plot_voltage</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">remove_xlabel</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_times</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.raw_voltage.plot_voltage" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate raw voltage plot</p>
 <dl>
 <dt>Parameters:</dt><dd><dl>
@@ -407,6 +394,10 @@ num_steps: int</p>
 <dt>remove_xlabel: bool (optional)</dt><dd><p>Whether to remove the x axis label. Defaults to False.</p>
 </dd>
 <dt>show_times: bool (optional)</dt><dd><p>Whether to show seconds on the x axis. Defaults to True.</p>
+</dd>
+<dt>height: float | None (optional)</dt><dd><p>Height of the plot in inches. Defaults to None for automatic.</p>
+</dd>
+<dt>width: float | None (optional)</dt><dd><p>Width of the plot in inches. Defaults to None for automatic.</p>
 </dd>
 <dt><a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs: dict (optional)</dt><dd><p>Optional arguments to pass to mne.Epochs.plot()</p>
 <p>Full list of options available at
@@ -548,42 +539,12 @@ axes, mask, mask_params, image_interp, show, onselect, border, ch_type].</p>
 <span id="topomap-3d-head-module"></span><h2>Topomap 3D Head Module<a class="headerlink" href="#module-simpl_eeg.topomap_3d_head" title="Permalink to this headline">¶</a></h2>
 <p>Module for generating and animating the topographic map in a 3D head shape</p>
 <dl class="py function">
-<dt id="simpl_eeg.topomap_3d_head.animate_3d_head">
-<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">animate_3d_head</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EEG</span> <span class="pre">MicroVolt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Bluered'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.animate_3d_head" title="Permalink to this definition">¶</a></dt>
-<dd><p>Plot an animated topographic map in a 3D head shape</p>
-<dl class="simple">
-<dt>Parameters:</dt><dd><dl class="simple">
-<dt>epoch: mne.epochs.Epochs</dt><dd><p>An epoched file for the EEGLab data</p>
-</dd>
-<dt>plot_title: str (optional)</dt><dd><p>The title of the plot. Defaults to “”.</p>
-</dd>
-<dt>color_title: str (optional)</dt><dd><p>The title of the color bar. Defaults to “EEG MicroVolt”.</p>
-</dd>
-<dt>color_min: int (optional)</dt><dd><p>The minimum EEG voltage value to be shown on the color bar.
-Defaults to -50.</p>
-</dd>
-<dt>color_max: int (optional)</dt><dd><p>The maximum EEG voltage value to be shown on the color bar.
-Defaults to 50.</p>
-</dd>
-<dt>colormap: str (optional)</dt><dd><p>The colour scheme to use. Defaults to Bluered.</p>
-</dd>
-</dl>
-</dd>
-<dt>Returns:</dt><dd><dl class="simple">
-<dt>plotly.graph_objs._figure.Figure:</dt><dd><p>An animated topographic map in a 3D head shape</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.frame_args">
 <code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">frame_args</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">duration</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.frame_args" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the frame arguments of the animated plot</p>
 <dl class="simple">
 <dt>Parameters:</dt><dd><dl class="simple">
-<dt>duration: int</dt><dd><p>The number of frames for the animated plot</p>
+<dt>duration: int</dt><dd><p>The number of seconds per frame for the animated plot</p>
 </dd>
 </dl>
 </dd>
@@ -688,7 +649,7 @@ all channels in the raw data</p>
 
 <dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.save_gif">
-<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">save_gif</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gifname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.save_gif" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">save_gif</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gifname</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">duration</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.save_gif" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the animated plot as gif file</p>
 <dl class="simple">
 <dt>Parameters:</dt><dd><dl class="simple">
@@ -698,6 +659,9 @@ all channels in the raw data</p>
 </dd>
 <dt>duration: int</dt><dd><p>The duration (milliseconds) between each frame.</p>
 </dd>
+<dt>data_df: pd.core.frame.DataFrame</dt><dd><p>A data frame of EEG data if epoched data is not of
+interest</p>
+</dd>
 </dl>
 </dd>
 </dl>
@@ -705,11 +669,14 @@ all channels in the raw data</p>
 
 <dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.topo3dhead_plot">
-<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">topo3dhead_plot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.topo3dhead_plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">topo3dhead_plot</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.topo3dhead_plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>To generate a static image for each gif frame</p>
 <dl class="simple">
 <dt>Parameters:</dt><dd><dl class="simple">
 <dt>epoch: mne.epochs.Epochs</dt><dd><p>An epoched file for the EEGLab data</p>
+</dd>
+<dt>data_df: pd.core.frame.DataFrame</dt><dd><p>A data frame of EEG data if epoched data is not of
+interest</p>
 </dd>
 <dt>i: int</dt><dd><p>The time stamp that is of interest</p>
 </dd>
@@ -725,13 +692,18 @@ all channels in the raw data</p>
 
 <dl class="py function">
 <dt id="simpl_eeg.topomap_3d_head.topo_3d_map">
-<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">topo_3d_map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_stamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EEG</span> <span class="pre">MicroVolt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Bluered'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.topo_3d_map" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">simpl_eeg.topomap_3d_head.</span></code><code class="sig-name descname"><span class="pre">topo_3d_map</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epoch</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_stamp</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data_df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'EEG</span> <span class="pre">MicroVolt'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_max</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">50</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colormap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Bluered'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#simpl_eeg.topomap_3d_head.topo_3d_map" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot a topographic map in a 3D head shape for a single time stamp</p>
 <dl class="simple">
 <dt>Parameters:</dt><dd><dl class="simple">
 <dt>epoch: mne.epochs.Epochs</dt><dd><p>An epoched file for the EEGLab data</p>
 </dd>
-<dt>time_stamp: int</dt><dd><p>The time stamp that is of interest</p>
+<dt>time_stamp: int</dt><dd><p>The time stamp that is of interest if using epoched
+data, the row number that is of interest if using
+data frame</p>
+</dd>
+<dt>data_df: pd.core.frame.DataFrame</dt><dd><p>A data frame of EEG data if epoched data is not of
+interest</p>
 </dd>
 <dt>color_title: str (optional)</dt><dd><p>The title of the color bar. Defaults to “EEG MicroVolt”.</p>
 </dd>

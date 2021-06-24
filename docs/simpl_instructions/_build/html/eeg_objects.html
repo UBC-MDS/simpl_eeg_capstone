@@ -335,7 +335,48 @@ Below are the docstrings for the two classes:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Class for reading and importing EEG files</span>
-<span class="o">?</span>eeg_objects.EEG_File
+<span class="n">help</span><span class="p">(</span><span class="n">eeg_objects</span><span class="o">.</span><span class="n">EEG_File</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on class EEG_File in module simpl_eeg.eeg_objects:
+
+class EEG_File(builtins.object)
+ |  EEG_File(folder_path, file_name=&#39;fixica&#39;)
+ |  
+ |  A class to import and store relevant eeg files
+ |  
+ |  Attributes:
+ |      folder_path: str
+ |          path to experiment folder
+ |      experiment: str
+ |          the name of the folder containing experiment files
+ |      mat: list of ints
+ |          a list of integers representing impact times
+ |      raw: mne.io.eeglab.eeglab.RawEEGLAB
+ |          raw experiment data in FIF format
+ |  
+ |  Methods defined here:
+ |  
+ |  __init__(self, folder_path, file_name=&#39;fixica&#39;)
+ |      Imports and stores EEG data files
+ |      
+ |      Parameters:
+ |          folder_path: str
+ |              The folder path containing the experiment data
+ |          file_name: str (optional)
+ |              The file name for the .set and .fdt file.
+ |              Defaults to &quot;fixica&quot;.
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |  
+ |  __dict__
+ |      dictionary for instance variables (if defined)
+ |  
+ |  __weakref__
+ |      list of weak references to the object (if defined)
 </pre></div>
 </div>
 </div>
@@ -343,7 +384,109 @@ Below are the docstrings for the two classes:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Class for storing, generating, and adjusting epoch objects</span>
-<span class="o">?</span>eeg_objects.Epochs
+<span class="n">help</span><span class="p">(</span><span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on class Epochs in module simpl_eeg.eeg_objects:
+
+class Epochs(builtins.object)
+ |  Epochs(folder_path, tmin=-0.3, tmax=0.7, start_second=None, file_name=&#39;fixica&#39;, **kwargs)
+ |  
+ |  A class to represent epochs and underlying data
+ |  
+ |  Attributes:
+ |      eeg_file: EEG_File
+ |          eeg file data
+ |      all_epochs: mne.Epochs
+ |          the generated epoch data
+ |      epoch: mne.Epochs
+ |          the selected epoch of interest
+ |  
+ |  Methods:
+ |      generate_epochs(duration, start_second):
+ |          Calculates epochs based on a duration and start second
+ |      get_epoch(epoch_num):
+ |          Set and return the epoch of interest
+ |      skip_n_steps(num_steps):
+ |          Returns a subset of the epoch by skipping records in increments of num_steps
+ |  
+ |  Methods defined here:
+ |  
+ |  __init__(self, folder_path, tmin=-0.3, tmax=0.7, start_second=None, file_name=&#39;fixica&#39;, **kwargs)
+ |      Generates epochs and stores related information
+ |      
+ |      Parameters:
+ |          tmin: float
+ |              Number of seconds before the event time to include in epoch
+ |          tmax: float
+ |              Number of seconds after the event time to include in epoch
+ |          start_second: int | None
+ |              Second of the event time,
+ |              or None if autodetected event time should be used
+ |          file_name: str (optional)
+ |              The file name for the .set and .fdt file.
+ |              Defaults to &quot;fixica&quot;.
+ |          **kwargs: dict (optional)
+ |              Additional parameters to pass to the mne.Epochs() constructor
+ |      
+ |              Full list of options available at
+ |              https://mne.tools/stable/generated/mne.Epochs.html
+ |  
+ |  generate_epochs(self, tmin, tmax, start_second, **kwargs)
+ |      Generates an epoch object based on the given input
+ |      
+ |      Parameters:
+ |          tmin: float
+ |              Number of seconds before the event time to include in epoch
+ |          tmax: float
+ |              Number of seconds after the event time to include in epoch
+ |          start_second: int
+ |              Second of the event time,
+ |              or None if autodetected event time should be used
+ |          **kwargs: dict (optional)
+ |              Additional parameters to pass to the mne.Epochs() constructor
+ |      
+ |              Full list of options available at
+ |              https://mne.tools/stable/generated/mne.Epochs.html
+ |      
+ |      Returns:
+ |          mne.Epochs:
+ |              The generated epoch(s)
+ |  
+ |  get_epoch(self, epoch_num)
+ |      Get the nth epoch from the genertated epochs
+ |      
+ |      Parameters:
+ |          epoch_num: int
+ |              The epoch to select
+ |      Returns:
+ |          mne.Epoch:
+ |              The epoch of interest
+ |  
+ |  skip_n_steps(self, num_steps, use_single=True)
+ |      Return new epoch containing every nth frame
+ |      
+ |      Parameters:
+ |          num_steps: int
+ |              The number of time steps to skip
+ |          use_single: bool (optional)
+ |              Whether to apply the skipping to all epochs or the
+ |              current selected epoch only
+ |      
+ |      Returns:
+ |          mne.Epochs:
+ |              The reduced size epoch
+ |  
+ |  ----------------------------------------------------------------------
+ |  Data descriptors defined here:
+ |  
+ |  __dict__
+ |      dictionary for instance variables (if defined)
+ |  
+ |  __weakref__
+ |      list of weak references to the object (if defined)
 </pre></div>
 </div>
 </div>
@@ -359,10 +502,17 @@ Below are the docstrings for the two classes:</p>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">experiment_folder</span> <span class="o">=</span> <span class="s2">&quot;../../data/109&quot;</span> <span class="c1"># path to the experiment folder</span>
-<span class="n">tmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>  <span class="c1"># number of seconds before the impact, should be a negative number for before impact</span>
-<span class="n">tmax</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1"># number of seconds after the impact</span>
-<span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span>  <span class="c1"># if creating a custom epoch, select a starting second</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># path to the experiment folder</span>
+<span class="n">experiment_folder</span> <span class="o">=</span> <span class="s2">&quot;../../data/109&quot;</span>
+
+<span class="c1"># number of seconds before the impact, should be a negative number for before impact</span>
+<span class="n">tmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+
+<span class="c1"># number of seconds after the impact</span>
+<span class="n">tmax</span> <span class="o">=</span> <span class="mi">1</span>
+
+<span class="c1"># if creating a custom epoch, select a starting second</span>
+<span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span>
 </pre></div>
 </div>
 </div>
@@ -378,7 +528,7 @@ Below are the docstrings for the two classes:</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/data/109/fixica.fdt
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/sasha/mds/simpl_eeg_capstone/data/109/fixica.fdt
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
@@ -407,10 +557,10 @@ Below are the docstrings for the two classes:</p>
 </div>
 </div>
 </div>
-<p>The generated epoch data is found within the <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute. Here we are generating epochs with automatically detected impact times, so we can see that there are multiple events.</p>
+<p>The generated epoch data is found within the <code class="docutils literal notranslate"><span class="pre">all_epochs</span></code> attribute. Here we are generating epochs with automatically detected impact times, so we can see that there are multiple events.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span><span class="o">.</span><span class="n">data</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span><span class="o">.</span><span class="n">all_epochs</span>
 </pre></div>
 </div>
 </div>
@@ -442,12 +592,12 @@ Below are the docstrings for the two classes:</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start_second</span> <span class="o">=</span> <span class="mi">15</span>  <span class="c1"># record event at second 15</span>
 <span class="n">custom_epoch</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_folder</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span> 
 
-<span class="n">custom_epoch</span><span class="o">.</span><span class="n">data</span>
+<span class="n">custom_epoch</span><span class="o">.</span><span class="n">all_epochs</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/data/109/fixica.fdt
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/sasha/mds/simpl_eeg_capstone/data/109/fixica.fdt
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
@@ -497,7 +647,7 @@ Below are the docstrings for the two classes:</p>
 </div>
 <div class="section" id="get-information-about-epochs">
 <h4>Get information about epochs<a class="headerlink" href="#get-information-about-epochs" title="Permalink to this headline">¶</a></h4>
-<p>In addition to the epochs contained in the <code class="docutils literal notranslate"><span class="pre">data</span></code> attribute, the <code class="docutils literal notranslate"><span class="pre">Epoch</span></code> object also contains information about the file used and has a selected epoch for quick access.</p>
+<p>In addition to the epochs contained in the <code class="docutils literal notranslate"><span class="pre">all_epochs</span></code> attribute, the <code class="docutils literal notranslate"><span class="pre">Epoch</span></code> object also contains information about the file used and has a selected epoch for quick access.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eeg_file</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">eeg_file</span>
@@ -525,19 +675,40 @@ Below are the docstrings for the two classes:</p>
 </div>
 <div class="section" id="select-specific-epoch">
 <h4>Select specific epoch<a class="headerlink" href="#select-specific-epoch" title="Permalink to this headline">¶</a></h4>
-<p>If you have a specific epoch of interest you can specify it with the <code class="docutils literal notranslate"><span class="pre">set_nth_epoch</span></code> method. Then to retrieve that epoch use <code class="docutils literal notranslate"><span class="pre">get_nth_epoch</span></code></p>
+<p>If you have a specific epoch of interest you can specify it with the <code class="docutils literal notranslate"><span class="pre">get_epoch</span></code> method. You can retrieve it later by accessing the <code class="docutils literal notranslate"><span class="pre">epoch</span></code> attribute.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">nth_epoch</span> <span class="o">=</span> <span class="mi">5</span>  <span class="c1"># the epoch of interest to select, the 6th impact</span>
-<span class="n">epochs</span><span class="o">.</span><span class="n">set_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
+<span class="n">single_epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
+<span class="n">single_epoch</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html">
+<table class="table table-hover">
+    <tr>
+        <th>Number of events</th>
+        <td>1</td>
+    </tr>
+    <tr>
+        <th>Events</th>
+        <td>1370 seconds: 1<br></td>
+    </tr>
+    <tr>
+        <th>Time range</th>
+        <td>-1.000 – 1.000 sec</td>
+    </tr>
+    <tr>
+        <th>Baseline</th>
+        <td>-1.000 – 0.000 sec</td>
+    </tr>
+</table>
+</div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">()</span>
-<span class="n">single_epoch</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span><span class="o">.</span><span class="n">epoch</span>
 </pre></div>
 </div>
 </div>
@@ -566,7 +737,7 @@ Below are the docstrings for the two classes:</p>
 </div>
 <div class="section" id="decimate-the-epoch-optional">
 <h4>Decimate the epoch (optional)<a class="headerlink" href="#decimate-the-epoch-optional" title="Permalink to this headline">¶</a></h4>
-<p>To reduce the size of the selected epoch you can choose to skip a selected number of time steps by calling the <code class="docutils literal notranslate"><span class="pre">skip_n_steps</span></code> method. This will only be run on the current selected epoch from the previous step, contained in the <code class="docutils literal notranslate"><span class="pre">epoch</span></code> attribute.</p>
+<p>To reduce the size of the selected epoch you can choose to skip a selected number of time steps by calling the <code class="docutils literal notranslate"><span class="pre">skip_n_steps</span></code> method. If <code class="docutils literal notranslate"><span class="pre">use_single=True</span></code> (the default), it will only be run on the current selected epoch from the previous step, contained in the <code class="docutils literal notranslate"><span class="pre">epoch</span></code> attribute. Otherwise it will run on all the epochs contained within the <code class="docutils literal notranslate"><span class="pre">all_epochs</span></code> attribute.</p>
 <p>Skipping steps will greatly reduce animation times for the other functions in the package. The greater the number of steps skipped, the fewer the frames to animate. In the example below we are reducing the selected epoch from 4097 time steps to 81 time steps.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -678,7 +849,7 @@ Below are the docstrings for the two classes:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># first 3 epochs</span>
-<span class="n">epochs</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">);</span>
+<span class="n">epochs</span><span class="o">.</span><span class="n">all_epochs</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">n_epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
@@ -689,7 +860,7 @@ Below are the docstrings for the two classes:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># specific epoch</span>
-<span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>  <span class="c1"># alternatively you could call epochs.epoch directly</span>
+<span class="n">epochs</span><span class="o">.</span><span class="n">epoch</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
 </div>

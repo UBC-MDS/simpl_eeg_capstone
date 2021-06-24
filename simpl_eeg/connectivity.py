@@ -13,6 +13,7 @@ import mne
 # common node pairs for convenient access
 PAIR_OPTIONS = {
     "all_pairs": [],
+    "no_pairs": "",
     "local_anterior": "Fp1-F7, Fp2-F8, F7-C3, F4-C4, C4-F8, F3-C3",
     "local_posterior": "T5-C3, T5-O1, C3-P3, C4-P4, C4-T6, T6-O2",
     "far_coherence": (
