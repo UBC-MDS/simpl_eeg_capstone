@@ -46,14 +46,14 @@ get_ipython().run_line_magic('autoreload', '2')
 
 
 # Class for reading and importing EEG files
-get_ipython().run_line_magic('pinfo', 'eeg_objects.EEG_File')
+help(eeg_objects.EEG_File)
 
 
 # In[6]:
 
 
 # Class for storing, generating, and adjusting epoch objects
-get_ipython().run_line_magic('pinfo', 'eeg_objects.Epochs')
+help(eeg_objects.Epochs)
 
 
 # <br>
@@ -71,10 +71,17 @@ get_ipython().run_line_magic('pinfo', 'eeg_objects.Epochs')
 # In[7]:
 
 
-experiment_folder = "../../data/109" # path to the experiment folder
-tmin = -1  # number of seconds before the impact, should be a negative number for before impact
-tmax = 1  # number of seconds after the impact
-start_second = None  # if creating a custom epoch, select a starting second
+# path to the experiment folder
+experiment_folder = "../../data/109"
+
+# number of seconds before the impact, should be a negative number for before impact
+tmin = -1
+
+# number of seconds after the impact
+tmax = 1
+
+# if creating a custom epoch, select a starting second
+start_second = None
 
 
 # <br>
@@ -89,12 +96,12 @@ start_second = None  # if creating a custom epoch, select a starting second
 epochs = eeg_objects.Epochs(experiment_folder, tmin, tmax, start_second)
 
 
-# The generated epoch data is found within the `data` attribute. Here we are generating epochs with automatically detected impact times, so we can see that there are multiple events.
+# The generated epoch data is found within the `all_epochs` attribute. Here we are generating epochs with automatically detected impact times, so we can see that there are multiple events.
 
 # In[9]:
 
 
-epochs.data
+epochs.all_epochs
 
 
 # If instead we create epochs with a custom start second, we will only create a single epoch with an impact the given `start_second`.
@@ -105,12 +112,12 @@ epochs.data
 start_second = 15  # record event at second 15
 custom_epoch = eeg_objects.Epochs(experiment_folder, tmin, tmax, start_second) 
 
-custom_epoch.data
+custom_epoch.all_epochs
 
 
 # #### Get information about epochs
 
-# In addition to the epochs contained in the `data` attribute, the `Epoch` object also contains information about the file used and has a selected epoch for quick access. 
+# In addition to the epochs contained in the `all_epochs` attribute, the `Epoch` object also contains information about the file used and has a selected epoch for quick access. 
 
 # In[11]:
 
@@ -124,25 +131,25 @@ print(eeg_file.raw)  # raw data
 
 # #### Select specific epoch
 
-# If you have a specific epoch of interest you can specify it with the `set_nth_epoch` method. Then to retrieve that epoch use `get_nth_epoch`
+# If you have a specific epoch of interest you can specify it with the `get_epoch` method. You can retrieve it later by accessing the `epoch` attribute.
 
 # In[12]:
 
 
 nth_epoch = 5  # the epoch of interest to select, the 6th impact
-epochs.set_nth_epoch(nth_epoch)
+single_epoch = epochs.get_epoch(nth_epoch)
+single_epoch
 
 
 # In[13]:
 
 
-single_epoch = epochs.get_nth_epoch()
-single_epoch
+epochs.epoch
 
 
 # #### Decimate the epoch (optional)
 
-# To reduce the size of the selected epoch you can choose to skip a selected number of time steps by calling the `skip_n_steps` method. This will only be run on the current selected epoch from the previous step, contained in the `epoch` attribute.
+# To reduce the size of the selected epoch you can choose to skip a selected number of time steps by calling the `skip_n_steps` method. If `use_single=True` (the default), it will only be run on the current selected epoch from the previous step, contained in the `epoch` attribute. Otherwise it will run on all the epochs contained within the `all_epochs` attribute.
 # 
 # Skipping steps will greatly reduce animation times for the other functions in the package. The greater the number of steps skipped, the fewer the frames to animate. In the example below we are reducing the selected epoch from 4097 time steps to 81 time steps. 
 
@@ -186,14 +193,14 @@ raw.plot_psd();
 
 
 # first 3 epochs
-epochs.data.plot(n_epochs=3);
+epochs.all_epochs.plot(n_epochs=3);
 
 
 # In[19]:
 
 
 # specific epoch
-epochs.get_nth_epoch().plot();  # alternatively you could call epochs.epoch directly
+epochs.epoch.plot();
 
 
 # In[20]:

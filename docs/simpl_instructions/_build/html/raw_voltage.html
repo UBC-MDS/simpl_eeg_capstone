@@ -319,7 +319,7 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function plot_voltage in module simpl_eeg.raw_voltage:
 
-plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs)
+plot_voltage(epoch, remove_xlabel=False, show_times=True, height=None, width=None, **kwargs)
     Generate raw voltage plot
     
     Parameters:
@@ -329,6 +329,10 @@ plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs)
             Whether to remove the x axis label. Defaults to False.
         show_times: bool (optional)
             Whether to show seconds on the x axis. Defaults to True.
+        height: float | None (optional)
+            Height of the plot in inches. Defaults to None for automatic.
+        width: float | None (optional)
+            Width of the plot in inches. Defaults to None for automatic.
         **kwargs: dict (optional)
             Optional arguments to pass to mne.Epochs.plot()
     
@@ -359,12 +363,12 @@ plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">)</span>
-<span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/data/927/fixica.fdt
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/sasha/mds/simpl_eeg_capstone/data/927/fixica.fdt
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
@@ -402,7 +406,7 @@ plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># multiple epochs</span>
-<span class="n">raw_voltage</span><span class="o">.</span><span class="n">plot_voltage</span><span class="p">(</span><span class="n">epochs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">raw_voltage</span><span class="o">.</span><span class="n">plot_voltage</span><span class="p">(</span><span class="n">epochs</span><span class="o">.</span><span class="n">all_epochs</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>

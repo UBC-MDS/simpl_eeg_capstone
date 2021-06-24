@@ -51,7 +51,7 @@ experiment_folder = "../../data/927"
 nth_epoch = 0
 
 epochs = eeg_objects.Epochs(experiment_folder)
-epoch = epochs.get_nth_epoch(nth_epoch)
+epoch = epochs.get_epoch(nth_epoch)
 
 
 # <a id="animation"></a>
