@@ -113,21 +113,20 @@ def calculate_timeframe(start_time, raw):
 
 
 @st.cache(show_spinner=False)
-def generate_stc_epoch(epoch):
+def generate_fwd(epoch):
     """
-    Helper function for 3D brain map
-    generate inverse solution from forward
+    Helper function for 3D brain map - Generate forward solution from epoch
     """
-    fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
-    return (topomap_3d_brain.create_inverse_solution(epoch, fwd))
+    return(topomap_3d_brain.create_fsaverage_forward(epoch))
 
 
 @st.cache(show_spinner=False)
-def generate_stc_fwd(epoch, fwd):
+def generate_stc(epoch, fwd):
     """
-    Helper function for 3D brain map - Generate forward solution
+    Helper function for 3D brain map
+    generates inverse solution from forward and epoch
     """
-    return (topomap_3d_brain.create_inverse_solution(epoch, fwd))
+    return(topomap_3d_brain.create_inverse_solution(epoch, fwd))
 
 
 def render_raw_voltage_plot(epoch, **kwargs):
@@ -163,13 +162,13 @@ def animate_ui_3d_head(epoch, **kwargs):
 
 
 @st.cache(show_spinner=False)
-def animate_ui_3d_brain(epoch, **kwargs):
+def animate_ui_3d_brain(**kwargs):
     """
     Caching wrapper function to call
     topomap_3d_brain.animate_matplot_brain
     """
     func = topomap_3d_brain.animate_matplot_brain
-    anim = func(epoch, **kwargs)
+    anim = func(**kwargs)
     code = format_code(func, **kwargs)
     return anim.to_jshtml(), code
 
@@ -519,7 +518,7 @@ def main():
     epoch = epoch_obj.epoch
     plot_epoch = epoch_obj.skip_n_steps(frame_steps)
 
-    stc_generated = False
+    fwd_generated = False
 
     if plot_epoch.times.shape[0] <= 2:
         st.warning("""WARNING: At least 3 frames must be rendered for
@@ -892,7 +891,7 @@ def main():
             index=1,
             help="""The spacing to use for the source space. "oct" uses a recursively
             subdivided octahedron and "ico" uses a recursively subdivided
-            icosahedron.Reccomend using oct5 for speed and oct6 for more
+            icosahedron. It is reccomended to use oct5 for speed and oct6 for
             detail. Increasing the number leads to an exponential increase in
             render time.
             """
@@ -1187,30 +1186,31 @@ def main():
                 )
                 if st.checkbox("Yes I'm sure, bombs away!", value=False):
 
-                    # Loads an example epoch, checks if it matches conditions
+                    # Loads an example epoch, checks if it's 'epoch.info' matches
                     # if it does, loads an accompanying forward
-                    if stc_generated is False:
+                    if fwd_generated is False:
                         with open(HEADER_EPOCH_PATH, "rb") as handle:
                             example_epoch = pickle.load(handle)
                         if plot_epoch.info.__dict__ == example_epoch.info.__dict__:
                             with open(HEADER_FWD_PATH, "rb") as handle:
                                 fwd = pickle.load(handle)
                                 if type(fwd) == mne.forward.forward.Forward:
-                                    stc = generate_stc_fwd(plot_epoch, fwd)
-                                    stc_generated = True
+                                    fwd_generated = True
 
-                    if stc_generated is False:
-                        stc = generate_stc_epoch(plot_epoch)
-                        stc_generated = True
+                    if fwd_generated is False:
+                        fwd = generate_fwd(plot_epoch)
+                        fwd_generated = True
+                    
+                    stc = generate_stc(plot_epoch, fwd)
+
                     if use_non_MNE_colors is False:
                         colormap_brain = "mne"
                     else:
                         colormap_brain = colormap
 
                     html_plot, code = animate_ui_3d_brain(
-                        epoch=plot_epoch,
-                        views=view_selection,
                         stc=stc,
+                        views=view_selection,
                         hemi=hemi_selection,
                         colormap=colormap_brain,
                         cmin=vmin_3d_brain,

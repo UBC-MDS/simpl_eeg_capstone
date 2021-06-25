@@ -12,42 +12,42 @@ import matplotlib.gridspec as gridspec
 from matplotlib.transforms import Bbox
 import matplotlib.animation as animation
 
-
-def add_timestamp_brain(figure, frame, xpos, ypos, fontsize):
+def add_timestamp_brain(stc, figure, frame_number, xpos, ypos, fontsize):
     """
     Adds a timestamp to a matplotlib.image.AxesImage object
 
     Parameters:
+        stc: mne.source_estimate.SourceEstimate
+            The stc to get proper timestamps from.
+    
         figure: matplotlib.figure.Figure
             The time to plot as a timestamp.
 
-        frame: int
-            The time to plot as a timestamp.
+        frame_number: int
+            The frame_number of the stc to plot as a timestamp.
 
         xpos: float
-            The matplotlib x coordinate of the timestamp.
+            The matplotlib x coordinate to place the timestamp.
+            
         ypos: float
-            The matplotlib y coordinate of the timestamp.
+            The matplotlib y coordinate to place the timestamp.
 
         fontsize:
-            The size to make the font.
+            The size to generate the font.
     """
-
-    tstamp = format(frame, '.4f')
-    if float(frame) >= 0:
-        figure.text(xpos,
-                    ypos,
-                    'time:  {}'.format(tstamp) + 's',
-                    fontsize=fontsize,
-                    color = 'white',
-                    clip_on=True)
+    frame_time = stc.times[frame_number]
+    tstamp = format(frame_time, '.4f')
+    if float(frame_time) >= 0:
+        time_str = 'time:  {}'.format(tstamp) + 's'
     else:
-        figure.text(xpos,
-                    ypos,
-                    'time: {}'.format(tstamp) + 's',
-                    fontsize=fontsize,
-                    color = 'white',
-                    clip_on=True)
+        time_str = 'time: {}'.format(tstamp) + 's'
+        
+    figure.text(xpos,
+                ypos,
+                time_str,
+                fontsize=fontsize,
+                color = 'white',
+                clip_on=True)
 
 
 def calculate_cbar_dims(img_width, img_figsize, img_height):
@@ -82,7 +82,85 @@ def calculate_cbar_dims(img_width, img_figsize, img_height):
 
     return cbar_width, cbar_height
 
+def convert_figure_to_image(fig, img_height, img_width):
+    fig.canvas.draw()
+    plot_image = np.frombuffer(
+        fig.canvas.tostring_rgb(), dtype=np.uint8)
+    plot_image = plot_image.reshape(
+        fig.canvas.get_width_height()[::-1] + (3,))
 
+    cropped_height = round(plot_image.shape[0] * (img_height / img_width))
+    cropped_height = plot_image.shape[1] - cropped_height
+
+    if img_width == 1:
+        plot_image = plot_image[cropped_height:, 0:round(plot_image.shape[1]*0.5), :]
+    else:
+        plot_image = plot_image[cropped_height:, :, :]
+    
+    return plot_image
+
+
+def move_axes(ax, fig, copy = False):
+    """
+    Moves or copies axes from one matplotlib.figure.Figure to another.
+
+    Parameters:
+        ax: matplotlib.axes._subplots.AxesSubplot
+            Matplotlib axis that will be moved to a new figure
+
+        fig: matplotlib.figure.Figure
+            Matplotlib figure the axis will be moved to
+
+    Returns:
+    """
+    # get a reference to the old figure context so we can release it
+    old_fig = ax.figure
+
+    # remove the Axes from it's original Figure context
+    if copy == False:
+        ax.remove()
+    ax.figure = fig
+
+    # add the Axes to the registry of axes for the figure
+    fig.axes.append(ax)
+    fig.add_axes(ax)
+
+def calculate_clim_values(cmin, cmid, cmax, colormap_limit_type):
+    """
+    Creates clim_values to be used in colorbar/figure generation
+
+    Parameters:
+        ax: matplotlib.axes._subplots.AxesSubplot
+            Matplotlib axis that will be moved to a new figure
+
+        fig: matplotlib.figure.Figure
+            Matplotlib figure the axis will be moved to
+
+    Returns:
+    """
+    if (cmin is None) and (cmax is None):
+        clim_values = 'auto'
+    else:
+        if cmin is None:
+            cmin = -cmax
+        if cmax is None:
+            cmax = -cmin
+        if cmid is None:
+            cmid = (cmin + cmax) / 2
+
+        if colormap_limit_type == 'lims':
+            clim_values = dict(kind='value', lims=[
+                cmin,
+                cmid,
+                cmax]
+            )
+        elif colormap_limit_type == 'pos_lims':
+            clim_values = dict(kind='value', pos_lims=[
+                cmin,
+                cmid,
+                cmax]
+            )
+    return clim_values
 
 def create_fsaverage_forward(epoch, **kwargs):
     """
@@ -128,7 +206,7 @@ def create_fsaverage_forward(epoch, **kwargs):
 
 def create_inverse_solution(
         epoch,
-        forward,
+        fwd,
         covariance_method=[
             'empirical',
             'shrunk'],
@@ -142,14 +220,14 @@ def create_inverse_solution(
     corresponding to the measured EEG or MEG.
 
     Parameters:
-        epoch: mne.epochs.Epochs | mne.evoked.EvokedArray
-                MNE epochs or evoked object containing portions of raw EEG data built around specified
-                timestamp(s). The inverse solution will be built based on the data in the specified epoch.
+        epoch: mne.epochs.Epochs or mne.evoked.EvokedArray
+            MNE epochs or evoked object containing portions of raw EEG data built around specified
+            timestamp(s). The inverse solution will be built based on the data in the specified epoch.
 
-        forward: mne.forward.forward.Forward
+        fwd: mne.forward.forward.Forward
             Specifies the 'forward' parameter in the mne.minimum_norm.make_inverse_operator() function.
 
-        epoch_num: int | str
+        epoch_num: int or 'all'
             If input is an 'int' then this specifies which epoch in the 'epochs' number to build an
             inverse solution from. If input is "all" then an inverse solution will be built from all
             epochs.
@@ -179,9 +257,19 @@ def create_inverse_solution(
             Forward operator built from the user_input epochs and the fsaverage brain.
     """
 
+    if type(epoch) == mne.epochs.Epochs:
+        if len(epoch.events) > 1:
+            raise Warning(
+                """Epoch with multiple events passed. The first event will be used to
+                generate the STC. If you wish to see a specific event_number please pass
+                epoch[event_number]. If you wish to see an averaged version of all of
+                your epochs please pass evoked data instead (generated using 
+                `evoked = epoch.average()`)"""
+            )
+
     noise_cov = mne.compute_covariance(epoch, method=covariance_method)
 
-    inverse_operator = make_inverse_operator(epoch.info, forward, noise_cov,
+    inverse_operator = make_inverse_operator(epoch.info, fwd, noise_cov,
                                              loose=loose, depth=depth)
 
     lambda2 = 1.0 / snr ** 2
@@ -205,12 +293,39 @@ def create_inverse_solution(
 
     return stc
 
+def create_inverse_solution_auto(stc = 'auto', fwd = 'auto', epoch = None):
+    # Calculate stc/forward they are not provided in plotting function
+    gen_stc = None
+    if stc == 'auto' and fwd == 'auto' and epoch != None:
+        gen_forward = create_fsaverage_forward(epoch)
+        gen_stc = create_inverse_solution(epoch, gen_forward)
+    elif stc == 'auto' and fwd != 'auto' and epoch != None:
+        gen_stc = create_inverse_solution(epoch, fwd)
+    elif stc != 'auto' and fwd != 'auto' and epoch != None:
+        raise Warning("""Forward, epoch, and stc have been provided.
+                         The plot has been generated from the stc only,
+                         and the forward/epoch was not be used.""")
+    elif stc != 'auto' and fwd == 'auto' and epoch != None:
+        raise Warning("""Epoch and stc have both been provided.
+                         The plot has been generated from the stc only,
+                         and the epoch was not be used.""")
+    elif stc != 'auto' and fwd != 'auto' and epoch == None:
+        raise Warning("""stc and fwd have both been provided.
+                         The plot has beengenerated from the stc only,
+                         and the fwd was not used.""")
+    
+    if gen_stc == None:
+        return stc
+    else:
+        return gen_stc
+
 
 def plot_topomap_3d_brain(
-        epoch,
+        epoch=None,
+        fwd='auto',
         stc='auto',
-        display_time=0,
-        backend='auto',
+        recording_number=0,
+        backend='matplotlib',
         views=[
             'lat',
             'fro',
@@ -229,36 +344,49 @@ def plot_topomap_3d_brain(
         foreground='white',
         spacing='oct6',
         smoothing_steps=3,
+        timestamp=True,
         figure=None,
         **kwargs):
     """
-    Creates a still image of the epochs or stc data mapped to the brain using the mne.SourceEstimate.plot
-    function. Written to work with either a 'pyvista' or 'matplotlib' backend. Pyvista will be faster but
-    at the expense of the returned object being less compatible with other functions. The 'matplotlib' backend
-    will return a matplotlib figure which is widely used in python.
+    Creates a still image figure of the epochs or stc data mapped to the brain using the 
+    mne.SourceEstimate.plot function. Generates when provided with 1. an stc (see
+    create_inverse_solution) (FASTEST) 2. an epoch and acommpanying fwd (see
+    create_fsaverage_forward) (reccomended) 3. an epoch on its own (SLOWEST). This function 
+    is written to work with either a 'pyvista' or 'matplotlib' backend. Note pyvista and mayavi
+    backend dependencies must be installed independently of the simpl_eeg package (see 
+    `topo_3d_brain` in instructions for details) if you wish to use their backends.
 
     Parameters:
-        epoch: mne.epochs.Epoch
+        epoch: mne.epochs.Epoch or None
             MNE epochs object containing portions of raw EEG data built around specified
-            timestamp(s) The inverse solution will be built based on the data in the specified epoch.
+            timestamp(s). If no fwd and stc are provided a fwd will be generated from the
+            epoch using create_fsaverage_forward(). The epoch and fwd (either provided or
+            generated) will then be used in create_inverse_solution() to generate an stc that
+            the brain figure will be generated from.
+        
+        fwd: mne.forward.forward.Forward or 'auto'
+            MNE forward object. If provided alongside an epoch they will both be used in
+            create_fsaverage_forward() to create an stc which the brain figure will then be
+            generated from. Defaults to 'auto'.
 
-        stc: mne.source_estimate.SourceEstimate | 'auto'
-            'inverse_solution' to generate the plot from. If set to "auto" (default) then an stc will be
-            automatically generated however, this will significantly increase running time.
+        stc: mne.source_estimate.SourceEstimate or 'auto'
+            'inverse_solution' to generate the plot from. If set to "auto" then an stc will be
+            automatically generated from either an epoch or an epoch and a fwd, however, this
+            will significantly slow down rendering time. Defaults to 'auto'.
 
-        display_time: float | None
-            Specifies the 'initial_time' parameter in the mne.SourceEstimate.plot() function to show
-            a plot at a specific time. Defaults to 0.
+        recording_number: int or None
+            Specifies the recording number in the epoch/stc to render. Defaults to 0 (the first frame).
 
         backend: str (‘auto’ or ‘mayavi’ or ‘pyvista’ or ‘matplotlib’)
-            Specifies the 'initial_time' parameter in the mne.SourceEstimate.plot() function. "Which backend
-            to use. If 'auto' (default), tries to plot with pyvista, but resorts to matplotlib if no 3d
-            backend is available." Note that mayavi has not been tested for this function. Using matplotlib
-            as a backend will lead to some functionality breaking (look at the documentation on a function-by-function
-            basis to know how) but it is the most widely compatable backend. Multiplotting and multi-views for the matplotlib backend
-            was built by hand for this function.
+            Specifies the 'initial_time' parameter in the mne.SourceEstimate.plot() function. "If 'auto', 
+            tries to plot with pyvista, but resorts to matplotlib if no 3d backend is available."
+            Note that 'mayavi' has not been tested for this function. Using matplotlib as a backend will lead to
+            some functionality breaking (look at the documentation on a function-by-function basis to know which
+            to avoide). Note pyvista and mayavi backend dependencies must be installed independently of the
+            simpl_eeg package (see `topo_3d_brain` in instructions for details) if you wish to use those backends.
+            Defaults to 'matplotlib'. 
 
-        views: str | list
+        views: str or list
             Specifies the 'view' parameter in the mne.SourceEstimate.plot() function. For any backend
             can be any combination of 'lat' (lateral), 'med' (medial), 'ros' (rostral), 'cau' (caudal),
             'dor' (dorsal), 'ven'(ventral), 'fro'(frontal), 'par' (parietal). The following arguments
@@ -282,9 +410,10 @@ def plot_topomap_3d_brain(
             backend that 'split' and 'both' will return a 'split' view since both is not avalible.
             Defaults to 'both'
 
-        colormap: str | np.ndarray of float, shape(n_colors, 3 | 4)
+        colormap: str or np.ndarray of float, shape(n_colors, 3 | 4)
             Specifies the 'colormap' parameter in the mne.SourceEstimate.plot() function. Can use a
-            matplotlib colormap by name or take a custom look up table as input. Defaults to "mne"
+            matplotlib colormap by name or take a custom look up table as input. Defaults to "mne" since
+            this colormap provides a grey texture for the brain.
 
         colormap_limit_type: str
             Can be either "lims" or "pos_lims". "lims" means that your cmin, cmid, and cmax values will specify the
@@ -310,7 +439,7 @@ def plot_topomap_3d_brain(
         colorbar: bool
             Determines whether to include a colorbar on the plot not. Defaults to True.
 
-        time_viewer: bool | str
+        time_viewer: bool or str
             Specifies the 'time_viewer' parameter in the mne.SourceEstimate.plot() function. 'auto' by default. With a
             PyVista backend this will allow for the user to interact with the genreated plot. Has no effect on figures
             generated with the matplotlib backend. 
@@ -332,6 +461,10 @@ def plot_topomap_3d_brain(
         smoothing_steps: int
             Specifies the 'smoothing_steps' parameter in the mne.SourceEstimate.plot() function. "The amount of smoothing".
             3 by default.
+        
+        timestamp: bool
+            Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+            is being shown. Defaults to True
 
         figure: instance of mayavi.core.api.Scene or instance of matplotlib.figure.Figure or list or int or None
             Specifies the 'figure' parameter in the mne.SourceEstimate.plot() function. "If None, a new figure
@@ -341,9 +474,9 @@ def plot_topomap_3d_brain(
             multiple views OR a split/both hemi with the matplotlib backend then this argument will not work. None by default.
 
     Returns:
-        mne.viz._brain._brain.Brain | matplotlib.figure.Figure
-            If using 'pyvista' then returns a mne.viz figure of brain with input epoch or stc data mapped to it. If
-            using 'matplotlib' backend then returns a matplotlib.figure.Figure.
+        matplotlib.figure.Figure or mne.viz.figure
+            If using 'matplotlib' backend (default) then returns a matplotlib.figure.Figure. If using 'pyvista'
+            then returns a mne.viz.figure of brain with input epoch or stc data mapped to it. 
     """
 
     defaultKwargs = {'transparent': False, 'alpha': 1.0, 'surface': 'inflated', 'cortex': 'classic',
@@ -351,23 +484,37 @@ def plot_topomap_3d_brain(
                      'subjects_dir': None, 'title': None, 'show_traces': 'auto', 'src': None, 'verbose': None }
     kwargs = { **defaultKwargs, **kwargs }    
     
-    if type(epoch) is not mne.epochs.Epochs:
+    if type(epoch) is not mne.epochs.Epochs and type(epoch) is not mne.evoked.EvokedArray and epoch is not None:
         raise TypeError(
             """Passed epoch object is not in the correct format, 
-            please pass an mne.epochs.Epochs object instead"""
+            please pass an mne.epochs.Epochs object or None instead"""
         )
     
-    if type(stc) is not mne.source_estimate.SourceEstimate:
+    if type(fwd) is not mne.forward.forward.Forward and fwd != 'auto':
+        raise TypeError(
+            """Passed fwd object is not in the correct format, 
+            please pass an mne.forward.forward.Forward object or "auto" instead"""
+        )
+    
+    if type(stc) is not mne.source_estimate.SourceEstimate and stc != 'auto':
         raise TypeError(
             """Passed stc object is not in the correct format, 
-            please pass an mne.source_estimate.SourceEstimate object instead"""
+            please pass an mne.source_estimate.SourceEstimate object or 'auto' instead"""
         )
     
-    if type(display_time) is not int and type(display_time) is not float and display_time is not None:
+    if type(fwd) is mne.forward.forward.Forward and stc != 'auto' and epoch == None:
         raise TypeError(
-                """Passed display_time object is not in the correct format, 
-                please pass a int, float, or None (for default = 0) object instead"""
+            """Only a fwd object was passed, please pass either a fwd and an epoch OR 
+            only an stc instead"""
+        )
+    
+    
+    if isinstance(recording_number, (int, np.integer)) == False:
+        raise TypeError(
+                """Passed recording_number object is not in the correct format, 
+                please pass an int object instead"""
             )
+    #print(type(recording_number))
     
     if backend not in ['auto', 'mayavi', 'pyvista', 'matplotlib']:
         raise ValueError(
@@ -428,11 +575,16 @@ def plot_topomap_3d_brain(
                 """Passed colormap_limit_type is not accepted, please pass one of 'lims' or 
                 'pos_lims'."""
             )
+            
+    if type(timestamp) is not bool:
+        raise TypeError(
+            """Passed timestamp object is not in the correct format, 
+            please pass a bool (True/False) instead"""
+        )
 
-    # Calculate stc if one is not provided
-    if stc == 'auto':
-        forward = create_fsaverage_forward(epoch)
-        stc = create_inverse_solution(epoch, forward)
+    # Calculate stc if it is not provided
+    gen_stc = create_inverse_solution_auto(stc = stc, fwd = fwd, epoch = epoch)
+    plot_stc = gen_stc.copy()
 
     # Prep properties of the figure if not using a matplotlib backend
     if backend != 'matplotlib':
@@ -445,64 +597,28 @@ def plot_topomap_3d_brain(
             auto_plot_size = [
                 round(len(views) * (size * 4 / 3)), size]
         elif view_layout == "vertical":
-            auto_plot_size = [
-                round(
-                    size *
-                    4 /
-                    3),
-                size *
-                len(views)]
+            auto_plot_size = [round(size * 4/3),size *len(views)]
 
-    else:
-        colorbar_font_size = None
-        time_label_size = None
+    # Preparation for if a matplotlib backend is being used then 
+    else: 
         img_figsize = round(size / 100)
         if isinstance(views, str):
             views = [views]
         
-        # Size input for plotting function does nothing with matplotlib backend
-        auto_plot_size = None
+        # Crop stc to only a recording since there are no user controls
+        plot_stc.crop(plot_stc.times[recording_number], plot_stc.times[recording_number])
         
         # Layout MUST be horizontal and foreground/background colors cannot be changed
+        # and auto_plot_size, colorbar_font_size, time_label_size inputs do nothing
         view_layout == "horizontal"
         background='black'
         foreground = 'white'
-
-        def move_axes(ax, fig):
-            # get a reference to the old figure context so we can release it
-            old_fig = ax.figure
-
-            # remove the Axes from it's original Figure context
-            ax.remove()
-            ax.figure = fig
-
-            # add the Axes to the registry of axes for the figure
-            fig.axes.append(ax)
-            fig.add_axes(ax)
+        auto_plot_size = None
+        colorbar_font_size = None
+        time_label_size = None
 
     # Set colorbar values
-    if (cmin is None) and (cmax is None):
-        clim_values = 'auto'
-    else:
-        if (cmin is None):
-            cmin = -cmax
-        if (cmax is None):
-            cmax = -cmin
-        if cmid is None:
-            cmid = (cmin + cmax) / 2
-
-        if colormap_limit_type == 'lims':
-            clim_values = dict(kind='value', lims=[
-                cmin,
-                cmid,
-                cmax]
-            )
-        elif colormap_limit_type == 'pos_lims':
-            clim_values = dict(kind='value', pos_lims=[
-                cmin,
-                cmid,
-                cmax]
-            )
+    clim_values = calculate_clim_values(cmin, cmid, cmax, colormap_limit_type)
 
     def make_plot(
         views=views,
@@ -512,12 +628,11 @@ def plot_topomap_3d_brain(
         figure=figure
     ):
         plt.show(block=True)
-        brain = stc.plot(
+        brain = plot_stc.plot(
             views=views,
             hemi=hemi,
             colormap=colormap,
             size=size,
-            initial_time=display_time,
             clim=clim_values,
             colorbar=colorbar,
             figure=figure,
@@ -543,18 +658,19 @@ def plot_topomap_3d_brain(
 
     elif (hemi == 'lh' and len(views) == 1) or (hemi == 'rh' and len(views) == 1):
         
-        figure_brain = make_plot(views=views[0])
+        brain = make_plot(views=views[0])
         
         if colorbar == False:
-            figure_brain.axes[1].remove()
+            brain.axes[1].remove()
+        
+        if timestamp:
+            add_timestamp_brain(gen_stc, brain, recording_number, 0.18, 0.94, 15)
 
-        return (figure_brain)
+        return (brain)
 
     else:
-
         if hemi == 'both' or hemi == 'split':
             brain_hemi = ['lh', 'rh']
-
         else:
             brain_hemi = [hemi]
 
@@ -570,21 +686,18 @@ def plot_topomap_3d_brain(
             figsize=(fig_dims, fig_dims), facecolor="black")
         plt.axis('off')
 
+        # Set flag to generate colorbar later (adding it early causes bad scaling)
         add_colorbar = False
-
-        # Set flag to generate colorbar later since adding it early causes bad
-        # scaling
         if colorbar:
             colorbar = False
             add_colorbar = True
 
-        x_pos = 0
-        axes_pos = 1
-
         # Run to add new fig for each view
+        fig_x_pos = 0
+        axes_pos = 1
         for v in range(len(views)):
 
-            y_pos = 0
+            fig_y_pos = 0
 
             # run twice for each side of the brain if using both or split
             for h in range(len(brain_hemi)):
@@ -594,41 +707,54 @@ def plot_topomap_3d_brain(
                 make_plot(
                     figure=fig,
                     hemi=brain_hemi[h],
-                    views=str(
-                        views[v]),
+                    views=str(views[v]),
                     colorbar=colorbar)
 
-                # Copy over the brain image only
-                move_axes(fig.axes[0], base_fig)
+                # Move over the brain image only
+                move_axes(fig.axes[0], base_fig, copy = False)
 
-                # Reposition copied over figure
+                # Reposition copied over figure to fit properly
                 pos1 = base_fig.axes[1].get_position()
                 pos2 = [
-                    pos1.x0 + x_pos,
-                    pos1.y0 + y_pos,
+                    pos1.x0 + fig_x_pos,
+                    pos1.y0 + fig_y_pos,
                     pos1.width,
-                    pos1.height]
-                base_fig.axes[axes_pos].set_position(pos2)  # 1, 3, 4, 5
+                    pos1.height
+                ]
+                base_fig.axes[axes_pos].set_position(pos2)
 
-                # Increment axes and positioning indexes
+                # Increment axes index and reset y positioning index
                 axes_pos += 1
-                y_pos = 1
+                fig_y_pos = 1
 
-            x_pos += 1
+            fig_x_pos += 1
 
         # Generate dummy colorbar to move to the main figure
         if add_colorbar:
             
             cbar_width, cbar_height = calculate_cbar_dims(img_width, img_figsize, img_height)
 
-            fig = plt.figure(figsize=(cbar_width, cbar_height))
-            make_plot(figure=fig, hemi='lh', views='fro', colorbar=True)
-            move_axes(fig.axes[1], base_fig)
+            dummy_fig = plt.figure(figsize=(cbar_width, cbar_height))
+            make_plot(figure=dummy_fig, hemi='lh', views='fro', colorbar=True)
+            move_axes(dummy_fig.axes[1], base_fig)
 
             pos2 = [pos1.x0 + 0, pos1.y0 + 1, pos1.width, pos1.height]
-
             base_fig.axes[axes_pos].set_position(pos2)
-
+        
+        if timestamp:
+                if img_height == 2 and img_width == 1:
+                    xpos = 0.1
+                    ypos = 0.48
+                else:
+                    ypos = 0
+                    xpos = 0.7
+                    for i in range(img_width-2):
+                        if img_width >= 3:
+                            xpos += 0.1/(2**(i))
+                
+                add_timestamp_brain(gen_stc, base_fig, recording_number, xpos-0.01, ypos, 6*img_figsize)
+            
+        # Adjust figure dimensions to fit everything
         base_fig.subplots_adjust(top=0.1, bottom=0, right=0.1, left=0,
                                  hspace=0, wspace=0)
         
@@ -681,7 +807,8 @@ def save_animated_topomap_3d_brain(
 
 
 def animate_matplot_brain(
-    epoch,
+    epoch=None,
+    fwd='auto',
     stc='auto',
     views=[
         'lat',
@@ -696,8 +823,8 @@ def animate_matplot_brain(
     cmid=None,
     cmax=None,
     spacing='oct5',
-    smoothing_steps=2,
-    timestamp = True,
+    smoothing_steps=3,
+    timestamp=True,
     frame_rate=12,
     **kwargs
 ):
@@ -706,15 +833,24 @@ def animate_matplot_brain(
     If multiple views are used then speed becomes significantly slower. Colorbar placement may be inconsistent.
 
     Parameters:
-        epoch: mne.epochs.Epochs or mne.evoked.EvokedArray
-            MNE epochs or evoked object containing portions of raw EEG data built around specified
-            timestamp(s) The inverse solution will be built based on the data in the specified epoch.
+        epoch: mne.epochs.Epoch or None
+            MNE epochs object containing portions of raw EEG data built around specified
+            timestamp(s). If no fwd and stc are provided a fwd will be generated from the
+            epoch using create_fsaverage_forward(). The epoch and fwd (either provided or
+            generated) will then be used in create_inverse_solution() to generate an stc that
+            the brain figure will be generated from.
+        
+        fwd: mne.forward.forward.Forward or 'auto'
+            MNE forward object. If provided alongside an epoch they will both be used in
+            create_fsaverage_forward() to create an stc which the brain figure will then be
+            generated from. Defaults to 'auto'.
 
-        stc: mne.source_estimate.SourceEstimate | 'auto'
-            'inverse_solution' to generate the plot from. If set to "auto" (default) then an stc will be
-            automatically generated however, this will significantly increase running time.
+        stc: mne.source_estimate.SourceEstimate or 'auto'
+            'inverse_solution' to generate the plot from. If set to "auto" then an stc will be
+            automatically generated from either an epoch or an epoch and a fwd, however, this
+            will significantly slow down rendering time. Defaults to 'auto'.
 
-        views: str | list
+        views: str or list
             Specifies the 'view' parameter in the mne.SourceEstimate.plot() function. For any backend
             can be any combination of 'lat' (lateral), 'med' (medial), 'ros' (rostral), 'cau' (caudal),
             'dor' (dorsal), 'ven'(ventral), 'fro'(frontal), 'par' (parietal). The following arguments
@@ -722,18 +858,17 @@ def animate_matplot_brain(
             (sagittal), and 'cor'(coronal). Defaults to ['lat', 'fro', 'dor'].
 
         size: int
-            If using a non-matplotlib backend then specifies how many pixels tall EACH "view" of the brian will be.
-            If using matplotlib as a backend then the height will be divided by 100 and rounded the closest inch.
-            For example, entering 100 will result in 1 inch per view. If plotting multiple views overall size of
-            the multiplot is automatically calculated to fit all views. Defaults to 300.              
+            Size will be divided by 100 and rounded the closest inch which will then be used as the
+            height per view. For example, entering 100 will result in 1 inch per view. If plotting
+            multiple views overall size of the multiplot is automatically calculated to fit all
+            views. Defaults to 200.              
 
-        hemi: str ('lh’ or ‘rh’ or ‘both’ or ‘split’)
+        hemi: 'lh’ or ‘rh’ or ‘both’ or ‘split’
             Specifies the 'initial_time' parameter in the mne.SourceEstimate.plot() function. Can be
-            one of ‘lh’, ‘rh’, ‘both’, or ‘split’. Defaults to 'both'. Note that when using the matplotlib
-            backend that 'split' and 'both' will return a 'split' view since both is not avalible.
-            Defaults to 'both'
+            one of ‘lh’, ‘rh’, ‘both’, or ‘split’. Defaults to 'both'. Note that 'split' and 'both' will
+            return a 'split' view since both is not avalible with a matplotlib backend. Defaults to 'both'
 
-        colormap: str | np.ndarray of float, shape(n_colors, 3 | 4)
+        colormap: str or np.ndarray of float, shape(n_colors, 3 | 4)
             Specifies the 'colormap' parameter in the mne.SourceEstimate.plot() function. Can use a
             matplotlib colormap by name or take a custom look up table as input. Defaults to "mne"
     
@@ -769,11 +904,11 @@ def animate_matplot_brain(
 
         smoothing_steps: int
             Specifies the 'smoothing_steps' parameter in the mne.SourceEstimate.plot() function. "The amount of smoothing".
-            3 by default.
+            Defaults to 3.
             
         timestamp: bool
-        Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-        is being shown. 
+            Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
+            is being shown. Defaults to True
 
         frame_rate: int or float
             The frame rate to render the animation at. Defautls to 12.
@@ -802,18 +937,29 @@ def animate_matplot_brain(
             """Passed frame_rate object is not in the correct format, 
             please pass an int object instead"""
         )
+    
+    if type(stc) is not mne.source_estimate.SourceEstimate and stc != 'auto':
+        raise TypeError(
+            """Passed stc object is not in the correct format, 
+            please pass an mne.source_estimate.SourceEstimate object instead"""
+        )
 
-    frames_to_show = epoch.times.shape[0]
-    times_to_show = np.linspace(
-        epoch.tmin,
-        epoch.tmax,
-        frames_to_show)
+    if type(fwd) is not mne.forward.forward.Forward and fwd != 'auto':
+        raise TypeError(
+            """Passed fwd object is not in the correct format, 
+            please pass an mne.forward.forward.Forward object or "auto" instead"""
+        )
+    
+    # Calculate stc if it is not provided
+    gen_stc = create_inverse_solution_auto(stc = stc, fwd = fwd, epoch = epoch)
+    plot_stc = gen_stc.copy()
+
+    frames_to_show = np.arange(0, plot_stc.data.shape[1], 1)
 
     ms_between_frames = 1000 / frame_rate
 
-    def plotting(figure=None, display_time=0, cbar = False, hemi = hemi, views = views):
-        return (plot_topomap_3d_brain(epoch,
-                                      stc=stc,
+    def plotting(figure=None, recording_number=0, cbar = False, hemi = hemi, views = views):
+        return (plot_topomap_3d_brain(stc=plot_stc,
                                       backend='matplotlib',
                                       hemi=hemi,
                                       views=views,
@@ -828,9 +974,10 @@ def animate_matplot_brain(
                                       cmid=cmid,
                                       cmax=cmax,
                                       size=size,
-                                      display_time=display_time,
+                                      recording_number=recording_number,
                                       figure=figure,
                                       time_viewer = False,
+                                      timestamp=False,
                                       **kwargs
                                       )
                 )
@@ -840,28 +987,20 @@ def animate_matplot_brain(
 
         fig, ax = plt.subplots(round(size/100), round(size/100))
         
-        def animate(frame):
+        def animate(frame_number):
 
             fig.clear()
             
             # get new image from list
             plotting(figure=fig,
-                     display_time=float(frame),
+                     recording_number=frame_number,
                      cbar = colorbar
                      )
             
             if timestamp:
-                add_timestamp_brain(fig, frame, 0.18, 0.94, 15)
+                add_timestamp_brain(plot_stc, fig, frame_number, 0.18, 0.94, 15)
 
             return[fig]
-        
-        ani = animation.FuncAnimation(
-            fig,
-            animate,
-            frames=times_to_show,
-            interval=ms_between_frames,  # Time between frames in ms
-            blit=False
-        )
 
     else:
         # Plotting for multi view/hemi matplotlib.image.AxesImage
@@ -875,39 +1014,29 @@ def animate_matplot_brain(
         
         fig, ax = plt.subplots(figsize = (img_figsize*img_width, img_figsize*img_height))
         
+        add_colorbar = 0
         if colorbar:
             add_colorbar = 1
             colorbar = False
-        else:
-            add_colorbar = 0
         
         # Generate dummy colorbar to move to the main figure
         if add_colorbar:
-
             cbar_width, cbar_height = calculate_cbar_dims(img_width, img_figsize, img_height)
-                
-            def copy_axes(ax, fig):
-                old_fig = ax.figure
-                ax.figure = fig
-                fig.axes.append(ax)
-                fig.add_axes(ax)
-            
             cbar_fig = plt.figure(figsize=(cbar_width, cbar_height))
             plotting(figure=cbar_fig, hemi='lh', views='fro', cbar=True)
 
-        def animate(frame):
+        def animate(frame_number):
             # remove previous image
             ax.clear()
-
             plt.show(block=True)
 
             brain = plotting( 
-                display_time=float(frame),
+                recording_number=frame_number,
                 cbar = False
             )
             
             if add_colorbar:
-                copy_axes(cbar_fig.axes[1], brain)
+                move_axes(cbar_fig.axes[1], brain, copy = True)
             
             if timestamp:
                 if img_height == 2 and img_width == 1:
@@ -920,37 +1049,24 @@ def animate_matplot_brain(
                         if img_width >= 3:
                             xpos += 0.1/(2**(i))
                 
-                add_timestamp_brain(brain, frame, xpos-0.01, ypos, 6*img_figsize)
+                add_timestamp_brain(plot_stc, brain, frame_number, xpos-0.01, ypos, 6*img_figsize)
 
             # Convert plot to image/frame
-            brain.canvas.draw()
-            plot_image = np.frombuffer(
-                brain.canvas.tostring_rgb(), dtype=np.uint8)
-            plot_image = plot_image.reshape(
-                brain.canvas.get_width_height()[::-1] + (3,))
+            plot_image = convert_figure_to_image(brain, img_height, img_width)
 
-            cropped_height = round(
-                plot_image.shape[0] * (img_height / img_width))
-            cropped_height = plot_image.shape[1] - cropped_height
-
-            if img_width == 1:
-                plot_image = plot_image[cropped_height:, 0:round(plot_image.shape[1]*0.5), :]
-            else:
-                plot_image = plot_image[cropped_height:, :, :]
-
-
+            # Remove gridlines 
             plt.setp(ax.get_xticklabels(), visible=False)
             plt.setp(ax.get_yticklabels(), visible=False)
             ax.tick_params(axis='both', which='both', length=0)
             # display new image
             ax.imshow(plot_image)
         
-        ani = animation.FuncAnimation(
-            fig,
-            animate,
-            frames=times_to_show,
-            interval=ms_between_frames,  # Time between frames in ms
-            blit=False
-        )
+    ani = animation.FuncAnimation(
+        fig,
+        animate,
+        frames=frames_to_show,
+        interval=ms_between_frames,  # Time between frames in ms
+        blit=False
+    )
 
     return ani
