@@ -51,43 +51,61 @@ def add_timestamp_brain(stc, figure, frame_number, xpos, ypos, fontsize):
 
 
 def calculate_cbar_dims(img_width, img_figsize, img_height):
-    cbar_width = img_width * img_figsize * 0.65
+    """
+    Helper for plot_topomap_3d_brain when plotting multiple views and using the
+    matplotlib backend. Calculates the colorbar width and height to be placed
+    correctly.
 
-    if img_height == 2:
-        cbar_height = img_height * img_figsize * 0.65
-    else:
-        cbar_height = img_height * img_figsize * 1.30
+    Parameters:
+        img_width: matplotlib.figure.Figure
+            Number of brain images to include horizontally.
+        img_figsize: int
+            Total height/width of the image in inches (square image).
+        img_height: int
+            Number of brain images to include vertically.
 
-    if img_width == 1:
-        cbar_height = cbar_height * img_width * 1.05
-        cbar_width = img_width * img_figsize * 1.43
-    elif img_width == 2:
-        cbar_height = cbar_height * img_width * 0.53
-        cbar_width = img_width * img_figsize * 0.71
-    elif img_width == 3:
-        cbar_height = cbar_height * (img_width * 0.47)
-        cbar_width = img_width * img_figsize * 0.57
-    elif img_width == 4:
-        cbar_height = cbar_height * (img_width * 0.43)
-        cbar_width = img_width * img_figsize * 0.50
-    elif img_width == 5:
-        cbar_height = cbar_height * (img_width * 0.38)
-        cbar_width = img_width * img_figsize * 0.45
-    elif img_width == 6:
-        cbar_height = cbar_height * (img_width * 0.35)
-        cbar_width = img_width * img_figsize * 0.40
-    elif img_width >= 7:
-        cbar_height = cbar_height * (img_width * 0.33)
-        cbar_width = img_width * img_figsize * 0.38
-
+    Returns:
+        cbar_width: float
+            Width of colorbar in matplotlib units.
+        cbar_height: float
+            Height of colorbar in matplotlib units.
+    """
+    cbar_adjustments_table = {1: [1.365, 1.43],
+                              2: [0.689, 0.71],
+                              3: [0.611, 0.57],
+                              4: [0.559, 0.50],
+                              5: [0.494, 0.45],
+                              6: [0.455, 0.40],
+                              7: [0.429, 0.38]}
+    cbar_adjustments = cbar_adjustments_table[img_width]
+    
+    cbar_height = img_figsize * img_width * cbar_adjustments[0]
+    cbar_width = img_figsize * img_width * cbar_adjustments[1]
+    
     return cbar_width, cbar_height
 
 def convert_figure_to_image(fig, img_height, img_width):
+    """
+    Helper for animate_matplot_brain. Converts figure to image when plotting multiple
+    views and then cuts out the empty space. This must be done when animating to
+    preserve the figure dimensions as they otherwise get cut-off.
+
+    Parameters:
+        fig: matplotlib.figure.Figure
+            Matplotlib figure to convert to image.
+        img_height: int
+            Number of brain images to include vertically.
+        img_width: matplotlib.figure.Figure
+            Number of brain images to include horizontally.
+
+    Returns:
+        plot_image: numpy.ndarray
+            Image built from figure that will be animated.
+    """
+
     fig.canvas.draw()
-    plot_image = np.frombuffer(
-        fig.canvas.tostring_rgb(), dtype=np.uint8)
-    plot_image = plot_image.reshape(
-        fig.canvas.get_width_height()[::-1] + (3,))
+    plot_image = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
+    plot_image = plot_image.reshape(fig.canvas.get_width_height()[::-1] + (3,))
 
     cropped_height = round(plot_image.shape[0] * (img_height / img_width))
     cropped_height = plot_image.shape[1] - cropped_height
@@ -96,6 +114,8 @@ def convert_figure_to_image(fig, img_height, img_width):
         plot_image = plot_image[cropped_height:, 0:round(plot_image.shape[1]*0.5), :]
     else:
         plot_image = plot_image[cropped_height:, :, :]
+    
+    print("type of plot image is" + str(type(plot_image)))
     
     return plot_image
 
@@ -106,10 +126,10 @@ def move_axes(ax, fig, copy = False):
 
     Parameters:
         ax: matplotlib.axes._subplots.AxesSubplot
-            Matplotlib axis that will be moved to a new figure
+            Matplotlib axis that will be moved to a new figure.
 
         fig: matplotlib.figure.Figure
-            Matplotlib figure the axis will be moved to
+            Matplotlib figure the axis will be moved to.
 
     Returns:
     """
@@ -131,10 +151,10 @@ def calculate_clim_values(cmin, cmid, cmax, colormap_limit_type):
 
     Parameters:
         ax: matplotlib.axes._subplots.AxesSubplot
-            Matplotlib axis that will be moved to a new figure
+            Matplotlib axis that will be moved to a new figure.
 
         fig: matplotlib.figure.Figure
-            Matplotlib figure the axis will be moved to
+            Matplotlib figure the axis will be moved to.
 
     Returns:
     """
@@ -170,7 +190,7 @@ def create_fsaverage_forward(epoch, **kwargs):
 
     Parameters:
         epoch: mne.epochs.Epochs
-                MNE epoch object containing portions of raw EEG data built around specified timestamp(s)
+                MNE epoch object containing portions of raw EEG data built around specified timestamp(s).
 
         kwargs: arguments
                 Specify any of the following arguments for the mne.make_forward_solution() function. These include midist=5.0, n_jobs=1.
@@ -236,13 +256,13 @@ def create_inverse_solution(
             Specifies the 'method' parameter in the mne.compute_covariance() function.
 
         loose: float
-            Specifies the 'loose' parameter in the mne.minimum_norm.make_inverse_operator() function
+            Specifies the 'loose' parameter in the mne.minimum_norm.make_inverse_operator() function.
 
         depth: float
-            Specifies the 'depth' parameter in the mne.minimum_norm.make_inverse_operator() function
+            Specifies the 'depth' parameter in the mne.minimum_norm.make_inverse_operator() function.
 
         snr: float
-            Used to calculate 'lambda2' in the equation 'lambda2 = 1.0 / snr ** 2'
+            Used to calculate 'lambda2' in the equation 'lambda2 = 1.0 / snr ** 2'.
 
         inverse_epochs_method: str
             Specifies the 'method' parameter in mne.minimum_norm.apply_inverse_epochs() (if using epochs)
@@ -384,7 +404,7 @@ def plot_topomap_3d_brain(
             some functionality breaking (look at the documentation on a function-by-function basis to know which
             to avoide). Note pyvista and mayavi backend dependencies must be installed independently of the
             simpl_eeg package (see `topo_3d_brain` in instructions for details) if you wish to use those backends.
-            Defaults to 'matplotlib'. 
+            Defaults to 'matplotlib'.
 
         views: str or list
             Specifies the 'view' parameter in the mne.SourceEstimate.plot() function. For any backend
@@ -396,19 +416,19 @@ def plot_topomap_3d_brain(
         view_layout: str
             Specifies the 'view_layout' parameter in the mne.SourceEstimate.plot() function. Should be
             'vertical' or 'horizontal'. Using 'horizontal' with hemi set to 'split' might cause issues.
-            NOTE that this argument has no effect when using the 'matplotlib' backend. Defaults to 'horizontal'
+            NOTE that this argument has no effect when using the 'matplotlib' backend. Defaults to 'horizontal'.
 
         size: int
             If using a non-matplotlib backend then specifies how many pixels tall EACH "view" of the brian will be.
             If using matplotlib as a backend then the height will be divided by 100 and rounded the closest inch.
             For example, entering 100 will result in 1 inch per view. If plotting multiple views overall size of
-            the multiplot is automatically calculated to fit all views. Defaults to 300.              
+            the multiplot is automatically calculated to fit all views. Defaults to 300.         
 
         hemi: str ('lh’ or ‘rh’ or ‘both’ or ‘split’)
             Specifies the 'initial_time' parameter in the mne.SourceEstimate.plot() function. Can be
             one of ‘lh’, ‘rh’, ‘both’, or ‘split’. Defaults to 'both'. Note that when using the matplotlib
             backend that 'split' and 'both' will return a 'split' view since both is not avalible.
-            Defaults to 'both'
+            Defaults to 'both'.
 
         colormap: str or np.ndarray of float, shape(n_colors, 3 | 4)
             Specifies the 'colormap' parameter in the mne.SourceEstimate.plot() function. Can use a
@@ -419,7 +439,7 @@ def plot_topomap_3d_brain(
             Can be either "lims" or "pos_lims". "lims" means that your cmin, cmid, and cmax values will specify the
             "Lower, middle, and upper bounds for colormap". Using "pos_lims" will lead to cmin, cmid, and cmax representing
             the "Lower, middle, and upper bound for colormap. Positive values will be mirrored directly across
-            zero during colormap construction to obtain negative control points." Defaults to "lims"
+            zero during colormap construction to obtain negative control points." Defaults to "lims".
 
         cmin: float
             Specifies the lower value of the colormap limit. If no value is specified then
@@ -464,7 +484,7 @@ def plot_topomap_3d_brain(
         
         timestamp: bool
             Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-            is being shown. Defaults to True
+            is being shown. Defaults to True.
 
         figure: instance of mayavi.core.api.Scene or instance of matplotlib.figure.Figure or list or int or None
             Specifies the 'figure' parameter in the mne.SourceEstimate.plot() function. "If None, a new figure
@@ -774,7 +794,7 @@ def save_animated_topomap_3d_brain(
 
     Parameters:
         brain: mne.viz._brain._brain.Brain
-            mne.viz figure of brain which will be saved as a gif
+            mne.viz figure of brain which will be saved as a gif.
 
         filename: str
             'filename' parameter in mne.viz.Brain.save_movie() function. "Path at which to save the movie.
@@ -784,12 +804,12 @@ def save_animated_topomap_3d_brain(
         time_dilation: float
             'time_dilation' parameter in mne.viz.Brain.save_movie() function. "Factor by which to stretch time
             (default 4). For example, an epoch from -100 to 600 ms lasts 700 ms. With time_dilation=4 this
-            would result in a 2.8 s long movie."
+            would result in a 2.8 s long movie"..
 
-        interpolation: str | None
+        interpolation: str or None
             'interpolation' parameter in mne.viz.Brain.save_movie() function. "Interpolation method
             (scipy.interpolate.interp1d parameter). Must be one of ‘linear’, ‘nearest’, ‘zero’, ‘slinear’,
-            ‘quadratic’, or ‘cubic’."
+            ‘quadratic’, or ‘cubic’".
 
         time_viewer: bool
             'time_dilation' parameter in mne.viz.Brain.save_movie() function. "If True, include time viewer
@@ -866,11 +886,11 @@ def animate_matplot_brain(
         hemi: 'lh’ or ‘rh’ or ‘both’ or ‘split’
             Specifies the 'initial_time' parameter in the mne.SourceEstimate.plot() function. Can be
             one of ‘lh’, ‘rh’, ‘both’, or ‘split’. Defaults to 'both'. Note that 'split' and 'both' will
-            return a 'split' view since both is not avalible with a matplotlib backend. Defaults to 'both'
+            return a 'split' view since both is not avalible with a matplotlib backend. Defaults to 'both'.
 
         colormap: str or np.ndarray of float, shape(n_colors, 3 | 4)
             Specifies the 'colormap' parameter in the mne.SourceEstimate.plot() function. Can use a
-            matplotlib colormap by name or take a custom look up table as input. Defaults to "mne"
+            matplotlib colormap by name or take a custom look up table as input. Defaults to "mne".
     
         colorbar: bool
             Determines whether to include a colorbar on the plot not. Defaults to True.
@@ -879,7 +899,7 @@ def animate_matplot_brain(
             Can be either "lims" or "pos_lims". "lims" means that your cmin, cmid, and cmax values will specify the
             "Lower, middle, and upper bounds for colormap". Using "pos_lims" will lead to cmin, cmid, and cmax representing
             the "Lower, middle, and upper bound for colormap. Positive values will be mirrored directly across
-            zero during colormap construction to obtain negative control points." Defaults to "lims"
+            zero during colormap construction to obtain negative control points." Defaults to "lims".
 
         cmin: float
             Specifies the lower value of the colormap limit. If no value is specified then
@@ -908,7 +928,7 @@ def animate_matplot_brain(
             
         timestamp: bool
             Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-            is being shown. Defaults to True
+            is being shown. Defaults to True.
 
         frame_rate: int or float
             The frame rate to render the animation at. Defautls to 12.
