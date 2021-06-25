@@ -51,7 +51,7 @@ def plot_topomap_2d(epoch,
 
     Parameters:
         epoch: mne.epochs.Epochs
-            MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
+            MNE epochs object containing portions of raw EEG data built around specified timestamp(s).
 
         plotting_data: numpy.ndarray or None
             Array of the EEG data from a measurement (not a time interval) to be plotted should be in
@@ -102,7 +102,7 @@ def plot_topomap_2d(epoch,
 
     Returns:
         topo_2d_fig: matplotlib.image.AxesImage
-            matplotlib image plot of a 2d topographic map based on the input epoch data
+            matplotlib image plot of a 2d topographic map based on the input epoch data.
     """
     
     defaultKwargs = {'contours': 0, 'sphere': 100, 'res': 64, 'extrapolate': 'head', 'outlines': 'head',
@@ -242,7 +242,7 @@ def animate_topomap_2d(epoch,
 
     Parameters:
         epochs: mne.epochs.Epochs
-            MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
+            MNE epochs object containing portions of raw EEG data built around specified timestamp(s).
         
         plotting_data: numpy.ndarray or None
             Array of the EEG data from a measurement (not a time interval) to be plotted should be in
@@ -293,7 +293,7 @@ def animate_topomap_2d(epoch,
 
     Returns:
         ani: matplotlib.animation.FuncAnimation
-            matplotlib funcanimation of a 2d topographic map based on the input epoch data
+            matplotlib funcanimation of a 2d topographic map based on the input epoch data.
     """
     
     defaultKwargs = {'contours': 0, 'sphere': 100, 'res': 64, 'extrapolate': 'head', 'outlines': 'head',

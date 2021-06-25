@@ -121,6 +121,23 @@ def test_plot_topomap_3d_brain_matplotlib():
     assert type(test_single_matplotlib) == matplotlib.figure.Figure
     assert len(test_single_matplotlib.axes) == 2
 
+    test_single_matplotlib_epoch=topomap_3d_brain.plot_topomap_3d_brain(epoch=input_epoch,
+                                                                views = "fro",
+                                                                hemi = 'lh',
+                                                                backend = 'matplotlib')
+
+    assert type(test_single_matplotlib_epoch) == matplotlib.figure.Figure
+
+    test_single_matplotlib_epoch_fwd=topomap_3d_brain.plot_topomap_3d_brain(epoch=input_epoch,
+                                                                        fwd=input_fwd,
+                                                                        views = "fro",
+                                                                        hemi = 'lh',
+                                                                        backend = 'matplotlib'
+    )
+
+    assert type(test_single_matplotlib_epoch_fwd) == matplotlib.figure.Figure
+    
+
     test_single_matplotlib_no_cb=topomap_3d_brain.plot_topomap_3d_brain(stc = input_stc,
                                                                         views = "fro",
                                                                         hemi = 'lh',
@@ -151,6 +168,7 @@ def test_plot_topomap_3d_brain_matplotlib():
 def test_animate_topomap_3d_brain_matplotlib():
     """Test cases for plotting 3D image mapped to the brain """
     input_stc = test_stc
+    input_epoch = epoch42
     
     with pytest.raises(TypeError):
         topomap_3d_brain.animate_matplot_brain(
@@ -170,6 +188,14 @@ def test_animate_topomap_3d_brain_matplotlib():
     
     test_matplot_animate_single = topomap_3d_brain.animate_matplot_brain(
         stc = test_stc,
+        hemi = 'lh',
+        views = ['lat']
+    );
+    
+    assert  type(test_matplot_animate_single) == matplotlib.animation.FuncAnimation
+
+    test_matplot_animate_single = topomap_3d_brain.animate_matplot_brain(
+        epoch = input_epoch,
         hemi = 'lh',
         views = ['lat']
     );
