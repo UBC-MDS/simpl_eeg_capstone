@@ -136,6 +136,11 @@
    API documentation
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -335,32 +340,6 @@
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.</p>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">autoreload</span> 2
-</pre></div>
-</div>
-</div>
-</div>
 </div>
 <div class="section" id="create-epoched-data">
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
@@ -372,13 +351,17 @@
 <span class="n">num_steps</span> <span class="o">=</span> <span class="mi">50</span>  <span class="c1"># number of steps to skip to shorten epoch</span>
 
 <span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_folder</span><span class="p">)</span>
-<span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
 <span class="n">shortened_epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">skip_n_steps</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/data/109/fixica.fdt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:52: RuntimeWarning: Data file name in EEG.data (109 whole fixed ica.fdt) is incorrect, the file name must have changed on disk, using the correct file name (fixica.fdt).
+  self.raw = mne.io.read_raw_eeglab(folder_path+&quot;/&quot;+file_name+&quot;.set&quot;)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
@@ -403,6 +386,10 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 bad epochs dropped
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:218: RuntimeWarning: The measurement information indicates a low-pass frequency of 1024 Hz. The decim=50 parameter will result in a sampling frequency of 40.96 Hz, which can cause aliasing artifacts.
+  return epochs.copy().decimate(num_steps)
 </pre></div>
 </div>
 </div>
@@ -430,50 +417,58 @@ animate_topomap_2d(epoch, plotting_data=None, colormap=&#39;RdBu_r&#39;, mark=&#
     
     Parameters:
         epochs: mne.epochs.Epochs
-            MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
+            MNE epochs object containing portions of raw EEG data built around specified timestamp(s).
+        
+        plotting_data: numpy.ndarray or None
+            Array of the EEG data from a measurement (not a time interval) to be plotted should be in
+            the format (num_channels, num_frames) i.e. multiple rows of values for the timestamps you plan
+            to plot. If plotting_data is provided the heatmap in the figure will be built from it in
+            conjunction with the &#39;info&#39; from the provided epoch (containing information like node names
+            and locations). If no plotting_data is provided the heatmap will be built from the EEG data
+            in the epoch instead.
     
         colormap: matplotlib colormap or None
-            Specifies the &#39;colormap&#39; parameter in the mne.viz.plot_topomap() function.
+            Specifies the &#39;colormap&#39; parameter to be used in the mne.viz.plot_topomap() and
+            in colorbar generation. Defaults to &#39;RdBu_r&#39;.
     
         mark: str
             Specifies what kind of marker should be shown for each node on the topomap. Can be one of
-            &#39;dot&#39;, &#39;r+&#39; (for red +&#39;s), &#39;channel_name&#39;, or &#39;none&#39;.
+            &#39;dot&#39;, &#39;r+&#39; (for red +&#39;s), &#39;channel_name&#39;, or &#39;none&#39;. Defaults to &#39;dot&#39;.
     
         cmin: float
             Specifies the &#39;vmin&#39; parameter in the mne.viz.plot_topomap() function.
             Sets the limits for the colors which will be used on the topomap. Value is
-            in μV. Defaults to -10.
+            in μV. Defaults to -30.
             
         cmax: float
             Specifies the &#39;vmax&#39; parameter in the mne.viz.plot_topomap() function.
             Sets the limits for the colors which will be used on the topomap. Value is
-            in μV. Defaults to +10.
-    
-        res: int
-            Specifies the &#39;res&#39; and parameters in the mne.viz.plot_topomap() function. &quot;The
-            resolution of the topomap image (n pixels along each side).&quot;
+            in μV. Defaults to +30.
     
         colorbar: bool
-            Specifies whether or not to include a colorbar in the animation.
+            Specifies whether or not to include a colorbar in the animation. Removing will lead to
+            a marginal decrease in rendering times. Defaults to True.
         
         timestamp: bool
             Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
             is being shown. Defaults to True.
     
-        frame_rate: int
-            The frame rate to genearte the final animation with.
+        frame_rate: int or float
+            The frame rate to genearte the final animation with. Defaults to 12.
         
         **kwargs: various
             Additional arguments from the &#39;mne.viz.plot_topomap&#39; function
-            (https://mne.tools/stable/generated/mne.viz.plot_topomap.html) may be provided. Since this function
-            is used under the hood most of these arguments should work exactly as they do in their original
-            function. The exact list of avalible arguments includes: [contours, sphere, res, extrapolate, outlines,
-            mask, mask_params, image_interp, show, onselect, border, ch_type]. The &#39;axes&#39; argument is not avalible
-            since it does not work with animations.
+            (https://mne.tools/stable/generated/mne.viz.plot_topomap.html) may also be passed. Since this function
+            is used under-the-hood most of these arguments should work exactly as they do in their original
+            function. The exact list of avalible arguments and their defaults includes: [contours: 0, sphere: 100,
+            res: 64, extrapolate: &#39;head&#39;, outlines: &#39;head, mask: None, mask_params: None, image_interp: &#39;blinear&#39;,
+            show: False, onselect: None, border: &#39;mean&#39;, ch_type: &#39;eeg&#39;]. The &#39;axes&#39; argument is not avalible
+            since it does not work with animations. Some arguments may break this function. The arguments that are
+            tested and known to work include [res, sphere, extrapolate, outlines, contours, outlines, and border].
     
     Returns:
         ani: matplotlib.animation.FuncAnimation
-            matplotlib funcanimation of a 2d topographic map based on the input epoch data
+            matplotlib funcanimation of a 2d topographic map based on the input epoch data.
 </pre></div>
 </div>
 </div>
@@ -481,21 +476,24 @@ animate_topomap_2d(epoch, plotting_data=None, colormap=&#39;RdBu_r&#39;, mark=&#
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values below to values of interest</span>
-<span class="n">cmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">40</span>
-<span class="n">cmax</span> <span class="o">=</span> <span class="mi">40</span>
+
+<span class="c1"># arguments built into the package</span>
 <span class="n">colormap</span> <span class="o">=</span> <span class="s2">&quot;Spectral&quot;</span>
 <span class="n">mark</span> <span class="o">=</span> <span class="s2">&quot;dot&quot;</span>
-<span class="n">contours</span> <span class="o">=</span> <span class="s2">&quot;6&quot;</span>
-<span class="n">sphere</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">res</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">extrapolate</span> <span class="o">=</span> <span class="s2">&quot;head&quot;</span>
-<span class="n">outlines</span> <span class="o">=</span> <span class="s2">&quot;head&quot;</span>
-<span class="n">axes</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">mask</span> <span class="o">=</span> <span class="kc">None</span>
-<span class="n">mask_params</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">cmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">40</span>
+<span class="n">cmax</span> <span class="o">=</span> <span class="mi">40</span>
 <span class="n">colorbar</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">timestamp</span> <span class="o">=</span> <span class="kc">True</span>
 <span class="n">frame_rate</span> <span class="o">=</span> <span class="mi">12</span>
+
+<span class="c1"># some useful (and tested) arguments from the</span>
+<span class="c1"># MNE.viz.plot_topomap function (see **kwargs) include...</span>
+<span class="n">contours</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">res</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">sphere</span> <span class="o">=</span> <span class="mi">100</span>
+<span class="n">extrapolate</span> <span class="o">=</span> <span class="s2">&quot;head&quot;</span>
+<span class="n">outlines</span> <span class="o">=</span> <span class="s2">&quot;head&quot;</span>
+<span class="n">border</span> <span class="o">=</span> <span class="s2">&quot;mean&quot;</span>
 </pre></div>
 </div>
 </div>
@@ -508,22 +506,20 @@ animate_topomap_2d(epoch, plotting_data=None, colormap=&#39;RdBu_r&#39;, mark=&#
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
 
 <span class="n">anim</span> <span class="o">=</span> <span class="n">topomap_2d</span><span class="o">.</span><span class="n">animate_topomap_2d</span><span class="p">(</span>
-    <span class="n">shortened_epoch</span><span class="p">,</span>
+    <span class="n">shortened_epoch</span><span class="p">,</span> <span class="c1"># REQUIRED</span>
     <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
     <span class="n">mark</span><span class="o">=</span><span class="n">mark</span><span class="p">,</span>
-    <span class="n">contours</span><span class="o">=</span><span class="n">contours</span><span class="p">,</span>
-    <span class="n">sphere</span><span class="o">=</span><span class="n">sphere</span><span class="p">,</span>
     <span class="n">cmin</span><span class="o">=</span><span class="n">cmin</span><span class="p">,</span>
     <span class="n">cmax</span><span class="o">=</span><span class="n">cmax</span><span class="p">,</span>
-    <span class="n">res</span><span class="o">=</span><span class="n">res</span><span class="p">,</span>
-    <span class="n">extrapolate</span><span class="o">=</span><span class="n">extrapolate</span><span class="p">,</span>
-    <span class="n">outlines</span><span class="o">=</span><span class="n">outlines</span><span class="p">,</span>
-    <span class="n">axes</span><span class="o">=</span><span class="n">axes</span><span class="p">,</span>
-    <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">,</span>
-    <span class="n">mask_params</span><span class="o">=</span><span class="n">mask_params</span><span class="p">,</span>
     <span class="n">colorbar</span><span class="o">=</span><span class="n">colorbar</span><span class="p">,</span>
     <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
     <span class="n">frame_rate</span><span class="o">=</span><span class="n">frame_rate</span><span class="p">,</span>
+    <span class="n">contours</span><span class="o">=</span><span class="n">contours</span><span class="p">,</span>
+    <span class="n">res</span><span class="o">=</span><span class="n">res</span><span class="p">,</span>
+    <span class="n">sphere</span><span class="o">=</span><span class="n">sphere</span><span class="p">,</span>
+    <span class="n">extrapolate</span><span class="o">=</span><span class="n">extrapolate</span><span class="p">,</span>
+    <span class="n">outlines</span><span class="o">=</span><span class="n">outlines</span><span class="p">,</span>
+    <span class="n">border</span><span class="o">=</span><span class="n">border</span>
 <span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">IPython.core.display</span> <span class="kn">import</span> <span class="n">HTML</span>
@@ -726,42 +722,42 @@ input[type=range].anim-slider {
 </style>
 
 <div class="animation">
-  <img id="_anim_img52559f9dd7f24234b17fb233aabbe30d">
+  <img id="_anim_imgeb25fef676f145c19d0a041af5a5f16d">
   <div class="anim-controls">
-    <input id="_anim_slider52559f9dd7f24234b17fb233aabbe30d" type="range" class="anim-slider"
+    <input id="_anim_slidereb25fef676f145c19d0a041af5a5f16d" type="range" class="anim-slider"
            name="points" min="0" max="1" step="1" value="0"
-           oninput="anim52559f9dd7f24234b17fb233aabbe30d.set_frame(parseInt(this.value));"></input>
+           oninput="animeb25fef676f145c19d0a041af5a5f16d.set_frame(parseInt(this.value));"></input>
     <div class="anim-buttons">
-      <button title="Decrease speed" aria-label="Decrease speed" onclick="anim52559f9dd7f24234b17fb233aabbe30d.slower()">
+      <button title="Decrease speed" aria-label="Decrease speed" onclick="animeb25fef676f145c19d0a041af5a5f16d.slower()">
           <i class="fa fa-minus"></i></button>
-      <button title="First frame" aria-label="First frame" onclick="anim52559f9dd7f24234b17fb233aabbe30d.first_frame()">
+      <button title="First frame" aria-label="First frame" onclick="animeb25fef676f145c19d0a041af5a5f16d.first_frame()">
         <i class="fa fa-fast-backward"></i></button>
-      <button title="Previous frame" aria-label="Previous frame" onclick="anim52559f9dd7f24234b17fb233aabbe30d.previous_frame()">
+      <button title="Previous frame" aria-label="Previous frame" onclick="animeb25fef676f145c19d0a041af5a5f16d.previous_frame()">
           <i class="fa fa-step-backward"></i></button>
-      <button title="Play backwards" aria-label="Play backwards" onclick="anim52559f9dd7f24234b17fb233aabbe30d.reverse_animation()">
+      <button title="Play backwards" aria-label="Play backwards" onclick="animeb25fef676f145c19d0a041af5a5f16d.reverse_animation()">
           <i class="fa fa-play fa-flip-horizontal"></i></button>
-      <button title="Pause" aria-label="Pause" onclick="anim52559f9dd7f24234b17fb233aabbe30d.pause_animation()">
+      <button title="Pause" aria-label="Pause" onclick="animeb25fef676f145c19d0a041af5a5f16d.pause_animation()">
           <i class="fa fa-pause"></i></button>
-      <button title="Play" aria-label="Play" onclick="anim52559f9dd7f24234b17fb233aabbe30d.play_animation()">
+      <button title="Play" aria-label="Play" onclick="animeb25fef676f145c19d0a041af5a5f16d.play_animation()">
           <i class="fa fa-play"></i></button>
-      <button title="Next frame" aria-label="Next frame" onclick="anim52559f9dd7f24234b17fb233aabbe30d.next_frame()">
+      <button title="Next frame" aria-label="Next frame" onclick="animeb25fef676f145c19d0a041af5a5f16d.next_frame()">
           <i class="fa fa-step-forward"></i></button>
-      <button title="Last frame" aria-label="Last frame" onclick="anim52559f9dd7f24234b17fb233aabbe30d.last_frame()">
+      <button title="Last frame" aria-label="Last frame" onclick="animeb25fef676f145c19d0a041af5a5f16d.last_frame()">
           <i class="fa fa-fast-forward"></i></button>
-      <button title="Increase speed" aria-label="Increase speed" onclick="anim52559f9dd7f24234b17fb233aabbe30d.faster()">
+      <button title="Increase speed" aria-label="Increase speed" onclick="animeb25fef676f145c19d0a041af5a5f16d.faster()">
           <i class="fa fa-plus"></i></button>
     </div>
-    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_select52559f9dd7f24234b17fb233aabbe30d"
+    <form title="Repetition mode" aria-label="Repetition mode" action="#n" name="_anim_loop_selecteb25fef676f145c19d0a041af5a5f16d"
           class="anim-state">
-      <input type="radio" name="state" value="once" id="_anim_radio1_52559f9dd7f24234b17fb233aabbe30d"
+      <input type="radio" name="state" value="once" id="_anim_radio1_eb25fef676f145c19d0a041af5a5f16d"
              >
-      <label for="_anim_radio1_52559f9dd7f24234b17fb233aabbe30d">Once</label>
-      <input type="radio" name="state" value="loop" id="_anim_radio2_52559f9dd7f24234b17fb233aabbe30d"
+      <label for="_anim_radio1_eb25fef676f145c19d0a041af5a5f16d">Once</label>
+      <input type="radio" name="state" value="loop" id="_anim_radio2_eb25fef676f145c19d0a041af5a5f16d"
              checked>
-      <label for="_anim_radio2_52559f9dd7f24234b17fb233aabbe30d">Loop</label>
-      <input type="radio" name="state" value="reflect" id="_anim_radio3_52559f9dd7f24234b17fb233aabbe30d"
+      <label for="_anim_radio2_eb25fef676f145c19d0a041af5a5f16d">Loop</label>
+      <input type="radio" name="state" value="reflect" id="_anim_radio3_eb25fef676f145c19d0a041af5a5f16d"
              >
-      <label for="_anim_radio3_52559f9dd7f24234b17fb233aabbe30d">Reflect</label>
+      <label for="_anim_radio3_eb25fef676f145c19d0a041af5a5f16d">Reflect</label>
     </form>
   </div>
 </div>
@@ -771,9 +767,9 @@ input[type=range].anim-slider {
   /* Instantiate the Animation class. */
   /* The IDs given should match those used in the template above. */
   (function() {
-    var img_id = "_anim_img52559f9dd7f24234b17fb233aabbe30d";
-    var slider_id = "_anim_slider52559f9dd7f24234b17fb233aabbe30d";
-    var loop_select_id = "_anim_loop_select52559f9dd7f24234b17fb233aabbe30d";
+    var img_id = "_anim_imgeb25fef676f145c19d0a041af5a5f16d";
+    var slider_id = "_anim_slidereb25fef676f145c19d0a041af5a5f16d";
+    var loop_select_id = "_anim_loop_selecteb25fef676f145c19d0a041af5a5f16d";
     var frames = new Array(41);
 
   frames[0] = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAbAAAAEgCAYAAADVKCZpAAAAOXRFWHRTb2Z0d2FyZQBNYXRwbG90\
@@ -23806,7 +23802,7 @@ JUrAFAqFQhFKlIApFAqFIpQoAVMoFApFKFECplAoFIpQ8v/kd03+dx9wBQAAAABJRU5ErkJggg==\
     /* set a timeout to make sure all the above elements are created before
        the object is initialized. */
     setTimeout(function() {
-        anim52559f9dd7f24234b17fb233aabbe30d = new Animation(frames, img_id, slider_id, 83.0,
+        animeb25fef676f145c19d0a041af5a5f16d = new Animation(frames, img_id, slider_id, 83.0,
                                  loop_select_id);
     }, 0);
   })()
@@ -23876,50 +23872,58 @@ plot_topomap_2d(epoch, plotting_data=None, recording_number=0, colormap=&#39;RdB
     
     Parameters:
         epoch: mne.epochs.Epochs
-            MNE epochs object containing portions of raw EEG data built around specified timestamp(s)
+            MNE epochs object containing portions of raw EEG data built around specified timestamp(s).
     
         plotting_data: numpy.ndarray or None
             Array of the EEG data from a measurement (not a time interval) to be plotted should be in
             the format (num_channels, ) i.e. a single row of values for the only timestamp you plan
-            to plot.
+            to plot. If plotting_data is provided the heatmap in the figure will be built from it in
+            conjunction with the &#39;info&#39; from the provided epoch (containing information like node
+            names and locations). If no plotting_data is provided the heatmap will be built from the
+            EEG data in the epoch instead. Defaults to None.
         
         recording_number: int
-            The &quot;frame&quot; of the epoch to show in the plot.
+            The index of the data recording in the epoch to show in the plot. Defaults to 0.
     
         colormap: matplotlib colormap or None
-            Specifies the &#39;colormap&#39; parameter in the mne.viz.plot_topomap() function.
+            Specifies the &#39;colormap&#39; parameter to be used in the mne.viz.plot_topomap() and
+            in colorbar generation. Defaults to &#39;RdBu_r&#39;.
         
         colorbar: bool
-            Specifies whether to include a colorbar or not. Removing it will improve performance.
+            Specifies whether to include a colorbar or not. Removing it will marginally improve
+            performance. Defaults to True.
         
         cmin: float
             Specifies the &#39;vmin&#39; parameter in the mne.viz.plot_topomap() function.
             Sets the limits for the colors which will be used on the topomap. Value is
-            in μV. Defaults to -10.
+            in μV. Defaults to -30.
             
         cmax: float
             Specifies the &#39;vmax&#39; parameter in the mne.viz.plot_topomap() function.
             Sets the limits for the colors which will be used on the topomap. Value is
-            in μV. Defaults to +10.
+            in μV. Defaults to +30.
     
         mark: str
             Specifies what kind of marker should be shown for each node on the topomap. Can be one of
-            &#39;dot&#39;, &#39;r+&#39; (for red +&#39;s), &#39;channel_name&#39;, or &#39;none&#39;.
+            &#39;dot&#39;, &#39;r+&#39; (for red +&#39;s), &#39;channel_name&#39;, or &#39;none&#39;. Deaults to &#39;dot&#39;.
             
         timestamp: bool
             Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-            is being shown. Defaults to true.
+            is being shown. Defaults to True.
         
         **kwargs: various
             Additional arguments from the &#39;mne.viz.plot_topomap&#39; function
-            (https://mne.tools/stable/generated/mne.viz.plot_topomap.html) may be provided. Since this function
-            is used under the hood most of these arguments should work exactly as they do in their original
-            function. The exact list of avalible arguments includes: [contours, sphere, res, extrapolate, outlines,
-            axes, mask, mask_params, image_interp, show, onselect, border, ch_type].
+            (https://mne.tools/stable/generated/mne.viz.plot_topomap.html) may also be passed. Since this function
+            is used under-the-hood most of these arguments should work exactly as they do in their original
+            function. The exact list of avalible arguments and their defaults includes: [contours: 0, sphere: 100,
+            res: 64, extrapolate: &#39;head&#39;, outlines: &#39;head, mask: None, mask_params: None, image_interp: &#39;blinear&#39;,
+            show: False, onselect: None, border: &#39;mean&#39;, ch_type: &#39;eeg&#39;, axes: None]. Some arguments may break
+            this function. The arguments that are tested and known to work include [res, sphere, extrapolate,
+            outlines, contours, outlines, border].
     
     Returns:
         topo_2d_fig: matplotlib.image.AxesImage
-            matplotlib image plot of a 2d topographic map based on the input epoch data
+            matplotlib image plot of a 2d topographic map based on the input epoch data.
 </pre></div>
 </div>
 </div>
@@ -23927,6 +23931,7 @@ plot_topomap_2d(epoch, plotting_data=None, recording_number=0, colormap=&#39;RdB
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">timestamp</span><span class="o">=</span><span class="kc">True</span>
+<span class="n">recording_number</span> <span class="o">=</span> <span class="mi">2</span>
 </pre></div>
 </div>
 </div>
@@ -23936,20 +23941,21 @@ plot_topomap_2d(epoch, plotting_data=None, recording_number=0, colormap=&#39;RdB
 <h3>Generating a standalone plot<a class="headerlink" href="#generating-a-standalone-plot" title="Permalink to this headline">¶</a></h3>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>Generating a plot will use the first frame in the epoch, so make sure to update your epoch object to contain your frame of interest.</p>
+<p>Generating a plot will use the first data recording in the epoch by default.</p>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot</span> <span class="o">=</span> <span class="n">topomap_2d</span><span class="o">.</span><span class="n">plot_topomap_2d</span><span class="p">(</span>
     <span class="n">epoch</span><span class="p">,</span>
-    <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span>
+    <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
+    <span class="n">recording_number</span><span class="o">=</span><span class="n">recording_number</span>
 <span class="p">)</span>
 <span class="n">plot</span><span class="p">;</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/topo_2d_32_0.png" src="_images/topo_2d_32_0.png" />
+<img alt="_images/topo_2d_28_0.png" src="_images/topo_2d_28_0.png" />
 </div>
 </div>
 </div>
@@ -24000,7 +24006,7 @@ plot_topomap_2d(epoch, plotting_data=None, recording_number=0, colormap=&#39;RdB
     <div class="container">
       <p>
         
-          By Yiki Su, Matthew Pin, Mo Garoub, and Sasha Babicki<br/>
+          By Zhanyi (Yiki) Su, Matthew Pin, Mo Garoub, and Sasha Babicki<br/>
         
             &copy; Copyright 2021.<br/>
       </p>

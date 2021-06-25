@@ -136,6 +136,11 @@
    API documentation
   </a>
  </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+ </li>
 </ul>
 
     </div>
@@ -281,32 +286,6 @@
 </div>
 </div>
 </div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">warnings</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">filterwarnings</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Please include the line below in your IDE so that the changes would be simultaneously reflected when you make a change to the python scripts.</p>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">load_ext</span> autoreload
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">autoreload</span> 2
-</pre></div>
-</div>
-</div>
-</div>
 <br><div class="section" id="define-parameters">
 <h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
 <p>A detailed description of all parameters can be found in the <code class="docutils literal notranslate"><span class="pre">raw_voltage.plot_voltage</span></code> docstring:</p>
@@ -319,7 +298,7 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function plot_voltage in module simpl_eeg.raw_voltage:
 
-plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs)
+plot_voltage(epoch, remove_xlabel=False, show_times=True, height=None, width=None, **kwargs)
     Generate raw voltage plot
     
     Parameters:
@@ -329,6 +308,10 @@ plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs)
             Whether to remove the x axis label. Defaults to False.
         show_times: bool (optional)
             Whether to show seconds on the x axis. Defaults to True.
+        height: float | None (optional)
+            Height of the plot in inches. Defaults to None for automatic.
+        width: float | None (optional)
+            Width of the plot in inches. Defaults to None for automatic.
         **kwargs: dict (optional)
             Optional arguments to pass to mne.Epochs.plot()
     
@@ -359,12 +342,16 @@ plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_path</span><span class="p">)</span>
-<span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_nth_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
+<span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_epoch</span><span class="p">(</span><span class="n">nth_epoch</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/data/927/fixica.fdt
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:52: RuntimeWarning: Data file name in EEG.data (927 fix ica correct.fdt) is incorrect, the file name must have changed on disk, using the correct file name (fixica.fdt).
+  self.raw = mne.io.read_raw_eeglab(folder_path+&quot;/&quot;+file_name+&quot;.set&quot;)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
@@ -402,12 +389,12 @@ plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># multiple epochs</span>
-<span class="n">raw_voltage</span><span class="o">.</span><span class="n">plot_voltage</span><span class="p">(</span><span class="n">epochs</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
+<span class="n">raw_voltage</span><span class="o">.</span><span class="n">plot_voltage</span><span class="p">(</span><span class="n">epochs</span><span class="o">.</span><span class="n">all_epochs</span><span class="p">,</span> <span class="n">n_epochs</span><span class="o">=</span><span class="mi">2</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/raw_voltage_21_0.png" src="_images/raw_voltage_21_0.png" />
+<img alt="_images/raw_voltage_17_0.png" src="_images/raw_voltage_17_0.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -419,7 +406,7 @@ plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs)
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/raw_voltage_22_0.png" src="_images/raw_voltage_22_0.png" />
+<img alt="_images/raw_voltage_18_0.png" src="_images/raw_voltage_18_0.png" />
 </div>
 </div>
 </div>
@@ -473,7 +460,7 @@ plot_voltage(epoch, remove_xlabel=False, show_times=True, **kwargs)
     <div class="container">
       <p>
         
-          By Yiki Su, Matthew Pin, Mo Garoub, and Sasha Babicki<br/>
+          By Zhanyi (Yiki) Su, Matthew Pin, Mo Garoub, and Sasha Babicki<br/>
         
             &copy; Copyright 2021.<br/>
       </p>
