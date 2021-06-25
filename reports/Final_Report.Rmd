@@ -33,7 +33,7 @@ SimPL is a research lab in the department of Mechanical Engineering at UBC which
 
 Our team was approached to design novel solutions and methods to simplify the process of extracting and visualizing the human brain state using EEG data. Our goal was to extend the number of visualizations available to researchers, including those with a minimal programming background. Making multiple visualizations convenient to access and view simultaneously will allow for an intuitive understanding of the broad picture of brain function. Additionally, future iterations of our machine learning stretch goal could uncover patterns in the data which could not be determined based on visualization alone.
 
-![Example of a Standard Visualization for Two Seconds of 19 Channel EEG Raw Voltage Values](images/viz_example.png){height=15% width=75%}
+![Example of a Standard Visualization for Two Seconds of a 5 Channels of EEG Raw Voltage Values](images/viz_example2.png)
 
 \newpage
 
@@ -57,29 +57,29 @@ The `simpl_eeg` Python package is able to produce advanced visualizations for sp
 
 \newpage
 
-1) **Raw voltage plot** for visualizing raw voltage value changes over time for each node.
+1) **Raw voltage plot** for visualizing raw voltage value changes over time for each node. This plot allows you to see the most data all in one place, and represents time on the x-axis so it is not animated. When using the MNE package directly an interactive version of the plot is available. 
 
-![Raw voltage plot](images/raw_voltage.png){ height=15% }
+![Raw voltage plot](images/raw_voltage.png)
 
-2) **2D topographic head map** for visualizing a topographic heatmap of the voltage values mapped to a 2D model of a skull.
+2) **2D topographic head map** for visualizing a topographic heatmap of the voltage values mapped to a 2D model of a head. This allows the user to see where the changes are occurring on the scalp, with the animation showing how things change over time. One downside is that some distortion occurs when representing a 3D head in two dimensions, making the edges of the head appear to take up the same amount of space as the center of the head which is not reflective of reality. However, this is still one of the most useful visualizations due to it's simplicity and quick rendering time.   
 
 ![2D topographic head map](images/2d_head.png){ height=20% }
 
-3) **3D head map** for visualizing a topographic heatmap of voltage values mapped to a 3D model of skull.
+3) **3D head map** for visualizing a topographic heatmap of voltage values mapped to a 3D model of skull. The 3D representation allows the user to see how the voltage changes look on a more accurate representation of the skull than the 2D head map, and can be rotated to see the head from multiple perspectives. However, it is slower to render than the 2D head map because interpolation must be run on every frame to generate the figure. 
 
 ![3D topographic head map](images/3d_head){ height=20% }
 
 \newpage
 
-4) **3D brain map** for visualizing a topographic heatmap of interpolated voltage values mapped to their presumed position on a 3D model of a brain.
+4) **3D brain map** for visualizing a topographic heatmap of interpolated voltage values mapped to their presumed position on a 3D model of a brain. This allows the user to view where the source of the voltage changes may be emanating from. MNE provides the calculations for converting location on the skull to location on the brain, which is more complicated than a direct mapping based on location. 
 
 ![3D topographic brain map](images/3d_brain.png){ height=18% }
 
-5) **Connectivity plot** for visualizing pairwise connectivity measurements between nodes for specified time ranges.
+5) **Connectivity plot** for visualizing pairwise connectivity measurements between nodes for specified time ranges. This type of visualization is not available with other packages to our knowledge. It represents the connectivity measurements with colours and line size, which shows which nodes have similar patterns over time. 
 
 ![Connectivity plot](images/connectivity.png){ height=20% }
 
-6) **Connectivity Circle** for generating an alternative perspective for visualizing pairwise connectivity measurements
+6) **Connectivity Circle** for generating an alternative perspective for visualizing pairwise connectivity measurements. The connectivity plot is more useful for seeing the changes mapped directly on the head, whereas the connectivity circle represents the nodes in a circle. The connectivity circle allows you to select a specific number of highest magnitude connections, so it may assist in finding node connections for further inspection with the connectivity plot. 
 
 ![Connectivity circle plot](images/connectivity_circle.png){ height=20% }
 
