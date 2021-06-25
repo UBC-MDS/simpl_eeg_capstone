@@ -10,3 +10,4 @@ sections:
 - file: topo_3d_brain
 - file: connectivity
 - file: api
+- file: clustering
