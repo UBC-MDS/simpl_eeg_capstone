@@ -348,8 +348,8 @@ def plot_topomap_3d_brain(
         backend='matplotlib',
         views=[
             'lat',
-            'fro',
-            'dor'],
+            'dor',
+            'fro'],
         view_layout='horizontal',
         size=300,
         hemi='both',
