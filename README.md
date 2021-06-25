@@ -2,7 +2,7 @@
 2021 MDS Capstone Project
 
 # Project Description
-Python package and web application for visualizing EEG data
+Python package and web application for visualizing EEG data. Detailed instructions on the package, user interface, and clustering stretch goal can all be found in our [Documentation on GitHub Pages](https://ubc-mds.github.io/simpl_eeg_capstone/eeg_objects.html). 
 
 # Helpful Links
 - [Proposal Presentation](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Capstone_Proposal_Presentation.pdf)
@@ -21,10 +21,14 @@ cd simpl_eeg_capstone
 If you have no experience working with the unix shell click [here](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html) for detailed instructions on installation and launching the Streamlit app.
 
 # Package Installation Instructions
+Full instructions on package installation can be found [here](https://ubc-mds.github.io/simpl_eeg_capstone/introduction.html)
+
 Run the following command from the root folder of the project:
 ```bash
 pip install -e .
 ```
+
+Folders containing EEG data should be moved into the `data` folder in the root folder of the project. 
 
 # Package Usage Instructions
 The package contains 6 modules. When using the package directly with Python you can import each of the modules with the following commands:
