@@ -1019,7 +1019,7 @@ def main():
 
             if show_sphere_conn:
                 adjust_spehre_conn = st.checkbox(
-                    "Adjust Sphere",
+                    "Adjust sphere",
                     value=False,
                     key="connSp",
                     help="""Select to manually adjust the X/Y/Z coordinates and radius of the skull spehere if the
