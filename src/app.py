@@ -388,7 +388,7 @@ def main():
         """----------\nExperiment\nlength:\n{}""".format(exp_len)
     )
 
-    col1, col2 = st.sidebar.beta_columns((1, 1.3))
+    col1, col2 = st.sidebar.beta_columns((1, 1.35))
     time_select = col1.radio(
         "Timestamp type",
         ["Epoch", "Time"],
@@ -540,7 +540,7 @@ def main():
 
     show_code = st.sidebar.checkbox(
         "Show Code",
-        value=True,
+        value=False,
         help="Show the source code used to generate rendered figures"
     )
     
@@ -731,12 +731,12 @@ def main():
 
     with expander_2d_head.widget_col:
         vmin_2d_head = st.number_input(
-            "Minimum Voltage (μV)",
+            "Minimum voltage (μV)",
             value=-40.0,
             help=min_voltage_message
         )
         vmax_2d_head = st.number_input(
-            "Maximum Voltage (μV)",
+            "Maximum voltage (μV)",
             value=40.0,
             min_value=vmin_2d_head,
             help=max_voltage_message
@@ -824,12 +824,12 @@ def main():
 
     with expander_3d_head.widget_col:
         vmin_3d_head = st.number_input(
-            "Minimum Voltage (μV) ",
+            "Minimum voltage (μV) ",
             value=-40.0,
             help=min_voltage_message
         )
         vmax_3d_head = st.number_input(
-            "Maximum Voltage (μV) ",
+            "Maximum voltage (μV) ",
             value=40.0,
             min_value=vmin_3d_head,
             help=max_voltage_message
@@ -837,12 +837,12 @@ def main():
 
     with expander_3d_brain.widget_col:
         vmin_3d_brain = st.number_input(
-            "Minimum Voltage (μV)",
+            "Minimum voltage (μV)",
             value=-2.0,
             help=min_voltage_message
         )
         vmax_3d_brain = st.number_input(
-            "Maximum Voltage (μV)",
+            "Maximum voltage (μV)",
             value=2.0,
             min_value=vmin_3d_brain,
             help=max_voltage_message
@@ -1016,12 +1016,52 @@ def main():
                 key="conn_sphere",
                 help="Show sphere to represent head"
             )
+
+            if show_sphere_conn:
+                adjust_spehre_conn = st.checkbox(
+                    "Adjust Sphere",
+                    value=False,
+                    key="connSp",
+                    help="""Select to manually adjust the X/Y/Z coordinates and radius of the skull spehere if the
+                    node locations are misplaced.
+                    """
+                )
+                if adjust_spehre_conn:
+                    conn_sphere_x = st.number_input(
+                        "Sphere X",
+                        value=9
+                    )
+                    conn_sphere_y = st.number_input(
+                        "Sphere Y",
+                        value=-15
+                    )
+                    conn_sphere_z = st.number_input(
+                        "Sphere Z",
+                        value=0
+                    )
+                    conn_sphere_radius = st.number_input(
+                        "Sphere radius",
+                        value=100
+                    )
+                else:
+                    conn_sphere_x=9
+                    conn_sphere_y=-15
+                    conn_sphere_z=0
+                    conn_sphere_radius=100
+                conn_sphere_coords = (conn_sphere_x, conn_sphere_y, conn_sphere_z, conn_sphere_radius)
+            else:
+                conn_sphere_coords = None
+
         else:
             f_rate_connectivity = DEFAULT_FRAME_RATE
             conn_line_width = None
             colorbar_conn = True
             timestamps_conn = True
             show_sphere_conn = True
+            if show_sphere_conn:
+                conn_sphere_coords = (9, -15, 0, 100)
+            else:
+                conn_sphere_coords = None
 
     with expander_connectivity_circle.widget_col:
 
@@ -1248,7 +1288,8 @@ def main():
                     colorbar=colorbar_conn,
                     timestamp=timestamps_conn,
                     show_sphere=show_sphere_conn,
-                    frame_rate=f_rate_connectivity
+                    frame_rate=f_rate_connectivity,
+                    sphere=conn_sphere_coords
                 )
                 components.html(
                     html_plot,
