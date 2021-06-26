@@ -15,11 +15,11 @@ urlcolor: blue
 
 ## 3.1. Executive Summary
 
-Our partner SimPL is a research lab that explores research questions concerning the human brain. The purpose of our project was to to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. After learning about SimPL's problem with limited visualization methods, we decided to develop a Python package to extend the functionality of existing Python EEG visualization tools. We also developed and interactive user interface for the package to provide access to the functionality for those who don't have experience with Python. Finally, we tried various clustering methods on the data in an attempt to potentially identify various brain states. 
+Our partner SimPL is a research lab that explores research questions concerning the human brain. The purpose of our project was to to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. After learning about SimPL's problem with limited visualization methods, we decided to develop a Python package to extend the functionality of existing Python EEG visualization tools. We also developed an interactive user interface for the package to provide access to the functionality for those who don't have experience with Python. Finally, we tried various clustering methods on the data in an attempt to potentially identify various brain states. 
 
 ## 3.2 Introduction
 
-Electroencephalograms (EEG) is an electrophysiological measurement method used to examine the electrical activity of the brain and represent it as location-based channels of waves and frequencies. EEG benefits from being inexpensive and unobtrusive, leading to its widespread use in diagnosing brain disorders such as epilepsy and brain damage from head injuries. EEG data is recorded with high dimensionality, so the use of visualizations is essential for the data to be easily interpreted by humans. Currently, the options for visualizing EEG data require the use of complicated packages or software and the functionally is often limited.
+Electroencephalograms (EEG) is an electrophysiological measurement method used to examine the electrical activity of the brain and represent it as location-based channels of waves and frequencies. EEG benefits from being inexpensive and unobtrusive, leading to its widespread use in diagnosing brain disorders such as epilepsy and brain damage from head injuries. EEG data is recorded with high dimensionality, so the use of visualizations is essential for the data to be easily interpreted by humans. The currently available options for visualizing EEG data often require the use of complicated packages or functionally is often limited in scope.
 
 SimPL is a research lab in the department of Mechanical Engineering at UBC which focuses on developing quantitative and sensitive methods to evaluate the electrophysiological changes after sport head injuries. The underlying mechanisms of brain dysfunction are not fully understood, in part because concussion and brain injuries are generally invisible. EEG technology has proven particularly useful for their research purposes.
 
@@ -27,9 +27,9 @@ Our team was approached to design novel solutions and methods to simplify the pr
 
 We decided on the following deliverables:
 
-1) A Python package for generating advanced EEG visualizations. The package contains 6 different modules for visualizing EEG data, with a variety of types of plots to view the data from different perspectives. The package is built in an editable way so that the partner may continue to develop and customize the functionality after the Capstone project is coplete. 
+1) A Python package for generating advanced EEG visualizations. The package contains 6 different modules for visualizing EEG data, with the variety allowing for the generation of plots from different viewpoints and with each having its own unique benefits. The package is built in an editable way so that the partner may continue to develop and customize the functionality after the Capstone project is complete. 
 
-2) An interactive web application to provide a user interface for the package. The web application provides a user interface (UI) for the package to allow people to use the package functionality without needing to write any code. The UI also benefits from having all visualization options in one place, and is a useful tool for exploring what the package has to offer. 
+2) An interactive web application to provide a user interface (UI) for the package. This allows users to utilize the package's functionality without needing to write any code. The UI also provides a coherent and accessible means of exploring the uses of the package by gathering all of its visualization options in one place and allowing users to freely tweak and test values and options. 
 
 Detailed instructions for how to use the package and user interface can be found [here](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html).
 
@@ -65,21 +65,21 @@ The `simpl_eeg` Python package is able to produce advanced visualizations for sp
 
 \newpage
 
-1) **Raw voltage plot** for visualizing raw voltage value changes over time for each node. This plot allows you to see the most data all in one place, and represents time on the x-axis so it is not animated. When using the MNE package directly an interactive version of the plot is available. 
+1) **Raw voltage plot** for visualizing raw voltage value changes over time at each node. Time is represented on the x-axis so it is not animated. Of all the package's functions this plot provides a view of the largest amount of data in a single image, making it well suited to assessing the broad-picture of your data. When using the MNE package directly an interactive version of the plot is available. 
 
 ![Raw voltage plot](images/raw_voltage.png)
 
-2) **2D topographic head map** for visualizing a topographic heatmap of the voltage values mapped to a 2D model of a head. This allows the user to see where the changes are occurring on the scalp, with the animation showing how things change over time. One downside is that some distortion occurs when representing a 3D head in two dimensions, making the edges of the head appear to take up the same amount of space as the center of the head which is not reflective of reality. However, this is still one of the most useful visualizations due to it's simplicity and quick rendering time.   
+2) **2D topographic head map** for visualizing a topographic heatmap of the voltage values mapped to a 2D model of a head. This allows the user to see where activity is occurring on the scalp, with the animation showing how voltage changes over time. One downside is that some distortion occurs when representing a 3D head in two dimensions, making the edges of the head appear to take up the same amount of space as the center of the head which is not reflective of reality. However, the quick render time, simplicity of the figure, and the complete view it provides of the entire scalp in a single 2D image make it one of the most useful visualizations in the package.   
 
 ![2D topographic head map](images/2d_head.png){ height=20% }
 
-3) **3D head map** for visualizing a topographic heatmap of voltage values mapped to a 3D model of skull. The 3D representation allows the user to see how the voltage changes look on a more accurate representation of the skull than the 2D head map, and can be rotated to see the head from multiple perspectives. However, it is slower to render than the 2D head map because interpolation must be run on every frame to generate the figure. 
+3) **3D head map** for visualizing a topographic heatmap of voltage values mapped to a 3D model of skull. The 3D representation allows the user to see how the voltage changes look on a more spatially accurate representation of the skull than with the 2D head map. The data can also be examined from multiple different angles since the 3D model can be freely rotated. A major drawback of this function is that it is slower to render than the 2D head map because interpolation must be run on every frame to generate the figure. 
 
 ![3D topographic head map](images/3d_head){ height=20% }
 
 \newpage
 
-4) **3D brain map** for visualizing a topographic heatmap of interpolated voltage values mapped to their presumed position on a 3D model of a brain. This allows the user to view where the source of the voltage changes may be emanating from. MNE provides the calculations for converting location on the skull to location on the brain, which is more complicated than a direct mapping based on location. 
+4) **3D brain map** for visualizing a topographic heatmap of interpolated voltage values mapped to their presumed position on a 3D model of a brain. This allows the user to view where the source of the voltage changes may be emanating from, making this function well suited to research attempting to correlate EEG data with specific regions of the brain. MNE provided default calculations for converting voltage potential recorded on the skull to presumed locations in the brain (which is more complicated than a direct mapping based on location), though this can be freely adjusted by users with a greater understanding of the math. 
 
 ![3D topographic brain map](images/3d_brain.png){ height=18% }
 
