@@ -11,3 +11,5 @@ sections:
 - file: connectivity
 - file: api
 - file: clustering
+  sections:
+  - file: clustering_HMM
