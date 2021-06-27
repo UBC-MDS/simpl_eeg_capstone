@@ -35,9 +35,8 @@ Detailed instructions for how to use the package and user interface can be found
 
 Stretch Goal:
 
-1) Explore unsupervised machine learning methods to cluster and identify potential patterns in EEG data. ______
+1) Explore unsupervised machine learning methods to cluster and identify potential patterns in EEG data. Due to the limited time and efforts allocated to the stretch goal, we haven't discovered any significant findings with the clustering methods we tried. However, we have decided to include a chapter in the [Jupyter book documentation](https://ubc-mds.github.io/simpl_eeg_capstone/clustering.html) that documents our stretch goal progress so that the partner can continue where we have left off. We suggest that the partner review the work that we have done and explore further. 
 
-Our stretch goal progress has been documented in jupyter lab notebooks and has been designed so that the partner can continue where we have left off. Although we did not discover any significant findings with the clustering methods we tried, we suggest that the partner review the work that we have done and experiment further. 
 
 ![Example of a Standard Visualization for Two Seconds of a 5 Channels of EEG Raw Voltage Values](images/viz_example2.png)
 
@@ -55,15 +54,13 @@ Multiple visualization techniques were included in order to allow the data to be
 
 For the interactive user interface (UI) we used an open source framework called [Streamlit](https://streamlit.io/) which is designed for generating web applications from Python scripts. Streamlit benefits from being lightweight and requiring no front-end experience, which will facilitate ease of updating in the future. The downsides to Streamlit are reduced flexibility; namely incompatibility with some types of figures and limited style customization options. However, for the purposes of this project we believe that the simplicity and ease of maintenance outweighs the need for additional features.
 
-Both KMeans and Hidden Markov model unsupervised clustering methods have been utilized with the goal of identifying multiple unique "brain states" in the data. In this context, "brain states" refers to a distinct temporal pattern of electrical activity within the 19 channel EEG data. The KMeans clustering method utilizes the [KMeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) model from [Scikit-learn](https://scikit-learn.org/stable/index.html) to cluster data from each provided time period based on distance from the cluster centers. The Hidden Markov model method uses the GaussianHMM model from [hmmlearn](https://hmmlearn.readthedocs.io/en/latest/) to calculate the Gaussian distribution of the EEG signals and creates a transmission probability matrix based on the transitions between "brain states" over time. Furthermore, we have also looked into expanding our analysis to methods beyond what we covered in the MDS curriculum such as Self Organizing Maps (SOM) to produce a lower dimensional representation of the clusters using neural network and K-means with Dynamic Time Warping (DTW) using `tslean` to visualize similarities between time series.
+Due to the complexity of EEG data and its dynamic changes over time, it is hard to identify any significant patterns across electrode nodes by simply reading the raw EEG data or visualizing it. Our team explored different unsupervised clustering methods to identify brain states over time, which are distinct temporal patterns of electrical activity within the 19 channel EEG data over a fixed-length time sections. The expected outcome of this task is to separate the 1.5 hours experiment data into different clusters, which are composed of a number of fixed-length EEG data chunks. Both KMeans and Hidden Markov model unsupervised clustering methods have been utilized with the goal of identifying multiple unique "brain states" in the data. In this context, "brain states" refers to a distinct temporal pattern of electrical activity within the 19 channel EEG data. The KMeans clustering method utilizes the [KMeans](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.KMeans.html) model from [Scikit-learn](https://scikit-learn.org/stable/index.html) to cluster data from each provided time period based on distance from the cluster centers. The Hidden Markov model method uses the GaussianHMM model from [hmmlearn](https://hmmlearn.readthedocs.io/en/latest/) to calculate the Gaussian distribution of the EEG data and creates a transmission probability matrix based on the transitions between "brain states" over time. For more details of each approaches, please refer to the [KMeans]() and [HMM notebook]() in our Jupyter book documentation.
 
 ## 3.4 Data Product and Results
 
 ### 3.4.1 Python Package
 
 The `simpl_eeg` Python package is able to produce advanced visualizations for specified time ranges of EEG data. With the exception of the Raw voltage plot, each visualization can be created as an animation to view changes over time or as a standalone plot. Each visualization is customizable and can be exported as an image (svg, png, jpeg) or as a video (html, mp4, or gif). The following visualization types are available:
-
-\newpage
 
 1) **Raw voltage plot** for visualizing raw voltage value changes over time at each node. Time is represented on the x-axis so it is not animated. Of all the package's functions this plot provides a view of the largest amount of data in a single image, making it well suited to assessing the broad-picture of your data. When using the MNE package directly an interactive version of the plot is available. 
 
@@ -73,34 +70,42 @@ The `simpl_eeg` Python package is able to produce advanced visualizations for sp
 
 ![2D topographic head map](images/2d_head.png){ height=20% }
 
-3) **3D head map** for visualizing a topographic heatmap of voltage values mapped to a 3D model of skull. The 3D representation allows the user to see how the voltage changes look on a more spatially accurate representation of the skull than with the 2D head map. The data can also be examined from multiple different angles since the 3D model can be freely rotated. A major drawback of this function is that it is slower to render than the 2D head map because interpolation must be run on every frame to generate the figure. 
+3) **3D head map** for visualizing a topographic heatmap of voltage values mapped to a 3D model of skull. The 3D representation allows the user to see how the voltage changes on a more spatially accurate representation of the skull than with the 2D head map. The data can also be examined from multiple different angles since the 3D model can be freely rotated. A major drawback of this function is that it is slower to render than the 2D head map because interpolation must be run on every frame to generate the figure. 
 
 ![3D topographic head map](images/3d_head){ height=20% }
 
-\newpage
 
 4) **3D brain map** for visualizing a topographic heatmap of interpolated voltage values mapped to their presumed position on a 3D model of a brain. This allows the user to view where the source of the voltage changes may be emanating from, making this function well suited to research attempting to correlate EEG data with specific regions of the brain. MNE provided default calculations for converting voltage potential recorded on the skull to presumed locations in the brain (which is more complicated than a direct mapping based on location), though this can be freely adjusted by users with a greater understanding of the math. 
 
 ![3D topographic brain map](images/3d_brain.png){ height=18% }
 
+\newpage
+
 5) **Connectivity plot** for visualizing pairwise connectivity measurements between nodes for specified time ranges. This type of visualization is not available with other packages to our knowledge. It represents the connectivity measurements with colours and line size, which shows which nodes have similar patterns over time. 
 
 ![Connectivity plot](images/connectivity.png){ height=20% }
 
+
 6) **Connectivity Circle** for generating an alternative perspective for visualizing pairwise connectivity measurements. The connectivity plot is more useful for seeing the changes mapped directly on the head, whereas the connectivity circle represents the nodes in a circle. The connectivity circle allows you to select a specific number of highest magnitude connections, so it may assist in finding node connections for further inspection with the connectivity plot. 
 
 ![Connectivity circle plot](images/connectivity_circle.png){ height=20% }
+
 Detailed instructions on how to use the package can be found in our [documentation](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html). 
+
+\newpage
 
 ### 3.4.2 User Interface
 
-In addition to the package we built an interactive web application to serve as a UI for the package. The UI requires no coding experience, and is made accessible by launching with a single command. It also has the benefit of providing all the main visualizations in one place, allowing for data to be easily examined from several different perspectives. Intuitive widgets and entry fields that allow for adjusting of the most widely used options in each package function make customization easy. Although the UI is a useful tool for exploring the package, we suggest that figures with advanced customizations are produced with the package directly in order to have full access to all customization options. 
+In addition to the package we built an interactive web application to serve as a UI for the package. The UI requires no coding experience, and is made accessible by launching with a single command. It also has the benefit of providing all the main visualizations in one place, allowing for data to be easily examined from several different perspectives. Intuitive widgets and entry fields that allow for adjusting of the most widely used options in each package function make customization easy. Although the UI is a useful tool for exploring the package, we suggest that figures with advanced customization are produced with the package directly in order to have full access to all customization options. 
 
 ![Streamlit User Interface](images/ui.png)
 
 ### 3.4.2 Stretch goal
 
-Although we have tried different approaches for the stretch goal, due to the limited time allocated to the stretch goal we haven't discovered any significant findings yet. However, we do think it would be useful to document all approaches we have tried so far to serve the partner as a good reference point to continue to work on the stretch goal in the future. Hence, we have decided to create a [Jupyter notebook file for each approaches](https://github.com/UBC-MDS/simpl_eeg_capstone/tree/main/src/clustering) to outline the workflow from data preprocessing, model fitting to output visualization for each approaches. We have also included a section called `Next steps` in some applicable notebooks to let the partner know that there are some next steps potentially useful in finding the significant results but we haven't had time to implement yet, such as using rolling means and sliding windows as feature engineering or including a customized visualization function for visualizing clustering outcome.
+To better assist the partner to further explore the clustering task and extend the work, we have created a Jupyter notebook file for each approaches we have tried so far, namely `KMeans` and `Hidden Markov Model`, and included them as sub-sections under the `Clustering` chapter in the [Jupyter book documentation](https://ubc-mds.github.io/simpl_eeg_capstone/clustering.html). Inside each notebooks, we have outlined a detailed workflow from data preprocessing, model fitting to output visualization for each approaches. We have also documented our reasons for choosing the approach, general introduction of the approach, explanation of key components and interpretation of model output, which would make this notebook serve as a good reference point for partner to further explore the task in the future. Additionally, we included a section called `Next steps` in some applicable notebooks to let the partner know that there are some potentially useful steps in finding the significant results but we haven't had time to implement yet, such as using rolling means and sliding windows as feature engineering.
+
+**Include a screenshot of the clustering chapter in the jupyter book**
+
 
 ## 3.5 Conclusions and Recommendations
 
@@ -110,7 +115,7 @@ The package functionality allows for generation of all the figures laid out in o
 
 The Streamlit UI has an intuitive and uncluttered interface that enables straightforward generation of any of these figures and allows for tweaking of most of our visualization options. We recommend for the partner to update the UI to allow users to specify custom data file paths from within the interface. We also recommend deploying the application as a publically hosted web application to allow for access without the installation of any local files, however, privacy and security of research data are potential hurdles in this process.
 
-The stretch goal has been started but will require further development from the partner. Our progress so far has been exploring different unsupervised clustering methods. Our detailed notebooks provide a good overview of potential useful pre-processing steps, available models and outcome visualization methods for EEG clustering tasks. We recommend the partner continue the machine learning analysis from where we left off, particularly with the SOM method which we deem to be the most promising. 
+The stretch goal has been started but will require further development from the partner. Our progress so far has been exploring different unsupervised clustering methods. Our detailed notebooks provide a good overview of potential useful pre-processing steps, available models and outcome visualization methods for EEG clustering tasks. We recommend the partner continue the machine learning analysis from where we left off and apply their domain expertise to make necessary modifications to the workflow. 
 
 \newpage
 
