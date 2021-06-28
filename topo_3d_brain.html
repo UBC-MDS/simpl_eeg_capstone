@@ -634,10 +634,6 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reducing data rank from 19 -&gt; 19
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/topomap_3d_brain.py:290: RuntimeWarning: Too few samples (required : 100 got : 21), covariance estimate may be unreliable
-  noise_cov = mne.compute_covariance(epoch, method=covariance_method)
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimating covariance using EMPIRICAL
 </pre></div>
 </div>
@@ -645,6 +641,10 @@
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimating covariance using SHRUNK
+</pre></div>
+</div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/topomap_3d_brain.py:290: RuntimeWarning: Too few samples (required : 100 got : 21), covariance estimate may be unreliable
+  noise_cov = mne.compute_covariance(epoch, method=covariance_method)
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done.
