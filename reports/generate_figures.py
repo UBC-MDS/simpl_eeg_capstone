@@ -1,3 +1,7 @@
+"""
+Python script for generating report and figures
+"""
+
 import matplotlib
 matplotlib.use("Agg")
 
@@ -20,10 +24,7 @@ table = raw.to_data_frame().head(10)
 fig = raw.plot(duration=2)
 fig.savefig("reports/images/viz_example.png")
 
-fig = raw_voltage.plot_voltage(epoch, remove_xlabel=True, width=5.5, height=2.5, show_scrollbars=False)
-fig.subplots_adjust(
-    wspace=10
-)
+fig = raw_voltage.plot_voltage(epoch, remove_xlabel=True, width=5, height=3, show_scrollbars=False)
 fig.savefig("reports/images/raw_voltage.png")
 
 fig = topomap_2d.plot_topomap_2d(epoch)
@@ -32,8 +33,8 @@ fig.figure.savefig("reports/images/2d_head.png")
 fig = topomap_3d_head.topo_3d_map(epoch, 0)
 fig.write_image("reports/images/3d_head.png")
 
-# fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, backend='matplotlib')
-# fig.savefig("reports/images/3d_brain.png")
+fig = topomap_3d_brain.plot_topomap_3d_brain(epoch, views=['lat','dor'], hemi='both', cmin=-1.5, cmax=1.5)
+fig.savefig("reports/images/3d_brain.png")
 
 fig = connectivity.plot_connectivity(epoch)
 fig.savefig("reports/images/connectivity.png")

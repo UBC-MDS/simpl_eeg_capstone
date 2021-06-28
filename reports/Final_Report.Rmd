@@ -64,6 +64,8 @@ The `simpl_eeg` Python package is able to produce advanced visualizations for sp
 
 ![Raw voltage plot](images/raw_voltage.png)
 
+\newpage
+
 2) **2D topographic head map** for visualizing a topographic heatmap of the voltage values mapped to a 2D model of a head. This allows the user to see where activity is occurring on the scalp, with the animation showing how voltage changes over time. One downside is that some distortion occurs when representing a 3D head in two dimensions, making the edges of the head appear to take up the same amount of space as the center of the head which is not reflective of reality. However, the quick render time, simplicity of the figure, and the complete view it provides of the entire scalp in a single 2D image make it one of the most useful visualizations in the package.   
 
 ![2D topographic head map](images/2d_head.png){ height=20% }
