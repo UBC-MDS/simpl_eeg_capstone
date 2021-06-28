@@ -2,7 +2,7 @@
 output: github_document
 bibliography: reports/References.bib
 nocite: |
-  @mne, @matplotlib, @plotly, @jupyterbook, @scikit-learn
+  @mne, @matplotlib, @plotly, @jupyterbook, @scikit-learn, @tslearn, @minisom
 
 ---
 
