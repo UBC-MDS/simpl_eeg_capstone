@@ -1,6 +1,8 @@
 ---
 output: github_document
-bibliography: doc/absenteeism_refs.bib
+bibliography: reports/References.bib
+nocite: |
+  @mne, @matplotlib, @plotly, @jupyterbook, @scikit-learn
 
 ---
 
@@ -77,3 +79,5 @@ ghp-import -n -p -f docs/simpl_instructions/_build/html
 
 # Mentor
 - Joel Ostblom
+
+# References
