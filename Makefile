@@ -17,6 +17,9 @@ reports/Proposal.pdf : reports/Proposal.Rmd reports/images/TimelineGanttChart.pd
 reports/Final_Report.pdf : reports/Final_Report.Rmd reports/References.bib $(IMG_DEPS)
 	Rscript -e "rmarkdown::render('reports/Final_Report.Rmd', output_file='Final_Report.pdf')"
 
+README.md : README.Rmd reports/References.bib
+	Rscript -e "rmarkdown::render('README.Rmd', output_format = 'github_document')"
+
 ui :
 	streamlit run src/app.py
 
