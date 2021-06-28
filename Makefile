@@ -2,13 +2,13 @@ IMG_DEPS := reports/images/viz_example.png
 IMG_DEPS += reports/images/raw_voltage.png 
 IMG_DEPS += reports/images/2d_head.png
 IMG_DEPS += reports/images/3d_head.png
-# IMG_DEPS += reports/images/3d_brain.png
+IMG_DEPS += reports/images/3d_brain.png
 IMG_DEPS += reports/images/connectivity.png
 IMG_DEPS += reports/images/connectivity_circle.png
 
 all : reports/Final_Report.pdf
 
-$(IMG_DEPS) : reports/generate_figures.py data/927/.* 
+$(IMG_DEPS) : reports/generate_figures.py data/927/.* simpl_eeg/.*
 	python reports/generate_figures.py
 
 reports/Proposal.pdf : reports/Proposal.Rmd reports/images/TimelineGanttChart.pdf data/927/.*

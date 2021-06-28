@@ -49,6 +49,9 @@ def plot_voltage(epoch, remove_xlabel=False, show_times=True, height=None, width
             "{:.2f} seconds".format(event_time+epoch.tmin),
             "{:.2f} seconds".format(event_time+epoch.tmax)
         ])
+        
+        # add whitespace for sides
+        fig.tight_layout(pad=0.5)
 
     if height and width:
         ax.figure.set_size_inches(width, height)

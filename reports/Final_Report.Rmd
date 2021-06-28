@@ -15,32 +15,30 @@ urlcolor: blue
 
 ## 3.1. Executive Summary
 
-Our partner SimPL is a research lab that explores research questions concerning the human brain. The purpose of our project was to to help them visualize EEG data and understand the functional state of the brain after sports-related head injuries. After learning about SimPL's problem with limited visualization methods, we decided to develop a Python package to extend the functionality of existing Python EEG visualization tools. We also developed an interactive user interface for the package to provide access to the functionality for those who do not have experience with Python. Finally, we tried various clustering methods on the data in an attempt to potentially identify various brain states. 
+The purpose of our project was to to help our partner, SimPL, visualize EEG data and understand the functional state of the brain after sports-related head injuries. After learning about SimPL's problem with limited visualization methods, we decided to develop a Python package to extend the functionality of existing Python EEG visualization tools. We also developed an interactive user interface for the package to provide access to the functionality for those who do not have experience with Python. Finally, we tried various clustering methods on the data in an attempt to potentially identify various brain states. 
 
 ## 3.2 Introduction
 
-Electroencephalograms (EEG) is an electrophysiological measurement method used to examine the electrical activity of the brain and represent it as location-based channels of waves and frequencies. EEG benefits from being inexpensive and unobtrusive, leading to its widespread use in diagnosing brain disorders such as epilepsy and brain damage from head injuries. EEG data is recorded with high dimensionality, so the use of visualizations is essential for the data to be easily interpreted by humans. The currently available options for visualizing EEG data often require the use of complicated packages or functionally is often limited in scope.
+Electroencephalograms (EEG) is an electrophysiological measurement method used to examine the electrical activity of the brain and represent it as location-based channels of waves and frequencies. EEG benefits from being inexpensive and unobtrusive, leading to its widespread use in diagnosing brain disorders such as epilepsy and brain damage from head injuries. EEG data is recorded with high dimensionality, so the use of visualizations is essential for the data to be easily interpreted by humans. The currently available options for visualizing EEG data often require the use of complicated packages and functionally is often limited in scope.
 
-SimPL is a research lab in the department of Mechanical Engineering at UBC which focuses on developing quantitative and sensitive methods to evaluate the electrophysiological changes after sport head injuries. The underlying mechanisms of brain dysfunction are not fully understood, in part because concussion and brain injuries are generally invisible. EEG technology has proven particularly useful for their research purposes.
+Our partner SimPL is a research lab in the department of Mechanical Engineering at UBC which focuses on developing quantitative and sensitive methods to evaluate the electrophysiological changes after sport head injuries. The underlying mechanisms of brain dysfunction are not fully understood, in part because concussion and brain injuries are generally invisible. EEG technology has proven particularly useful for their research purposes.
 
 Our team was approached to design novel solutions and methods to simplify the process of extracting and visualizing the human brain state using EEG data. Our goal was to extend the number of visualizations available to researchers, including those with a minimal programming background. Making multiple visualizations convenient to access and view simultaneously will allow for an intuitive understanding of the broad picture of brain function. Additionally, future iterations of our machine learning stretch goal could uncover patterns in the data which could not be determined based on visualization alone.
 
 We decided on the following deliverables:
 
-1) A Python package for generating advanced EEG visualizations. The package contains six different modules for visualizing EEG data, with the variety allowing for the generation of plots from different viewpoints and with each having its own unique benefits. The package is built in an editable way so that the partner may continue to develop and customize the functionality after the Capstone project is complete. 
+1) A Python package for generating advanced EEG visualizations. The package contains six different modules for visualizing EEG data, allowing the user to see the data from different viewpoints, each with their own unique benefits. The package is built in an editable way so that the partner may continue to develop and customize the functionality after the Capstone project is complete. 
 
-2) An interactive web application to provide a user interface (UI) for the package. This allows users to utilize the package's functionality without needing to write any code. The UI also provides a coherent and accessible means of exploring the uses of the package by gathering all of its visualization options in one place and allowing users to freely tweak and test values and options. 
+2) An interactive web application to provide a user interface (UI) for the package. This allows users to utilize the package's functionality without needing to write any code. The UI also provides a coherent and accessible means of exploring the uses of the package by gathering all of its visualization options in one place and allowing users to freely customize and test values and options. 
 
 Detailed instructions for how to use the package and user interface can be found [here](https://ubc-mds.github.io/simpl_eeg_capstone/installation.html).
 
-Stretch Goal:
+In addition to our main delerviables, we had the following stretch goal:
 
 1) Explore unsupervised machine learning methods to cluster and identify potential patterns in EEG data. Due to the limited time and efforts allocated to the stretch goal, we haven't discovered any significant findings with the clustering methods we tried. However, we have decided to include a chapter in the [Jupyter book documentation](https://ubc-mds.github.io/simpl_eeg_capstone/clustering.html) that documents our stretch goal progress so that the partner can continue where we have left off. We suggest that the partner review the work that we have done and explore further. 
 
 
 ![Example of a Standard Visualization for Two Seconds of a 5 Channels of EEG Raw Voltage Values](images/viz_example2.png)
-
-\newpage
 
 ## 3.3. Data Science Methods
 
@@ -65,6 +63,8 @@ The `simpl_eeg` Python package is able to produce advanced visualizations for sp
 1) **Raw voltage plot** for visualizing raw voltage value changes over time at each node. Time is represented on the x-axis so it is not animated. Of all the package's functions this plot provides a view of the largest amount of data in a single image, making it well suited to assessing the broad-picture of your data. When using the MNE package directly an interactive version of the plot is available. 
 
 ![Raw voltage plot](images/raw_voltage.png)
+
+\newpage
 
 2) **2D topographic head map** for visualizing a topographic heatmap of the voltage values mapped to a 2D model of a head. This allows the user to see where activity is occurring on the scalp, with the animation showing how voltage changes over time. One downside is that some distortion occurs when representing a 3D head in two dimensions, making the edges of the head appear to take up the same amount of space as the center of the head which is not reflective of reality. However, the quick render time, simplicity of the figure, and the complete view it provides of the entire scalp in a single 2D image make it one of the most useful visualizations in the package.   
 
@@ -102,7 +102,7 @@ In addition to the package we built an interactive web application to serve as a
 
 ### 3.4.2 Stretch goal
 
-To better assist the partner in exploring the clustering task and extending the work, we have created a Jupyter notebook file for each approach we have tried, namely `KMeans`, `Hidden Markov Model`, and 'Other clustering methods', and included them as sub-sections under the `Clustering` chapter in the [Jupyter book documentation](https://ubc-mds.github.io/simpl_eeg_capstone/clustering.html). Inside each notebook, we have outlined a detailed workflow from data preprocessing and model fitting to output visualization for each approach. We have also documented our reasons for choosing the approach, a general introduction of the approach, an explanation of key components and interpretation of model output, which would make this notebook serve as a good reference point for the partner to further explore the task in the future. Additionally, we included a section called `Next steps` in some notebooks to let the partner know that there are some potentially useful steps in finding the significant results they desire.
+To better assist the partner in exploring the clustering task and extending the work, we have created a Jupyter notebook file for each approach we have tried, namely `KMeans`, `Hidden Markov Model`, and 'Other clustering methods', and included them as sub-sections under the `Clustering` chapter in the [Jupyter book documentation](https://ubc-mds.github.io/simpl_eeg_capstone/clustering.html). Inside each notebook, we have outlined a detailed workflow from data preprocessing and model fitting to output visualization for each approach. We have also documented our reasons for choosing the approach, a general introduction of the approach, an explanation of key components and interpretation of model output, which would make this notebook serve as a good reference point for the partner to further explore the task in the future. Additionally, we included a section called `Next steps` in some notebooks to let the partner know that there are some potentially useful steps in finding the significant results they desire.  
 
 **Include a screenshot of the clustering chapter in the jupyter book**
 
