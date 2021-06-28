@@ -32,8 +32,6 @@ nbclient.exceptions.CellTimeoutError: A cell timed out while it was being execut
 The message was: Cell execution timed out.
 Here is a preview of the cell contents:
 -------------------
-['%%capture', '', 'matplotlib_animation = topomap_3d_brain.animate_matplot_brain(', '    stc=stc,', '    views=views,']
-...
-['    cortex=cortex', ')', '', 'from IPython.display import HTML', 'video = HTML(matplotlib_animation.to_jshtml())']
+fwd = topomap_3d_brain.create_fsaverage_forward(epoch)
 -------------------
 

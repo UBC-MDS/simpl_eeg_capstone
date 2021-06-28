@@ -136,10 +136,27 @@
    API documentation
   </a>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="clustering.html">
    Clustering
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_HMM.html">
+     Unsupervised Clustering using Hidden Markov Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kmeans.html">
+     Selecting EEG data
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -305,9 +322,9 @@ plot_voltage(epoch, remove_xlabel=False, show_times=True, height=None, width=Non
         epoch: mne.epochs.Epochs
             Epoch(s) to display
         remove_xlabel: bool (optional)
-            Whether to remove the x axis label. Defaults to False.
+            Whether to remove the x-axis label. Defaults to False.
         show_times: bool (optional)
-            Whether to show seconds on the x axis. Defaults to True.
+            Whether to show seconds on the x-axis. Defaults to True.
         height: float | None (optional)
             Height of the plot in inches. Defaults to None for automatic.
         width: float | None (optional)

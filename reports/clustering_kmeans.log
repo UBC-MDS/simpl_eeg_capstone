@@ -1,0 +1,74 @@
+Traceback (most recent call last):
+  File "/Users/mpin/opt/miniconda3/lib/python3.8/site-packages/jupyter_cache/executors/utils.py", line 51, in single_nb_execution
+    executenb(
+  File "/Users/mpin/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 1082, in execute
+    return NotebookClient(nb=nb, resources=resources, km=km, **kwargs).execute()
+  File "/Users/mpin/opt/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 74, in wrapped
+    return just_run(coro(*args, **kwargs))
+  File "/Users/mpin/opt/miniconda3/lib/python3.8/site-packages/nbclient/util.py", line 53, in just_run
+    return loop.run_until_complete(coro)
+  File "/Users/mpin/opt/miniconda3/lib/python3.8/asyncio/base_events.py", line 616, in run_until_complete
+    return future.result()
+  File "/Users/mpin/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 535, in async_execute
+    await self.async_execute_cell(
+  File "/Users/mpin/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 827, in async_execute_cell
+    self._check_raise_for_error(cell, exec_reply)
+  File "/Users/mpin/opt/miniconda3/lib/python3.8/site-packages/nbclient/client.py", line 735, in _check_raise_for_error
+    raise CellExecutionError.from_cell_and_msg(cell, exec_reply['content'])
+nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
+------------------
+from simpl_eeg import eeg_objects
+
+import os
+import numpy as np
+import pandas as pd
+
+import matplotlib.pyplot as plt
+from matplotlib import patches
+import seaborn as sns
+import altair as alt
+
+import mne
+from mne.preprocessing import (create_eog_epochs, create_ecg_epochs,
+                               compute_proj_ecg, compute_proj_eog)
+import scipy.io
+import scipy.interpolate
+from scipy import signal
+from scipy.cluster.hierarchy import (
+    average,
+    complete,
+    dendrogram,
+    fcluster,
+    single,
+    ward,
+)
+
+from sklearn import cluster, datasets, metrics
+from sklearn.decomposition import PCA
+from sklearn.datasets import make_blobs
+from sklearn.compose import ColumnTransformer, make_column_transformer
+from sklearn.cluster import KMeans
+from sklearn.cluster import DBSCAN, AgglomerativeClustering, KMeans
+from sklearn.datasets import make_moons
+
+from yellowbrick.cluster import KElbowVisualizer, SilhouetteVisualizer
+import mglearn
+
+from IPython.display import HTML
+
+import warnings
+warnings.filterwarnings('ignore')
+------------------
+
+[0;31m---------------------------------------------------------------------------[0m
+[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
+[0;32m<ipython-input-1-b8079b873be1>[0m in [0;36m<module>[0;34m[0m
+[1;32m     33[0m [0;32mfrom[0m [0msklearn[0m[0;34m.[0m[0mdatasets[0m [0;32mimport[0m [0mmake_moons[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     34[0m [0;34m[0m[0m
+[0;32m---> 35[0;31m [0;32mfrom[0m [0myellowbrick[0m[0;34m.[0m[0mcluster[0m [0;32mimport[0m [0mKElbowVisualizer[0m[0;34m,[0m [0mSilhouetteVisualizer[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     36[0m [0;32mimport[0m [0mmglearn[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     37[0m [0;34m[0m[0m
+
+[0;31mModuleNotFoundError[0m: No module named 'yellowbrick'
+ModuleNotFoundError: No module named 'yellowbrick'
+

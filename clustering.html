@@ -52,6 +52,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Unsupervised Clustering using Hidden Markov Model" href="clustering_HMM.html" />
     <link rel="prev" title="API documentation" href="api.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
@@ -135,10 +136,27 @@
    API documentation
   </a>
  </li>
- <li class="toctree-l1 current active">
+ <li class="toctree-l1 current active has-children">
   <a class="current reference internal" href="#">
    Clustering
   </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_HMM.html">
+     Unsupervised Clustering using Hidden Markov Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kmeans.html">
+     Selecting EEG data
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -377,7 +395,9 @@
 </div>
 <div class="section" id="check-the-distribution-of-the-data">
 <h3>Check the distribution of the data<a class="headerlink" href="#check-the-distribution-of-the-data" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">channel_names</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">channel_names</span> <span class="o">=</span> <span class="n">raw_full</span><span class="o">.</span><span class="n">ch_names</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">channel_names</span><span class="p">:</span>
     <span class="n">dist</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">violinplot</span><span class="p">(</span><span class="n">data</span><span class="o">=</span><span class="n">df</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
     <span class="n">dist</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
     <span class="n">fig</span> <span class="o">=</span> <span class="n">dist</span><span class="o">.</span><span class="n">get_figure</span><span class="p">()</span>
@@ -442,6 +462,8 @@
 <li><p>Hidden Markov Model</p></li>
 </ul>
 </div>
+<div class="toctree-wrapper compound">
+</div>
 </div>
 
     <script type="text/x-thebe-config">
@@ -470,6 +492,7 @@
         <div class='prev-next-bottom'>
             
     <a class='left-prev' id="prev-link" href="api.html" title="previous page">API documentation</a>
+    <a class='right-next' id="next-link" href="clustering_HMM.html" title="next page">Unsupervised Clustering using Hidden Markov Model</a>
 
         </div>
         

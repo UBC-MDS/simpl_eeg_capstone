@@ -1,0 +1,853 @@
+
+<!DOCTYPE html>
+
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Unsupervised Clustering using Hidden Markov Model &#8212; SimPL_EEG Package</title>
+    
+  <link href="_static/css/theme.css" rel="stylesheet" />
+  <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
+
+    
+  <link rel="stylesheet"
+    href="_static/vendor/fontawesome/5.13.0/css/all.min.css">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-solid-900.woff2">
+  <link rel="preload" as="font" type="font/woff2" crossorigin
+    href="_static/vendor/fontawesome/5.13.0/webfonts/fa-brands-400.woff2">
+
+    
+      
+
+    
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/sphinx-book-theme.acff12b8f9c144ce68a297486a2fa670.css" type="text/css" />
+    <link rel="stylesheet" type="text/css" href="_static/togglebutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/copybutton.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.css" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-main.c949a650a448cc0ae9fd3441c0e17fb0.css" />
+    <link rel="stylesheet" type="text/css" href="_static/panels-variables.06eb56fa6e07937060861dad626602ad.css" />
+    
+  <link rel="preload" as="script" href="_static/js/index.1c5a1a01449ed65a7b51.js">
+
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/togglebutton.js"></script>
+    <script src="_static/clipboard.min.js"></script>
+    <script src="_static/copybutton.js"></script>
+    <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
+    <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
+    <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
+    <script >
+        const thebe_selector = ".thebe"
+        const thebe_selector_input = "pre"
+        const thebe_selector_output = ".output"
+    </script>
+    <script async="async" src="_static/sphinx-thebe.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/x-mathjax-config">MathJax.Hub.Config({"tex2jax": {"inlineMath": [["\\(", "\\)"]], "displayMath": [["\\[", "\\]"]], "processRefs": false, "processEnvironments": false}})</script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Selecting EEG data" href="clustering_kmeans.html" />
+    <link rel="prev" title="Clustering" href="clustering.html" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="docsearch:language" content="en" />
+    
+  </head>
+  <body data-spy="scroll" data-target="#bd-toc-nav" data-offset="80">
+    
+    <div class="container-fluid" id="banner"></div>
+
+    
+
+    <div class="container-xl">
+      <div class="row">
+          
+<div class="col-12 col-md-3 bd-sidebar site-navigation show" id="site-navigation">
+    
+        <div class="navbar-brand-box">
+    <a class="navbar-brand text-wrap" href="index.html">
+      
+      <img src="_static/logo.png" class="logo" alt="logo">
+      
+      
+      <h1 class="site-logo" id="site-title">SimPL_EEG Package</h1>
+      
+    </a>
+</div><form class="bd-search d-flex align-items-center" action="search.html" method="get">
+  <i class="icon fas fa-search"></i>
+  <input type="search" class="form-control" name="q" id="search-input" placeholder="Search this book..." aria-label="Search this book..." autocomplete="off" >
+</form><nav class="bd-links" id="bd-docs-nav" aria-label="Main navigation">
+    <div class="bd-toc-item active">
+        <ul class="nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="installation.html">
+   Install guide
+  </a>
+ </li>
+</ul>
+<ul class="current nav bd-sidenav">
+ <li class="toctree-l1">
+  <a class="reference internal" href="user_interface.html">
+   User Interface
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="introduction.html">
+   Package Introduction
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="eeg_objects.html">
+   Creating EEG Objects
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="raw_voltage.html">
+   Raw Voltage Visualization
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="topo_2d.html">
+   2D Head Visualizations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="topo_3d_head.html">
+   3D Head Visualizations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="topo_3d_brain.html">
+   3D Brain Visualizations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="connectivity.html">
+   Connectivity Visualizations
+  </a>
+ </li>
+ <li class="toctree-l1">
+  <a class="reference internal" href="api.html">
+   API documentation
+  </a>
+ </li>
+ <li class="toctree-l1 current active has-children">
+  <a class="reference internal" href="clustering.html">
+   Clustering
+  </a>
+  <input checked="" class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul class="current">
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Unsupervised Clustering using Hidden Markov Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kmeans.html">
+     Selecting EEG data
+    </a>
+   </li>
+  </ul>
+ </li>
+</ul>
+
+    </div>
+</nav> <!-- To handle the deprecated key -->
+
+<div class="navbar_extra_footer">
+  Powered by <a href="https://jupyterbook.org">Jupyter Book</a>
+</div>
+
+</div>
+
+
+          
+
+
+          
+<main class="col py-md-3 pl-md-4 bd-content overflow-auto" role="main">
+    
+    <div class="topbar container-xl fixed-top">
+    <div class="topbar-contents row">
+        <div class="col-12 col-md-3 bd-topbar-whitespace site-navigation show"></div>
+        <div class="col pl-md-4 topbar-main">
+            
+            <button id="navbar-toggler" class="navbar-toggler ml-0" type="button" data-toggle="collapse"
+                data-toggle="tooltip" data-placement="bottom" data-target=".site-navigation" aria-controls="navbar-menu"
+                aria-expanded="true" aria-label="Toggle navigation" aria-controls="site-navigation"
+                title="Toggle navigation" data-toggle="tooltip" data-placement="left">
+                <i class="fas fa-bars"></i>
+                <i class="fas fa-arrow-left"></i>
+                <i class="fas fa-arrow-up"></i>
+            </button>
+            
+            
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn" aria-label="Download this page"><i
+            class="fas fa-download"></i></button>
+
+    <div class="dropdown-buttons">
+        <!-- ipynb file if we had a myst markdown file -->
+        
+        <!-- Download raw file -->
+        <a class="dropdown-buttons" href="_sources/clustering_HMM.ipynb"><button type="button"
+                class="btn btn-secondary topbarbtn" title="Download source file" data-toggle="tooltip"
+                data-placement="left">.ipynb</button></a>
+        <!-- Download PDF via print -->
+        <button type="button" id="download-print" class="btn btn-secondary topbarbtn" title="Print to PDF"
+            onClick="window.print()" data-toggle="tooltip" data-placement="left">.pdf</button>
+    </div>
+</div>
+
+            <!-- Source interaction buttons -->
+
+<div class="dropdown-buttons-trigger">
+    <button id="dropdown-buttons-trigger" class="btn btn-secondary topbarbtn"
+        aria-label="Connect with source repository"><i class="fab fa-github"></i></button>
+    <div class="dropdown-buttons sourcebuttons">
+        <a class="repository-button"
+            href="https://ubc-mds.github.io/simpl_eeg_capstone/"><button type="button" class="btn btn-secondary topbarbtn"
+                data-toggle="tooltip" data-placement="left" title="Source repository"><i
+                    class="fab fa-github"></i>repository</button></a>
+        <a class="issues-button"
+            href="https://ubc-mds.github.io/simpl_eeg_capstone//issues/new?title=Issue%20on%20page%20%2Fclustering_HMM.html&body=Your%20issue%20content%20here."><button
+                type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip" data-placement="left"
+                title="Open an issue"><i class="fas fa-lightbulb"></i>open issue</button></a>
+        
+    </div>
+</div>
+
+            <!-- Full screen (wrap in <a> to have style consistency -->
+
+<a class="full-screen-button"><button type="button" class="btn btn-secondary topbarbtn" data-toggle="tooltip"
+        data-placement="bottom" onclick="toggleFullScreen()" aria-label="Fullscreen mode"
+        title="Fullscreen mode"><i
+            class="fas fa-expand"></i></button></a>
+
+            <!-- Launch buttons -->
+
+        </div>
+
+        <!-- Table of contents -->
+        <div class="d-none d-md-block col-md-2 bd-toc show">
+            
+            <div class="tocsection onthispage pt-5 pb-3">
+                <i class="fas fa-list"></i> Contents
+            </div>
+            <nav id="bd-toc-nav">
+                <ul class="visible nav section-nav flex-column">
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#import-packages">
+   Import packages
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#why-hidden-markov-model">
+   Why Hidden Markov Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#read-in-the-data">
+   Read in the Data
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#eda">
+   EDA
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#data-preprocessing">
+   Data preprocessing
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#building-models">
+   Building Models
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#check-model-output">
+     Check model output
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#interpretation-of-the-output">
+       Interpretation of the output
+      </a>
+     </li>
+    </ul>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#output-visualization">
+     Output visualization
+    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#reason-why-i-use-visualization-methods-to-assess-the-output">
+       Reason why I use visualization methods to assess the output
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#visualize-the-average-voltage-for-each-cluster-in-the-resampled-dataset">
+       Visualize the average voltage for each cluster in the resampled dataset
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#interpretation">
+       Interpretation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#label-the-original-dataset-and-visualize-the-outcome">
+       Label the original dataset and visualize the outcome
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id1">
+       Interpretation
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#visualize-the-raw-voltage-plot-for-a-couple-seconds">
+       Visualize the raw voltage plot for a couple seconds
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#id2">
+       Interpretation
+      </a>
+     </li>
+    </ul>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#comments-about-the-hidden-markov-model">
+   Comments about the Hidden Markov Model
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#next-steps">
+   Next Steps
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#attribution">
+   Attribution
+  </a>
+ </li>
+</ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+    <div id="main-content" class="row">
+        <div class="col-12 col-md-9 pl-md-3 pr-md-0">
+        
+              <div>
+                
+  <div class="section" id="unsupervised-clustering-using-hidden-markov-model">
+<h1>Unsupervised Clustering using Hidden Markov Model<a class="headerlink" href="#unsupervised-clustering-using-hidden-markov-model" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="import-packages">
+<h2>Import packages<a class="headerlink" href="#import-packages" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.animation</span> <span class="k">as</span> <span class="nn">animation</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">mne</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">plotly.express</span> <span class="k">as</span> <span class="nn">px</span>
+<span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">hmmlearn</span> <span class="kn">import</span> <span class="n">hmm</span>
+<span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="p">(</span>
+    <span class="n">connectivity</span><span class="p">,</span>
+    <span class="n">eeg_objects</span><span class="p">,</span>
+    <span class="n">raw_voltage</span><span class="p">,</span>
+    <span class="n">topomap_2d</span><span class="p">,</span>
+    <span class="n">topomap_3d_brain</span><span class="p">,</span>
+    <span class="n">topomap_3d_head</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">import</span> <span class="nn">random</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="mi">872</span><span class="n">c832061bb</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">7</span> <span class="kn">import</span> <span class="nn">plotly.graph_objects</span> <span class="k">as</span> <span class="nn">go</span>
+<span class="g g-Whitespace">      </span><span class="mi">8</span> <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="ne">----&gt; </span><span class="mi">9</span> <span class="kn">from</span> <span class="nn">hmmlearn</span> <span class="kn">import</span> <span class="n">hmm</span>
+<span class="g g-Whitespace">     </span><span class="mi">10</span> <span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="p">(</span>
+<span class="g g-Whitespace">     </span><span class="mi">11</span>     <span class="n">connectivity</span><span class="p">,</span>
+
+<span class="ne">ModuleNotFoundError</span>: No module named &#39;hmmlearn&#39;
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="why-hidden-markov-model">
+<h2>Why Hidden Markov Model<a class="headerlink" href="#why-hidden-markov-model" title="Permalink to this headline">¶</a></h2>
+<p>A Markov model assumes that the future is conditionally independent of the past given the present (Daniel &amp; James, 2020), with the probability shown below:
+$<span class="math notranslate nohighlight">\(P(S_i |S_1...S_{i−1}) = P(S_i|S_{i−1})\)</span><span class="math notranslate nohighlight">\( where \)</span>S_i$ is the state at time i.</p>
+<p>A hidden Markov model (HMM) relates a sequence of observations to a sequence of hidden states that explain the observations (Daniel &amp; James, 2020). For the EEG data, the sequence of observations is the EEG data per time frame and the sequence of hidden states would be the brain states in the dataset. Since the brain activities at time <span class="math notranslate nohighlight">\(i\)</span> is less likely to highly correlate to brain activities before time <span class="math notranslate nohighlight">\(i-1\)</span>, the Markov model assumption would be satisfied at this case and therefore we would like to try to apply the hidden Markov model to EEG data.</p>
+<p>Since we don’t have labeled data or pre-defined brain states, we would need to use unsupervised HMM for this task. The process of finding the sequence of hidden states given the sequence of observations using HMM is called decoding (Daniel &amp; James, 2020) and the <code class="docutils literal notranslate"><span class="pre">Viterbi</span></code> algorithm is commonly used for decoding. Therefore, for this notebook, I would use the <code class="docutils literal notranslate"><span class="pre">Viterbi</span></code> algorithm in the HMM model for finding the potential brain states.</p>
+<p>A hidden Markov model consists of 5 components:</p>
+<ul class="simple">
+<li><p>the state space: a set of hidden states</p></li>
+<li><p>the sequence of observation</p></li>
+<li><p>the transition probability matrix: the probability transitioning from state <span class="math notranslate nohighlight">\(i\)</span> to state <span class="math notranslate nohighlight">\(j\)</span></p></li>
+<li><p>the emission probabilities: conditional probabilities for all observations given a hidden state</p></li>
+<li><p>the initial probability over states: the probability for the Markov model starts at state <span class="math notranslate nohighlight">\(i\)</span></p></li>
+</ul>
+<p>The goal for this task is to explore the set of hidden states (the state space) and the transition probability matrix of the EEG data using hidden Markov model.</p>
+</div>
+<div class="section" id="read-in-the-data">
+<h2>Read in the Data<a class="headerlink" href="#read-in-the-data" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw_full</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_eeglab</span><span class="p">(</span><span class="s2">&quot;../../data/927/fixica.set&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">entire_df</span> <span class="o">=</span> <span class="n">raw_full</span><span class="o">.</span><span class="n">to_data_frame</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">channel_names</span> <span class="o">=</span> <span class="n">raw_full</span><span class="o">.</span><span class="n">ch_names</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epoch</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="s2">&quot;../../data/927&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">epoch</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="eda">
+<h2>EDA<a class="headerlink" href="#eda" title="Permalink to this headline">¶</a></h2>
+<p>According to the EDA in the <a class="reference external" href="https://ubc-mds.github.io/simpl_eeg_capstone/clustering.html">intro page</a>, the EEG data is following Gaussian distribution for each electrode node, therefore, a GaussianHMM model would be used. However, there are clearly some outliers in the data. My next step is to remove the outliers of the data based on the expertise suggestions from the partner to keep EEG data which falls into (-50, 50) range.</p>
+</div>
+<div class="section" id="data-preprocessing">
+<h2>Data preprocessing<a class="headerlink" href="#data-preprocessing" title="Permalink to this headline">¶</a></h2>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># drop rows where all values are zero</span>
+<span class="n">cleaned_df</span> <span class="o">=</span> <span class="n">entire_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[(</span><span class="n">entire_df</span><span class="p">[</span><span class="n">channel_names</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)]</span>
+
+<span class="c1"># drop the outliers of dataset (only keep rows where EEG voltage is between -50 to 50)</span>
+<span class="n">df_no_outliers</span> <span class="o">=</span> <span class="n">cleaned_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span>
+    <span class="p">((</span><span class="n">cleaned_df</span><span class="p">[</span><span class="n">channel_names</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="mi">50</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">cleaned_df</span><span class="p">[</span><span class="n">channel_names</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">50</span><span class="p">))</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="p">]</span>
+
+<span class="c1"># chunk the data into per second (each second has 2048 readings (rows))</span>
+<span class="n">df_second</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">df_no_outliers</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2048</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_no_outliers</span><span class="p">),</span> <span class="mi">2048</span><span class="p">))</span>
+
+
+<span class="c1"># for each second, randomly sampled 10 time stamps (the original dataset is too big, wants to sample a smaller dataset for exploration)</span>
+<span class="n">time_jump</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">df_second_resample</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">second</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_second</span><span class="p">)):</span>
+    <span class="n">df_second_resample</span><span class="p">[</span><span class="n">second</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+        <span class="n">df_second</span><span class="p">[</span><span class="n">second</span><span class="p">]</span>
+        <span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">time_jump</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">2020</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">)</span>
+    <span class="p">)</span>
+<span class="n">df_resampled</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">values</span> <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">values</span> <span class="ow">in</span> <span class="n">df_second_resample</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="building-models">
+<h2>Building Models<a class="headerlink" href="#building-models" title="Permalink to this headline">¶</a></h2>
+<p>Based on the suggestion from the partner, we would like to explore the data in per 5 second interval.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">five_second_df</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span>
+    <span class="n">df_resampled</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">time_jump</span> <span class="o">*</span> <span class="mi">5</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_resampled</span><span class="p">),</span> <span class="n">time_jump</span> <span class="o">*</span> <span class="mi">5</span><span class="p">)</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># since HMM model only takes in (n_sample, n_feature) array, reshape the data into an array where each sample has 5 seconds data</span>
+<span class="n">chunked_list</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">five_second_df</span><span class="p">)):</span>
+    <span class="n">chunked_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">five_second_df</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:])</span><span class="o">.</span><span class="n">flatten</span><span class="p">())</span>
+<span class="n">chunked_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">chunked_list</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<p>As mentioned above, the EEG data follows Gaussian distribution and is continous, we would use the <code class="docutils literal notranslate"><span class="pre">GaussianHMM</span></code> model from <code class="docutils literal notranslate"><span class="pre">hmmlearn</span></code> package. Since we don’t know the number of brain states from the model, we would like to start with some random numbers.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># n_components is the number of hidden states (number of brain states)</span>
+<span class="n">chunked_model</span> <span class="o">=</span> <span class="n">hmm</span><span class="o">.</span><span class="n">GaussianHMM</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunked_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">chunked_array</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">chunked_result</span> <span class="o">=</span> <span class="n">chunked_model</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="n">chunked_array</span><span class="p">,</span> <span class="n">algorithm</span><span class="o">=</span><span class="s2">&quot;viterbi&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="check-model-output">
+<h3>Check model output<a class="headerlink" href="#check-model-output" title="Permalink to this headline">¶</a></h3>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># the metric that hmmlearn package itself used to evaluate the model</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="sa">f</span><span class="s2">&quot;The log probability for this </span><span class="si">{</span><span class="n">chunked_model</span><span class="o">.</span><span class="n">n_components</span><span class="si">}</span><span class="s2">-cluster model is </span><span class="si">{</span><span class="n">chunked_result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="si">:</span><span class="s2">0.4f</span><span class="si">}</span><span class="s2">&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The starting probability for this model is: </span><span class="si">{</span><span class="n">chunked_model</span><span class="o">.</span><span class="n">startprob_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The transmission probability matrix of this model is: </span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">chunked_model</span><span class="o">.</span><span class="n">transmat_</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="interpretation-of-the-output">
+<h4>Interpretation of the output<a class="headerlink" href="#interpretation-of-the-output" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Based on the starting probability, the dataset always start with the same brain state with probability equals to 1.</p></li>
+<li><p>It is hard to tell whether there are any dominating brain states from the transmission probability.</p></li>
+</ul>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add lables back to the df</span>
+<span class="n">df_result</span> <span class="o">=</span> <span class="n">five_second_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_result</span><span class="p">)):</span>
+    <span class="n">df_result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">df_result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">cluster</span><span class="o">=</span><span class="n">chunked_result</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">df_result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_result</span><span class="p">))])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_result</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="output-visualization">
+<h3>Output visualization<a class="headerlink" href="#output-visualization" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="reason-why-i-use-visualization-methods-to-assess-the-output">
+<h4>Reason why I use visualization methods to assess the output<a class="headerlink" href="#reason-why-i-use-visualization-methods-to-assess-the-output" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>The log probability that HMM model itself provides doesn’t provide contents to evalute the model performance.</p></li>
+<li><p>It is hard to evaluate the model performance by only looking at the raw voltage values.</p></li>
+<li><p>Visualizing the EEG data seems to be the most intuitive way to check the output.</p></li>
+<li><p>There is not a good way to determine the optimal <code class="docutils literal notranslate"><span class="pre">n_components</span></code> (which is the number of brain states in the data) of the HMM model. The best way is to check the output for now.</p></li>
+</ul>
+</div>
+<div class="section" id="visualize-the-average-voltage-for-each-cluster-in-the-resampled-dataset">
+<h4>Visualize the average voltage for each cluster in the resampled dataset<a class="headerlink" href="#visualize-the-average-voltage-for-each-cluster-in-the-resampled-dataset" title="Permalink to this headline">¶</a></h4>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cluster_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">chunked_model</span><span class="o">.</span><span class="n">n_components</span><span class="p">):</span>
+    <span class="n">cluster_dict</span><span class="p">[</span><span class="s2">&quot;cluster_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">df_result</span><span class="p">[</span><span class="n">df_result</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">cluster_key</span><span class="p">,</span> <span class="n">cluster</span> <span class="ow">in</span> <span class="n">cluster_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">cluster_key</span> <span class="o">=</span> <span class="n">topomap_2d</span><span class="o">.</span><span class="n">plot_topomap_2d</span><span class="p">(</span>
+        <span class="n">epoch</span><span class="p">,</span>
+        <span class="n">cluster</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;channel_name&quot;</span><span class="p">,</span>
+        <span class="n">cmin</span><span class="o">=-</span><span class="mf">0.8</span><span class="p">,</span>
+        <span class="n">cmax</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="interpretation">
+<h4>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Each topographic heatmap shows the <strong>average raw voltage</strong> for each electrode node for a specific cluster.</p></li>
+<li><p>Although each clusters does show different patterns, it is hard to define the brain states by just looking at it.</p></li>
+<li><p>Although there are different patterns in each clusters, the differences are not significant.</p></li>
+</ul>
+</div>
+<div class="section" id="label-the-original-dataset-and-visualize-the-outcome">
+<h4>Label the original dataset and visualize the outcome<a class="headerlink" href="#label-the-original-dataset-and-visualize-the-outcome" title="Permalink to this headline">¶</a></h4>
+<p>Since we were only drawing a random sample of 50 time stamps for each second for fitting the model, we wanted to add the cluster labels back to the entire dataset to check the outcome to see whether they make a good representation of each second. If the cluster outcomes look very different from the resampled data outcomes, we might want to increase the sample size.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add lables back to the entire_df</span>
+<span class="n">entire_df_result</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">df_no_outliers</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10240</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_no_outliers</span><span class="p">),</span> <span class="mi">10240</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">entire_df_result</span><span class="p">)):</span>
+    <span class="n">entire_df_result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">entire_df_result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">cluster</span><span class="o">=</span><span class="n">chunked_result</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">i</span><span class="p">])</span>
+
+<span class="n">entire_df_result</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span>
+    <span class="p">[</span><span class="n">entire_df_result</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">entire_df_result</span><span class="p">))]</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># separate the clusters for the entire dataset</span>
+<span class="n">entire_cluster_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">chunked_model</span><span class="o">.</span><span class="n">n_components</span><span class="p">):</span>
+    <span class="n">entire_cluster_dict</span><span class="p">[</span><span class="s2">&quot;cluster_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">entire_df_result</span><span class="p">[</span>
+        <span class="n">entire_df_result</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span>
+    <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">cluster_key</span><span class="p">,</span> <span class="n">cluster</span> <span class="ow">in</span> <span class="n">entire_cluster_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">cluster_key</span> <span class="o">=</span> <span class="n">topomap_2d</span><span class="o">.</span><span class="n">plot_topomap_2d</span><span class="p">(</span>
+        <span class="n">epoch</span><span class="p">,</span>
+        <span class="n">cluster</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;channel_name&quot;</span><span class="p">,</span>
+        <span class="n">cmin</span><span class="o">=-</span><span class="mf">0.5</span><span class="p">,</span>
+        <span class="n">cmax</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id1">
+<h4>Interpretation<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p>Although the colors don’t exactly match with the resampled data, the patterns seem to be consistent. 50 randomly sampled time stamps data seems to serve as a good representation for the entire second.</p></li>
+</ul>
+</div>
+<div class="section" id="visualize-the-raw-voltage-plot-for-a-couple-seconds">
+<h4>Visualize the raw voltage plot for a couple seconds<a class="headerlink" href="#visualize-the-raw-voltage-plot-for-a-couple-seconds" title="Permalink to this headline">¶</a></h4>
+<p>Since just assessing the outcome using the topographic heatmap doesn’t provide a lot of values, I would like to generate a raw voltage plot to visualize the output. However, since the <code class="docutils literal notranslate"><span class="pre">raw_voltage</span></code> function of the <code class="docutils literal notranslate"><span class="pre">simpl_eeg</span></code> package doesn’t accept data frame and don’t have access to overwrite the epoch data to include the cluster label, I will use the line plot from <code class="docutils literal notranslate"><span class="pre">plotly</span></code> package. Since the entire dataset is too large, only looking at a screenshot of a five second time period for each clusters.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">color_list</span> <span class="o">=</span> <span class="p">[</span>
+    <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;brown&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;chocolate&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;crimson&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;coral&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;darkgoldenrod&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;purple&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;burlywood&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;cornflowerblue&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;darkblue&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;darkviolet&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;darkorange&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;darkgray&quot;</span><span class="p">,</span>
+<span class="p">]</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">color_count</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">entire_cluster_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">sliced_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:</span><span class="mi">10240</span><span class="p">]</span>
+    <span class="n">single_plot_df</span> <span class="o">=</span> <span class="n">sliced_df</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">single_plot_df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="s2">&quot;cluster&quot;</span><span class="p">:</span>
+            <span class="n">single_plot_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">i</span>
+    <span class="n">single_plot_df</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="o">.</span><span class="n">index</span>
+    <span class="n">single_plot_df</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">])</span>
+    <span class="n">line_fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
+    <span class="n">line_fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
+        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">single_plot_df</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
+            <span class="n">y</span><span class="o">=</span><span class="n">single_plot_df</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
+            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
+            <span class="n">name</span><span class="o">=</span><span class="n">cluster</span><span class="p">,</span>
+            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color_list</span><span class="p">[</span><span class="n">color_count</span><span class="p">]),</span>
+        <span class="p">)</span>
+    <span class="p">)</span>
+    <span class="n">line_fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">cluster</span><span class="p">)</span>
+    <span class="n">line_fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span><span class="n">showticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">line_fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Channel&quot;</span><span class="p">,</span> <span class="n">showticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">line_fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+    <span class="n">color_count</span> <span class="o">+=</span> <span class="mi">1</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="id2">
+<h4>Interpretation<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h4>
+<ul class="simple">
+<li><p><strong>The time interval for each of the clusters above is 5 seconds.</strong></p></li>
+<li><p>There are clearly differences in each of clusters when looking at the raw voltage plot. However, it is hard to interpret whether these patterns are providing any specific information without EEG background knowledge.</p></li>
+<li><p>Within the same cluster, the brain activities show similar patterns across different electrode nodes (not exactly the same but similar).</p></li>
+</ul>
+</div>
+</div>
+</div>
+<div class="section" id="comments-about-the-hidden-markov-model">
+<h2>Comments about the Hidden Markov Model<a class="headerlink" href="#comments-about-the-hidden-markov-model" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>It is really hard to interpret the model and to tune the hyperparameter (<code class="docutils literal notranslate"><span class="pre">n_components</span></code>) for the model.</p></li>
+<li><p>Model performance is hard to assess and requires a lot of background knowledge.</p></li>
+</ul>
+</div>
+<div class="section" id="next-steps">
+<h2>Next Steps<a class="headerlink" href="#next-steps" title="Permalink to this headline">¶</a></h2>
+<p>Due to the limited time and efforts that we could allocate to this task, there are other potential useful approaches to try for this task but haven’t been implemented yet.</p>
+<ul class="simple">
+<li><p>Data preprocessing:</p>
+<ul>
+<li><p>instead of sampling only 50 time stamps per second, increase the sampling rate so that it could capture more dynmaics from each second to provide a more accurate result.</p></li>
+<li><p>instead of looking at the entire dataset, subset the dataset into epoches and then use epoched data to fit the model.</p></li>
+</ul>
+</li>
+<li><p>Feature engineering: instead of only using the raw voltage data for model input, include some engineered features that could provide a better representation of the temporal dependencies of the data such as the following:</p>
+<ul>
+<li><p>apply rolling mean for each 5 second data chunks rather than simply taking the mean of each 5 second data chunks</p></li>
+<li><p>use the sliding window approach to slide the per 5 second data</p></li>
+</ul>
+</li>
+<li><p>Literature review: read through more literature articles to define a better metric to evaluate the model</p></li>
+<li><p>Hyperparameter tuning: currently, there isn’t a better way to find the optimal <code class="docutils literal notranslate"><span class="pre">#</span> <span class="pre">of</span> <span class="pre">cluster</span></code> in the model other than finish fitting the model and visualizing the output to check. Use the metric that we could locate from the previous objective to tune the hyperparameter.</p></li>
+</ul>
+</div>
+<div class="section" id="attribution">
+<h2>Attribution<a class="headerlink" href="#attribution" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li><p>Speech and Language Processing. Daniel Jurafsky &amp; James H. Martin. Copyright © 2020. All
+rights reserved. Draft of December 30, 2020.</p></li>
+</ul>
+</div>
+</div>
+
+    <script type="text/x-thebe-config">
+    {
+        requestKernel: true,
+        binderOptions: {
+            repo: "binder-examples/jupyter-stacks-datascience",
+            ref: "master",
+        },
+        codeMirrorConfig: {
+            theme: "abcdef",
+            mode: "python"
+        },
+        kernelOptions: {
+            kernelName: "python3",
+            path: "./."
+        },
+        predefinedOutput: true
+    }
+    </script>
+    <script>kernelName = 'python3'</script>
+
+              </div>
+              
+        
+        <div class='prev-next-bottom'>
+            
+    <a class='left-prev' id="prev-link" href="clustering.html" title="previous page">Clustering</a>
+    <a class='right-next' id="next-link" href="clustering_kmeans.html" title="next page">Selecting EEG data</a>
+
+        </div>
+        
+        </div>
+    </div>
+    <footer class="footer mt-5 mt-md-0">
+    <div class="container">
+      <p>
+        
+          By Zhanyi (Yiki) Su, Matthew Pin, Mo Garoub, and Sasha Babicki<br/>
+        
+            &copy; Copyright 2021.<br/>
+      </p>
+    </div>
+  </footer>
+</main>
+
+
+      </div>
+    </div>
+  
+  <script src="_static/js/index.1c5a1a01449ed65a7b51.js"></script>
+
+  
+  </body>
+</html>

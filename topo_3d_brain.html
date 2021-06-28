@@ -136,10 +136,27 @@
    API documentation
   </a>
  </li>
- <li class="toctree-l1">
+ <li class="toctree-l1 has-children">
   <a class="reference internal" href="clustering.html">
    Clustering
   </a>
+  <input class="toctree-checkbox" id="toctree-checkbox-1" name="toctree-checkbox-1" type="checkbox"/>
+  <label for="toctree-checkbox-1">
+   <i class="fas fa-chevron-down">
+   </i>
+  </label>
+  <ul>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_HMM.html">
+     Unsupervised Clustering using Hidden Markov Model
+    </a>
+   </li>
+   <li class="toctree-l2">
+    <a class="reference internal" href="clustering_kmeans.html">
+     Selecting EEG data
+    </a>
+   </li>
+  </ul>
  </li>
 </ul>
 
@@ -273,14 +290,26 @@
   </a>
   <ul class="nav section-nav flex-column">
    <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#define-parameters">
-     Define parameters
+    <a class="reference internal nav-link" href="#simple-plot-auto-generating-forward-and-inverse">
+     Simple Plot (+ auto-generating forward and inverse)
     </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#generate-animation-with-matplotlib-backend">
-     Generate animation with matplotlib backend
-    </a>
+    <ul class="nav section-nav flex-column">
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#define-parameters-simple">
+       Define parameters (simple)
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#define-parameters">
+       Define parameters
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#generate-animation-with-matplotlib-backend">
+       Generate animation with matplotlib backend
+      </a>
+     </li>
+    </ul>
    </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#saving-the-animation">
@@ -306,6 +335,11 @@
    Create a matplotlib 3D brain figure
   </a>
   <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#generating-a-matplotlib-plot">
+     Generating a matplotlib plot
+    </a>
+   </li>
    <li class="toc-h3 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id1">
      Define parameters
@@ -567,12 +601,6 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing EEG at 20484 source locations (free orientations)...
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Finished.
-</pre></div>
-</div>
 </div>
 </div>
 </div>
@@ -584,167 +612,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing rank from data with rank=None
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Using tolerance 1.4e-12 (2.2e-16 eps * 19 dim * 3.4e+02  max singular value)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Estimated rank (eeg): 19
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    EEG: rank 19 computed from 19 data channels with 0 projectors
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reducing data rank from 19 -&gt; 19
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/topomap_3d_brain.py:290: RuntimeWarning: Too few samples (required : 100 got : 21), covariance estimate may be unreliable
-  noise_cov = mne.compute_covariance(epoch, method=covariance_method)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimating covariance using EMPIRICAL
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Estimating covariance using SHRUNK
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Done.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using cross-validation to select the best estimator.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Number of samples used : 21
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>log-likelihood on unseen data (descending order):
-   shrunk: -65.605
-   empirical: -257.367
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>selecting best estimator: shrunk
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[done]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Converting forward solution to surface orientation
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    No patch info available. The standard source space normals will be employed in the rotation to the local surface coordinates....
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Converting to surface-based source orientations...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    [done]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing inverse operator with 19 channels.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    19 out of 19 channels remain after picking
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Selected 19 channels
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating the depth weighting matrix...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    19 EEG channels
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    limit = 20485/20484 = 9.583809
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    scale = 9.50316e+09 exp = 0.8
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Applying loose dipole orientations to surface source spaces: 0.2
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Whitening the forward solution.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing rank from covariance with rank=None
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Using tolerance 2.4e-13 (2.2e-16 eps * 19 dim * 56  max singular value)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Estimated rank (eeg): 19
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    EEG: rank 19 computed from 19 data channels with 0 projectors
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Setting small EEG eigenvalues to zero (without PCA)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Creating the source covariance matrix
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Adjusting source covariance matrix.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing SVD of whitened and weighted lead field matrix.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    largest singular value = 2.54939
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    scaling factor to adjust the trace = 6.64201e+24 (nchan = 19 nzero = 0)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Preparing the inverse operator for use...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Scaled noise and source covariance from nave = 1 to nave = 1
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Created the regularized inverter
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    The projection vectors do not apply to these channels.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Created the whitener using a noise covariance matrix with rank 19 (0 small eigenvalues omitted)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Computing noise-normalization factors (dSPM)...
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/topomap_3d_brain.py:292: RuntimeWarning: No average EEG reference present in info[&quot;projs&quot;], covariance may be adversely affected. Consider recomputing covariance using with an average eeg reference projector added.
-  inverse_operator = make_inverse_operator(epoch.info, fwd, noise_cov,
-/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/topomap_3d_brain.py:292: RuntimeWarning: No average EEG reference present in info[&quot;projs&quot;], covariance may be adversely affected. Consider recomputing covariance using with an average eeg reference projector added.
-  inverse_operator = make_inverse_operator(epoch.info, fwd, noise_cov,
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[done]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Picked 19 channels from the data
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Computing inverse...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Eigenleads need to be weighted ...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Processing epoch : 1 / 1
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[done]
-</pre></div>
-</div>
-</div>
 </div>
 <p><a id="matplotlib"></a></p>
 </div>
@@ -752,8 +619,10 @@
 </div>
 <div class="section" id="create-a-matplotlib-3d-brain-animation">
 <h2>Create a matplotlib 3D brain animation<a class="headerlink" href="#create-a-matplotlib-3d-brain-animation" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="define-parameters">
-<h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="simple-plot-auto-generating-forward-and-inverse">
+<h3>Simple Plot (+ auto-generating forward and inverse)<a class="headerlink" href="#simple-plot-auto-generating-forward-and-inverse" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="define-parameters-simple">
+<h4>Define parameters (simple)<a class="headerlink" href="#define-parameters-simple" title="Permalink to this headline">¶</a></h4>
 <p>A detailed description of all parameters can be found in the <code class="docutils literal notranslate"><span class="pre">topomap_3d_brain.animate_matplot_brain</span></code> docstring:</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -761,101 +630,10 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function animate_matplot_brain in module simpl_eeg.topomap_3d_brain:
-
-animate_matplot_brain(epoch=None, fwd=&#39;auto&#39;, stc=&#39;auto&#39;, views=[&#39;lat&#39;, &#39;dor&#39;, &#39;fro&#39;], size=200, hemi=&#39;both&#39;, colormap=&#39;mne&#39;, colorbar=True, colormap_limit_type=&#39;lims&#39;, cmin=None, cmid=None, cmax=None, spacing=&#39;oct5&#39;, smoothing_steps=3, timestamp=True, frame_rate=12, **kwargs)
-    Creates an animated view of all timestamp observations an mne.epochs.Epochs data using a matplotlib backend.
-    If multiple views are used then speed becomes significantly slower. Colorbar placement may be inconsistent.
-    
-    Parameters:
-        epoch: mne.epochs.Epoch or None
-            MNE epochs object containing portions of raw EEG data built around specified
-            timestamp(s). If no fwd and stc are provided a fwd will be generated from the
-            epoch using create_fsaverage_forward(). The epoch and fwd (either provided or
-            generated) will then be used in create_inverse_solution() to generate an stc that
-            the brain figure will be generated from.
-        
-        fwd: mne.forward.forward.Forward or &#39;auto&#39;
-            MNE forward object. If provided alongside an epoch they will both be used in
-            create_fsaverage_forward() to create an stc which the brain figure will then be
-            generated from. Defaults to &#39;auto&#39;.
-    
-        stc: mne.source_estimate.SourceEstimate or &#39;auto&#39;
-            &#39;inverse_solution&#39; to generate the plot from. If set to &quot;auto&quot; then an stc will be
-            automatically generated from either an epoch or an epoch and a fwd, however, this
-            will significantly slow down rendering time. Defaults to &#39;auto&#39;.
-    
-        views: str or list
-            Specifies the &#39;view&#39; parameter in the mne.SourceEstimate.plot() function. For any backend
-            can be any combination of &#39;lat&#39; (lateral), &#39;med&#39; (medial), &#39;ros&#39; (rostral), &#39;cau&#39; (caudal),
-            &#39;dor&#39; (dorsal), &#39;ven&#39;(ventral), &#39;fro&#39;(frontal), &#39;par&#39; (parietal). The following arguments
-            are also accepted but are NOT compatible with the matplotlib backend &#39;axi&#39; (axial), &#39;sag&#39;
-            (sagittal), and &#39;cor&#39;(coronal). Defaults to [&#39;lat&#39;, &#39;fro&#39;, &#39;dor&#39;].
-    
-        size: int
-            Size will be divided by 100 and rounded the closest inch which will then be used as the
-            height per view. For example, entering 100 will result in 1 inch per view. If plotting
-            multiple views overall size of the multiplot is automatically calculated to fit all
-            views. Defaults to 200.              
-    
-        hemi: &#39;lh’ or ‘rh’ or ‘both’ or ‘split’
-            Specifies the &#39;initial_time&#39; parameter in the mne.SourceEstimate.plot() function. Can be
-            one of ‘lh’, ‘rh’, ‘both’, or ‘split’. Defaults to &#39;both&#39;. Note that &#39;split&#39; and &#39;both&#39; will
-            return a &#39;split&#39; view since both is not avalible with a matplotlib backend. Defaults to &#39;both&#39;.
-    
-        colormap: str or np.ndarray of float, shape(n_colors, 3 | 4)
-            Specifies the &#39;colormap&#39; parameter in the mne.SourceEstimate.plot() function. Can use a
-            matplotlib colormap by name or take a custom look up table as input. Defaults to &quot;mne&quot;.
-    
-        colorbar: bool
-            Determines whether to include a colorbar on the plot not. Defaults to True.
-    
-        colormap_limit_type: str
-            Can be either &quot;lims&quot; or &quot;pos_lims&quot;. &quot;lims&quot; means that your cmin, cmid, and cmax values will specify the
-            &quot;Lower, middle, and upper bounds for colormap&quot;. Using &quot;pos_lims&quot; will lead to cmin, cmid, and cmax representing
-            the &quot;Lower, middle, and upper bound for colormap. Positive values will be mirrored directly across
-            zero during colormap construction to obtain negative control points.&quot; Defaults to &quot;lims&quot;.
-    
-        cmin: float
-            Specifies the lower value of the colormap limit. If no value is specified then
-            limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the negative value of cmax if only that is provided.
-    
-        cmid: float
-            Specifies the middle value of the colormap limit. If no value is specified then
-            limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the value between cmin and cmax if one/both of them is provided.
-    
-        cmax: float
-            Specifies the middle value of the colormap limit. If no value is specified then
-            limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the negative value of cmin if only that is provided.
-    
-        spacing: str
-            Specifies the &#39;spacing&#39; parameter in the mne.SourceEstimate.plot() function. &quot;The spacing to use for the
-            source space. Can be &#39;ico#&#39; for a recursively subdivided icosahedron, &#39;oct#&#39; for a recursively subdivided
-            octahedron. In general, you can speed up the plotting by selecting a sparser source
-            space. Has no effect with mayavi backend. Defaults to ‘oct6’&quot;.
-    
-        smoothing_steps: int
-            Specifies the &#39;smoothing_steps&#39; parameter in the mne.SourceEstimate.plot() function. &quot;The amount of smoothing&quot;.
-            Defaults to 3.
-            
-        timestamp: bool
-            Specifies whether or not to show the timestamp on the plot relative to the time in the epoch that
-            is being shown. Defaults to True.
-    
-        frame_rate: int or float
-            The frame rate to render the animation at. Defautls to 12.
-    
-    Returns:
-        matplotlib.animation.FuncAnimation:
-            Animation containing frames from all of the avalible times in the passed in epoch.
-</pre></div>
 </div>
 </div>
-</div>
+<div class="section" id="define-parameters">
+<h4>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># change values below to values of interest</span>
@@ -897,7 +675,7 @@ fwd=fwd</p></li>
 </div>
 </div>
 <div class="section" id="generate-animation-with-matplotlib-backend">
-<h3>Generate animation with matplotlib backend<a class="headerlink" href="#generate-animation-with-matplotlib-backend" title="Permalink to this headline">¶</a></h3>
+<h4>Generate animation with matplotlib backend<a class="headerlink" href="#generate-animation-with-matplotlib-backend" title="Permalink to this headline">¶</a></h4>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="o">%%capture</span>
@@ -929,6 +707,7 @@ fwd=fwd</p></li>
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">video</span>
 </pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -965,6 +744,9 @@ fwd=fwd</p></li>
 </div>
 <div class="section" id="create-a-matplotlib-3d-brain-figure">
 <h2>Create a matplotlib 3D brain figure<a class="headerlink" href="#create-a-matplotlib-3d-brain-figure" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="generating-a-matplotlib-plot">
+<h3>Generating a matplotlib plot<a class="headerlink" href="#generating-a-matplotlib-plot" title="Permalink to this headline">¶</a></h3>
+</div>
 <div class="section" id="id1">
 <h3>Define parameters<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>A detailed description of all animation parameters can be found in the <code class="docutils literal notranslate"><span class="pre">topomap_3d_brain.plot_topomap_3d_brain</span></code> docstring:</p>
