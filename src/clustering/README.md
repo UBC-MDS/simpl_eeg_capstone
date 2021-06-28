@@ -6,7 +6,11 @@ Electroencephalograms (EEG) is an electrophysiological measurement method used t
 
 ## Objectives
 
-EEG data is widely use in diagnosing brain disorders such as epilepsy and brain damage from head injuries, however, with the complexity of data and its dynamic changes over time, it is hard to identify any significant patterns by simply reading the data or visualizing it. The main objective of this strech goal is to find similar patterns from the combination of EEG signals of all 19 electrodes for a given time section from the dataset. In plain English, it is to cluster the brain states for different time periods in the data.
+EEG data is widely use in diagnosing brain disorders such as epilepsy and brain damage from head injuries, however, with the complexity of data and its dynamic changes over time, it is hard to identify any significant patterns by simply reading the data or visualizing it. The main objective of this strech goal is to find similar patterns from the combination of EEG signals of all 19 electrodes for a given time section from the dataset. In plain English, it is to cluster the brain states for different time periods in the data. To achieve this, we looked into different clustering methods and created three notebook: 
+
+- Clustering using Kmeans method
+- Clustering using Hidden Markov Model
+- Other clustering methods 
 
 ## Selecting EEG data
 
