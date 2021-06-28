@@ -6,7 +6,7 @@ IMG_DEPS += reports/images/3d_brain.png
 IMG_DEPS += reports/images/connectivity.png
 IMG_DEPS += reports/images/connectivity_circle.png
 
-all : reports/Final_Report.pdf
+all : reports/Final_Report.pdf README.md
 
 $(IMG_DEPS) : reports/generate_figures.py data/927/.* simpl_eeg/.*
 	python reports/generate_figures.py

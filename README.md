@@ -89,7 +89,7 @@ pip install ghp-import
 ```
 
 The files used to generate the documentation are stored in the
-[docs/simpl_instructions/](https://github.com/UBC-MDS/simpl_eeg_capstone/tree/main/docs/simpl_instructions)
+[docs/simpl\_instructions/](https://github.com/UBC-MDS/simpl_eeg_capstone/tree/main/docs/simpl_instructions)
 folder.
 
 After making updates, run the following commands from the project root
@@ -151,6 +151,24 @@ Python.” *Journal of Machine Learning Research* 12: 2825–30.
 
 Plotly Technologies Inc. 2015. “Collaborative Data Science.” Montreal,
 QC: Plotly Technologies Inc. 2015. <https://plot.ly>.
+
+</div>
+
+<div id="ref-tslearn" class="csl-entry">
+
+Tavenard, Romain, Johann Faouzi, Gilles Vandewiele, Felix Divo,
+Guillaume Androz, Chester Holtz, Marie Payne, et al. 2020. “Tslearn, a
+Machine Learning Toolkit for Time Series Data.” *Journal of Machine
+Learning Research* 21 (118): 1–6.
+<http://jmlr.org/papers/v21/20-091.html>.
+
+</div>
+
+<div id="ref-minisom" class="csl-entry">
+
+Vettigli, Giuseppe. 2018. “MiniSom: Minimalistic and NumPy-Based
+Implementation of the Self Organizing Map.”
+<https://github.com/JustGlowing/minisom/>.
 
 </div>
 
