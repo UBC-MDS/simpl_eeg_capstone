@@ -9,9 +9,9 @@ def plot_voltage(epoch, remove_xlabel=False, show_times=True, height=None, width
         epoch: mne.epochs.Epochs
             Epoch(s) to display
         remove_xlabel: bool (optional)
-            Whether to remove the x axis label. Defaults to False.
+            Whether to remove the x-axis label. Defaults to False.
         show_times: bool (optional)
-            Whether to show seconds on the x axis. Defaults to True.
+            Whether to show seconds on the x-axis. Defaults to True.
         height: float | None (optional)
             Height of the plot in inches. Defaults to None for automatic.
         width: float | None (optional)
