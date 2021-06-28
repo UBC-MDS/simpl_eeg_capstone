@@ -8,9 +8,9 @@ Electroencephalogram (EEG) is an electrophysiological measurement method used to
 
 EEG data is widely used in diagnosing brain disorders such as epilepsy and brain damage from head injuries; however, with the complexity of the brain data and its dynamic changes over time, it is hard to identify significant patterns by simply reading the data or visualizing it. Our main objective is to find similar patterns from the combination of EEG signals of all 19 electrodes for a given time section from the dataset. Simply, the objective is to cluster the brain states for different time periods in the data. To achieve this, we looked into different clustering methods and created three notebook: 
 
-- Clustering using Kmeans method
-- Clustering using Hidden Markov Model
-- Other clustering methods 
+- [Clustering using Kmeans method](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/docs/simpl_instructions/clustering_kmeans.ipynb)
+- [Clustering using Hidden Markov Model](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/docs/simpl_instructions/clustering_HMM.ipynb)
+- [Other clustering methods](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/src/clustering/clustering_MiniSom.ipynb)
 
 ## Selecting EEG data
 
