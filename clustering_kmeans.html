@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>KMeans &#8212; SimPL_EEG Package</title>
+    <title>Selecting EEG data &#8212; SimPL_EEG Package</title>
     
   <link href="_static/css/theme.css" rel="stylesheet" />
   <link href="_static/css/index.c5995385ac14fb8791e8eb36b4908be2.css" rel="stylesheet" />
@@ -54,8 +54,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Hidden Markov Model" href="clustering_HMM.html" />
-    <link rel="prev" title="Clustering" href="clustering.html" />
+    <link rel="prev" title="Unsupervised Clustering using Hidden Markov Model" href="clustering_HMM.html" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="docsearch:language" content="en" />
     
@@ -148,14 +147,14 @@
    </i>
   </label>
   <ul class="current">
-   <li class="toctree-l2 current active">
-    <a class="current reference internal" href="#">
-     KMeans
-    </a>
-   </li>
    <li class="toctree-l2">
     <a class="reference internal" href="clustering_HMM.html">
-     Hidden Markov Model
+     Unsupervised Clustering using Hidden Markov Model
+    </a>
+   </li>
+   <li class="toctree-l2 current active">
+    <a class="current reference internal" href="#">
+     Selecting EEG data
     </a>
    </li>
   </ul>
@@ -247,17 +246,17 @@
             </div>
             <nav id="bd-toc-nav">
                 <ul class="visible nav section-nav flex-column">
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#selecting-eeg-data">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#">
    Selecting EEG data
   </a>
  </li>
- <li class="toc-h2 nav-item toc-entry">
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#k-means-clustering">
    K-Means Clustering
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#k-means-using-sklearn">
      K-Means using
      <code class="docutils literal notranslate">
@@ -269,132 +268,77 @@
    </li>
   </ul>
  </li>
- <li class="toc-h2 nav-item toc-entry">
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#quality-assessment">
    Quality Assessment
   </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
+  <ul class="visible nav section-nav flex-column">
+   <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-elbow-method">
      The Elbow Method
     </a>
     <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
+     <li class="toc-h3 nav-item toc-entry">
       <a class="reference internal nav-link" href="#you-can-learn-more-about-the-elbow-method-here">
        You can learn more about the Elbow method here
       </a>
      </li>
-     <li class="toc-h4 nav-item toc-entry">
+     <li class="toc-h3 nav-item toc-entry">
       <a class="reference internal nav-link" href="#results">
        Results
       </a>
      </li>
     </ul>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
+   <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#the-silhouette-method">
      The Silhouette Method
     </a>
     <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
+     <li class="toc-h3 nav-item toc-entry">
       <a class="reference internal nav-link" href="#interpretation">
        Interpretation
       </a>
      </li>
-     <li class="toc-h4 nav-item toc-entry">
+     <li class="toc-h3 nav-item toc-entry">
       <a class="reference internal nav-link" href="#you-can-learn-more-about-the-silhouette-visualizer-method-here">
        You can learn more about the Silhouette Visualizer method here
       </a>
      </li>
-     <li class="toc-h4 nav-item toc-entry">
+     <li class="toc-h3 nav-item toc-entry">
       <a class="reference internal nav-link" href="#id1">
        Results
       </a>
      </li>
     </ul>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
+   <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#principal-component-analysis-pca">
      Principal Component Analysis (PCA)
     </a>
     <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
+     <li class="toc-h3 nav-item toc-entry">
       <a class="reference internal nav-link" href="#you-can-learn-more-about-pca-here">
        You can learn more about PCA here
       </a>
      </li>
     </ul>
    </li>
-   <li class="toc-h3 nav-item toc-entry">
+   <li class="toc-h2 nav-item toc-entry">
     <a class="reference internal nav-link" href="#id2">
      Results
     </a>
    </li>
   </ul>
  </li>
- <li class="toc-h2 nav-item toc-entry">
+ <li class="toc-h1 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#cluster-analysis-and-interpretation">
+   Cluster Analysis and Interpretation
+  </a>
+ </li>
+ <li class="toc-h1 nav-item toc-entry">
   <a class="reference internal nav-link" href="#density-based-spatial-clustering-of-applications-with-noise-dbscan">
    Density-Based Spatial Clustering of Applications with Noise (DBSCAN)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#let-s-evaluate-different-hyperparameters">
-     Let’s evaluate different hyperparameters
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#here-we-can-see-after-fitting-x-that-having-min-samples-2-and-eps-1-5-will-give-us-better-clustering-as-there-won-t-be-any-noises-to-be-clustered">
-       Here we can see after fitting X, that having min_samples = 2 and eps=1.5 will give us better clustering as there won’t be any noises to be clustered.
-      </a>
-     </li>
-    </ul>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#k-means-vs-dbscan">
-     K-Means vs. DBSCAN
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#exploritory-data-analysis-eda">
-   Exploritory Data Analysis (EDA)
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#cluster-analysis-and-interpretation">
-     Cluster Analysis and Interpretation
-    </a>
-    <ul class="nav section-nav flex-column">
-     <li class="toc-h4 nav-item toc-entry">
-      <a class="reference internal nav-link" href="#id3">
-       Results
-      </a>
-     </li>
-    </ul>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#correlation-between-the-channels">
-   Correlation between the channels
-  </a>
-  <ul class="nav section-nav flex-column">
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#using-the-elbow-method-to-determine-the-number-of-clusters-for-the-spearman-dataframe">
-     Using the Elbow method to determine the number of clusters for the spearman dataframe
-    </a>
-   </li>
-   <li class="toc-h3 nav-item toc-entry">
-    <a class="reference internal nav-link" href="#id4">
-     Results
-    </a>
-   </li>
-  </ul>
- </li>
- <li class="toc-h2 nav-item toc-entry">
-  <a class="reference internal nav-link" href="#attribution">
-   Attribution
   </a>
  </li>
 </ul>
@@ -408,9 +352,7 @@
         
               <div>
                 
-  <div class="section" id="kmeans">
-<h1>KMeans<a class="headerlink" href="#kmeans" title="Permalink to this headline">¶</a></h1>
-<div class="cell docutils container">
+  <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">eeg_objects</span>
 
@@ -456,20 +398,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
-<span class="ne">ModuleNotFoundError</span><span class="g g-Whitespace">                       </span>Traceback (most recent call last)
-<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">1</span><span class="o">-</span><span class="n">b8079b873be1</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
-<span class="g g-Whitespace">     </span><span class="mi">33</span> <span class="kn">from</span> <span class="nn">sklearn.datasets</span> <span class="kn">import</span> <span class="n">make_moons</span>
-<span class="g g-Whitespace">     </span><span class="mi">34</span> 
-<span class="ne">---&gt; </span><span class="mi">35</span> <span class="kn">from</span> <span class="nn">yellowbrick.cluster</span> <span class="kn">import</span> <span class="n">KElbowVisualizer</span><span class="p">,</span> <span class="n">SilhouetteVisualizer</span>
-<span class="g g-Whitespace">     </span><span class="mi">36</span> <span class="kn">import</span> <span class="nn">mglearn</span>
-<span class="g g-Whitespace">     </span><span class="mi">37</span> 
-
-<span class="ne">ModuleNotFoundError</span>: No module named &#39;yellowbrick&#39;
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -483,10 +411,10 @@
 </div>
 </div>
 <div class="section" id="selecting-eeg-data">
-<h2>Selecting EEG data<a class="headerlink" href="#selecting-eeg-data" title="Permalink to this headline">¶</a></h2>
+<h1>Selecting EEG data<a class="headerlink" href="#selecting-eeg-data" title="Permalink to this headline">¶</a></h1>
 <p>We can select the data we want to use with the <code class="docutils literal notranslate"><span class="pre">simpl_eeg</span></code> package. We can either look at individual time steps or time steps averaged over time. We can also specify what time to look at.</p>
 <p>For more information about making these selections, please see the page on <a class="reference external" href="https://ubc-mds.github.io/simpl_eeg_capstone/eeg_objects.html">Creating EEG Objects</a> in the <code class="docutils literal notranslate"><span class="pre">simpl_eeg</span></code> documentation.</p>
-<p>Averaging the data has will reduce the dimensionality of the data, but which method you want to use will depend on what you are trying to achieve.</p>
+<p>Averaging the data will reduce the dimensionality of the data, but which method you want to use will depend on what you are trying to achieve.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># experiment we want to use data from</span>
@@ -518,6 +446,57 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">FileNotFoundError</span><span class="g g-Whitespace">                         </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">3</span><span class="o">-</span><span class="n">ca989ce32d4a</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">     </span><span class="mi">13</span> <span class="n">tmax</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="g g-Whitespace">     </span><span class="mi">14</span> 
+<span class="ne">---&gt; </span><span class="mi">15</span> <span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_number</span><span class="p">,</span> <span class="n">tmin</span><span class="o">=</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="o">=</span><span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="o">=</span><span class="n">start_second</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">16</span> <span class="n">epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">epoch</span>
+<span class="g g-Whitespace">     </span><span class="mi">17</span> 
+
+<span class="nn">~/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, folder_path, tmin, tmax, start_second, file_name, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">106</span>             <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;Please increase the time between tmin and tmax&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">107</span> 
+<span class="ne">--&gt; </span><span class="mi">108</span>         <span class="bp">self</span><span class="o">.</span><span class="n">eeg_file</span> <span class="o">=</span> <span class="n">EEG_File</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">109</span>         <span class="bp">self</span><span class="o">.</span><span class="n">all_epochs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_epochs</span><span class="p">(</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">110</span> 
+
+<span class="nn">~/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, folder_path, file_name)</span>
+<span class="g g-Whitespace">     </span><span class="mi">50</span>             <span class="bp">self</span><span class="o">.</span><span class="n">mat</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+<span class="g g-Whitespace">     </span><span class="mi">51</span> 
+<span class="ne">---&gt; </span><span class="mi">52</span>         <span class="bp">self</span><span class="o">.</span><span class="n">raw</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">io</span><span class="o">.</span><span class="n">read_raw_eeglab</span><span class="p">(</span><span class="n">folder_path</span><span class="o">+</span><span class="s2">&quot;/&quot;</span><span class="o">+</span><span class="n">file_name</span><span class="o">+</span><span class="s2">&quot;.set&quot;</span><span class="p">)</span>
+<span class="g g-Whitespace">     </span><span class="mi">53</span> 
+<span class="g g-Whitespace">     </span><span class="mi">54</span> 
+
+<span class="nn">~/opt/miniconda3/lib/python3.8/site-packages/mne/io/eeglab/eeglab.py</span> in <span class="ni">read_raw_eeglab</span><span class="nt">(input_fname, eog, preload, uint16_codec, verbose)</span>
+<span class="g g-Whitespace">    </span><span class="mi">217</span>     <span class="o">..</span> <span class="n">versionadded</span><span class="p">::</span> <span class="mf">0.11</span><span class="o">.</span><span class="mi">0</span>
+<span class="g g-Whitespace">    </span><span class="mi">218</span>     <span class="s2">&quot;&quot;&quot;</span>
+<span class="ne">--&gt; </span><span class="mi">219</span><span class="s2">     return RawEEGLAB(input_fname=input_fname, preload=preload,</span>
+<span class="g g-Whitespace">    </span><span class="mi">220</span><span class="s2">                      eog=eog, verbose=verbose, uint16_codec=uint16_codec)</span>
+<span class="g g-Whitespace">    </span><span class="mi">221</span><span class="s2"> </span>
+
+<span class="nn">&lt;decorator-gen-241&gt;</span> in <span class="ni">__init__</span><span class="nt">(self, input_fname, eog, preload, uint16_codec, verbose)</span>
+
+<span class="nn">~/opt/miniconda3/lib/python3.8/site-packages/mne/io/eeglab/eeglab.py</span> in <span class="ni">__init__</span><span class="nt">(self, input_fname, eog, preload, uint16_codec, verbose)</span>
+<span class="g g-Whitespace">    </span><span class="mi">315</span><span class="s2">     def __init__(self, input_fname, eog=(),</span>
+<span class="g g-Whitespace">    </span><span class="mi">316</span><span class="s2">                  preload=False, uint16_codec=None, verbose=None):  # noqa: D102</span>
+<span class="ne">--&gt; </span><span class="mi">317</span><span class="s2">         input_fname = _check_fname(input_fname, &#39;read&#39;, True, &#39;input_fname&#39;)</span>
+<span class="g g-Whitespace">    </span><span class="mi">318</span><span class="s2">         eeg = _check_load_mat(input_fname, uint16_codec)</span>
+<span class="g g-Whitespace">    </span><span class="mi">319</span><span class="s2">         if eeg.trials != 1:</span>
+
+<span class="nn">~/opt/miniconda3/lib/python3.8/site-packages/mne/utils/check.py</span> in <span class="ni">_check_fname</span><span class="nt">(fname, overwrite, must_exist, name, need_dir)</span>
+<span class="g g-Whitespace">    </span><span class="mi">176</span><span class="s2">                     f&#39;</span><span class="si">{name}</span><span class="s2"> does not have read permissions: </span><span class="si">{fname}</span><span class="s2">&#39;)</span>
+<span class="g g-Whitespace">    </span><span class="mi">177</span><span class="s2">     elif must_exist:</span>
+<span class="ne">--&gt; </span><span class="mi">178</span><span class="s2">         raise FileNotFoundError(f&#39;</span><span class="si">{name}</span><span class="s2"> does not exist: </span><span class="si">{fname}</span><span class="s2">&#39;)</span>
+<span class="g g-Whitespace">    </span><span class="mi">179</span><span class="s2">     return str(op.abspath(fname))</span>
+<span class="g g-Whitespace">    </span><span class="mi">180</span><span class="s2"> </span>
+
+<span class="ne">FileNotFoundError</span>: input_fname does not exist: ../../data/fixica.set
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -538,6 +517,305 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>time</th>
+      <th>Fp1</th>
+      <th>Fp2</th>
+      <th>F7</th>
+      <th>T3</th>
+      <th>T5</th>
+      <th>F3</th>
+      <th>C3</th>
+      <th>P3</th>
+      <th>Fz</th>
+      <th>Cz</th>
+      <th>Pz</th>
+      <th>F4</th>
+      <th>C4</th>
+      <th>P4</th>
+      <th>F8</th>
+      <th>T4</th>
+      <th>T6</th>
+      <th>O1</th>
+      <th>O2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-5000</td>
+      <td>-1.294465</td>
+      <td>3.946700</td>
+      <td>-3.538027</td>
+      <td>7.175086</td>
+      <td>5.784595</td>
+      <td>-2.021021</td>
+      <td>-0.956666</td>
+      <td>5.650838</td>
+      <td>-3.144067</td>
+      <td>1.921047</td>
+      <td>6.468854</td>
+      <td>-0.127807</td>
+      <td>2.429115</td>
+      <td>3.293074</td>
+      <td>-3.265165</td>
+      <td>0.451700</td>
+      <td>0.520444</td>
+      <td>9.878809</td>
+      <td>10.239571</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-4998</td>
+      <td>-1.838844</td>
+      <td>2.288675</td>
+      <td>-4.980365</td>
+      <td>0.081897</td>
+      <td>4.205466</td>
+      <td>-1.272358</td>
+      <td>-0.453830</td>
+      <td>5.371493</td>
+      <td>0.663698</td>
+      <td>3.775580</td>
+      <td>8.283068</td>
+      <td>2.625821</td>
+      <td>5.225818</td>
+      <td>8.885185</td>
+      <td>-1.586004</td>
+      <td>3.934649</td>
+      <td>9.297462</td>
+      <td>10.823409</td>
+      <td>14.794802</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>-4995</td>
+      <td>0.596547</td>
+      <td>3.840520</td>
+      <td>-1.034227</td>
+      <td>7.924566</td>
+      <td>8.366533</td>
+      <td>2.972732</td>
+      <td>5.052248</td>
+      <td>9.564969</td>
+      <td>6.170397</td>
+      <td>9.022112</td>
+      <td>12.327383</td>
+      <td>5.977273</td>
+      <td>9.360542</td>
+      <td>10.888337</td>
+      <td>0.431120</td>
+      <td>5.383598</td>
+      <td>7.825142</td>
+      <td>11.107745</td>
+      <td>11.808467</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>-4993</td>
+      <td>1.177227</td>
+      <td>4.606093</td>
+      <td>0.860214</td>
+      <td>3.055131</td>
+      <td>8.555369</td>
+      <td>5.625031</td>
+      <td>8.288464</td>
+      <td>11.422176</td>
+      <td>5.733884</td>
+      <td>10.924345</td>
+      <td>11.589901</td>
+      <td>6.550682</td>
+      <td>9.512228</td>
+      <td>7.908634</td>
+      <td>-1.361612</td>
+      <td>3.817698</td>
+      <td>4.839959</td>
+      <td>10.940839</td>
+      <td>6.480374</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-4990</td>
+      <td>-0.261840</td>
+      <td>2.107116</td>
+      <td>-1.263147</td>
+      <td>2.714250</td>
+      <td>9.247147</td>
+      <td>3.179468</td>
+      <td>7.179830</td>
+      <td>10.801949</td>
+      <td>6.644551</td>
+      <td>7.651016</td>
+      <td>9.502653</td>
+      <td>4.275381</td>
+      <td>1.803354</td>
+      <td>5.274124</td>
+      <td>-2.893799</td>
+      <td>0.776703</td>
+      <td>2.317273</td>
+      <td>11.492387</td>
+      <td>4.828429</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>4092</th>
+      <td>4990</td>
+      <td>3.440347</td>
+      <td>-0.381364</td>
+      <td>0.963976</td>
+      <td>7.548988</td>
+      <td>9.058421</td>
+      <td>10.509744</td>
+      <td>6.406388</td>
+      <td>16.347849</td>
+      <td>11.393920</td>
+      <td>16.819754</td>
+      <td>16.998933</td>
+      <td>9.512696</td>
+      <td>16.862568</td>
+      <td>21.151777</td>
+      <td>1.601033</td>
+      <td>10.303038</td>
+      <td>18.790268</td>
+      <td>16.880329</td>
+      <td>19.224436</td>
+    </tr>
+    <tr>
+      <th>4093</th>
+      <td>4993</td>
+      <td>4.747082</td>
+      <td>2.337710</td>
+      <td>2.693642</td>
+      <td>-6.350269</td>
+      <td>-1.134120</td>
+      <td>8.898355</td>
+      <td>5.845129</td>
+      <td>6.664392</td>
+      <td>7.832503</td>
+      <td>11.461069</td>
+      <td>9.872563</td>
+      <td>4.791656</td>
+      <td>7.906897</td>
+      <td>10.990879</td>
+      <td>1.822345</td>
+      <td>4.169200</td>
+      <td>3.825212</td>
+      <td>4.184695</td>
+      <td>8.692581</td>
+    </tr>
+    <tr>
+      <th>4094</th>
+      <td>4995</td>
+      <td>2.167757</td>
+      <td>-0.724281</td>
+      <td>-3.556239</td>
+      <td>10.961161</td>
+      <td>-4.665130</td>
+      <td>0.508368</td>
+      <td>-7.779694</td>
+      <td>-1.845530</td>
+      <td>3.891409</td>
+      <td>3.673469</td>
+      <td>3.490635</td>
+      <td>3.124429</td>
+      <td>6.906742</td>
+      <td>7.906143</td>
+      <td>1.233910</td>
+      <td>4.581886</td>
+      <td>9.204071</td>
+      <td>-1.905702</td>
+      <td>9.145580</td>
+    </tr>
+    <tr>
+      <th>4095</th>
+      <td>4998</td>
+      <td>3.511185</td>
+      <td>0.206208</td>
+      <td>-8.924579</td>
+      <td>-4.140389</td>
+      <td>-13.250965</td>
+      <td>-1.905818</td>
+      <td>-9.357963</td>
+      <td>-4.279804</td>
+      <td>3.208357</td>
+      <td>2.772302</td>
+      <td>1.181867</td>
+      <td>3.112631</td>
+      <td>6.594071</td>
+      <td>5.412709</td>
+      <td>-3.536814</td>
+      <td>2.593312</td>
+      <td>2.578132</td>
+      <td>-10.473685</td>
+      <td>3.154092</td>
+    </tr>
+    <tr>
+      <th>4096</th>
+      <td>5000</td>
+      <td>8.059687</td>
+      <td>0.114471</td>
+      <td>6.517856</td>
+      <td>-5.200542</td>
+      <td>-2.483385</td>
+      <td>11.282695</td>
+      <td>9.725581</td>
+      <td>7.086129</td>
+      <td>11.151980</td>
+      <td>12.586581</td>
+      <td>9.154758</td>
+      <td>9.371676</td>
+      <td>11.286222</td>
+      <td>12.094642</td>
+      <td>7.446732</td>
+      <td>7.108698</td>
+      <td>4.762066</td>
+      <td>-3.889737</td>
+      <td>8.265329</td>
+    </tr>
+  </tbody>
+</table>
+<p>4097 rows × 20 columns</p>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -554,10 +832,27 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[ -1.29446533,   3.94670024,  -3.53802683, ...,   0.52044354,
+          9.87880897,  10.239571  ],
+       [ -1.83884398,   2.28867453,  -4.98036515, ...,   9.29746234,
+         10.8234092 ,  14.79480222],
+       [  0.59654729,   3.84052005,  -1.03422714, ...,   7.82514207,
+         11.10774472,  11.80846704],
+       ...,
+       [  2.16775725,  -0.72428119,  -3.55623884, ...,   9.20407096,
+         -1.90570175,   9.14558018],
+       [  3.51118494,   0.20620813,  -8.92457931, ...,   2.57813174,
+        -10.47368519,   3.15409197],
+       [  8.05968672,   0.11447066,   6.51785578, ...,   4.76206611,
+         -3.88973737,   8.26532879]])
+</pre></div>
+</div>
+</div>
 </div>
 </div>
 <div class="section" id="k-means-clustering">
-<h2>K-Means Clustering<a class="headerlink" href="#k-means-clustering" title="Permalink to this headline">¶</a></h2>
+<h1>K-Means Clustering<a class="headerlink" href="#k-means-clustering" title="Permalink to this headline">¶</a></h1>
 <p><strong>Clustering</strong> is the task of partitioning the dataset into groups called clusters.</p>
 <p>The goal of clustering is to discover underlying groups in a given dataset such that:</p>
 <ul class="simple">
@@ -565,7 +860,7 @@
 <li><p>examples in different groups are as different as possible.</p></li>
 </ul>
 <div class="section" id="k-means-using-sklearn">
-<h3>K-Means using <code class="docutils literal notranslate"><span class="pre">sklearn</span></code><a class="headerlink" href="#k-means-using-sklearn" title="Permalink to this headline">¶</a></h3>
+<h2>K-Means using <code class="docutils literal notranslate"><span class="pre">sklearn</span></code><a class="headerlink" href="#k-means-using-sklearn" title="Permalink to this headline">¶</a></h2>
 <p><strong>Input</strong></p>
 <ul class="simple">
 <li><p><code class="docutils literal notranslate"><span class="pre">X</span></code> <span class="math notranslate nohighlight">\(\rightarrow\)</span> a set of data points</p></li>
@@ -592,6 +887,11 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>KMeans(n_clusters=4, random_state=42)
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -601,11 +901,40 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([0, 0, 0, ..., 0, 2, 0])
+</pre></div>
+</div>
+</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># view cluster centers</span>
 <span class="n">kmeans_model</span><span class="o">.</span><span class="n">cluster_centers_</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[  1.63390808,   0.99988924,   4.42025439,   7.57234733,
+          5.21391613,   4.17002679,   5.01658606,   4.59958228,
+          3.68396098,   4.94971187,   4.25587827,   3.699733  ,
+          3.96549449,   4.00051496,   3.4926074 ,   2.80081843,
+          3.11749213,   3.31579279,   3.2264382 ],
+       [ -4.49463167,  -1.40087244, -14.8968585 , -18.01959562,
+        -17.55451684, -16.40002307, -18.70106056, -16.52609853,
+        -14.92003743, -18.43786435, -16.75347636, -14.38034093,
+        -15.58581968, -16.43571351, -12.83078007, -11.20264773,
+        -14.73535339, -15.05809838, -15.61790926],
+       [ -0.1747983 ,   0.02253782,  -2.88739593,  -6.47447124,
+         -6.2758823 ,  -3.06377607,  -4.00231331,  -5.42885307,
+         -2.35595074,  -3.59859659,  -5.10232502,  -2.32986755,
+         -2.19055546,  -4.09268037,  -2.13152353,  -2.1016238 ,
+         -4.31056735,  -6.60472253,  -5.62283453],
+       [  3.29175888,   0.89196948,  11.02042271,  14.95377161,
+         16.84565581,  13.81542913,  15.84846178,  17.36786047,
+         11.84640259,  16.44273345,  16.97189082,  11.88047197,
+         14.29281266,  16.0650299 ,   9.03581333,   9.87775306,
+         14.8172902 ,  17.07925492,  16.7622371 ]])
 </pre></div>
 </div>
 </div>
@@ -619,17 +948,316 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Fp1</th>
+      <th>Fp2</th>
+      <th>F7</th>
+      <th>T3</th>
+      <th>T5</th>
+      <th>F3</th>
+      <th>C3</th>
+      <th>P3</th>
+      <th>Fz</th>
+      <th>Cz</th>
+      <th>Pz</th>
+      <th>F4</th>
+      <th>C4</th>
+      <th>P4</th>
+      <th>F8</th>
+      <th>T4</th>
+      <th>T6</th>
+      <th>O1</th>
+      <th>O2</th>
+      <th>Cluster</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>-1.294465</td>
+      <td>3.946700</td>
+      <td>-3.538027</td>
+      <td>7.175086</td>
+      <td>5.784595</td>
+      <td>-2.021021</td>
+      <td>-0.956666</td>
+      <td>5.650838</td>
+      <td>-3.144067</td>
+      <td>1.921047</td>
+      <td>6.468854</td>
+      <td>-0.127807</td>
+      <td>2.429115</td>
+      <td>3.293074</td>
+      <td>-3.265165</td>
+      <td>0.451700</td>
+      <td>0.520444</td>
+      <td>9.878809</td>
+      <td>10.239571</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>-1.838844</td>
+      <td>2.288675</td>
+      <td>-4.980365</td>
+      <td>0.081897</td>
+      <td>4.205466</td>
+      <td>-1.272358</td>
+      <td>-0.453830</td>
+      <td>5.371493</td>
+      <td>0.663698</td>
+      <td>3.775580</td>
+      <td>8.283068</td>
+      <td>2.625821</td>
+      <td>5.225818</td>
+      <td>8.885185</td>
+      <td>-1.586004</td>
+      <td>3.934649</td>
+      <td>9.297462</td>
+      <td>10.823409</td>
+      <td>14.794802</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>0.596547</td>
+      <td>3.840520</td>
+      <td>-1.034227</td>
+      <td>7.924566</td>
+      <td>8.366533</td>
+      <td>2.972732</td>
+      <td>5.052248</td>
+      <td>9.564969</td>
+      <td>6.170397</td>
+      <td>9.022112</td>
+      <td>12.327383</td>
+      <td>5.977273</td>
+      <td>9.360542</td>
+      <td>10.888337</td>
+      <td>0.431120</td>
+      <td>5.383598</td>
+      <td>7.825142</td>
+      <td>11.107745</td>
+      <td>11.808467</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>1.177227</td>
+      <td>4.606093</td>
+      <td>0.860214</td>
+      <td>3.055131</td>
+      <td>8.555369</td>
+      <td>5.625031</td>
+      <td>8.288464</td>
+      <td>11.422176</td>
+      <td>5.733884</td>
+      <td>10.924345</td>
+      <td>11.589901</td>
+      <td>6.550682</td>
+      <td>9.512228</td>
+      <td>7.908634</td>
+      <td>-1.361612</td>
+      <td>3.817698</td>
+      <td>4.839959</td>
+      <td>10.940839</td>
+      <td>6.480374</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>-0.261840</td>
+      <td>2.107116</td>
+      <td>-1.263147</td>
+      <td>2.714250</td>
+      <td>9.247147</td>
+      <td>3.179468</td>
+      <td>7.179830</td>
+      <td>10.801949</td>
+      <td>6.644551</td>
+      <td>7.651016</td>
+      <td>9.502653</td>
+      <td>4.275381</td>
+      <td>1.803354</td>
+      <td>5.274124</td>
+      <td>-2.893799</td>
+      <td>0.776703</td>
+      <td>2.317273</td>
+      <td>11.492387</td>
+      <td>4.828429</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>...</th>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+      <td>...</td>
+    </tr>
+    <tr>
+      <th>4092</th>
+      <td>3.440347</td>
+      <td>-0.381364</td>
+      <td>0.963976</td>
+      <td>7.548988</td>
+      <td>9.058421</td>
+      <td>10.509744</td>
+      <td>6.406388</td>
+      <td>16.347849</td>
+      <td>11.393920</td>
+      <td>16.819754</td>
+      <td>16.998933</td>
+      <td>9.512696</td>
+      <td>16.862568</td>
+      <td>21.151777</td>
+      <td>1.601033</td>
+      <td>10.303038</td>
+      <td>18.790268</td>
+      <td>16.880329</td>
+      <td>19.224436</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>4093</th>
+      <td>4.747082</td>
+      <td>2.337710</td>
+      <td>2.693642</td>
+      <td>-6.350269</td>
+      <td>-1.134120</td>
+      <td>8.898355</td>
+      <td>5.845129</td>
+      <td>6.664392</td>
+      <td>7.832503</td>
+      <td>11.461069</td>
+      <td>9.872563</td>
+      <td>4.791656</td>
+      <td>7.906897</td>
+      <td>10.990879</td>
+      <td>1.822345</td>
+      <td>4.169200</td>
+      <td>3.825212</td>
+      <td>4.184695</td>
+      <td>8.692581</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4094</th>
+      <td>2.167757</td>
+      <td>-0.724281</td>
+      <td>-3.556239</td>
+      <td>10.961161</td>
+      <td>-4.665130</td>
+      <td>0.508368</td>
+      <td>-7.779694</td>
+      <td>-1.845530</td>
+      <td>3.891409</td>
+      <td>3.673469</td>
+      <td>3.490635</td>
+      <td>3.124429</td>
+      <td>6.906742</td>
+      <td>7.906143</td>
+      <td>1.233910</td>
+      <td>4.581886</td>
+      <td>9.204071</td>
+      <td>-1.905702</td>
+      <td>9.145580</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>4095</th>
+      <td>3.511185</td>
+      <td>0.206208</td>
+      <td>-8.924579</td>
+      <td>-4.140389</td>
+      <td>-13.250965</td>
+      <td>-1.905818</td>
+      <td>-9.357963</td>
+      <td>-4.279804</td>
+      <td>3.208357</td>
+      <td>2.772302</td>
+      <td>1.181867</td>
+      <td>3.112631</td>
+      <td>6.594071</td>
+      <td>5.412709</td>
+      <td>-3.536814</td>
+      <td>2.593312</td>
+      <td>2.578132</td>
+      <td>-10.473685</td>
+      <td>3.154092</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>4096</th>
+      <td>8.059687</td>
+      <td>0.114471</td>
+      <td>6.517856</td>
+      <td>-5.200542</td>
+      <td>-2.483385</td>
+      <td>11.282695</td>
+      <td>9.725581</td>
+      <td>7.086129</td>
+      <td>11.151980</td>
+      <td>12.586581</td>
+      <td>9.154758</td>
+      <td>9.371676</td>
+      <td>11.286222</td>
+      <td>12.094642</td>
+      <td>7.446732</td>
+      <td>7.108698</td>
+      <td>4.762066</td>
+      <td>-3.889737</td>
+      <td>8.265329</td>
+      <td>0</td>
+    </tr>
+  </tbody>
+</table>
+<p>4097 rows × 20 columns</p>
+</div></div></div>
 </div>
 </div>
 </div>
 <div class="section" id="quality-assessment">
-<h2>Quality Assessment<a class="headerlink" href="#quality-assessment" title="Permalink to this headline">¶</a></h2>
+<h1>Quality Assessment<a class="headerlink" href="#quality-assessment" title="Permalink to this headline">¶</a></h1>
 <p>We used several methods for estimating the best value of the number of clusters (<code class="docutils literal notranslate"><span class="pre">K</span></code>) for the K-means algorithm. A summary of the results of each method is detailed below, with instructions on how to perform them.</p>
 <p>1)<strong><a class="reference external" href="#The-Elbow-Method">The Elbow Method</a></strong> - determine best value for <code class="docutils literal notranslate"><span class="pre">K</span></code></p>
 <p>2)<strong><a class="reference external" href="#The-Silhouette-Method">The Silhouette Method</a></strong> - alternative method to determine best value for <code class="docutils literal notranslate"><span class="pre">K</span></code></p>
 <p>3)<strong><a class="reference external" href="#Principal-Component-Analysis-(PCA)">Principal Component Analysis (PCA)</a></strong> - visualize clusters in 2D space to see if they are reasonably separated</p>
 <div class="section" id="the-elbow-method">
-<h3>The Elbow Method<a class="headerlink" href="#the-elbow-method" title="Permalink to this headline">¶</a></h3>
+<h2>The Elbow Method<a class="headerlink" href="#the-elbow-method" title="Permalink to this headline">¶</a></h2>
 <p>With the elbow method, you can set a range of values for <code class="docutils literal notranslate"><span class="pre">K</span></code> and visualize the result of the algorithm.</p>
 <ul class="simple">
 <li><p>This method looks at the sum of <strong>intra-cluster distances</strong>, which is also referred to as <strong>inertia</strong></p></li>
@@ -645,7 +1273,7 @@
 <li><p><span class="math notranslate nohighlight">\(distance\)</span> is the usual Euclidean distance</p></li>
 </ul>
 <div class="section" id="you-can-learn-more-about-the-elbow-method-here">
-<h4>You can learn more about the Elbow method <a class="reference external" href="https://www.scikit-yb.org/en/latest/api/cluster/elbow.html">here</a><a class="headerlink" href="#you-can-learn-more-about-the-elbow-method-here" title="Permalink to this headline">¶</a></h4>
+<h3>You can learn more about the Elbow method <a class="reference external" href="https://www.scikit-yb.org/en/latest/api/cluster/elbow.html">here</a><a class="headerlink" href="#you-can-learn-more-about-the-elbow-method-here" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set the range of values of K to try</span>
@@ -658,16 +1286,19 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/clustering_kmeans_22_0.png" src="_images/clustering_kmeans_22_0.png" />
+</div>
 </div>
 </div>
 <div class="section" id="results">
-<h4>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h4>
+<h3>Results<a class="headerlink" href="#results" title="Permalink to this headline">¶</a></h3>
 <p>We can see that there is an “elbow” starting to form at <code class="docutils literal notranslate"><span class="pre">K</span></code>=4, meaning that this method suggests 4 clusters is the ideal number. It also indicates that the inetria is sdropping at this level.</p>
 <p>Also, the algortithm computed the average score for all the clusters.</p>
 </div>
 </div>
 <div class="section" id="the-silhouette-method">
-<h3>The Silhouette Method<a class="headerlink" href="#the-silhouette-method" title="Permalink to this headline">¶</a></h3>
+<h2>The Silhouette Method<a class="headerlink" href="#the-silhouette-method" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li><p>Not dependent on the notion of cluster centers</p></li>
 <li><p>Calculated using the <strong>mean intra-cluster distance</strong> (<span class="math notranslate nohighlight">\(a\)</span>) and the <strong>mean nearest-cluster distance</strong> (<span class="math notranslate nohighlight">\(b\)</span>) for each sample</p></li>
@@ -682,7 +1313,7 @@
 </ul>
 <p>The overall <strong>Silhouette score</strong> is the average of the Silhouette scores for all samples.</p>
 <div class="section" id="interpretation">
-<h4>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h4>
+<h3>Interpretation<a class="headerlink" href="#interpretation" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
 <li><p>The plots show the Silhouette scores for each sample in that cluster</p></li>
 <li><p>Higher scores indicate well separated clusters</p></li>
@@ -692,7 +1323,7 @@
 </ul>
 </div>
 <div class="section" id="you-can-learn-more-about-the-silhouette-visualizer-method-here">
-<h4>You can learn more about the Silhouette Visualizer method <a class="reference external" href="https://www.scikit-yb.org/en/latest/api/cluster/silhouette.html">here</a><a class="headerlink" href="#you-can-learn-more-about-the-silhouette-visualizer-method-here" title="Permalink to this headline">¶</a></h4>
+<h3>You can learn more about the Silhouette Visualizer method <a class="reference external" href="https://www.scikit-yb.org/en/latest/api/cluster/silhouette.html">here</a><a class="headerlink" href="#you-can-learn-more-about-the-silhouette-visualizer-method-here" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># set k options to try</span>
@@ -710,19 +1341,24 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/clustering_kmeans_26_0.png" src="_images/clustering_kmeans_26_0.png" />
+<img alt="_images/clustering_kmeans_26_1.png" src="_images/clustering_kmeans_26_1.png" />
+<img alt="_images/clustering_kmeans_26_2.png" src="_images/clustering_kmeans_26_2.png" />
+</div>
 </div>
 </div>
 <div class="section" id="id1">
-<h4>Results<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h4>
+<h3>Results<a class="headerlink" href="#id1" title="Permalink to this headline">¶</a></h3>
 <p>From the explained metrics above, we can say that k=3 is the optimal K value given the clusters shape size and the average Silhouette score. It is hard to interpret the plot in these methods. For instatnce the Elbow method indicated K=4 as an optimal while the Silhouette indicated K=3 is optimal in our opinion.</p>
 </div>
 </div>
 <div class="section" id="principal-component-analysis-pca">
-<h3>Principal Component Analysis (PCA)<a class="headerlink" href="#principal-component-analysis-pca" title="Permalink to this headline">¶</a></h3>
+<h2>Principal Component Analysis (PCA)<a class="headerlink" href="#principal-component-analysis-pca" title="Permalink to this headline">¶</a></h2>
 <p>In unsupervised learning techniques such as clustering are based on the notion of distances between points. With increased dimensions, the representation of data becomes more complex.</p>
 <p>Dimensionality reduction is the task of reducing a dataset in high dimension (our df has many rows) to low dimension while retaining the most “important” characteristics of the data.</p>
 <div class="section" id="you-can-learn-more-about-pca-here">
-<h4>You can learn more about PCA <a class="reference external" href="https://scikit-learn.org/stable/modules/decomposition.html#pca">here</a><a class="headerlink" href="#you-can-learn-more-about-pca-here" title="Permalink to this headline">¶</a></h4>
+<h3>You can learn more about PCA <a class="reference external" href="https://scikit-learn.org/stable/modules/decomposition.html#pca">here</a><a class="headerlink" href="#you-can-learn-more-about-pca-here" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">plot_pca_clusters</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
@@ -747,24 +1383,179 @@
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PCA for K=3
+</pre></div>
+</div>
+<img alt="_images/clustering_kmeans_30_1.png" src="_images/clustering_kmeans_30_1.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PCA for K=4
+</pre></div>
+</div>
+<img alt="_images/clustering_kmeans_30_3.png" src="_images/clustering_kmeans_30_3.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PCA for K=5
+</pre></div>
+</div>
+<img alt="_images/clustering_kmeans_30_5.png" src="_images/clustering_kmeans_30_5.png" />
+</div>
 </div>
 </div>
 </div>
 <div class="section" id="id2">
-<h3>Results<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h3>
+<h2>Results<a class="headerlink" href="#id2" title="Permalink to this headline">¶</a></h2>
 <p>We can see that the clusters are not very well separated. This indicates that the clusters are not likely quite distinct, however it does not guarantee that the clusters does not represent something useful. In our case, it seems as though the clustering algorithm is picking up on high and low voltage values for creating the clusters. It makes sense that the clusters would look distinct as a result, but the finding is not significant for our goal of identifying brain states given that the voltage values are close to each other.</p>
 </div>
 </div>
+<div class="section" id="cluster-analysis-and-interpretation">
+<h1>Cluster Analysis and Interpretation<a class="headerlink" href="#cluster-analysis-and-interpretation" title="Permalink to this headline">¶</a></h1>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View number of values in each cluster</span>
+
+<span class="n">df_predict</span><span class="p">[</span><span class="s2">&quot;Cluster&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0    1465
+2    1382
+3     725
+1     525
+Name: Cluster, dtype: int64
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View general statistics for each cluster</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_predict</span><span class="p">[</span><span class="s2">&quot;Cluster&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())):</span>
+    <span class="n">cluster_df</span> <span class="o">=</span> <span class="n">df_predict</span><span class="p">[</span><span class="n">df_predict</span><span class="p">[</span><span class="s2">&quot;Cluster&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Cluster </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">cluster_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span> <span class="c1"># only view first 5 channels</span>
+    <span class="c1"># print(cluster_df.describe()) # uncomment to view all channels</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cluster 0
+               Fp1          Fp2           F7           T3           T5
+count  1465.000000  1465.000000  1465.000000  1465.000000  1465.000000
+mean      1.633908     0.999889     4.420254     7.572347     5.213916
+std       5.073986     9.027658     8.260189    15.115218     6.351885
+min     -19.225647   -35.647763   -20.653486   -51.666139   -18.647898
+25%      -1.719187    -4.836081    -1.054612    -1.333183     0.956694
+50%       1.490980     0.804422     3.828289     7.256419     5.109947
+75%       5.046347     6.735455     8.870713    16.468693     9.211185
+max      20.884300    28.373745    48.456561    88.135478    27.639064
+
+Cluster 1
+              Fp1         Fp2          F7          T3          T5
+count  525.000000  525.000000  525.000000  525.000000  525.000000
+mean    -4.494632   -1.400872  -14.896859  -18.019596  -17.554517
+std      5.966186   11.553639    9.088004   17.759087    9.293483
+min    -19.483987  -41.210540  -41.321902  -98.190656  -56.158843
+25%     -8.306089   -8.328284  -21.932601  -28.932417  -22.674641
+50%     -4.381150   -0.611108  -14.960448  -16.604713  -16.310849
+75%     -1.056973    6.146737   -8.990053   -6.193445  -11.213499
+max     14.167982   31.860539   16.757172   29.791781    4.220325
+
+Cluster 2
+               Fp1          Fp2           F7           T3           T5
+count  1382.000000  1382.000000  1382.000000  1382.000000  1382.000000
+mean     -0.174798     0.022538    -2.887396    -6.474471    -6.275882
+std       4.718899     8.965670     7.398232    15.632107     6.508149
+min     -15.402482   -33.427306   -28.740313   -76.900731   -30.060764
+25%      -3.211336    -5.001890    -7.400978   -15.857305   -10.206779
+50%      -0.343351     0.171532    -2.564280    -5.166738    -5.966095
+75%       2.726331     5.563171     1.704062     3.901351    -2.042347
+max      15.424126    27.164596    22.828001    51.934950    14.718371
+
+Cluster 3
+              Fp1         Fp2          F7          T3          T5
+count  725.000000  725.000000  725.000000  725.000000  725.000000
+mean     3.291759    0.891969   11.020423   14.953772   16.845656
+std      5.565511    9.455044    9.981816   18.212471    8.305269
+min    -19.496848  -29.446147  -21.229164  -42.389969   -4.758042
+25%     -0.544834   -5.494553    4.472067    3.236525   11.173452
+50%      3.542696    0.896413   10.091397   13.911329   16.318671
+75%      7.003961    7.566776   16.158177   24.958393   21.471818
+max     23.748588   26.783483   53.780342   91.084050   58.048975
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View all channels at once</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+
+<span class="n">single_plot_df</span> <span class="o">=</span> <span class="n">df_predict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">single_plot_df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="s2">&quot;Cluster&quot;</span><span class="p">:</span>
+        <span class="n">single_plot_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="mi">100</span><span class="o">*</span><span class="n">i</span>
+<span class="n">single_plot_df</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="o">.</span><span class="n">index</span>
+<span class="n">single_plot_df</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Cluster&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">])</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
+    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Cluster&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">single_plot_df</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span>
+<span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/clustering_kmeans_35_0.png" src="_images/clustering_kmeans_35_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View channels in individual plots</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_predict</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="s2">&quot;Cluster&quot;</span><span class="p">:</span>
+        <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
+            <span class="n">x</span><span class="o">=</span><span class="n">df_predict</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Cluster&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_predict</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span>
+        <span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/clustering_kmeans_36_0.png" src="_images/clustering_kmeans_36_0.png" />
+<img alt="_images/clustering_kmeans_36_1.png" src="_images/clustering_kmeans_36_1.png" />
+<img alt="_images/clustering_kmeans_36_2.png" src="_images/clustering_kmeans_36_2.png" />
+<img alt="_images/clustering_kmeans_36_3.png" src="_images/clustering_kmeans_36_3.png" />
+<img alt="_images/clustering_kmeans_36_4.png" src="_images/clustering_kmeans_36_4.png" />
+<img alt="_images/clustering_kmeans_36_5.png" src="_images/clustering_kmeans_36_5.png" />
+<img alt="_images/clustering_kmeans_36_6.png" src="_images/clustering_kmeans_36_6.png" />
+<img alt="_images/clustering_kmeans_36_7.png" src="_images/clustering_kmeans_36_7.png" />
+<img alt="_images/clustering_kmeans_36_8.png" src="_images/clustering_kmeans_36_8.png" />
+<img alt="_images/clustering_kmeans_36_9.png" src="_images/clustering_kmeans_36_9.png" />
+<img alt="_images/clustering_kmeans_36_10.png" src="_images/clustering_kmeans_36_10.png" />
+<img alt="_images/clustering_kmeans_36_11.png" src="_images/clustering_kmeans_36_11.png" />
+<img alt="_images/clustering_kmeans_36_12.png" src="_images/clustering_kmeans_36_12.png" />
+<img alt="_images/clustering_kmeans_36_13.png" src="_images/clustering_kmeans_36_13.png" />
+<img alt="_images/clustering_kmeans_36_14.png" src="_images/clustering_kmeans_36_14.png" />
+<img alt="_images/clustering_kmeans_36_15.png" src="_images/clustering_kmeans_36_15.png" />
+<img alt="_images/clustering_kmeans_36_16.png" src="_images/clustering_kmeans_36_16.png" />
+<img alt="_images/clustering_kmeans_36_17.png" src="_images/clustering_kmeans_36_17.png" />
+<img alt="_images/clustering_kmeans_36_18.png" src="_images/clustering_kmeans_36_18.png" />
+</div>
+</div>
+<p>REMOVE DBSCAN????</p>
+</div>
 <div class="section" id="density-based-spatial-clustering-of-applications-with-noise-dbscan">
-<h2>Density-Based Spatial Clustering of Applications with Noise (DBSCAN)<a class="headerlink" href="#density-based-spatial-clustering-of-applications-with-noise-dbscan" title="Permalink to this headline">¶</a></h2>
+<h1>Density-Based Spatial Clustering of Applications with Noise (DBSCAN)<a class="headerlink" href="#density-based-spatial-clustering-of-applications-with-noise-dbscan" title="Permalink to this headline">¶</a></h1>
 <ul class="simple">
 <li><p>DBSCAN is a density-based clustering algorithm</p></li>
 <li><p>Intuitively, it’s based on the idea that clusters form dense regions in the data and so it works by identifying “crowded” regions in the feature space</p></li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot functions</span>
-
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot function</span>
 <span class="k">def</span> <span class="nf">plot_X_dbscan</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
     <span class="n">colours</span> <span class="o">=</span> <span class="p">[]</span>
@@ -812,13 +1603,6 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">ipywidgets</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ipywidgets</span> <span class="kn">import</span> <span class="n">interactive</span>
 </pre></div>
 </div>
@@ -829,35 +1613,35 @@
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># eps: determines what it means for points to be &quot;close&quot;</span>
 <span class="c1"># min_samples: determines the number of neighboring points we require to consider in order for a point to be part of a cluster</span>
 
-<span class="n">dbscan</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">dbscan</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
 <span class="n">dbscan</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
-<span class="n">interactive</span><span class="p">(</span><span class="k">lambda</span> <span class="n">eps</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span> <span class="n">plot_X_dbscan</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">dbscan</span><span class="p">),</span> <span class="n">eps</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">))</span>
+<span class="n">interactive</span><span class="p">(</span><span class="k">lambda</span> <span class="n">eps</span><span class="o">=</span><span class="mi">1</span><span class="p">:</span> <span class="n">plot_X_dbscan</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">dbscan</span><span class="p">),</span> <span class="n">eps</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="c1"># plot_dbscan_with_labels(X, dbscan)</span>
 <span class="c1"># interactive(lambda eps=1: plot_dbscan_with_labels(X, eps), eps=(1, 12, 1))</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<script type="application/vnd.jupyter.widget-view+json">
+{"model_id": "5b69128df22a41858ab789fbd246f6db", "version_major": 2, "version_minor": 0}
+</script></div>
 </div>
 <ul class="simple">
 <li><p>Increasing <code class="docutils literal notranslate"><span class="pre">eps</span></code> (<span class="math notranslate nohighlight">\(\uparrow\)</span>) (left to right in the plot above) means more points will be included in a cluster.</p></li>
 <li><p>Increasing <code class="docutils literal notranslate"><span class="pre">min_samples</span></code> (<span class="math notranslate nohighlight">\(\uparrow\)</span>) (top to bottom in the plot above) means points in less dense regions will either be labeled as their own cluster or noise.</p></li>
 <li><p>In general, it’s not trivial to tune these hyperparameters.</p></li>
 </ul>
-<p>There are three kinds of points:</p>
-<ul class="simple">
-<li><p>Core points are the points that have at least min_samples points in the neighborhood.</p></li>
-<li><p>Border points are the points with fewer than min_samples points in the neighborhood, but are connected to a core point.</p></li>
-<li><p>Noise points are the points which do not belong to any cluster. In other words, the points which have less that min_samples point within distance eps of the starting point are noise points.</p></li>
-</ul>
-<p>Here we can see that DBSCAN has identified one cluster only; hence, the crowded region. It also identified all the points as noise! (If you try and change ‘min_saples=2’ to ‘min_samples=1’ you’ll notice that each data point is in cluster). This is expected given the high dimensionality of our data. Although, DBSCAN did not identify any clusters, it’s a very useful tool to use especially if you don’t want to specify number of clusters (k).</p>
-<div class="section" id="let-s-evaluate-different-hyperparameters">
-<h3>Let’s evaluate different hyperparameters<a class="headerlink" href="#let-s-evaluate-different-hyperparameters" title="Permalink to this headline">¶</a></h3>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">dbscan</span> <span class="o">=</span> <span class="n">DBSCAN</span><span class="p">(</span><span class="n">eps</span><span class="o">=</span><span class="mf">1.5</span><span class="p">,</span> <span class="n">min_samples</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">clusters</span> <span class="o">=</span> <span class="n">dbscan</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Cluster assignments:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">clusters</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Cluster assignments:[-1 -1 -1 ... -1 -1 -1]
 </pre></div>
 </div>
 </div>
@@ -873,133 +1657,45 @@
 </pre></div>
 </div>
 </div>
-</div>
-<div class="section" id="here-we-can-see-after-fitting-x-that-having-min-samples-2-and-eps-1-5-will-give-us-better-clustering-as-there-won-t-be-any-noises-to-be-clustered">
-<h4>Here we can see after fitting X, that having min_samples = 2 and eps=1.5 will give us better clustering as there won’t be any noises to be clustered.<a class="headerlink" href="#here-we-can-see-after-fitting-x-that-having-min-samples-2-and-eps-1-5-will-give-us-better-clustering-as-there-won-t-be-any-noises-to-be-clustered" title="Permalink to this headline">¶</a></h4>
-</div>
-</div>
-<div class="section" id="k-means-vs-dbscan">
-<h3>K-Means vs. DBSCAN<a class="headerlink" href="#k-means-vs-dbscan" title="Permalink to this headline">¶</a></h3>
-<ul class="simple">
-<li><p>In DBSCAN, you do not have to specify the number of clusters!</p>
-<ul>
-<li><p>Instead, you have to tune <code class="docutils literal notranslate"><span class="pre">eps</span></code> and <code class="docutils literal notranslate"><span class="pre">min_samples</span></code>.</p></li>
-</ul>
-</li>
-<li><p>Unlike K-Means, DBSCAN doesn’t have to assign all points to clusters.</p>
-<ul>
-<li><p>The label is -1 if a point is unassigned.</p></li>
-</ul>
-</li>
-<li><p>Unlike K-Means, there is no <code class="docutils literal notranslate"><span class="pre">predict</span></code> method.</p>
-<ul>
-<li><p>DBSCAN only really clusters the points you have, not “new” or “test” points.</p></li>
-</ul>
-</li>
-</ul>
-</div>
-</div>
-<div class="section" id="exploritory-data-analysis-eda">
-<h2>Exploritory Data Analysis (EDA)<a class="headerlink" href="#exploritory-data-analysis-eda" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="cluster-analysis-and-interpretation">
-<h3>Cluster Analysis and Interpretation<a class="headerlink" href="#cluster-analysis-and-interpretation" title="Permalink to this headline">¶</a></h3>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View number of values in each cluster</span>
-
-<span class="n">df_predict</span><span class="p">[</span><span class="s2">&quot;Cluster&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>min_samples: 2 eps: 1.000000  cluster: [-1  0  0 -1  0 -1  1  1  0  1 -1 -1]
+min_samples: 2 eps: 1.500000  cluster: [0 1 1 1 1 0 2 2 1 2 2 0]
+min_samples: 2 eps: 2.000000  cluster: [0 1 1 1 1 0 0 0 1 0 0 0]
+min_samples: 2 eps: 3.000000  cluster: [0 0 0 0 0 0 0 0 0 0 0 0]
+min_samples: 3 eps: 1.000000  cluster: [-1  0  0 -1  0 -1  1  1  0  1 -1 -1]
+min_samples: 3 eps: 1.500000  cluster: [0 1 1 1 1 0 2 2 1 2 2 0]
+min_samples: 3 eps: 2.000000  cluster: [0 1 1 1 1 0 0 0 1 0 0 0]
+min_samples: 3 eps: 3.000000  cluster: [0 0 0 0 0 0 0 0 0 0 0 0]
+min_samples: 5 eps: 1.000000  cluster: [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+min_samples: 5 eps: 1.500000  cluster: [-1  0  0  0  0 -1 -1 -1  0 -1 -1 -1]
+min_samples: 5 eps: 2.000000  cluster: [-1  0  0  0  0 -1 -1 -1  0 -1 -1 -1]
+min_samples: 5 eps: 3.000000  cluster: [0 0 0 0 0 0 0 0 0 0 0 0]
 </pre></div>
 </div>
+<img alt="_images/clustering_kmeans_45_1.png" src="_images/clustering_kmeans_45_1.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View general statistics for each cluster</span>
-
-<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_predict</span><span class="p">[</span><span class="s2">&quot;Cluster&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())):</span>
-    <span class="n">cluster_df</span> <span class="o">=</span> <span class="n">df_predict</span><span class="p">[</span><span class="n">df_predict</span><span class="p">[</span><span class="s2">&quot;Cluster&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">Cluster </span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">cluster_df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">5</span><span class="p">]</span><span class="o">.</span><span class="n">describe</span><span class="p">())</span> <span class="c1"># only view first 5 channels</span>
-    <span class="c1"># print(cluster_df.describe()) # uncomment to view all channels</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View all channels at once</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
-
-<span class="n">single_plot_df</span> <span class="o">=</span> <span class="n">df_predict</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">col</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">single_plot_df</span><span class="o">.</span><span class="n">columns</span><span class="p">):</span>
-    <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="s2">&quot;Cluster&quot;</span><span class="p">:</span>
-        <span class="n">single_plot_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="mi">100</span><span class="o">*</span><span class="n">i</span>
-<span class="n">single_plot_df</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="o">.</span><span class="n">index</span>
-<span class="n">single_plot_df</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;Cluster&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">])</span>
-<span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-    <span class="n">x</span><span class="o">=</span><span class="s2">&quot;time&quot;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s2">&quot;value&quot;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Cluster&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">single_plot_df</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span>
-<span class="p">)</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># View channels in individual plots</span>
-
-<span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">6</span><span class="p">))</span>
-
-<span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">df_predict</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-    <span class="k">if</span> <span class="n">col</span> <span class="o">!=</span> <span class="s2">&quot;Cluster&quot;</span><span class="p">:</span>
-        <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">scatterplot</span><span class="p">(</span>
-            <span class="n">x</span><span class="o">=</span><span class="n">df_predict</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">col</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s2">&quot;Cluster&quot;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">df_predict</span><span class="p">,</span> <span class="n">palette</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span>
-        <span class="p">)</span>
-        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-</div>
-<div class="section" id="id3">
-<h4>Results<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
-<p>We can clearly see that the K-means algorithm clustered the low/negative values in orange and the high/positve values in green. As for the middle cluster groups (green &amp; blue), we need to invistigate further in order to come up with relationship and clear pattern.</p>
-</div>
-</div>
-</div>
-<div class="section" id="correlation-between-the-channels">
-<h2>Correlation between the channels<a class="headerlink" href="#correlation-between-the-channels" title="Permalink to this headline">¶</a></h2>
-<p>In order to understand the correlation between the channels, we need to use statistics test that looks at the relationship between two continues variables and measure the linear correlation between them. A good test that fits here is The Pearson’s Correlation Coefficient. It’s a linear correlation coefficient that gives values between -1 and 1 where 1 indicates a strong positive correlation and -1 indicates a strong negative correlation. However, for this dataset we will use the Spearman’s Rank-Order Correlation method, which is the nonparametric version of the Pearon’s method. You may read more about the Spearman’s method and reasoning behind using it <a class="reference external" href="https://statistics.laerd.com/statistical-guides/spearmans-rank-order-correlation-statistical-guide.php#:~:text=The%20Spearman%27s%20rank%2Dorder%20correlation%20is%20the%20nonparametric%20version%20of,association%20between%20two%20ranked%20variables.">here</a>.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate the heat correlation heatmap</span>
-<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">df_spearman</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">corr</span><span class="p">(</span><span class="s1">&#39;spearman&#39;</span><span class="p">)</span>
 <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">df_spearman</span><span class="p">,</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span><span class="p">);</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<img alt="_images/clustering_kmeans_49_0.png" src="_images/clustering_kmeans_49_0.png" />
 </div>
-<div class="section" id="using-the-elbow-method-to-determine-the-number-of-clusters-for-the-spearman-dataframe">
-<h3>Using the Elbow method to determine the number of clusters for the spearman dataframe<a class="headerlink" href="#using-the-elbow-method-to-determine-the-number-of-clusters-for-the-spearman-dataframe" title="Permalink to this headline">¶</a></h3>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-
-<span class="n">model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
-<span class="n">visualizer</span> <span class="o">=</span> <span class="n">KElbowVisualizer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k_range</span><span class="p">)</span>
-<span class="n">visualizer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_spearman</span><span class="p">)</span>
-<span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">kmeans_model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+<span class="n">kmeans_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_spearman</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># fit k=5 </span>
-<span class="n">kmeans_model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
-<span class="n">kmeans_model</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_spearman</span><span class="p">)</span>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>KMeans(n_clusters=5, random_state=42)
 </pre></div>
 </div>
 </div>
@@ -1011,42 +1707,1005 @@
 </pre></div>
 </div>
 </div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add Clusters column</span>
-<span class="n">df_spearman</span><span class="p">[</span><span class="s1">&#39;Clusters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions2</span>
-<span class="n">df_spearman</span>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([3, 1, 0, 3, 2, 0, 0, 2, 0, 0, 2, 0, 0, 2, 0, 2, 4, 4, 4])
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Sort the df based on cluster values and drop the Clusters column</span>
-<span class="n">df_sort2</span> <span class="o">=</span> <span class="n">df_spearman</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Clusters&#39;</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_spearman</span><span class="p">[</span><span class="s1">&#39;Clusters&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">predictions2</span>
+<span class="n">df_spearman</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Fp1</th>
+      <th>Fp2</th>
+      <th>F7</th>
+      <th>T3</th>
+      <th>T5</th>
+      <th>F3</th>
+      <th>C3</th>
+      <th>P3</th>
+      <th>Fz</th>
+      <th>Cz</th>
+      <th>Pz</th>
+      <th>F4</th>
+      <th>C4</th>
+      <th>P4</th>
+      <th>F8</th>
+      <th>T4</th>
+      <th>T6</th>
+      <th>O1</th>
+      <th>O2</th>
+      <th>Clusters</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Fp1</th>
+      <td>1.000000</td>
+      <td>0.468141</td>
+      <td>0.610103</td>
+      <td>0.402576</td>
+      <td>0.201584</td>
+      <td>0.550817</td>
+      <td>0.527444</td>
+      <td>0.326032</td>
+      <td>0.500769</td>
+      <td>0.593943</td>
+      <td>0.286855</td>
+      <td>0.301057</td>
+      <td>0.452418</td>
+      <td>0.268537</td>
+      <td>0.565171</td>
+      <td>0.311723</td>
+      <td>-0.002529</td>
+      <td>-0.160802</td>
+      <td>-0.052819</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>Fp2</th>
+      <td>0.468141</td>
+      <td>1.000000</td>
+      <td>-0.004476</td>
+      <td>0.111179</td>
+      <td>0.057711</td>
+      <td>-0.073560</td>
+      <td>0.137099</td>
+      <td>0.004909</td>
+      <td>-0.001647</td>
+      <td>0.284854</td>
+      <td>0.046998</td>
+      <td>-0.108023</td>
+      <td>0.246809</td>
+      <td>0.073812</td>
+      <td>0.014414</td>
+      <td>0.037436</td>
+      <td>-0.110779</td>
+      <td>-0.065017</td>
+      <td>-0.062373</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>F7</th>
+      <td>0.610103</td>
+      <td>-0.004476</td>
+      <td>1.000000</td>
+      <td>0.522579</td>
+      <td>0.607264</td>
+      <td>0.862752</td>
+      <td>0.832192</td>
+      <td>0.581958</td>
+      <td>0.649361</td>
+      <td>0.652500</td>
+      <td>0.515815</td>
+      <td>0.556631</td>
+      <td>0.441516</td>
+      <td>0.439567</td>
+      <td>0.909563</td>
+      <td>0.537361</td>
+      <td>0.243854</td>
+      <td>0.270286</td>
+      <td>0.223915</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>T3</th>
+      <td>0.402576</td>
+      <td>0.111179</td>
+      <td>0.522579</td>
+      <td>1.000000</td>
+      <td>0.658316</td>
+      <td>0.390295</td>
+      <td>0.350308</td>
+      <td>0.513466</td>
+      <td>0.341256</td>
+      <td>0.404711</td>
+      <td>0.424997</td>
+      <td>0.259838</td>
+      <td>0.271074</td>
+      <td>0.322270</td>
+      <td>0.471039</td>
+      <td>0.319749</td>
+      <td>0.222749</td>
+      <td>0.314483</td>
+      <td>0.232803</td>
+      <td>3</td>
+    </tr>
+    <tr>
+      <th>T5</th>
+      <td>0.201584</td>
+      <td>0.057711</td>
+      <td>0.607264</td>
+      <td>0.658316</td>
+      <td>1.000000</td>
+      <td>0.579465</td>
+      <td>0.744869</td>
+      <td>0.894490</td>
+      <td>0.538812</td>
+      <td>0.616856</td>
+      <td>0.806119</td>
+      <td>0.467833</td>
+      <td>0.469632</td>
+      <td>0.680936</td>
+      <td>0.622745</td>
+      <td>0.622988</td>
+      <td>0.575409</td>
+      <td>0.814392</td>
+      <td>0.680143</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>F3</th>
+      <td>0.550817</td>
+      <td>-0.073560</td>
+      <td>0.862752</td>
+      <td>0.390295</td>
+      <td>0.579465</td>
+      <td>1.000000</td>
+      <td>0.853269</td>
+      <td>0.688420</td>
+      <td>0.868776</td>
+      <td>0.853519</td>
+      <td>0.685270</td>
+      <td>0.786836</td>
+      <td>0.625618</td>
+      <td>0.609236</td>
+      <td>0.787389</td>
+      <td>0.673173</td>
+      <td>0.361729</td>
+      <td>0.409339</td>
+      <td>0.388106</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>C3</th>
+      <td>0.527444</td>
+      <td>0.137099</td>
+      <td>0.832192</td>
+      <td>0.350308</td>
+      <td>0.744869</td>
+      <td>0.853269</td>
+      <td>1.000000</td>
+      <td>0.801119</td>
+      <td>0.793631</td>
+      <td>0.827050</td>
+      <td>0.760232</td>
+      <td>0.701004</td>
+      <td>0.623603</td>
+      <td>0.669249</td>
+      <td>0.811279</td>
+      <td>0.706339</td>
+      <td>0.408447</td>
+      <td>0.501346</td>
+      <td>0.459281</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>P3</th>
+      <td>0.326032</td>
+      <td>0.004909</td>
+      <td>0.581958</td>
+      <td>0.513466</td>
+      <td>0.894490</td>
+      <td>0.688420</td>
+      <td>0.801119</td>
+      <td>1.000000</td>
+      <td>0.671518</td>
+      <td>0.741288</td>
+      <td>0.933910</td>
+      <td>0.590195</td>
+      <td>0.577309</td>
+      <td>0.801631</td>
+      <td>0.579665</td>
+      <td>0.701521</td>
+      <td>0.639828</td>
+      <td>0.760370</td>
+      <td>0.716042</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>Fz</th>
+      <td>0.500769</td>
+      <td>-0.001647</td>
+      <td>0.649361</td>
+      <td>0.341256</td>
+      <td>0.538812</td>
+      <td>0.868776</td>
+      <td>0.793631</td>
+      <td>0.671518</td>
+      <td>1.000000</td>
+      <td>0.889896</td>
+      <td>0.709146</td>
+      <td>0.891318</td>
+      <td>0.713721</td>
+      <td>0.680849</td>
+      <td>0.663655</td>
+      <td>0.742874</td>
+      <td>0.392091</td>
+      <td>0.389209</td>
+      <td>0.417550</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Cz</th>
+      <td>0.593943</td>
+      <td>0.284854</td>
+      <td>0.652500</td>
+      <td>0.404711</td>
+      <td>0.616856</td>
+      <td>0.853519</td>
+      <td>0.827050</td>
+      <td>0.741288</td>
+      <td>0.889896</td>
+      <td>1.000000</td>
+      <td>0.789245</td>
+      <td>0.813784</td>
+      <td>0.804493</td>
+      <td>0.764474</td>
+      <td>0.638155</td>
+      <td>0.778011</td>
+      <td>0.441728</td>
+      <td>0.482981</td>
+      <td>0.489965</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>Pz</th>
+      <td>0.286855</td>
+      <td>0.046998</td>
+      <td>0.515815</td>
+      <td>0.424997</td>
+      <td>0.806119</td>
+      <td>0.685270</td>
+      <td>0.760232</td>
+      <td>0.933910</td>
+      <td>0.709146</td>
+      <td>0.789245</td>
+      <td>1.000000</td>
+      <td>0.648985</td>
+      <td>0.655787</td>
+      <td>0.906129</td>
+      <td>0.552062</td>
+      <td>0.786340</td>
+      <td>0.700657</td>
+      <td>0.765037</td>
+      <td>0.783253</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>F4</th>
+      <td>0.301057</td>
+      <td>-0.108023</td>
+      <td>0.556631</td>
+      <td>0.259838</td>
+      <td>0.467833</td>
+      <td>0.786836</td>
+      <td>0.701004</td>
+      <td>0.590195</td>
+      <td>0.891318</td>
+      <td>0.813784</td>
+      <td>0.648985</td>
+      <td>1.000000</td>
+      <td>0.721684</td>
+      <td>0.663248</td>
+      <td>0.563880</td>
+      <td>0.787542</td>
+      <td>0.395631</td>
+      <td>0.367652</td>
+      <td>0.408761</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>C4</th>
+      <td>0.452418</td>
+      <td>0.246809</td>
+      <td>0.441516</td>
+      <td>0.271074</td>
+      <td>0.469632</td>
+      <td>0.625618</td>
+      <td>0.623603</td>
+      <td>0.577309</td>
+      <td>0.713721</td>
+      <td>0.804493</td>
+      <td>0.655787</td>
+      <td>0.721684</td>
+      <td>1.000000</td>
+      <td>0.787124</td>
+      <td>0.536793</td>
+      <td>0.885986</td>
+      <td>0.429285</td>
+      <td>0.381855</td>
+      <td>0.447497</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>P4</th>
+      <td>0.268537</td>
+      <td>0.073812</td>
+      <td>0.439567</td>
+      <td>0.322270</td>
+      <td>0.680936</td>
+      <td>0.609236</td>
+      <td>0.669249</td>
+      <td>0.801631</td>
+      <td>0.680849</td>
+      <td>0.764474</td>
+      <td>0.906129</td>
+      <td>0.663248</td>
+      <td>0.787124</td>
+      <td>1.000000</td>
+      <td>0.559416</td>
+      <td>0.926240</td>
+      <td>0.778421</td>
+      <td>0.685086</td>
+      <td>0.784476</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>F8</th>
+      <td>0.565171</td>
+      <td>0.014414</td>
+      <td>0.909563</td>
+      <td>0.471039</td>
+      <td>0.622745</td>
+      <td>0.787389</td>
+      <td>0.811279</td>
+      <td>0.579665</td>
+      <td>0.663655</td>
+      <td>0.638155</td>
+      <td>0.552062</td>
+      <td>0.563880</td>
+      <td>0.536793</td>
+      <td>0.559416</td>
+      <td>1.000000</td>
+      <td>0.679836</td>
+      <td>0.421302</td>
+      <td>0.322806</td>
+      <td>0.401543</td>
+      <td>0</td>
+    </tr>
+    <tr>
+      <th>T4</th>
+      <td>0.311723</td>
+      <td>0.037436</td>
+      <td>0.537361</td>
+      <td>0.319749</td>
+      <td>0.622988</td>
+      <td>0.673173</td>
+      <td>0.706339</td>
+      <td>0.701521</td>
+      <td>0.742874</td>
+      <td>0.778011</td>
+      <td>0.786340</td>
+      <td>0.787542</td>
+      <td>0.885986</td>
+      <td>0.926240</td>
+      <td>0.679836</td>
+      <td>1.000000</td>
+      <td>0.691200</td>
+      <td>0.542984</td>
+      <td>0.653880</td>
+      <td>2</td>
+    </tr>
+    <tr>
+      <th>T6</th>
+      <td>-0.002529</td>
+      <td>-0.110779</td>
+      <td>0.243854</td>
+      <td>0.222749</td>
+      <td>0.575409</td>
+      <td>0.361729</td>
+      <td>0.408447</td>
+      <td>0.639828</td>
+      <td>0.392091</td>
+      <td>0.441728</td>
+      <td>0.700657</td>
+      <td>0.395631</td>
+      <td>0.429285</td>
+      <td>0.778421</td>
+      <td>0.421302</td>
+      <td>0.691200</td>
+      <td>1.000000</td>
+      <td>0.671632</td>
+      <td>0.830730</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>O1</th>
+      <td>-0.160802</td>
+      <td>-0.065017</td>
+      <td>0.270286</td>
+      <td>0.314483</td>
+      <td>0.814392</td>
+      <td>0.409339</td>
+      <td>0.501346</td>
+      <td>0.760370</td>
+      <td>0.389209</td>
+      <td>0.482981</td>
+      <td>0.765037</td>
+      <td>0.367652</td>
+      <td>0.381855</td>
+      <td>0.685086</td>
+      <td>0.322806</td>
+      <td>0.542984</td>
+      <td>0.671632</td>
+      <td>1.000000</td>
+      <td>0.865594</td>
+      <td>4</td>
+    </tr>
+    <tr>
+      <th>O2</th>
+      <td>-0.052819</td>
+      <td>-0.062373</td>
+      <td>0.223915</td>
+      <td>0.232803</td>
+      <td>0.680143</td>
+      <td>0.388106</td>
+      <td>0.459281</td>
+      <td>0.716042</td>
+      <td>0.417550</td>
+      <td>0.489965</td>
+      <td>0.783253</td>
+      <td>0.408761</td>
+      <td>0.447497</td>
+      <td>0.784476</td>
+      <td>0.401543</td>
+      <td>0.653880</td>
+      <td>0.830730</td>
+      <td>0.865594</td>
+      <td>1.000000</td>
+      <td>4</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df_sort2</span> <span class="o">=</span> <span class="n">df_spearman</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;Clusters&#39;</span><span class="p">)</span>
 <span class="n">df_sort3</span> <span class="o">=</span> <span class="n">df_sort2</span><span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">df_sort2</span><span class="o">.</span><span class="n">index</span><span class="p">)]</span>
 <span class="n">df_sort3</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_html"><div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Cz</th>
+      <th>F7</th>
+      <th>F3</th>
+      <th>C3</th>
+      <th>Fz</th>
+      <th>F8</th>
+      <th>F4</th>
+      <th>C4</th>
+      <th>Fp2</th>
+      <th>T4</th>
+      <th>T5</th>
+      <th>P3</th>
+      <th>Pz</th>
+      <th>P4</th>
+      <th>Fp1</th>
+      <th>T3</th>
+      <th>T6</th>
+      <th>O1</th>
+      <th>O2</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Cz</th>
+      <td>1.000000</td>
+      <td>0.652500</td>
+      <td>0.853519</td>
+      <td>0.827050</td>
+      <td>0.889896</td>
+      <td>0.638155</td>
+      <td>0.813784</td>
+      <td>0.804493</td>
+      <td>0.284854</td>
+      <td>0.778011</td>
+      <td>0.616856</td>
+      <td>0.741288</td>
+      <td>0.789245</td>
+      <td>0.764474</td>
+      <td>0.593943</td>
+      <td>0.404711</td>
+      <td>0.441728</td>
+      <td>0.482981</td>
+      <td>0.489965</td>
+    </tr>
+    <tr>
+      <th>F7</th>
+      <td>0.652500</td>
+      <td>1.000000</td>
+      <td>0.862752</td>
+      <td>0.832192</td>
+      <td>0.649361</td>
+      <td>0.909563</td>
+      <td>0.556631</td>
+      <td>0.441516</td>
+      <td>-0.004476</td>
+      <td>0.537361</td>
+      <td>0.607264</td>
+      <td>0.581958</td>
+      <td>0.515815</td>
+      <td>0.439567</td>
+      <td>0.610103</td>
+      <td>0.522579</td>
+      <td>0.243854</td>
+      <td>0.270286</td>
+      <td>0.223915</td>
+    </tr>
+    <tr>
+      <th>F3</th>
+      <td>0.853519</td>
+      <td>0.862752</td>
+      <td>1.000000</td>
+      <td>0.853269</td>
+      <td>0.868776</td>
+      <td>0.787389</td>
+      <td>0.786836</td>
+      <td>0.625618</td>
+      <td>-0.073560</td>
+      <td>0.673173</td>
+      <td>0.579465</td>
+      <td>0.688420</td>
+      <td>0.685270</td>
+      <td>0.609236</td>
+      <td>0.550817</td>
+      <td>0.390295</td>
+      <td>0.361729</td>
+      <td>0.409339</td>
+      <td>0.388106</td>
+    </tr>
+    <tr>
+      <th>C3</th>
+      <td>0.827050</td>
+      <td>0.832192</td>
+      <td>0.853269</td>
+      <td>1.000000</td>
+      <td>0.793631</td>
+      <td>0.811279</td>
+      <td>0.701004</td>
+      <td>0.623603</td>
+      <td>0.137099</td>
+      <td>0.706339</td>
+      <td>0.744869</td>
+      <td>0.801119</td>
+      <td>0.760232</td>
+      <td>0.669249</td>
+      <td>0.527444</td>
+      <td>0.350308</td>
+      <td>0.408447</td>
+      <td>0.501346</td>
+      <td>0.459281</td>
+    </tr>
+    <tr>
+      <th>Fz</th>
+      <td>0.889896</td>
+      <td>0.649361</td>
+      <td>0.868776</td>
+      <td>0.793631</td>
+      <td>1.000000</td>
+      <td>0.663655</td>
+      <td>0.891318</td>
+      <td>0.713721</td>
+      <td>-0.001647</td>
+      <td>0.742874</td>
+      <td>0.538812</td>
+      <td>0.671518</td>
+      <td>0.709146</td>
+      <td>0.680849</td>
+      <td>0.500769</td>
+      <td>0.341256</td>
+      <td>0.392091</td>
+      <td>0.389209</td>
+      <td>0.417550</td>
+    </tr>
+    <tr>
+      <th>F8</th>
+      <td>0.638155</td>
+      <td>0.909563</td>
+      <td>0.787389</td>
+      <td>0.811279</td>
+      <td>0.663655</td>
+      <td>1.000000</td>
+      <td>0.563880</td>
+      <td>0.536793</td>
+      <td>0.014414</td>
+      <td>0.679836</td>
+      <td>0.622745</td>
+      <td>0.579665</td>
+      <td>0.552062</td>
+      <td>0.559416</td>
+      <td>0.565171</td>
+      <td>0.471039</td>
+      <td>0.421302</td>
+      <td>0.322806</td>
+      <td>0.401543</td>
+    </tr>
+    <tr>
+      <th>F4</th>
+      <td>0.813784</td>
+      <td>0.556631</td>
+      <td>0.786836</td>
+      <td>0.701004</td>
+      <td>0.891318</td>
+      <td>0.563880</td>
+      <td>1.000000</td>
+      <td>0.721684</td>
+      <td>-0.108023</td>
+      <td>0.787542</td>
+      <td>0.467833</td>
+      <td>0.590195</td>
+      <td>0.648985</td>
+      <td>0.663248</td>
+      <td>0.301057</td>
+      <td>0.259838</td>
+      <td>0.395631</td>
+      <td>0.367652</td>
+      <td>0.408761</td>
+    </tr>
+    <tr>
+      <th>C4</th>
+      <td>0.804493</td>
+      <td>0.441516</td>
+      <td>0.625618</td>
+      <td>0.623603</td>
+      <td>0.713721</td>
+      <td>0.536793</td>
+      <td>0.721684</td>
+      <td>1.000000</td>
+      <td>0.246809</td>
+      <td>0.885986</td>
+      <td>0.469632</td>
+      <td>0.577309</td>
+      <td>0.655787</td>
+      <td>0.787124</td>
+      <td>0.452418</td>
+      <td>0.271074</td>
+      <td>0.429285</td>
+      <td>0.381855</td>
+      <td>0.447497</td>
+    </tr>
+    <tr>
+      <th>Fp2</th>
+      <td>0.284854</td>
+      <td>-0.004476</td>
+      <td>-0.073560</td>
+      <td>0.137099</td>
+      <td>-0.001647</td>
+      <td>0.014414</td>
+      <td>-0.108023</td>
+      <td>0.246809</td>
+      <td>1.000000</td>
+      <td>0.037436</td>
+      <td>0.057711</td>
+      <td>0.004909</td>
+      <td>0.046998</td>
+      <td>0.073812</td>
+      <td>0.468141</td>
+      <td>0.111179</td>
+      <td>-0.110779</td>
+      <td>-0.065017</td>
+      <td>-0.062373</td>
+    </tr>
+    <tr>
+      <th>T4</th>
+      <td>0.778011</td>
+      <td>0.537361</td>
+      <td>0.673173</td>
+      <td>0.706339</td>
+      <td>0.742874</td>
+      <td>0.679836</td>
+      <td>0.787542</td>
+      <td>0.885986</td>
+      <td>0.037436</td>
+      <td>1.000000</td>
+      <td>0.622988</td>
+      <td>0.701521</td>
+      <td>0.786340</td>
+      <td>0.926240</td>
+      <td>0.311723</td>
+      <td>0.319749</td>
+      <td>0.691200</td>
+      <td>0.542984</td>
+      <td>0.653880</td>
+    </tr>
+    <tr>
+      <th>T5</th>
+      <td>0.616856</td>
+      <td>0.607264</td>
+      <td>0.579465</td>
+      <td>0.744869</td>
+      <td>0.538812</td>
+      <td>0.622745</td>
+      <td>0.467833</td>
+      <td>0.469632</td>
+      <td>0.057711</td>
+      <td>0.622988</td>
+      <td>1.000000</td>
+      <td>0.894490</td>
+      <td>0.806119</td>
+      <td>0.680936</td>
+      <td>0.201584</td>
+      <td>0.658316</td>
+      <td>0.575409</td>
+      <td>0.814392</td>
+      <td>0.680143</td>
+    </tr>
+    <tr>
+      <th>P3</th>
+      <td>0.741288</td>
+      <td>0.581958</td>
+      <td>0.688420</td>
+      <td>0.801119</td>
+      <td>0.671518</td>
+      <td>0.579665</td>
+      <td>0.590195</td>
+      <td>0.577309</td>
+      <td>0.004909</td>
+      <td>0.701521</td>
+      <td>0.894490</td>
+      <td>1.000000</td>
+      <td>0.933910</td>
+      <td>0.801631</td>
+      <td>0.326032</td>
+      <td>0.513466</td>
+      <td>0.639828</td>
+      <td>0.760370</td>
+      <td>0.716042</td>
+    </tr>
+    <tr>
+      <th>Pz</th>
+      <td>0.789245</td>
+      <td>0.515815</td>
+      <td>0.685270</td>
+      <td>0.760232</td>
+      <td>0.709146</td>
+      <td>0.552062</td>
+      <td>0.648985</td>
+      <td>0.655787</td>
+      <td>0.046998</td>
+      <td>0.786340</td>
+      <td>0.806119</td>
+      <td>0.933910</td>
+      <td>1.000000</td>
+      <td>0.906129</td>
+      <td>0.286855</td>
+      <td>0.424997</td>
+      <td>0.700657</td>
+      <td>0.765037</td>
+      <td>0.783253</td>
+    </tr>
+    <tr>
+      <th>P4</th>
+      <td>0.764474</td>
+      <td>0.439567</td>
+      <td>0.609236</td>
+      <td>0.669249</td>
+      <td>0.680849</td>
+      <td>0.559416</td>
+      <td>0.663248</td>
+      <td>0.787124</td>
+      <td>0.073812</td>
+      <td>0.926240</td>
+      <td>0.680936</td>
+      <td>0.801631</td>
+      <td>0.906129</td>
+      <td>1.000000</td>
+      <td>0.268537</td>
+      <td>0.322270</td>
+      <td>0.778421</td>
+      <td>0.685086</td>
+      <td>0.784476</td>
+    </tr>
+    <tr>
+      <th>Fp1</th>
+      <td>0.593943</td>
+      <td>0.610103</td>
+      <td>0.550817</td>
+      <td>0.527444</td>
+      <td>0.500769</td>
+      <td>0.565171</td>
+      <td>0.301057</td>
+      <td>0.452418</td>
+      <td>0.468141</td>
+      <td>0.311723</td>
+      <td>0.201584</td>
+      <td>0.326032</td>
+      <td>0.286855</td>
+      <td>0.268537</td>
+      <td>1.000000</td>
+      <td>0.402576</td>
+      <td>-0.002529</td>
+      <td>-0.160802</td>
+      <td>-0.052819</td>
+    </tr>
+    <tr>
+      <th>T3</th>
+      <td>0.404711</td>
+      <td>0.522579</td>
+      <td>0.390295</td>
+      <td>0.350308</td>
+      <td>0.341256</td>
+      <td>0.471039</td>
+      <td>0.259838</td>
+      <td>0.271074</td>
+      <td>0.111179</td>
+      <td>0.319749</td>
+      <td>0.658316</td>
+      <td>0.513466</td>
+      <td>0.424997</td>
+      <td>0.322270</td>
+      <td>0.402576</td>
+      <td>1.000000</td>
+      <td>0.222749</td>
+      <td>0.314483</td>
+      <td>0.232803</td>
+    </tr>
+    <tr>
+      <th>T6</th>
+      <td>0.441728</td>
+      <td>0.243854</td>
+      <td>0.361729</td>
+      <td>0.408447</td>
+      <td>0.392091</td>
+      <td>0.421302</td>
+      <td>0.395631</td>
+      <td>0.429285</td>
+      <td>-0.110779</td>
+      <td>0.691200</td>
+      <td>0.575409</td>
+      <td>0.639828</td>
+      <td>0.700657</td>
+      <td>0.778421</td>
+      <td>-0.002529</td>
+      <td>0.222749</td>
+      <td>1.000000</td>
+      <td>0.671632</td>
+      <td>0.830730</td>
+    </tr>
+    <tr>
+      <th>O1</th>
+      <td>0.482981</td>
+      <td>0.270286</td>
+      <td>0.409339</td>
+      <td>0.501346</td>
+      <td>0.389209</td>
+      <td>0.322806</td>
+      <td>0.367652</td>
+      <td>0.381855</td>
+      <td>-0.065017</td>
+      <td>0.542984</td>
+      <td>0.814392</td>
+      <td>0.760370</td>
+      <td>0.765037</td>
+      <td>0.685086</td>
+      <td>-0.160802</td>
+      <td>0.314483</td>
+      <td>0.671632</td>
+      <td>1.000000</td>
+      <td>0.865594</td>
+    </tr>
+    <tr>
+      <th>O2</th>
+      <td>0.489965</td>
+      <td>0.223915</td>
+      <td>0.388106</td>
+      <td>0.459281</td>
+      <td>0.417550</td>
+      <td>0.401543</td>
+      <td>0.408761</td>
+      <td>0.447497</td>
+      <td>-0.062373</td>
+      <td>0.653880</td>
+      <td>0.680143</td>
+      <td>0.716042</td>
+      <td>0.783253</td>
+      <td>0.784476</td>
+      <td>-0.052819</td>
+      <td>0.232803</td>
+      <td>0.830730</td>
+      <td>0.865594</td>
+      <td>1.000000</td>
+    </tr>
+  </tbody>
+</table>
+</div></div></div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Plot heatmap for the clustered dataframe</span>
-<span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">k_range</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+
+<span class="n">model</span> <span class="o">=</span> <span class="n">KMeans</span><span class="p">(</span><span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">)</span>
+<span class="n">visualizer</span> <span class="o">=</span> <span class="n">KElbowVisualizer</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="n">k_range</span><span class="p">)</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">df_spearman</span><span class="p">)</span>
+<span class="n">visualizer</span><span class="o">.</span><span class="n">show</span><span class="p">();</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/clustering_kmeans_54_0.png" src="_images/clustering_kmeans_54_0.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sns</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">font_scale</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">heatmap</span><span class="p">(</span><span class="n">df_sort3</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">annot</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">Blues</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">hlines</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span><span class="mi">16</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;limegreen&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">(),</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># numbers are coordinates for the axis</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">vlines</span><span class="p">([</span><span class="mi">8</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">14</span><span class="p">,</span><span class="mi">16</span><span class="p">],</span> <span class="n">color</span> <span class="o">=</span> <span class="s1">&#39;limegreen&#39;</span><span class="p">,</span> <span class="o">*</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">(),</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span> <span class="c1"># numbers are coordinates for the axis</span>
 </pre></div>
 </div>
 </div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.LineCollection at 0x15c234a21f0&gt;
+</pre></div>
+</div>
+<img alt="_images/clustering_kmeans_55_1.png" src="_images/clustering_kmeans_55_1.png" />
 </div>
 </div>
-<div class="section" id="id4">
-<h3>Results<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<p>Notice how Fp2 is noisy and suspecious hence it got clustered by itself. The green lines represent the boundaries between clusters. Also, we can see that nodes that are close to each other tend to be more correlated as seen by the darker blue sections along the diagonal of the heatmap and lighter blue near the outsides. This makes sense intuitively, because when a change in voltage occurs it may be picked up by multiple channels.</p>
-<p>We can also examine the correlation of Fp2 using our topomap_2d function for further analysis:</p>
+<p>Notice how Fp2 is noisy and suspecious hence it got clustered by itself. The green lines represent the boundries between clusters. Also, we can see that nodes that are close to each other tend to be more correlated, as seen by the darker blue sections along the diagonal of the heatmap below and lighter blue near the outsides. This makes sense intuitively, because when a change in voltage occurs it may be picked up by multiple channels.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">topomap_2d</span><span class="p">,</span> <span class="n">eeg_objects</span> 
@@ -1056,35 +2715,26 @@
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">topomap_2d</span><span class="o">.</span><span class="n">plot_topomap_2d</span><span class="p">(</span>
-        <span class="n">epoch</span><span class="p">,</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df_spearman</span><span class="p">[</span><span class="s1">&#39;Fp2&#39;</span><span class="p">]),</span>
-        <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;channel_name&quot;</span><span class="p">,</span>
-        <span class="n">cmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">cmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span><span class="p">,</span>
-        <span class="o">**</span><span class="p">{</span><span class="s1">&#39;image_interp&#39;</span><span class="p">:</span><span class="s1">&#39;none&#39;</span><span class="p">}</span>
-
-    
-    <span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">cluster_dict</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">chunked_model</span><span class="o">.</span><span class="n">n_components</span><span class="p">):</span>
+    <span class="n">cluster_dict</span><span class="p">[</span><span class="s2">&quot;cluster_&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)]</span> <span class="o">=</span> <span class="n">df_result</span><span class="p">[</span><span class="n">df_result</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span>
 </pre></div>
 </div>
 </div>
 </div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">cluster_key</span><span class="p">,</span> <span class="n">cluster</span> <span class="ow">in</span> <span class="n">cluster_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">cluster_key</span> <span class="o">=</span> <span class="n">topomap_2d</span><span class="o">.</span><span class="n">plot_topomap_2d</span><span class="p">(</span>
+        <span class="n">epoch</span><span class="p">,</span>
+        <span class="n">cluster</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">:</span><span class="mi">20</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="mf">1e-6</span><span class="p">,</span>
+        <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;channel_name&quot;</span><span class="p">,</span>
+        <span class="n">cmin</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">cmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="p">)</span>
+</pre></div>
 </div>
 </div>
-<div class="section" id="attribution">
-<h2>Attribution<a class="headerlink" href="#attribution" title="Permalink to this headline">¶</a></h2>
-<ul class="simple">
-<li><p>Most of the material of this notebook came form DSCI_563 using the following license agreement</p></li>
-</ul>
-<p>The following MIT License is applied to the code contained in this repository. The intent is for MDS students to be able to refer back to their course notes and reuse code for future projects. Students: note that the MIT License requires including the copyright/permission notice with the code.</p>
-<p>MIT License</p>
-<p>Copyright (c) 2021 Varada Kolhatkar, Rodolfo Lourenzutti, Mike Gelbart</p>
-<p>Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:</p>
-<p>The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.</p>
-<p>THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.</p>
-<p><a class="reference external" href="https://github.ubc.ca/MDS-2020-21/DSCI_563_unsup-learn_students/blob/master/LICENSE.md">https://github.ubc.ca/MDS-2020-21/DSCI_563_unsup-learn_students/blob/master/LICENSE.md</a></p>
 </div>
 </div>
 
@@ -1113,8 +2763,7 @@
         
         <div class='prev-next-bottom'>
             
-    <a class='left-prev' id="prev-link" href="clustering.html" title="previous page">Clustering</a>
-    <a class='right-next' id="next-link" href="clustering_HMM.html" title="next page">Hidden Markov Model</a>
+    <a class='left-prev' id="prev-link" href="clustering_HMM.html" title="previous page">Unsupervised Clustering using Hidden Markov Model</a>
 
         </div>
         

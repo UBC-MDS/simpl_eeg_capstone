@@ -17,58 +17,80 @@ Traceback (most recent call last):
     raise CellExecutionError.from_cell_and_msg(cell, exec_reply['content'])
 nbclient.exceptions.CellExecutionError: An error occurred while executing the following cell:
 ------------------
-from simpl_eeg import eeg_objects
+# experiment we want to use data from
+experiment_number = "../../data" #data/exp number
 
-import os
-import numpy as np
-import pandas as pd
+# set the start second if you want to use a custom time
+# when the start second is None, the impact times from the experiment will be used. 
+start_second = 500
+# start_second = None
 
-import matplotlib.pyplot as plt
-from matplotlib import patches
-import seaborn as sns
-import altair as alt
+# the number of seconds before the event to use
+tmin = -5
 
-import mne
-from mne.preprocessing import (create_eog_epochs, create_ecg_epochs,
-                               compute_proj_ecg, compute_proj_eog)
-import scipy.io
-import scipy.interpolate
-from scipy import signal
-from scipy.cluster.hierarchy import (
-    average,
-    complete,
-    dendrogram,
-    fcluster,
-    single,
-    ward,
-)
+# the number of seconds after the event to use
+tmax = 5
 
-from sklearn import cluster, datasets, metrics
-from sklearn.decomposition import PCA
-from sklearn.datasets import make_blobs
-from sklearn.compose import ColumnTransformer, make_column_transformer
-from sklearn.cluster import KMeans
-from sklearn.cluster import DBSCAN, AgglomerativeClustering, KMeans
-from sklearn.datasets import make_moons
+epochs = eeg_objects.Epochs(experiment_number, tmin=tmin, tmax=tmax, start_second=start_second)
+epoch = epochs.epoch
 
-from yellowbrick.cluster import KElbowVisualizer, SilhouetteVisualizer
-import mglearn
+# the lines below are to average every n steps
+# number of steps to average
+n = 5
 
-from IPython.display import HTML
+averaged_epoch = epochs.average_n_steps(n)
 
-import warnings
-warnings.filterwarnings('ignore')
+print("\nDimensionality difference between raw and averaged:")
+print(f"Raw: {epoch.get_data().shape}")
+print(f"Averaged: {averaged_epoch.get_data().shape}")
 ------------------
 
 [0;31m---------------------------------------------------------------------------[0m
-[0;31mModuleNotFoundError[0m                       Traceback (most recent call last)
-[0;32m<ipython-input-1-b8079b873be1>[0m in [0;36m<module>[0;34m[0m
-[1;32m     33[0m [0;32mfrom[0m [0msklearn[0m[0;34m.[0m[0mdatasets[0m [0;32mimport[0m [0mmake_moons[0m[0;34m[0m[0;34m[0m[0m
-[1;32m     34[0m [0;34m[0m[0m
-[0;32m---> 35[0;31m [0;32mfrom[0m [0myellowbrick[0m[0;34m.[0m[0mcluster[0m [0;32mimport[0m [0mKElbowVisualizer[0m[0;34m,[0m [0mSilhouetteVisualizer[0m[0;34m[0m[0;34m[0m[0m
-[0m[1;32m     36[0m [0;32mimport[0m [0mmglearn[0m[0;34m[0m[0;34m[0m[0m
-[1;32m     37[0m [0;34m[0m[0m
+[0;31mFileNotFoundError[0m                         Traceback (most recent call last)
+[0;32m<ipython-input-3-ca989ce32d4a>[0m in [0;36m<module>[0;34m[0m
+[1;32m     13[0m [0mtmax[0m [0;34m=[0m [0;36m5[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     14[0m [0;34m[0m[0m
+[0;32m---> 15[0;31m [0mepochs[0m [0;34m=[0m [0meeg_objects[0m[0;34m.[0m[0mEpochs[0m[0;34m([0m[0mexperiment_number[0m[0;34m,[0m [0mtmin[0m[0;34m=[0m[0mtmin[0m[0;34m,[0m [0mtmax[0m[0;34m=[0m[0mtmax[0m[0;34m,[0m [0mstart_second[0m[0;34m=[0m[0mstart_second[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     16[0m [0mepoch[0m [0;34m=[0m [0mepochs[0m[0;34m.[0m[0mepoch[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     17[0m [0;34m[0m[0m
 
-[0;31mModuleNotFoundError[0m: No module named 'yellowbrick'
-ModuleNotFoundError: No module named 'yellowbrick'
+[0;32m~/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py[0m in [0;36m__init__[0;34m(self, folder_path, tmin, tmax, start_second, file_name, **kwargs)[0m
+[1;32m    106[0m             [0;32mraise[0m [0mException[0m[0;34m([0m[0;34m"Please increase the time between tmin and tmax"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    107[0m [0;34m[0m[0m
+[0;32m--> 108[0;31m         [0mself[0m[0;34m.[0m[0meeg_file[0m [0;34m=[0m [0mEEG_File[0m[0;34m([0m[0mfolder_path[0m[0;34m,[0m [0mfile_name[0m[0;34m=[0m[0mfile_name[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    109[0m         [0mself[0m[0;34m.[0m[0mall_epochs[0m [0;34m=[0m [0mself[0m[0;34m.[0m[0mgenerate_epochs[0m[0;34m([0m[0mtmin[0m[0;34m,[0m [0mtmax[0m[0;34m,[0m [0mstart_second[0m[0;34m,[0m [0;34m**[0m[0mkwargs[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    110[0m [0;34m[0m[0m
+
+[0;32m~/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py[0m in [0;36m__init__[0;34m(self, folder_path, file_name)[0m
+[1;32m     50[0m             [0mself[0m[0;34m.[0m[0mmat[0m [0;34m=[0m [0mdict[0m[0;34m([0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m     51[0m [0;34m[0m[0m
+[0;32m---> 52[0;31m         [0mself[0m[0;34m.[0m[0mraw[0m [0;34m=[0m [0mmne[0m[0;34m.[0m[0mio[0m[0;34m.[0m[0mread_raw_eeglab[0m[0;34m([0m[0mfolder_path[0m[0;34m+[0m[0;34m"/"[0m[0;34m+[0m[0mfile_name[0m[0;34m+[0m[0;34m".set"[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m     53[0m [0;34m[0m[0m
+[1;32m     54[0m [0;34m[0m[0m
+
+[0;32m~/opt/miniconda3/lib/python3.8/site-packages/mne/io/eeglab/eeglab.py[0m in [0;36mread_raw_eeglab[0;34m(input_fname, eog, preload, uint16_codec, verbose)[0m
+[1;32m    217[0m     [0;34m.[0m[0;34m.[0m [0mversionadded[0m[0;34m:[0m[0;34m:[0m [0;36m0.11[0m[0;36m.0[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    218[0m     """
+[0;32m--> 219[0;31m     return RawEEGLAB(input_fname=input_fname, preload=preload,
+[0m[1;32m    220[0m                      eog=eog, verbose=verbose, uint16_codec=uint16_codec)
+[1;32m    221[0m [0;34m[0m[0m
+
+[0;32m<decorator-gen-241>[0m in [0;36m__init__[0;34m(self, input_fname, eog, preload, uint16_codec, verbose)[0m
+
+[0;32m~/opt/miniconda3/lib/python3.8/site-packages/mne/io/eeglab/eeglab.py[0m in [0;36m__init__[0;34m(self, input_fname, eog, preload, uint16_codec, verbose)[0m
+[1;32m    315[0m     def __init__(self, input_fname, eog=(),
+[1;32m    316[0m                  preload=False, uint16_codec=None, verbose=None):  # noqa: D102
+[0;32m--> 317[0;31m         [0minput_fname[0m [0;34m=[0m [0m_check_fname[0m[0;34m([0m[0minput_fname[0m[0;34m,[0m [0;34m'read'[0m[0;34m,[0m [0;32mTrue[0m[0;34m,[0m [0;34m'input_fname'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    318[0m         [0meeg[0m [0;34m=[0m [0m_check_load_mat[0m[0;34m([0m[0minput_fname[0m[0;34m,[0m [0muint16_codec[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    319[0m         [0;32mif[0m [0meeg[0m[0;34m.[0m[0mtrials[0m [0;34m!=[0m [0;36m1[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+
+[0;32m~/opt/miniconda3/lib/python3.8/site-packages/mne/utils/check.py[0m in [0;36m_check_fname[0;34m(fname, overwrite, must_exist, name, need_dir)[0m
+[1;32m    176[0m                     f'{name} does not have read permissions: {fname}')
+[1;32m    177[0m     [0;32melif[0m [0mmust_exist[0m[0;34m:[0m[0;34m[0m[0;34m[0m[0m
+[0;32m--> 178[0;31m         [0;32mraise[0m [0mFileNotFoundError[0m[0;34m([0m[0;34mf'{name} does not exist: {fname}'[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[0m[1;32m    179[0m     [0;32mreturn[0m [0mstr[0m[0;34m([0m[0mop[0m[0;34m.[0m[0mabspath[0m[0;34m([0m[0mfname[0m[0;34m)[0m[0;34m)[0m[0;34m[0m[0;34m[0m[0m
+[1;32m    180[0m [0;34m[0m[0m
+
+[0;31mFileNotFoundError[0m: input_fname does not exist: ../../data/fixica.set
+FileNotFoundError: input_fname does not exist: ../../data/fixica.set
 
