@@ -89,7 +89,7 @@ pip install ghp-import
 ```
 
 The files used to generate the documentation are stored in the
-[docs/simpl\_instructions/](https://github.com/UBC-MDS/simpl_eeg_capstone/tree/main/docs/simpl_instructions)
+[docs/simpl_instructions/](https://github.com/UBC-MDS/simpl_eeg_capstone/tree/main/docs/simpl_instructions)
 folder.
 
 After making updates, run the following commands from the project root
@@ -104,7 +104,7 @@ ghp-import -n -p -f docs/simpl_instructions/_build/html
 
 -   Matthew Pin
 -   Mo Garoub
--   Yiki Su
+-   Zhanyi(Yiki) Su
 -   Sasha Babicki
 
 # Mentor

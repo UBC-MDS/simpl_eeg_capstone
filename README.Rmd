@@ -74,7 +74,7 @@ ghp-import -n -p -f docs/simpl_instructions/_build/html
 # Group Members
 - Matthew Pin
 - Mo Garoub
-- Yiki Su
+- Zhanyi(Yiki) Su
 - Sasha Babicki
 
 # Mentor
