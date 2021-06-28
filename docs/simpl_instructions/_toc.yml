@@ -13,3 +13,4 @@ sections:
 - file: clustering
   sections:
   - file: clustering_HMM
+  - file: clustering_kmeans
