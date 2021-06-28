@@ -12,5 +12,5 @@ sections:
 - file: api
 - file: clustering
   sections:
-  - file: clustering_HMM
   - file: clustering_kmeans
+  - file: clustering_HMM
