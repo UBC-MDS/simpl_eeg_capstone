@@ -12,6 +12,8 @@ nocite: |
 # Project Description
 Python package and web application for visualizing EEG data. Detailed instructions on the package, user interface, and clustering stretch goal can all be found in our [Documentation on GitHub Pages](https://ubc-mds.github.io/simpl_eeg_capstone/eeg_objects.html). 
 
+![Web Application](reports/images/ui_showcase.gif)
+
 # Helpful Links
 - [Proposal Presentation](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Capstone_Proposal_Presentation.pdf)
 - [Proposal Report](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Proposal.pdf)
