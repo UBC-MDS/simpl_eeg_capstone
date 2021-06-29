@@ -1580,13 +1580,13 @@ Averaged: (19, 4097)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>min_samples: 2 eps: 1.000000  cluster: [-1  0  0 -1  0 -1  1  1  0  1 -1 -1]
 min_samples: 2 eps: 1.500000  cluster: [0 1 1 1 1 0 2 2 1 2 2 0]
 min_samples: 2 eps: 2.000000  cluster: [0 1 1 1 1 0 0 0 1 0 0 0]
-min_samples: 2 eps: 3.000000  cluster: [0 0 0 0 0 0 0 0 0 0 0 0]
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>min_samples: 2 eps: 3.000000  cluster: [0 0 0 0 0 0 0 0 0 0 0 0]
 min_samples: 3 eps: 1.000000  cluster: [-1  0  0 -1  0 -1  1  1  0  1 -1 -1]
 min_samples: 3 eps: 1.500000  cluster: [0 1 1 1 1 0 2 2 1 2 2 0]
 min_samples: 3 eps: 2.000000  cluster: [0 1 1 1 1 0 0 0 1 0 0 0]
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>min_samples: 3 eps: 3.000000  cluster: [0 0 0 0 0 0 0 0 0 0 0 0]
+min_samples: 3 eps: 3.000000  cluster: [0 0 0 0 0 0 0 0 0 0 0 0]
 min_samples: 5 eps: 1.000000  cluster: [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
 min_samples: 5 eps: 1.500000  cluster: [-1  0  0  0  0 -1 -1 -1  0 -1 -1 -1]
 min_samples: 5 eps: 2.000000  cluster: [-1  0  0  0  0 -1 -1 -1  0 -1 -1 -1]
@@ -1765,7 +1765,7 @@ max      11.669759    12.224542    17.120146     7.109063    20.597857
 </div>
 <div class="section" id="id3">
 <h4>Results<a class="headerlink" href="#id3" title="Permalink to this headline">¶</a></h4>
-<p>We can clearly see that the K-means algorithm clustered the low/negative values in orange and the high/positve values in green. As for the middle cluster groups (green &amp; blue), we need to invistigate further in order to come up with relationship and clear pattern.</p>
+<p>We can clearly see that the K-means algorithm clustered the low/negative values in orange and the high/positive values in green. As for the middle cluster groups (green &amp; blue), we need to investigate further in order to come up with relationship and clear pattern.</p>
 </div>
 </div>
 </div>
@@ -2805,7 +2805,7 @@ max      11.669759    12.224542    17.120146     7.109063    20.597857
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.LineCollection at 0x7fc772396490&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.LineCollection at 0x7fc33eb12a00&gt;
 </pre></div>
 </div>
 <img alt="_images/clustering_kmeans_61_1.png" src="_images/clustering_kmeans_61_1.png" />
@@ -2814,7 +2814,7 @@ max      11.669759    12.224542    17.120146     7.109063    20.597857
 </div>
 <div class="section" id="id4">
 <h3>Results<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
-<p>Notice how Fp2 is noisy and suspecious hence it got clustered by itself. The green lines represent the boundaries between clusters. Also, we can see that nodes that are close to each other tend to be more correlated as seen by the darker blue sections along the diagonal of the heatmap and lighter blue near the outsides. This makes sense intuitively, because when a change in voltage occurs it may be picked up by multiple channels.</p>
+<p>Notice how Fp2 is noisy and suspicious hence it got clustered by itself. The green lines represent the boundaries between clusters. Also, we can see that nodes that are close to each other tend to be more correlated as seen by the darker blue sections along the diagonal of the heatmap and lighter blue near the outsides. This makes sense intuitively, because when a change in voltage occurs it may be picked up by multiple channels.</p>
 <p>We can also run the following code to examine the correlation of Fp2 using our topomap_2d function for further analysis:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
 <span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">topomap_2d</span><span class="p">,</span> <span class="n">eeg_objects</span> 
