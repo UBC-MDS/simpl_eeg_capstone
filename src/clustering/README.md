@@ -10,7 +10,7 @@ EEG data is widely used in diagnosing brain disorders such as epilepsy and brain
 
 - [Clustering using Kmeans method](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/docs/simpl_instructions/clustering_kmeans.ipynb)
 - [Clustering using Hidden Markov Model](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/docs/simpl_instructions/clustering_HMM.ipynb)
-- [Other clustering methods](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/src/clustering/clustering_MiniSom.ipynb)
+- [Other clustering methods](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/src/clustering/clustering_other_methods.ipynb)
 
 ## Selecting EEG data
 
