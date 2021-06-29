@@ -136,3 +136,6 @@ exports/
 **.Rproj.user*
 **.Rproj
 **.Rhistory
+
+# Documentation rendered ipynb files and images
+docs/simpl_instructions/_build
