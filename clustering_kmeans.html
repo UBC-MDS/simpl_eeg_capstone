@@ -1584,10 +1584,10 @@ min_samples: 2 eps: 3.000000  cluster: [0 0 0 0 0 0 0 0 0 0 0 0]
 min_samples: 3 eps: 1.000000  cluster: [-1  0  0 -1  0 -1  1  1  0  1 -1 -1]
 min_samples: 3 eps: 1.500000  cluster: [0 1 1 1 1 0 2 2 1 2 2 0]
 min_samples: 3 eps: 2.000000  cluster: [0 1 1 1 1 0 0 0 1 0 0 0]
-min_samples: 3 eps: 3.000000  cluster: [0 0 0 0 0 0 0 0 0 0 0 0]
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>min_samples: 5 eps: 1.000000  cluster: [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>min_samples: 3 eps: 3.000000  cluster: [0 0 0 0 0 0 0 0 0 0 0 0]
+min_samples: 5 eps: 1.000000  cluster: [-1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1]
 min_samples: 5 eps: 1.500000  cluster: [-1  0  0  0  0 -1 -1 -1  0 -1 -1 -1]
 min_samples: 5 eps: 2.000000  cluster: [-1  0  0  0  0 -1 -1 -1  0 -1 -1 -1]
 min_samples: 5 eps: 3.000000  cluster: [0 0 0 0 0 0 0 0 0 0 0 0]
@@ -2805,7 +2805,7 @@ max      11.669759    12.224542    17.120146     7.109063    20.597857
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.LineCollection at 0x7fa900cec400&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.collections.LineCollection at 0x7fc772396490&gt;
 </pre></div>
 </div>
 <img alt="_images/clustering_kmeans_61_1.png" src="_images/clustering_kmeans_61_1.png" />
@@ -2815,36 +2815,20 @@ max      11.669759    12.224542    17.120146     7.109063    20.597857
 <div class="section" id="id4">
 <h3>Results<a class="headerlink" href="#id4" title="Permalink to this headline">¶</a></h3>
 <p>Notice how Fp2 is noisy and suspecious hence it got clustered by itself. The green lines represent the boundaries between clusters. Also, we can see that nodes that are close to each other tend to be more correlated as seen by the darker blue sections along the diagonal of the heatmap and lighter blue near the outsides. This makes sense intuitively, because when a change in voltage occurs it may be picked up by multiple channels.</p>
-<p>We can also examine the correlation of Fp2 using our topomap_2d function for further analysis:</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">topomap_2d</span><span class="p">,</span> <span class="n">eeg_objects</span> 
-</pre></div>
-</div>
-</div>
-</div>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">topomap_2d</span><span class="o">.</span><span class="n">plot_topomap_2d</span><span class="p">(</span>
-        <span class="n">epoch</span><span class="p">,</span>
-        <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df_spearman</span><span class="p">[</span><span class="s1">&#39;Fp2&#39;</span><span class="p">]),</span>
-        <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;channel_name&quot;</span><span class="p">,</span>
-        <span class="n">cmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
-        <span class="n">cmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-        <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span><span class="p">,</span>
-        <span class="o">**</span><span class="p">{</span><span class="s1">&#39;image_interp&#39;</span><span class="p">:</span><span class="s1">&#39;none&#39;</span><span class="p">}</span>
+<p>We can also run the following code to examine the correlation of Fp2 using our topomap_2d function for further analysis:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>
+<span class="kn">from</span> <span class="nn">simpl_eeg</span> <span class="kn">import</span> <span class="n">topomap_2d</span><span class="p">,</span> <span class="n">eeg_objects</span> 
+<span class="n">topomap_2d</span><span class="o">.</span><span class="n">plot_topomap_2d</span><span class="p">(</span>
+    <span class="n">epoch</span><span class="p">,</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">df_spearman</span><span class="p">[</span><span class="s1">&#39;Fp2&#39;</span><span class="p">]),</span>
+    <span class="n">mark</span><span class="o">=</span><span class="s2">&quot;channel_name&quot;</span><span class="p">,</span>
+    <span class="n">cmin</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+    <span class="n">cmax</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+    <span class="n">colormap</span><span class="o">=</span><span class="s2">&quot;tab10&quot;</span><span class="p">,</span>
+    <span class="o">**</span><span class="p">{</span><span class="s1">&#39;image_interp&#39;</span><span class="p">:</span><span class="s1">&#39;none&#39;</span><span class="p">}</span>
+<span class="p">);</span>
 
-    
-    <span class="p">)</span>
 </pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;matplotlib.image.AxesImage at 0x7fa900d6cb50&gt;
-</pre></div>
-</div>
-<img alt="_images/clustering_kmeans_65_1.png" src="_images/clustering_kmeans_65_1.png" />
-</div>
 </div>
 </div>
 </div>
