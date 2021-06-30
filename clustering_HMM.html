@@ -42,8 +42,6 @@
     <script src="_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -456,32 +454,60 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/data/927/fixica.fdt
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:76: RuntimeWarning: Data file name in EEG.data (927 fix ica correct.fdt) is incorrect, the file name must have changed on disk, using the correct file name (fixica.fdt).
+  raw = mne.io.read_raw_eeglab(data_path)
+/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:97: UserWarning: Events could not be detected, please ensure an impact locations.mat file exists
+  warnings.warn(
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loaded raw from ../../data/927/fixica.set
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>33 matching events found
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Setting baseline interval to [-0.2998046875, 0.0] sec
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Applying baseline correction (mode: mean)
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 projection items activated
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Loading data for 33 events and 2049 original time points ...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 bad epochs dropped
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:52: RuntimeWarning: Data file name in EEG.data (927 fix ica correct.fdt) is incorrect, the file name must have changed on disk, using the correct file name (fixica.fdt).
-  self.raw = mne.io.read_raw_eeglab(folder_path+&quot;/&quot;+file_name+&quot;.set&quot;)
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">TypeError</span><span class="g g-Whitespace">                                 </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">6</span><span class="o">-</span><span class="mi">8</span><span class="n">eaa7c17737a</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="ne">----&gt; </span><span class="mi">1</span> <span class="n">epoch</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="s2">&quot;../../data/927&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">epoch</span>
+
+<span class="nn">~/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">__init__</span><span class="nt">(self, folder_path, tmin, tmax, start_second, file_name, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">167</span> 
+<span class="g g-Whitespace">    </span><span class="mi">168</span>         <span class="bp">self</span><span class="o">.</span><span class="n">eeg_file</span> <span class="o">=</span> <span class="n">EEG_File</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">file_name</span><span class="o">=</span><span class="n">file_name</span><span class="p">)</span>
+<span class="ne">--&gt; </span><span class="mi">169</span>         <span class="bp">self</span><span class="o">.</span><span class="n">all_epochs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">generate_epochs</span><span class="p">(</span><span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">170</span> 
+<span class="g g-Whitespace">    </span><span class="mi">171</span>         <span class="c1"># set first epoch to be the default selection</span>
+
+<span class="nn">~/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py</span> in <span class="ni">generate_epochs</span><span class="nt">(self, tmin, tmax, start_second, **kwargs)</span>
+<span class="g g-Whitespace">    </span><span class="mi">231</span> 
+<span class="g g-Whitespace">    </span><span class="mi">232</span>         <span class="c1"># generate the epoch</span>
+<span class="ne">--&gt; </span><span class="mi">233</span>         <span class="n">epochs</span> <span class="o">=</span> <span class="n">mne</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span>
+<span class="g g-Whitespace">    </span><span class="mi">234</span>             <span class="bp">self</span><span class="o">.</span><span class="n">eeg_file</span><span class="o">.</span><span class="n">raw</span><span class="p">,</span>
+<span class="g g-Whitespace">    </span><span class="mi">235</span>             <span class="n">events</span><span class="p">,</span>
+
+<span class="nn">&lt;decorator-gen-224&gt;</span> in <span class="ni">__init__</span><span class="nt">(self, raw, events, event_id, tmin, tmax, baseline, picks, preload, reject, flat, proj, decim, reject_tmin, reject_tmax, detrend, on_missing, reject_by_annotation, metadata, event_repeated, verbose)</span>
+
+<span class="nn">~/opt/miniconda3/lib/python3.8/site-packages/mne/epochs.py</span> in <span class="ni">__init__</span><span class="nt">(self, raw, events, event_id, tmin, tmax, baseline, picks, preload, reject, flat, proj, decim, reject_tmin, reject_tmax, detrend, on_missing, reject_by_annotation, metadata, event_repeated, verbose)</span>
+<span class="g g-Whitespace">   </span><span class="mi">2530</span>         <span class="bp">self</span><span class="o">.</span><span class="n">reject_by_annotation</span> <span class="o">=</span> <span class="n">reject_by_annotation</span>
+<span class="g g-Whitespace">   </span><span class="mi">2531</span>         <span class="c1"># call BaseEpochs constructor</span>
+<span class="ne">-&gt; </span><span class="mi">2532</span>         <span class="nb">super</span><span class="p">(</span><span class="n">Epochs</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+<span class="g g-Whitespace">   </span><span class="mi">2533</span>             <span class="n">info</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">events</span><span class="p">,</span> <span class="n">event_id</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="n">metadata</span><span class="p">,</span>
+<span class="g g-Whitespace">   </span><span class="mi">2534</span>             <span class="n">baseline</span><span class="o">=</span><span class="n">baseline</span><span class="p">,</span> <span class="n">raw</span><span class="o">=</span><span class="n">raw</span><span class="p">,</span> <span class="n">picks</span><span class="o">=</span><span class="n">picks</span><span class="p">,</span> <span class="n">reject</span><span class="o">=</span><span class="n">reject</span><span class="p">,</span>
+
+<span class="nn">&lt;decorator-gen-212&gt;</span> in <span class="ni">__init__</span><span class="nt">(self, info, data, events, event_id, tmin, tmax, baseline, raw, picks, reject, flat, decim, reject_tmin, reject_tmax, detrend, proj, on_missing, preload_at_end, selection, drop_log, filename, metadata, event_repeated, verbose)</span>
+
+<span class="nn">~/opt/miniconda3/lib/python3.8/site-packages/mne/epochs.py</span> in <span class="ni">__init__</span><span class="nt">(self, info, data, events, event_id, tmin, tmax, baseline, raw, picks, reject, flat, decim, reject_tmin, reject_tmax, detrend, proj, on_missing, preload_at_end, selection, drop_log, filename, metadata, event_repeated, verbose)</span>
+<span class="g g-Whitespace">    </span><span class="mi">380</span> 
+<span class="g g-Whitespace">    </span><span class="mi">381</span>         <span class="k">if</span> <span class="n">events</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># RtEpochs can have events=None</span>
+<span class="ne">--&gt; </span><span class="mi">382</span>             <span class="n">events</span> <span class="o">=</span> <span class="n">_ensure_events</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">383</span>             <span class="n">events_max</span> <span class="o">=</span> <span class="n">events</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+<span class="g g-Whitespace">    </span><span class="mi">384</span>             <span class="k">if</span> <span class="n">events_max</span> <span class="o">&gt;</span> <span class="n">INT32_MAX</span><span class="p">:</span>
+
+<span class="nn">~/opt/miniconda3/lib/python3.8/site-packages/mne/utils/check.py</span> in <span class="ni">_ensure_events</span><span class="nt">(events)</span>
+<span class="g g-Whitespace">    </span><span class="mi">779</span>         <span class="n">events</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">events</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">780</span>     <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">issubdtype</span><span class="p">(</span><span class="n">events</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">integer</span><span class="p">):</span>
+<span class="ne">--&gt; </span><span class="mi">781</span>         <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;events should be a NumPy array of integers, &#39;</span>
+<span class="g g-Whitespace">    </span><span class="mi">782</span>                         <span class="sa">f</span><span class="s1">&#39;got </span><span class="si">{</span><span class="n">events_type</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="g g-Whitespace">    </span><span class="mi">783</span>     <span class="k">if</span> <span class="n">events</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">2</span> <span class="ow">or</span> <span class="n">events</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+
+<span class="ne">TypeError</span>: events should be a NumPy array of integers, got &lt;class &#39;list&#39;&gt;
 </pre></div>
 </div>
 </div>
@@ -510,7 +536,7 @@
 <span class="n">df_second</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">df_no_outliers</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2048</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">df_no_outliers</span><span class="p">),</span> <span class="mi">2048</span><span class="p">))</span>
 
 
-<span class="c1"># for each second, randomly sampled 10 time stamps (the original dataset is too big, wants to sample a smaller dataset for exploration)</span>
+<span class="c1"># for each second, randomly sampled 50 time stamps (the original dataset is too big, wants to sample a smaller dataset for exploration)</span>
 <span class="n">time_jump</span> <span class="o">=</span> <span class="mi">50</span>
 <span class="n">df_second_resample</span> <span class="o">=</span> <span class="p">{}</span>
 <span class="k">for</span> <span class="n">second</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df_second</span><span class="p">)):</span>
@@ -566,11 +592,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>GaussianHMM(n_components=14)
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -593,20 +614,10 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The log probability for this 14-cluster model is -18302848.6073
-</pre></div>
-</div>
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;The starting probability for this model is: </span><span class="si">{</span><span class="n">chunked_model</span><span class="o">.</span><span class="n">startprob_</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The starting probability for this model is: [0. 0. 0. 0. 0. 0. 1. 0. 0. 0. 0. 0. 0. 0.]
 </pre></div>
 </div>
 </div>
@@ -618,286 +629,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>The transmission probability matrix of this model is: 
-</pre></div>
-</div>
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>0</th>
-      <th>1</th>
-      <th>2</th>
-      <th>3</th>
-      <th>4</th>
-      <th>5</th>
-      <th>6</th>
-      <th>7</th>
-      <th>8</th>
-      <th>9</th>
-      <th>10</th>
-      <th>11</th>
-      <th>12</th>
-      <th>13</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>0</th>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.333333</td>
-      <td>0.000000</td>
-      <td>0.000000e+00</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.666667</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000e+00</td>
-    </tr>
-    <tr>
-      <th>1</th>
-      <td>0.000000</td>
-      <td>0.095693</td>
-      <td>0.095690</td>
-      <td>0.124401</td>
-      <td>0.000000e+00</td>
-      <td>0.086123</td>
-      <td>0.105669</td>
-      <td>0.089928</td>
-      <td>0.086126</td>
-      <td>0.000000</td>
-      <td>0.124401</td>
-      <td>0.028708</td>
-      <td>0.000000</td>
-      <td>1.632611e-01</td>
-    </tr>
-    <tr>
-      <th>2</th>
-      <td>0.000000</td>
-      <td>0.105056</td>
-      <td>0.133409</td>
-      <td>0.157544</td>
-      <td>0.000000e+00</td>
-      <td>0.090024</td>
-      <td>0.127533</td>
-      <td>0.097526</td>
-      <td>0.052514</td>
-      <td>0.007502</td>
-      <td>0.060956</td>
-      <td>0.030008</td>
-      <td>0.007502</td>
-      <td>1.304254e-01</td>
-    </tr>
-    <tr>
-      <th>3</th>
-      <td>0.006212</td>
-      <td>0.118025</td>
-      <td>0.161373</td>
-      <td>0.130453</td>
-      <td>8.227029e-201</td>
-      <td>0.099390</td>
-      <td>0.093178</td>
-      <td>0.068330</td>
-      <td>0.086989</td>
-      <td>0.000000</td>
-      <td>0.093178</td>
-      <td>0.031059</td>
-      <td>0.000000</td>
-      <td>1.118130e-01</td>
-    </tr>
-    <tr>
-      <th>4</th>
-      <td>0.000000</td>
-      <td>0.142857</td>
-      <td>0.285714</td>
-      <td>0.285714</td>
-      <td>0.000000e+00</td>
-      <td>0.000000</td>
-      <td>0.285714</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000e+00</td>
-    </tr>
-    <tr>
-      <th>5</th>
-      <td>0.000000</td>
-      <td>0.123594</td>
-      <td>0.101166</td>
-      <td>0.157302</td>
-      <td>0.000000e+00</td>
-      <td>0.067415</td>
-      <td>0.112358</td>
-      <td>0.168538</td>
-      <td>0.022472</td>
-      <td>0.000000</td>
-      <td>0.112358</td>
-      <td>0.056179</td>
-      <td>0.000000</td>
-      <td>7.861744e-02</td>
-    </tr>
-    <tr>
-      <th>6</th>
-      <td>0.009897</td>
-      <td>0.108865</td>
-      <td>0.079175</td>
-      <td>0.148452</td>
-      <td>0.000000e+00</td>
-      <td>0.128659</td>
-      <td>0.079174</td>
-      <td>0.138977</td>
-      <td>0.079175</td>
-      <td>0.000000</td>
-      <td>0.128667</td>
-      <td>0.009897</td>
-      <td>0.000000</td>
-      <td>8.906337e-02</td>
-    </tr>
-    <tr>
-      <th>7</th>
-      <td>0.000000</td>
-      <td>0.100917</td>
-      <td>0.119266</td>
-      <td>0.201835</td>
-      <td>1.834861e-02</td>
-      <td>0.064220</td>
-      <td>0.073394</td>
-      <td>0.082569</td>
-      <td>0.073394</td>
-      <td>0.000000</td>
-      <td>0.128440</td>
-      <td>0.027523</td>
-      <td>0.000000</td>
-      <td>1.100925e-01</td>
-    </tr>
-    <tr>
-      <th>8</th>
-      <td>0.000000</td>
-      <td>0.081081</td>
-      <td>0.094595</td>
-      <td>0.121635</td>
-      <td>4.054064e-02</td>
-      <td>0.067580</td>
-      <td>0.108108</td>
-      <td>0.189184</td>
-      <td>0.054054</td>
-      <td>0.000000</td>
-      <td>0.081081</td>
-      <td>0.027027</td>
-      <td>0.000000</td>
-      <td>1.351136e-01</td>
-    </tr>
-    <tr>
-      <th>9</th>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>1.000000</td>
-      <td>0.000000e+00</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000e+00</td>
-    </tr>
-    <tr>
-      <th>10</th>
-      <td>0.000000</td>
-      <td>0.067226</td>
-      <td>0.134452</td>
-      <td>0.163263</td>
-      <td>1.920743e-02</td>
-      <td>0.097241</td>
-      <td>0.115245</td>
-      <td>0.086433</td>
-      <td>0.067226</td>
-      <td>0.000000</td>
-      <td>0.096037</td>
-      <td>0.019207</td>
-      <td>0.000000</td>
-      <td>1.344616e-01</td>
-    </tr>
-    <tr>
-      <th>11</th>
-      <td>0.000000</td>
-      <td>0.107143</td>
-      <td>0.214286</td>
-      <td>0.214286</td>
-      <td>0.000000e+00</td>
-      <td>0.142857</td>
-      <td>0.035714</td>
-      <td>0.107143</td>
-      <td>0.071429</td>
-      <td>0.000000</td>
-      <td>0.071429</td>
-      <td>0.035714</td>
-      <td>0.000000</td>
-      <td>2.574895e-275</td>
-    </tr>
-    <tr>
-      <th>12</th>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000e+00</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>1.000000</td>
-      <td>0.000000</td>
-      <td>0.000000</td>
-      <td>0.000000e+00</td>
-    </tr>
-    <tr>
-      <th>13</th>
-      <td>0.007350</td>
-      <td>0.084510</td>
-      <td>0.143577</td>
-      <td>0.154215</td>
-      <td>0.000000e+00</td>
-      <td>0.050531</td>
-      <td>0.058803</td>
-      <td>0.084971</td>
-      <td>0.095524</td>
-      <td>0.000000</td>
-      <td>0.073505</td>
-      <td>0.014701</td>
-      <td>0.000000</td>
-      <td>2.323140e-01</td>
-    </tr>
-  </tbody>
-</table>
-</div></div></div>
 </div>
 <div class="section" id="interpretation-of-the-output">
 <h4>Interpretation of the output<a class="headerlink" href="#interpretation-of-the-output" title="Permalink to this headline">¶</a></h4>
@@ -928,173 +659,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<div class="output text_html"><div>
-<style scoped>
-    .dataframe tbody tr th:only-of-type {
-        vertical-align: middle;
-    }
-
-    .dataframe tbody tr th {
-        vertical-align: top;
-    }
-
-    .dataframe thead th {
-        text-align: right;
-    }
-</style>
-<table border="1" class="dataframe">
-  <thead>
-    <tr style="text-align: right;">
-      <th></th>
-      <th>time</th>
-      <th>Fp1</th>
-      <th>Fp2</th>
-      <th>F7</th>
-      <th>T3</th>
-      <th>T5</th>
-      <th>F3</th>
-      <th>C3</th>
-      <th>P3</th>
-      <th>Fz</th>
-      <th>...</th>
-      <th>Pz</th>
-      <th>F4</th>
-      <th>C4</th>
-      <th>P4</th>
-      <th>F8</th>
-      <th>T4</th>
-      <th>T6</th>
-      <th>O1</th>
-      <th>O2</th>
-      <th>cluster</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th>14</th>
-      <td>7</td>
-      <td>-5.416321</td>
-      <td>-8.702773</td>
-      <td>12.929683</td>
-      <td>-4.267407</td>
-      <td>-17.012657</td>
-      <td>-19.657581</td>
-      <td>-7.856932</td>
-      <td>4.599534</td>
-      <td>-16.746788</td>
-      <td>...</td>
-      <td>8.995889</td>
-      <td>-18.678459</td>
-      <td>-2.681060</td>
-      <td>3.765667</td>
-      <td>-1.263025</td>
-      <td>-6.090218</td>
-      <td>-3.464389</td>
-      <td>1.173670</td>
-      <td>1.137339</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>54</th>
-      <td>26</td>
-      <td>-12.013180</td>
-      <td>-14.579842</td>
-      <td>2.910196</td>
-      <td>-7.934999</td>
-      <td>-19.046343</td>
-      <td>-24.195089</td>
-      <td>-13.608892</td>
-      <td>-8.537370</td>
-      <td>-24.515978</td>
-      <td>...</td>
-      <td>-3.992567</td>
-      <td>-26.971264</td>
-      <td>-11.818206</td>
-      <td>-6.980398</td>
-      <td>-4.949781</td>
-      <td>-8.873546</td>
-      <td>-12.382152</td>
-      <td>-5.388040</td>
-      <td>-19.186934</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>103</th>
-      <td>50</td>
-      <td>-9.335183</td>
-      <td>-11.704183</td>
-      <td>12.291105</td>
-      <td>-6.097588</td>
-      <td>-19.876202</td>
-      <td>-20.937525</td>
-      <td>-13.204792</td>
-      <td>-1.552722</td>
-      <td>-17.927401</td>
-      <td>...</td>
-      <td>-4.384526</td>
-      <td>-22.728746</td>
-      <td>-10.506824</td>
-      <td>-6.928967</td>
-      <td>-1.555773</td>
-      <td>-8.912907</td>
-      <td>-14.485776</td>
-      <td>-5.407309</td>
-      <td>-18.228041</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>221</th>
-      <td>108</td>
-      <td>-7.354957</td>
-      <td>-9.589952</td>
-      <td>-6.286791</td>
-      <td>-10.872064</td>
-      <td>-20.493488</td>
-      <td>-22.544647</td>
-      <td>-13.147114</td>
-      <td>-9.828817</td>
-      <td>-14.353374</td>
-      <td>...</td>
-      <td>-9.426474</td>
-      <td>-21.085129</td>
-      <td>-11.508833</td>
-      <td>-12.529051</td>
-      <td>-5.620958</td>
-      <td>-7.835037</td>
-      <td>-10.463814</td>
-      <td>-10.011393</td>
-      <td>-17.232655</td>
-      <td>6</td>
-    </tr>
-    <tr>
-      <th>238</th>
-      <td>116</td>
-      <td>-10.382986</td>
-      <td>-10.848916</td>
-      <td>1.851252</td>
-      <td>-5.061864</td>
-      <td>-15.924600</td>
-      <td>-7.336891</td>
-      <td>-4.925910</td>
-      <td>-6.326971</td>
-      <td>-13.854161</td>
-      <td>...</td>
-      <td>-10.371316</td>
-      <td>-19.279264</td>
-      <td>-14.257339</td>
-      <td>-13.585352</td>
-      <td>0.204445</td>
-      <td>-10.267734</td>
-      <td>-23.560305</td>
-      <td>-7.179190</td>
-      <td>-24.511086</td>
-      <td>6</td>
-    </tr>
-  </tbody>
-</table>
-<p>5 rows × 21 columns</p>
-</div></div></div>
 </div>
 </div>
 </div>
@@ -1132,22 +696,6 @@
     <span class="p">)</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<img alt="_images/clustering_HMM_38_0.png" src="_images/clustering_HMM_38_0.png" />
-<img alt="_images/clustering_HMM_38_1.png" src="_images/clustering_HMM_38_1.png" />
-<img alt="_images/clustering_HMM_38_2.png" src="_images/clustering_HMM_38_2.png" />
-<img alt="_images/clustering_HMM_38_3.png" src="_images/clustering_HMM_38_3.png" />
-<img alt="_images/clustering_HMM_38_4.png" src="_images/clustering_HMM_38_4.png" />
-<img alt="_images/clustering_HMM_38_5.png" src="_images/clustering_HMM_38_5.png" />
-<img alt="_images/clustering_HMM_38_6.png" src="_images/clustering_HMM_38_6.png" />
-<img alt="_images/clustering_HMM_38_7.png" src="_images/clustering_HMM_38_7.png" />
-<img alt="_images/clustering_HMM_38_8.png" src="_images/clustering_HMM_38_8.png" />
-<img alt="_images/clustering_HMM_38_9.png" src="_images/clustering_HMM_38_9.png" />
-<img alt="_images/clustering_HMM_38_10.png" src="_images/clustering_HMM_38_10.png" />
-<img alt="_images/clustering_HMM_38_11.png" src="_images/clustering_HMM_38_11.png" />
-<img alt="_images/clustering_HMM_38_12.png" src="_images/clustering_HMM_38_12.png" />
-<img alt="_images/clustering_HMM_38_13.png" src="_images/clustering_HMM_38_13.png" />
 </div>
 </div>
 </div>
@@ -1201,22 +749,6 @@
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/clustering_HMM_44_0.png" src="_images/clustering_HMM_44_0.png" />
-<img alt="_images/clustering_HMM_44_1.png" src="_images/clustering_HMM_44_1.png" />
-<img alt="_images/clustering_HMM_44_2.png" src="_images/clustering_HMM_44_2.png" />
-<img alt="_images/clustering_HMM_44_3.png" src="_images/clustering_HMM_44_3.png" />
-<img alt="_images/clustering_HMM_44_4.png" src="_images/clustering_HMM_44_4.png" />
-<img alt="_images/clustering_HMM_44_5.png" src="_images/clustering_HMM_44_5.png" />
-<img alt="_images/clustering_HMM_44_6.png" src="_images/clustering_HMM_44_6.png" />
-<img alt="_images/clustering_HMM_44_7.png" src="_images/clustering_HMM_44_7.png" />
-<img alt="_images/clustering_HMM_44_8.png" src="_images/clustering_HMM_44_8.png" />
-<img alt="_images/clustering_HMM_44_9.png" src="_images/clustering_HMM_44_9.png" />
-<img alt="_images/clustering_HMM_44_10.png" src="_images/clustering_HMM_44_10.png" />
-<img alt="_images/clustering_HMM_44_11.png" src="_images/clustering_HMM_44_11.png" />
-<img alt="_images/clustering_HMM_44_12.png" src="_images/clustering_HMM_44_12.png" />
-<img alt="_images/clustering_HMM_44_13.png" src="_images/clustering_HMM_44_13.png" />
-</div>
 </div>
 </div>
 <div class="section" id="id1">
@@ -1230,27 +762,28 @@
 <p>Since just assessing the outcome using the topographic heatmap doesn’t provide a lot of information, I would like to generate a raw voltage plot to visualize the output. However, since the <code class="docutils literal notranslate"><span class="pre">raw_voltage</span></code> function of the <code class="docutils literal notranslate"><span class="pre">simpl_eeg</span></code> package doesn’t accept data frame and don’t have access to overwrite the epoch data to include the cluster label, I will use the line plot from <code class="docutils literal notranslate"><span class="pre">plotly</span></code> package. Since the entire dataset is too large, I am only looking at a screenshot of <strong>a five second time period</strong> for each clusters.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">color_list</span> <span class="o">=</span> <span class="p">[</span>
-    <span class="s2">&quot;red&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;green&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;blue&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;black&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;brown&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;grey&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;chocolate&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;crimson&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;coral&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;darkgoldenrod&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;purple&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;burlywood&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;cornflowerblue&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;darkblue&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;darkviolet&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;darkorange&quot;</span><span class="p">,</span>
-    <span class="s2">&quot;darkgray&quot;</span><span class="p">,</span>
-<span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># add more color values if # of clusters is more than 18</span>
+<span class="n">color_dict</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="mi">0</span> <span class="p">:</span> <span class="s2">&quot;red&quot;</span><span class="p">,</span>
+    <span class="mi">1</span> <span class="p">:</span> <span class="s2">&quot;yellow&quot;</span><span class="p">,</span>
+    <span class="mi">2</span> <span class="p">:</span> <span class="s2">&quot;green&quot;</span><span class="p">,</span>
+    <span class="mi">3</span> <span class="p">:</span> <span class="s2">&quot;blue&quot;</span><span class="p">,</span>
+    <span class="mi">4</span> <span class="p">:</span> <span class="s2">&quot;black&quot;</span><span class="p">,</span>
+    <span class="mi">5</span> <span class="p">:</span> <span class="s2">&quot;brown&quot;</span><span class="p">,</span>
+    <span class="mi">6</span> <span class="p">:</span> <span class="s2">&quot;grey&quot;</span><span class="p">,</span>
+    <span class="mi">7</span> <span class="p">:</span> <span class="s2">&quot;chocolate&quot;</span><span class="p">,</span>
+    <span class="mi">8</span> <span class="p">:</span> <span class="s2">&quot;crimson&quot;</span><span class="p">,</span>
+    <span class="mi">9</span> <span class="p">:</span> <span class="s2">&quot;coral&quot;</span><span class="p">,</span>
+    <span class="mi">10</span> <span class="p">:</span> <span class="s2">&quot;darkgoldenrod&quot;</span><span class="p">,</span>
+    <span class="mi">11</span> <span class="p">:</span> <span class="s2">&quot;orange&quot;</span><span class="p">,</span>
+    <span class="mi">12</span> <span class="p">:</span> <span class="s2">&quot;purple&quot;</span><span class="p">,</span>
+    <span class="mi">13</span> <span class="p">:</span> <span class="s2">&quot;burlywood&quot;</span><span class="p">,</span>
+    <span class="mi">14</span> <span class="p">:</span>  <span class="s2">&quot;cornflowerblue&quot;</span><span class="p">,</span>
+    <span class="mi">15</span> <span class="p">:</span> <span class="s2">&quot;darkblue&quot;</span><span class="p">,</span>
+    <span class="mi">16</span> <span class="p">:</span> <span class="s2">&quot;darkviolet&quot;</span><span class="p">,</span>
+    <span class="mi">17</span> <span class="p">:</span> <span class="s2">&quot;darkorange&quot;</span><span class="p">,</span>
+    <span class="mi">18</span> <span class="p">:</span> <span class="s2">&quot;darkgray&quot;</span><span class="p">,</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>
@@ -1264,18 +797,8 @@
             <span class="n">single_plot_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">+</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">i</span>
     <span class="n">single_plot_df</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="o">.</span><span class="n">index</span>
     <span class="n">single_plot_df</span> <span class="o">=</span> <span class="n">single_plot_df</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">id_vars</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;cluster&quot;</span><span class="p">,</span> <span class="s2">&quot;time&quot;</span><span class="p">])</span>
-    <span class="n">line_fig</span> <span class="o">=</span> <span class="n">go</span><span class="o">.</span><span class="n">Figure</span><span class="p">()</span>
-    <span class="n">line_fig</span><span class="o">.</span><span class="n">add_trace</span><span class="p">(</span>
-        <span class="n">go</span><span class="o">.</span><span class="n">Scatter</span><span class="p">(</span>
-            <span class="n">x</span><span class="o">=</span><span class="n">single_plot_df</span><span class="p">[</span><span class="s2">&quot;time&quot;</span><span class="p">],</span>
-            <span class="n">y</span><span class="o">=</span><span class="n">single_plot_df</span><span class="p">[</span><span class="s2">&quot;value&quot;</span><span class="p">],</span>
-            <span class="n">mode</span><span class="o">=</span><span class="s2">&quot;lines&quot;</span><span class="p">,</span>
-            <span class="n">name</span><span class="o">=</span><span class="n">cluster</span><span class="p">,</span>
-            <span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color_list</span><span class="p">[</span><span class="n">color_count</span><span class="p">]),</span>
-            <span class="n">hoverinfo</span><span class="o">=</span><span class="s2">&quot;skip&quot;</span><span class="p">,</span>
-        <span class="p">)</span>
-    <span class="p">)</span>
-    <span class="n">line_fig</span><span class="o">.</span><span class="n">update_layout</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">cluster</span><span class="p">)</span>
+    <span class="n">line_fig</span> <span class="o">=</span> <span class="n">px</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">single_plot_df</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;value&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;cluster&#39;</span><span class="p">,</span> <span class="n">size_max</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">cluster</span><span class="p">)</span>
+    <span class="n">line_fig</span><span class="o">.</span><span class="n">update_traces</span><span class="p">(</span><span class="n">line</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="n">color_dict</span><span class="p">[</span><span class="n">color_count</span><span class="p">]))</span>
     <span class="n">line_fig</span><span class="o">.</span><span class="n">update_xaxes</span><span class="p">(</span><span class="n">showticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">line_fig</span><span class="o">.</span><span class="n">update_yaxes</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="s2">&quot;Channel&quot;</span><span class="p">,</span> <span class="n">showticklabels</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
     <span class="n">line_fig</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
