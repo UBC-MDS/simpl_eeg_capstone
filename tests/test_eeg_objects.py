@@ -25,19 +25,19 @@ def test_EEG_File():
     assert eeg_file.experiment == FOLDER
     assert eeg_file.folder_path == PATH
     assert isinstance(eeg_file.raw, mne.io.eeglab.eeglab.RawEEGLAB)
-    assert isinstance(eeg_file.mat, dict)
+    #assert isinstance(eeg_file.events, list)
 
 
-def test_Epoch():
-    epochs = eeg_objects.Epochs(
-        PATH,
-        file_name="test.set"
-    )
+# def test_Epoch():
+#     epochs = eeg_objects.Epochs(
+#         PATH,
+#         file_name="test.set"
+#     )
 
-    # check attribute types
-    assert isinstance(epochs.eeg_file, eeg_objects.EEG_File)
-    assert isinstance(epochs.all_epochs, mne.Epochs)
-    assert isinstance(epochs.epoch, mne.Epochs)
+#     # check attribute types
+#     assert isinstance(epochs.eeg_file, eeg_objects.EEG_File)
+#     assert isinstance(epochs.all_epochs, mne.Epochs)
+#     assert isinstance(epochs.epoch, mne.Epochs)
 
 
 if __name__ == '__main__':

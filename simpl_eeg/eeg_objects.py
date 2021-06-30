@@ -34,14 +34,17 @@ class EEG_File:
             folder_path: str
                 The folder path containing the experiment data
             file_name: str (optional)
-                The file name for the main file to read in. The currently supported filetypes
+                The file name for the main file to read in. The supported filetypes
                 are ".set" and ".vhdr". Defaults to None.
+            event_file_name: str (optional)
+                The file name for the event file to read in. The supported filetypes
+                are ".mat" and ".vmrk". Defaults to 'impact locations.mat'.
         """
 
         self.folder_path = folder_path
         self.experiment = folder_path.split("/")[-1]
-        events = None
         file_source = None
+        events = []
 
         # If a filename is specified look for a matching type
         if file_name != None:
@@ -68,11 +71,10 @@ class EEG_File:
                     data_path = folder_path+"/"+f
                     break
         
-        print('file source is' + file_source)
         # Finally, load files and events based on file type
         if file_source == '.set':
-            print("set raw to" + data_path)
             raw = mne.io.read_raw_eeglab(data_path)
+            print("loaded raw from " + data_path)
             #Version to auto-load a .mat file but accidently loads wrong file sometimes
             # for f in file_list:
             #     if f.endswith('.mat'):
@@ -99,7 +101,12 @@ class EEG_File:
 
         elif file_source == '.vhdr':
             raw = mne.io.read_raw_brainvision(data_path)
+            print("loaded raw from " + data_path)
             events, _ = mne.events_from_annotations(raw, verbose=False)
+
+        else:
+            raw = None
+        
             
         self.raw = raw
         self.events = events
@@ -198,7 +205,6 @@ class Epochs:
         # create epoch with autodetected event time
         else:
             try:
-                #stim_mock = self.eeg_file.events["elecmax1"]
                 events = self.eeg_file.events
             except(KeyError):
                 # if .mat file isn't working set start time to 0
@@ -222,8 +228,6 @@ class Epochs:
 
         if tmin == 0:
             kwargs["baseline"] = (0, 0)
-        
-        print(events)
 
         # generate the epoch
         epochs = mne.Epochs(
