@@ -10,19 +10,21 @@ instructions on the package, user interface, and clustering stretch goal
 can all be found in our [Documentation on GitHub
 Pages](https://ubc-mds.github.io/simpl_eeg_capstone/eeg_objects.html).
 
+![Web Application](reports/images/ui_showcase.gif)
+
 # Helpful Links
 
--   [Proposal
+  - [Proposal
     Presentation](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Capstone_Proposal_Presentation.pdf)
--   [Proposal
+  - [Proposal
     Report](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Proposal.pdf)
--   [Final
+  - [Final
     Presentation](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Capstone_Final_Presentation.pdf)
--   [Final
+  - [Final
     Report](https://github.com/UBC-MDS/simpl_eeg_capstone/blob/main/reports/Final_Report.pdf)
--   [Meeting Agendas and
+  - [Meeting Agendas and
     Minutes](https://github.com/UBC-MDS/simpl_eeg_capstone/tree/main/docs/minutes/_posts)
--   [Product
+  - [Product
     Documentation](https://ubc-mds.github.io/simpl_eeg_capstone/)
 
 # Installation Instructions
@@ -102,27 +104,27 @@ ghp-import -n -p -f docs/simpl_instructions/_build/html
 
 # Group Members
 
--   Matthew Pin
--   Mo Garoub
--   Zhanyi(Yiki) Su
--   Sasha Babicki
+  - Matthew Pin
+  - Mo Garoub
+  - Zhanyi(Yiki) Su
+  - Sasha Babicki
 
 # Mentor
 
--   Joel Ostblom
+  - Joel Ostblom
 
 # References
 
-<div id="refs" class="references csl-bib-body hanging-indent">
+<div id="refs" class="references">
 
-<div id="ref-jupyterbook" class="csl-entry">
+<div id="ref-jupyterbook">
 
 Executable Books Community. 2020. *Jupyter Book* (version v0.10).
 Zenodo. <https://doi.org/10.5281/zenodo.4539666>.
 
 </div>
 
-<div id="ref-mne" class="csl-entry">
+<div id="ref-mne">
 
 Gramfort, Alexandre, Martin Luessi, Eric Larson, Denis A. Engemann,
 Daniel Strohmeier, Christian Brodbeck, Roman Goj, et al. 2013. “MEG and
@@ -131,15 +133,15 @@ EEG Data Analysis with MNE-Python.” *Frontiers in Neuroscience* 7 (267):
 
 </div>
 
-<div id="ref-matplotlib" class="csl-entry">
+<div id="ref-matplotlib">
 
-Hunter, J. D. 2007. “Matplotlib: A 2d Graphics Environment.” *Computing
+Hunter, J. D. 2007. “Matplotlib: A 2D Graphics Environment.” *Computing
 in Science & Engineering* 9 (3): 90–95.
 <https://doi.org/10.1109/MCSE.2007.55>.
 
 </div>
 
-<div id="ref-scikit-learn" class="csl-entry">
+<div id="ref-scikit-learn">
 
 Pedregosa, F., G. Varoquaux, A. Gramfort, V. Michel, B. Thirion, O.
 Grisel, M. Blondel, et al. 2011. “Scikit-Learn: Machine Learning in
@@ -147,14 +149,14 @@ Python.” *Journal of Machine Learning Research* 12: 2825–30.
 
 </div>
 
-<div id="ref-plotly" class="csl-entry">
+<div id="ref-plotly">
 
 Plotly Technologies Inc. 2015. “Collaborative Data Science.” Montreal,
 QC: Plotly Technologies Inc. 2015. <https://plot.ly>.
 
 </div>
 
-<div id="ref-tslearn" class="csl-entry">
+<div id="ref-tslearn">
 
 Tavenard, Romain, Johann Faouzi, Gilles Vandewiele, Felix Divo,
 Guillaume Androz, Chester Holtz, Marie Payne, et al. 2020. “Tslearn, a
@@ -164,9 +166,9 @@ Learning Research* 21 (118): 1–6.
 
 </div>
 
-<div id="ref-minisom" class="csl-entry">
+<div id="ref-minisom">
 
-Vettigli, Giuseppe. 2018. “MiniSom: Minimalistic and NumPy-Based
+Vettigli, Giuseppe. 2018. “MiniSom: Minimalistic and Numpy-Based
 Implementation of the Self Organizing Map.”
 <https://github.com/JustGlowing/minisom/>.
 
