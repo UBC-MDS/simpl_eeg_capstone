@@ -7,6 +7,8 @@ Module for creating custom epoch objects
 import mne
 import scipy.io
 import warnings
+from os import listdir
+from os.path import isfile, join
 
 
 class EEG_File:
@@ -24,7 +26,7 @@ class EEG_File:
             raw experiment data in FIF format
     """
 
-    def __init__(self, folder_path, file_name="fixica"):
+    def __init__(self, folder_path, file_name=None, event_file_name="impact locations.mat"):
         """
         Imports and stores EEG data files
 
@@ -32,25 +34,76 @@ class EEG_File:
             folder_path: str
                 The folder path containing the experiment data
             file_name: str (optional)
-                The file name for the .set and .fdt file.
-                Defaults to "fixica".
+                The file name for the main file to read in. The currently supported filetypes
+                are ".set" and ".vhdr". Defaults to None.
         """
 
         self.folder_path = folder_path
         self.experiment = folder_path.split("/")[-1]
+        events = None
+        file_source = None
 
-        try:
-            self.mat = scipy.io.loadmat(folder_path+"/impact locations.mat")
-        except(FileNotFoundError):
-            warnings.warn(
-                "Events could not be detected, "
-                "please ensure an impact locations.mat file exists"
-            )
-            # return empty dictionary
-            self.mat = dict()
+        # If a filename is specified look for a matching type
+        if file_name != None:
+                if file_name.endswith('.set'):
+                    file_source='.set'
+                elif file_name.endswith('.vhdr'):
+                    file_source = '.vhdr'
+                # Else throw error that file extension is not supported
+                data_path = folder_path+"/"+file_name
+        
 
-        self.raw = mne.io.read_raw_eeglab(folder_path+"/"+file_name+".set")
+        # Get a list of all files in the specified folder
+        file_list = [f for f in listdir(folder_path) if isfile(join(folder_path, f))]
 
+        # If no filename is specified automatically take the first result that matches in the foulder
+        if file_name == None:
+            for f in file_list:
+                if f.endswith('.set'):
+                    file_source = '.set'
+                elif f.endswith('.vhdr'):
+                    file_source = '.vhdr'
+                # If a match has been found save the data_path and break the loop
+                if file_source != None:
+                    data_path = folder_path+"/"+f
+                    break
+        
+        print('file source is' + file_source)
+        # Finally, load files and events based on file type
+        if file_source == '.set':
+            print("set raw to" + data_path)
+            raw = mne.io.read_raw_eeglab(data_path)
+            #Version to auto-load a .mat file but accidently loads wrong file sometimes
+            # for f in file_list:
+            #     if f.endswith('.mat'):
+            #         events = scipy.io.loadmat(folder_path+"/"+f)
+            #         break
+            # if events == None:
+            #     print("did not load scipy events")
+            #     events = dict()
+            #     warnings.warn(
+            #         """Events file not be detected, please ensure a .mat
+            #         file containing event data exists in the same folder
+            #         as the .set file."""
+            #     )
+            try:
+                events = scipy.io.loadmat(folder_path+"/"+event_file_name)
+                stim_mock = events["elecmax1"]
+                freq = int(raw.info["sfreq"])
+                events = [[ts, 0, ts//freq] for i, ts in enumerate(stim_mock[0])]
+            except(FileNotFoundError):
+                warnings.warn(
+                    "Events could not be detected, "
+                    "please ensure an impact locations.mat file exists"
+                )
+
+        elif file_source == '.vhdr':
+            raw = mne.io.read_raw_brainvision(data_path)
+            events, _ = mne.events_from_annotations(raw, verbose=False)
+            
+        self.raw = raw
+        self.events = events
+        self.file_source = file_source
 
 class Epochs:
     """
@@ -79,7 +132,7 @@ class Epochs:
         tmin=-0.3,
         tmax=0.7,
         start_second=None,
-        file_name="fixica",
+        file_name=None,
         **kwargs
     ):
         """
@@ -104,7 +157,7 @@ class Epochs:
         """
         if tmax-tmin < 0.0001:
             raise Exception("Please increase the time between tmin and tmax")
-
+        
         self.eeg_file = EEG_File(folder_path, file_name=file_name)
         self.all_epochs = self.generate_epochs(tmin, tmax, start_second, **kwargs)
 
@@ -145,13 +198,18 @@ class Epochs:
         # create epoch with autodetected event time
         else:
             try:
-                stim_mock = self.eeg_file.mat["elecmax1"]
+                #stim_mock = self.eeg_file.events["elecmax1"]
+                events = self.eeg_file.events
             except(KeyError):
                 # if .mat file isn't working set start time to 0
                 stim_mock = [[int(-tmin*freq)]]
+                events = [[ts, 0, ts//freq] for i, ts in enumerate(stim_mock[0])]
 
-        # generate the events
-        events = [[ts, 0, ts//freq] for i, ts in enumerate(stim_mock[0])]
+        # Make a proper mock events if the type is .set
+        if start_second:
+            events = [[ts, 0, ts//freq] for i, ts in enumerate(stim_mock[0])]
+        
+        #default_event_id = {str(i[2])+" seconds": i[2] for i in events}
 
         # combine default settings with user specified settings
         default_kwargs = {
@@ -164,6 +222,8 @@ class Epochs:
 
         if tmin == 0:
             kwargs["baseline"] = (0, 0)
+        
+        print(events)
 
         # generate the epoch
         epochs = mne.Epochs(

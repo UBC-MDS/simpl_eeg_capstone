@@ -206,6 +206,17 @@ def generate_eeg_file(experiment_num):
     )
     return gen_eeg_file
 
+@st.cache(show_spinner=False)
+def generate_event_times_only(events):
+    """
+    Helper function for creating standalone eeg_file object
+    """
+    event_times_only = []
+    for i in events:
+        event_times_only.append(i[0])
+    event_times_only = np.array(event_times_only)
+    return event_times_only
+
 
 @st.cache(show_spinner=False)
 def generate_epoch(experiment_num, tmin, tmax, start_second, epoch_num):
@@ -388,14 +399,27 @@ def main():
         """----------\nExperiment\nlength:\n{}""".format(exp_len)
     )
 
+
+    if bool(raw_epoch_obj.events):
+        event_times=generate_event_times_only(raw_epoch_obj.events)
+        event_file_loaded=True
+        timestamp_options=["Epoch", "Time"]
+    else:
+        event_file_loaded = False
+        timestamp_options=["Time"]
+        st.warning("""No events file could be loaded. If you wish to use one and are
+        using a .set file please label it 'impact locations.mat' and place it in the
+        same folder as the .set file.""")
+
     col1, col2 = st.sidebar.beta_columns((1, 1.35))
     time_select = col1.radio(
         "Timestamp type",
-        ["Epoch", "Time"],
+        options=timestamp_options,
         help="""Select "Epoch" to render figures based around the timestamps
         specified in the "impact locations.mat".
         Select "Time" to specify a custom timestamp to
-        render the animation from.
+        render the animation from. Only "Time" is available if no event file
+        can be loaded. 
         """
     )
 
@@ -430,15 +454,43 @@ def main():
         in_timeframe = "epoch"
 
         refresh_rate = raw_epoch_obj.raw.info.get('sfreq')
-        event_times = raw_epoch_obj.mat['elecmax1'][0]
+        
+
+
+
+
+
+
+
+        # #event_times = scipy.io.loadmat(DATA_FOLDER+'/'+experiment_num+'/'+'impact locations.mat')
+        # import scipy.io
+        # event_times = scipy.io.loadmat(DATA_FOLDER+'/'+experiment_num+'/'+'impact locations.mat')['elecmax1'][0]
+        
+
+
+        # if raw_epoch_obj.file_source == ".set" and bool(raw_epoch_obj.events):
+        #     event_times = raw_epoch_obj.events["elecmax1"][0]
+        #     event_file_loaded = True
+        # elif raw_epoch_obj.file_source == ".set" and bool(raw_epoch_obj.events):
+        #     event_times = raw_epoch_obj.events
+        #     event_file_loaded = True
+
+
+
+
+
+
+
         epoch_times = {}
 
-        for i in range(len(event_times)):
-            secs = round(event_times[i]/refresh_rate, 2)
-            isec, fsec = divmod(round(secs*100), 100)
-            event_time_str = "{}.{:02.0f}".format(datetime.timedelta(seconds=isec), fsec)
-            label = str(i) + " (" + event_time_str + ")"
-            epoch_times[i] = label
+        if event_file_loaded:
+            for i in range(len(event_times)):
+                secs = round(event_times[i]/refresh_rate, 2)
+                isec, fsec = divmod(round(secs*100), 100)
+                event_time_str = "{}.{:02.0f}".format(datetime.timedelta(seconds=isec), fsec)
+                label = str(i) + " (" + event_time_str + ")"
+                epoch_times[i] = label
+
 
         epoch_num = col2.selectbox(
             "Event",
