@@ -4,35 +4,63 @@ import mne
 import numpy
 import numpy as np
 from mpl_toolkits.axes_grid1.axes_divider import make_axes_locatable
+from pylab import text
 
 
-def add_timestamp(epoch, frame_number, xpos, ypos):
+def add_timestamp(epoch, ax_lims, frame_number):
     """
-    Adds a timestamp to a matplotlib.image.AxesImage object
+    Adds a timestamp to a matplotlib.image.AxesImage object.
     
     Parameters:
         epoch: mne.epochs.Epochs
             MNE epochs object containing the timestamps.
-
+        
+        ax_lims: tuple
+            A tuple of the ax_lims.
+            
         frame_number: int
             The timestamp to plot.
-        
-        xpos: float
-            The matplotlib x coordinate of the timestamp.
-
-        ypos: float
-            The matplotlib y coordinate of the timestamp.
         
     Returns:
     """
     
     frame_time = epoch.times[frame_number]
     tstamp = format(frame_time, '.4f')
+    
     if frame_time >= 0:
-        plt.text(-35, -130, 'time:  {}'.format(tstamp) + 's', fontsize=10)
+        text(ax_lims[0], ax_lims[1], 'time:  {}'.format(tstamp) + 's')
     else:
-        plt.text(-35, -130, 'time: {}'.format(tstamp) + 's', fontsize=10)
-
+        text(ax_lims[0], ax_lims[1], 'time: {}'.format(tstamp) + 's')
+    
+        
+        
+def get_axis_lims(epoch):
+    """
+    Generates an invisible mne.viz.plot_topomap plot and gets the ylim from its
+    matplotlib.axes._subplots.AxesSubplot.
+    
+    Parameters:
+        epoch: mne.epochs.Epochs
+            MNE epochs object containing the timestamps.
+        
+    Returns:
+        ax_lims: tuple
+            A tuple of the ax_lims.
+    """
+    fig, ax = plt.subplots()
+    
+    mne.viz.plot_topomap(
+        data=epoch.get_data()[0][:, 0],
+        pos=epoch.info,
+        show=False,
+        res=1
+    )
+    
+    axis_lims = ax.get_ylim()
+    plt.close()
+    return(axis_lims)
+        
+        
 
 def plot_topomap_2d(epoch,
                     plotting_data=None,
@@ -189,24 +217,39 @@ def plot_topomap_2d(epoch,
     if mark == 'none':
         sensor_value = False
 
-    if colorbar:
+    if colorbar or timestamp:
         fig, ax = plt.subplots()
 
-    topo_2d_fig = mne.viz.plot_topomap(
-        data=plotting_data,
-        pos=epoch.info,  # Location info for data points
-        vmin=cmin / 1e6,  # Convert back to volts
-        vmax=cmax / 1e6,
-        cmap=colormap, 
-        sensors=sensor_value,  
-        names=names_value, 
-        show_names=show_names_value,
-        **kwargs
-    )[0]
+    try:
+        topo_2d_fig = mne.viz.plot_topomap(
+            data=plotting_data,
+            pos=epoch.info,  # Location info for data points
+            vmin=cmin / 1e6,  # Convert back to volts
+            vmax=cmax / 1e6,
+            cmap=colormap, 
+            sensors=sensor_value,  
+            names=names_value, 
+            show_names=show_names_value,
+            **kwargs
+        )[0]
+    except:
+        del kwargs['sphere']
+        topo_2d_fig = mne.viz.plot_topomap(
+            data=plotting_data,
+            pos=epoch.info,  # Location info for data points
+            vmin=cmin / 1e6,  # Convert back to volts
+            vmax=cmax / 1e6,
+            cmap=colormap, 
+            sensors=sensor_value,  
+            names=names_value, 
+            show_names=show_names_value,
+            **kwargs
+        )[0]
     
     if timestamp:
-        add_timestamp(epoch, recording_number, -130, 120)
-
+        ax_lims = ax.get_ylim()
+        add_timestamp(epoch, ax_lims, recording_number)
+        
     if colorbar:
         ax_divider = make_axes_locatable(ax)
         cax = ax_divider.append_axes("right", size=0.1, pad="0%")
@@ -222,7 +265,7 @@ def plot_topomap_2d(epoch,
             label='µV',
             bgcolor='0'
         )
-
+    
     return topo_2d_fig
 
 
@@ -346,6 +389,9 @@ def animate_topomap_2d(epoch,
     elif isinstance(epoch, mne.evoked.EvokedArray):
         frames_to_show = np.arange(0, evoked.data.shape[1], 1)
         plotting_data = epoch
+    
+    if colorbar or timestamps:
+        ax_lims = get_axis_lims(epoch)
 
     ms_between_frames = 1000 / frame_rate
 
@@ -358,8 +404,10 @@ def animate_topomap_2d(epoch,
         
 
     def animate(frame_number):
+        #if frame_number != 0:
         fig.clear()
         ax.clear()
+        
         # https://mne.tools/dev/generated/mne.viz.plot_topomap.html
         topomap_2d = plot_topomap_2d(
             epoch=epoch,
@@ -374,7 +422,7 @@ def animate_topomap_2d(epoch,
         )
         
         if timestamp:
-            add_timestamp(epoch, frame_number, -35, -130)
+            add_timestamp(epoch, ax_lims, frame_number)
 
         if colorbar:
             cax = ax_divider.append_axes("right", size=0.1, pad="0%")
@@ -388,6 +436,7 @@ def animate_topomap_2d(epoch,
                 label='µV',
                 bgcolor='0'
             )
+        
             
         return [fig]
 

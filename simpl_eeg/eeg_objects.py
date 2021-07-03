@@ -102,7 +102,12 @@ class EEG_File:
         elif file_source == '.vhdr':
             raw = mne.io.read_raw_brainvision(data_path)
             print("loaded raw from " + data_path)
+            montage = mne.channels.make_standard_montage('easycap-M1')
+            # montage = mne.channels.read_montage(kind='filename', ch_names=None, path='data_path', unit='m', transform=False)
+            raw.set_montage(montage, verbose=False)
             events, _ = mne.events_from_annotations(raw, verbose=False)
+            events = events.tolist()
+            
 
         else:
             raw = None
@@ -201,21 +206,19 @@ class Epochs:
         if start_second:
             start_time = start_second*freq
             stim_mock = [[start_time]]
+            # Make a proper mock events if the type is .set
+            events = [[ts, 0, ts//freq] for i, ts in enumerate(stim_mock[0])]
 
         # create epoch with autodetected event time
         else:
-            try:
+            # If epoch info has been loaded self.events will contain it
+            if(self.eeg_file.events):
                 events = self.eeg_file.events
-            except(KeyError):
+            # Else, self.events will be an empty dict
+            else:
                 # if .mat file isn't working set start time to 0
                 stim_mock = [[int(-tmin*freq)]]
                 events = [[ts, 0, ts//freq] for i, ts in enumerate(stim_mock[0])]
-
-        # Make a proper mock events if the type is .set
-        if start_second:
-            events = [[ts, 0, ts//freq] for i, ts in enumerate(stim_mock[0])]
-        
-        #default_event_id = {str(i[2])+" seconds": i[2] for i in events}
 
         # combine default settings with user specified settings
         default_kwargs = {

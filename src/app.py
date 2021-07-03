@@ -364,7 +364,7 @@ def main():
         curr_path = os.path.join("data", name)
         if os.path.isdir(curr_path):
             for fname in os.listdir(curr_path):
-                if fname.endswith('.set'):
+                if fname.endswith('.set') or fname.endswith('.vhdr'):
                     experiment_list.append(name)
 
     if not experiment_list:
@@ -424,15 +424,21 @@ def main():
     )
 
     if time_select == "Time":
+        if max_secs < 5.0:
+            start_time_default = "0:00:00"
+        else:
+            start_time_default = "0:00:05"
+
         start_time = col2.text_input(
             "Custom event time",
-            value="0:00:05",
+            value=start_time_default,
             max_chars=7,
             help="""The timestamp to render the figures around.
             Must be entered in the format "H:MM:SS".
             The max time with the currently selected experiment is "{}".
             """.format(max_time)
         )
+
         start_second, in_timeframe = calculate_timeframe(start_time, raw_epoch_obj.raw)
         if in_timeframe == "wrong_format":
             st.error(
@@ -455,33 +461,10 @@ def main():
 
         refresh_rate = raw_epoch_obj.raw.info.get('sfreq')
         
-
-
-
-
-
-
-
-        # #event_times = scipy.io.loadmat(DATA_FOLDER+'/'+experiment_num+'/'+'impact locations.mat')
-        # import scipy.io
-        # event_times = scipy.io.loadmat(DATA_FOLDER+'/'+experiment_num+'/'+'impact locations.mat')['elecmax1'][0]
-        
-
-
-        # if raw_epoch_obj.file_source == ".set" and bool(raw_epoch_obj.events):
-        #     event_times = raw_epoch_obj.events["elecmax1"][0]
-        #     event_file_loaded = True
-        # elif raw_epoch_obj.file_source == ".set" and bool(raw_epoch_obj.events):
-        #     event_times = raw_epoch_obj.events
-        #     event_file_loaded = True
-
-
-
-
-
-
-
         epoch_times = {}
+
+        # Keep track of epoch times less than 5 seconds so seconds before isn't too big
+        epochs_less_than_1sec = []
 
         if event_file_loaded:
             for i in range(len(event_times)):
@@ -490,7 +473,8 @@ def main():
                 event_time_str = "{}.{:02.0f}".format(datetime.timedelta(seconds=isec), fsec)
                 label = str(i) + " (" + event_time_str + ")"
                 epoch_times[i] = label
-
+                if secs < 1.0:
+                    epochs_less_than_1sec.append(i)
 
         epoch_num = col2.selectbox(
             "Event",
@@ -508,6 +492,9 @@ def main():
         tmin_max = min(float(start_second), 10.0)
     if in_timeframe == "min":
         tmin_default = 0.0
+    if in_timeframe == "epoch":
+        if epoch_num in epochs_less_than_1sec:
+            tmin_default = 0.0
     
     tmin = st.sidebar.number_input(
         "Seconds before event",
@@ -529,6 +516,11 @@ def main():
             tmax_max = seconds_to_end
         if seconds_to_end < 0.7:
             tmax_value_default = seconds_to_end
+
+    if tmax_max > max_secs:
+        tmax_max = max_secs
+        tmax_value_default = max_secs
+    
 
     tmax = st.sidebar.number_input(
         "Seconds after event",
