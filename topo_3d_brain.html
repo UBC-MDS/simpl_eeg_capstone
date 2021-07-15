@@ -42,8 +42,6 @@
     <script src="_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -423,11 +421,12 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/data/109/fixica.fdt
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:52: RuntimeWarning: Data file name in EEG.data (109 whole fixed ica.fdt) is incorrect, the file name must have changed on disk, using the correct file name (fixica.fdt).
-  self.raw = mne.io.read_raw_eeglab(folder_path+&quot;/&quot;+file_name+&quot;.set&quot;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:199: RuntimeWarning: Data file name in EEG.data (109 whole fixed ica.fdt) is incorrect, the file name must have changed on disk, using the correct file name (fixica.fdt).
+  raw = mne.io.read_raw_eeglab(data_path)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loaded raw from ../../data/109/fixica.set
+Not setting metadata
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
@@ -451,7 +450,7 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 bad epochs dropped
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:218: RuntimeWarning: The measurement information indicates a low-pass frequency of 1024 Hz. The decim=100 parameter will result in a sampling frequency of 20.48 Hz, which can cause aliasing artifacts.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:823: RuntimeWarning: The measurement information indicates a low-pass frequency of 1024 Hz. The decim=100 parameter will result in a sampling frequency of 20.48 Hz, which can cause aliasing artifacts.
   return epochs.copy().decimate(num_steps)
 </pre></div>
 </div>
@@ -636,7 +635,7 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reducing data rank from 19 -&gt; 19
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/topomap_3d_brain.py:290: RuntimeWarning: Too few samples (required : 100 got : 21), covariance estimate may be unreliable
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/topomap_3d_brain.py:282: RuntimeWarning: Too few samples (required : 100 got : 21), covariance estimate may be unreliable
   noise_cov = mne.compute_covariance(epoch, method=covariance_method)
 </pre></div>
 </div>
@@ -756,9 +755,9 @@
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>    Computing noise-normalization factors (dSPM)...
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/topomap_3d_brain.py:292: RuntimeWarning: No average EEG reference present in info[&quot;projs&quot;], covariance may be adversely affected. Consider recomputing covariance using with an average eeg reference projector added.
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/topomap_3d_brain.py:284: RuntimeWarning: No average EEG reference present in info[&quot;projs&quot;], covariance may be adversely affected. Consider recomputing covariance using with an average eeg reference projector added.
   inverse_operator = make_inverse_operator(epoch.info, fwd, noise_cov,
-/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/topomap_3d_brain.py:292: RuntimeWarning: No average EEG reference present in info[&quot;projs&quot;], covariance may be adversely affected. Consider recomputing covariance using with an average eeg reference projector added.
+/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/topomap_3d_brain.py:284: RuntimeWarning: No average EEG reference present in info[&quot;projs&quot;], covariance may be adversely affected. Consider recomputing covariance using with an average eeg reference projector added.
   inverse_operator = make_inverse_operator(epoch.info, fwd, noise_cov,
 </pre></div>
 </div>
@@ -802,7 +801,7 @@
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on function animate_matplot_brain in module simpl_eeg.topomap_3d_brain:
 
-animate_matplot_brain(epoch=None, fwd=&#39;auto&#39;, stc=&#39;auto&#39;, views=[&#39;lat&#39;, &#39;dor&#39;, &#39;fro&#39;], size=200, hemi=&#39;both&#39;, colormap=&#39;mne&#39;, colorbar=True, colormap_limit_type=&#39;lims&#39;, cmin=None, cmid=None, cmax=None, spacing=&#39;oct5&#39;, smoothing_steps=3, timestamp=True, frame_rate=12, **kwargs)
+animate_matplot_brain(epoch=None, fwd=&#39;auto&#39;, stc=&#39;auto&#39;, views=[&#39;lat&#39;, &#39;dor&#39;, &#39;fro&#39;], size=200, hemi=&#39;both&#39;, colormap=&#39;mne&#39;, colorbar=True, colormap_limit_type=&#39;lims&#39;, vmin=None, vmid=None, vmax=None, spacing=&#39;oct5&#39;, smoothing_steps=3, timestamp=True, frame_rate=12, **kwargs)
     Creates an animated view of all timestamp observations an mne.epochs.Epochs data using a matplotlib backend.
     If multiple views are used then speed becomes significantly slower. Colorbar placement may be inconsistent.
     
@@ -850,25 +849,25 @@ animate_matplot_brain(epoch=None, fwd=&#39;auto&#39;, stc=&#39;auto&#39;, views=
             Determines whether to include a colorbar on the plot not. Defaults to True.
     
         colormap_limit_type: str
-            Can be either &quot;lims&quot; or &quot;pos_lims&quot;. &quot;lims&quot; means that your cmin, cmid, and cmax values will specify the
-            &quot;Lower, middle, and upper bounds for colormap&quot;. Using &quot;pos_lims&quot; will lead to cmin, cmid, and cmax representing
+            Can be either &quot;lims&quot; or &quot;pos_lims&quot;. &quot;lims&quot; means that your vmin, vmid, and vmax values will specify the
+            &quot;Lower, middle, and upper bounds for colormap&quot;. Using &quot;pos_lims&quot; will lead to vmin, vmid, and vmax representing
             the &quot;Lower, middle, and upper bound for colormap. Positive values will be mirrored directly across
             zero during colormap construction to obtain negative control points.&quot; Defaults to &quot;lims&quot;.
     
-        cmin: float
+        vmin: float
             Specifies the lower value of the colormap limit. If no value is specified then
             limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the negative value of cmax if only that is provided.
+            will be the negative value of vmax if only that is provided.
     
-        cmid: float
+        vmid: float
             Specifies the middle value of the colormap limit. If no value is specified then
             limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the value between cmin and cmax if one/both of them is provided.
+            will be the value between vmin and vmax if one/both of them is provided.
     
-        cmax: float
+        vmax: float
             Specifies the middle value of the colormap limit. If no value is specified then
             limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the negative value of cmin if only that is provided.
+            will be the negative value of vmin if only that is provided.
     
         spacing: str
             Specifies the &#39;spacing&#39; parameter in the mne.SourceEstimate.plot() function. &quot;The spacing to use for the
@@ -909,8 +908,8 @@ animate_matplot_brain(epoch=None, fwd=&#39;auto&#39;, stc=&#39;auto&#39;, views=
 <span class="n">colormap</span><span class="o">=</span><span class="s1">&#39;mne&#39;</span>
 <span class="n">colorbar</span><span class="o">=</span><span class="kc">True</span>
 <span class="n">colormap_limit_type</span><span class="o">=</span><span class="s1">&#39;lims&#39;</span>
-<span class="n">cmin</span><span class="o">=-</span><span class="mi">2</span>
-<span class="n">cmax</span><span class="o">=</span><span class="mi">2</span>
+<span class="n">vmin</span><span class="o">=-</span><span class="mi">2</span>
+<span class="n">vmax</span><span class="o">=</span><span class="mi">2</span>
 <span class="n">spacing</span><span class="o">=</span><span class="s1">&#39;oct5&#39;</span>
 <span class="n">smoothing_steps</span><span class="o">=</span><span class="mi">5</span>
 <span class="n">timestamp</span><span class="o">=</span><span class="kc">True</span>
@@ -950,8 +949,8 @@ fwd=fwd</p></li>
     <span class="n">colormap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
     <span class="n">colorbar</span><span class="o">=</span><span class="n">colorbar</span><span class="p">,</span>
     <span class="n">colormap_limit_type</span><span class="o">=</span><span class="n">colormap_limit_type</span><span class="p">,</span>
-    <span class="n">cmin</span><span class="o">=</span><span class="n">cmin</span><span class="p">,</span>
-    <span class="n">cmax</span><span class="o">=</span><span class="n">cmax</span><span class="p">,</span>
+    <span class="n">vmin</span><span class="o">=</span><span class="n">vmin</span><span class="p">,</span>
+    <span class="n">vmax</span><span class="o">=</span><span class="n">vmax</span><span class="p">,</span>
     <span class="n">spacing</span><span class="o">=</span><span class="n">spacing</span><span class="p">,</span>
     <span class="n">smoothing_steps</span><span class="o">=</span><span class="n">smoothing_steps</span><span class="p">,</span>
     <span class="n">timestamp</span><span class="o">=</span><span class="n">timestamp</span><span class="p">,</span>
@@ -1027,8 +1026,8 @@ fwd=fwd</p></li>
                                                            <span class="n">recording_number</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
                                                            <span class="n">hemi</span><span class="o">=</span><span class="s1">&#39;lh&#39;</span><span class="p">,</span>
                                                            <span class="n">views</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">],</span>
-                                                           <span class="n">cmin</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
-                                                           <span class="n">cmax</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+                                                           <span class="n">vmin</span><span class="o">=-</span><span class="mi">2</span><span class="p">,</span>
+                                                           <span class="n">vmax</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

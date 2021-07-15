@@ -42,8 +42,6 @@
     <script src="_static/copybutton.js"></script>
     <script >var togglebuttonSelector = '.toggle, .admonition.dropdown, .tag_hide_input div.cell_input, .tag_hide-input div.cell_input, .tag_hide_output div.cell_output, .tag_hide-output div.cell_output, .tag_hide_cell.cell, .tag_hide-cell.cell';</script>
     <script src="_static/sphinx-book-theme.12a9622fbb08dcb3a2a40b2c02b83a57.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
-    <script src="https://unpkg.com/@jupyter-widgets/html-manager@^0.20.0/dist/embed-amd.js"></script>
     <script async="async" src="https://unpkg.com/thebelab@latest/lib/index.js"></script>
     <script >
         const thebe_selector = ".thebe"
@@ -278,6 +276,11 @@
       </a>
      </li>
      <li class="toc-h4 nav-item toc-entry">
+      <a class="reference internal nav-link" href="#getting-an-evoked-object">
+       Getting an evoked object
+      </a>
+     </li>
+     <li class="toc-h4 nav-item toc-entry">
       <a class="reference internal nav-link" href="#decimate-the-epoch-optional">
        Decimate the epoch (optional)
       </a>
@@ -346,31 +349,61 @@ Below are the docstrings for the two classes:</p>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on class EEG_File in module simpl_eeg.eeg_objects:
 
 class EEG_File(builtins.object)
- |  EEG_File(folder_path, file_name=&#39;fixica&#39;)
+ |  EEG_File(folder_path, file_name=&#39;auto&#39;, events_file=&#39;auto&#39;, montage=&#39;auto&#39;)
  |  
  |  A class to import and store relevant eeg files
  |  
  |  Attributes:
  |      folder_path: str
- |          path to experiment folder
+ |          path to experiment folder.
  |      experiment: str
- |          the name of the folder containing experiment files
+ |          the name of the folder containing experiment files.
  |      mat: list of ints
- |          a list of integers representing impact times
+ |          a list of integers representing impact times.
  |      raw: mne.io.eeglab.eeglab.RawEEGLAB
- |          raw experiment data in FIF format
+ |          raw experiment data in FIF format.
  |  
  |  Methods defined here:
  |  
- |  __init__(self, folder_path, file_name=&#39;fixica&#39;)
- |      Imports and stores EEG data files
+ |  __init__(self, folder_path, file_name=&#39;auto&#39;, events_file=&#39;auto&#39;, montage=&#39;auto&#39;)
+ |      Imports and stores EEG data files. Can be used to attach events data from
+ |      an external file if none exists in the primary data. Can be used to load
+ |      a pre-set electrode layout montage.
  |      
  |      Parameters:
  |          folder_path: str
- |              The folder path containing the experiment data
+ |              The folder path containing the experiment data.
  |          file_name: str (optional)
- |              The file name for the .set and .fdt file.
- |              Defaults to &quot;fixica&quot;.
+ |              The file name for the primary data file to read in. Should be provided
+ |              as the file name only, with folder_path used to specify a directory.
+ |              If &#39;auto&#39; is provided then the first alphabetical file name with one
+ |              of the supported file types within the folder_path directory will
+ |              be loaded. The supported and tested filetypes are &quot;.set&quot;, &quot;.vhdr&quot;
+ |              and &quot;.edf&quot;. Support for &quot;.gdf&quot; and &quot;.cnt&quot; exists but montage&#39;s have
+ |              not been successfully loaded in test files. &quot;.bdf&#39;, &quot;.nxe&quot;, and &quot;.EEG&quot;
+ |              can be imported but events cannot be read.
+ |              Defaults to &#39;auto&#39;.
+ |          events_file: str (optional)
+ |              The file name for the event file to read in. The supported filetypes
+ |              are &quot;.mat&quot; and &quot;.vmrk&quot;. Will only be used if events do not already
+ |              exist in the primary data file. If &#39;auto&#39; is provided then the first
+ |              alphabetical file in the folder_path direcotry with a supported file
+ |              type will be loaded. If an events file is flagged for containing
+ |              over 5,000 events it&#39;s assumed a non-events file was loaded and it
+ |              will be not be loaded, with the second file in alphabetical order
+ |              being loaded instead.
+ |              None can be passed if you do not want to load an events file.
+ |              Defalts to &#39;auto&#39;.
+ |          montage: str (optional)
+ |              The pre-set montage to load. If a montage already exists in the data
+ |              then providing a montage will overwrite it in the generated data 
+ |              object. If &#39;auto&#39; is provided and a pre-existing montage exists
+ |              in the data it will be used but if there isn&#39;t then the function 
+ |              will try to load an &quot;easycap-M1&quot; montage. A complete list of available
+ |              montages can be found here:
+ |              https://mne.tools/dev/generated/mne.channels.make_standard_montage.html
+ |              None can be passed if you do not want to load a montage.
+ |              Defaults to &#39;auto&#39;.
  |  
  |  ----------------------------------------------------------------------
  |  Data descriptors defined here:
@@ -395,7 +428,7 @@ class EEG_File(builtins.object)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Help on class Epochs in module simpl_eeg.eeg_objects:
 
 class Epochs(builtins.object)
- |  Epochs(folder_path, tmin=-0.3, tmax=0.7, start_second=None, file_name=&#39;fixica&#39;, **kwargs)
+ |  Epochs(folder_path, tmin=-0.3, tmax=0.7, start_second=None, file_name=&#39;auto&#39;, events_file=&#39;auto&#39;, montage=&#39;auto&#39;, **kwargs)
  |  
  |  A class to represent epochs and underlying data
  |  
@@ -409,30 +442,60 @@ class Epochs(builtins.object)
  |  
  |  Methods:
  |      generate_epochs(duration, start_second):
- |          Calculates epochs based on a duration and start second
+ |          Calculates epochs based on a duration and start second.
  |      get_epoch(epoch_num):
- |          Set and return the epoch of interest
+ |          Set and return the epoch of interest.
  |      skip_n_steps(num_steps):
- |          Returns a subset of the epoch by skipping records in increments of num_steps
+ |          Returns a subset of the epoch by skipping records in increments of num_steps.
  |  
  |  Methods defined here:
  |  
- |  __init__(self, folder_path, tmin=-0.3, tmax=0.7, start_second=None, file_name=&#39;fixica&#39;, **kwargs)
+ |  __init__(self, folder_path, tmin=-0.3, tmax=0.7, start_second=None, file_name=&#39;auto&#39;, events_file=&#39;auto&#39;, montage=&#39;auto&#39;, **kwargs)
  |      Generates epochs and stores related information
  |      
  |      Parameters:
+ |          folder_path: str
+ |              The folder path containing the experiment data.
  |          tmin: float
- |              Number of seconds before the event time to include in epoch
+ |              Number of seconds before the event time to include in epoch.
  |          tmax: float
- |              Number of seconds after the event time to include in epoch
+ |              Number of seconds after the event time to include in epoch.
  |          start_second: int | None
  |              Second of the event time,
  |              or None if autodetected event time should be used
  |          file_name: str (optional)
- |              The file name for the .set and .fdt file.
- |              Defaults to &quot;fixica&quot;.
+ |              The file name for the primary data file to read in. Should be provided
+ |              as the file name only, with folder_path used to specify a directory.
+ |              If &#39;auto&#39; is provided then the first alphabetical file name with one
+ |              of the supported file types within the folder_path directory will
+ |              be loaded. The supported and tested filetypes are &quot;.set&quot;, &quot;.vhdr&quot;
+ |              and &quot;.edf&quot;. Support for &quot;.gdf&quot; and &quot;.cnt&quot; exists but montage&#39;s have
+ |              not been successfully loaded in test files. &quot;.bdf&#39;, &quot;.nxe&quot;, and &quot;.EEG&quot;
+ |              can be imported but events cannot be read.
+ |              Defaults to &#39;auto&#39;.
+ |          events_file: str (optional)
+ |              The file name for the event file to read in. The supported filetypes
+ |              are &quot;.mat&quot; and &quot;.vmrk&quot;. Will only be used if events do not already
+ |              exist in the primary data file. If &#39;auto&#39; is provided then the first
+ |              alphabetical file in the folder_path direcotry with a supported file
+ |              type will be loaded. If an events file is flagged for containing
+ |              over 5,000 events it&#39;s assumed a non-events file was loaded and it
+ |              will be not be loaded, with the second file in alphabetical order
+ |              being loaded instead.
+ |              None can be passed if you do not want to load an events file.
+ |              Defalts to &#39;auto&#39;.
+ |          montage: str (optional)
+ |              The pre-set montage to load. If a montage already exists in the data
+ |              then providing a montage will overwrite it in the generated data 
+ |              object. If &#39;auto&#39; is provided and a pre-existing montage exists
+ |              in the data it will be used but if there isn&#39;t then the function 
+ |              will try to load an &quot;easycap-M1&quot; montage. A complete list of available
+ |              montages can be found here:
+ |              https://mne.tools/dev/generated/mne.channels.make_standard_montage.html
+ |              None can be passed if you do not want to load a montage.
+ |              Defaults to &#39;auto&#39;.
  |          **kwargs: dict (optional)
- |              Additional parameters to pass to the mne.Epochs() constructor
+ |              Additional parameters to pass to the mne.Epochs() constructor.
  |      
  |              Full list of options available at
  |              https://mne.tools/stable/generated/mne.Epochs.html
@@ -512,22 +575,67 @@ class Epochs(builtins.object)
 <h3>Define parameters<a class="headerlink" href="#define-parameters" title="Permalink to this headline">¶</a></h3>
 <p>The only required parameter to create an epoch object is the <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> for the experiment of interest, however additional parameters may be used to customize your epoch object.</p>
 <ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">file_name</span></code></p>
+<ul>
+<li><p>If you specify a <code class="docutils literal notranslate"><span class="pre">file_name</span></code>, and the file exists in the <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> directory, then it will be used as the main data file for the epoch.</p></li>
+<li><p>If you do not specify a <code class="docutils literal notranslate"><span class="pre">file_name</span></code> then the alphabetical first file with a supported main file type in <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> will be automatically loaded.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">events_file</span></code></p>
+<ul>
+<li><p>If you specify an <code class="docutils literal notranslate"><span class="pre">events_file</span></code>, and the file exists in the <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> directory, then it will be used as the events data file for the epoch.</p></li>
+<li><p>If you do not specify an <code class="docutils literal notranslate"><span class="pre">events_file</span></code> then the alphabetical first file with a supported events file type in <code class="docutils literal notranslate"><span class="pre">folder_path</span></code> will be automatically loaded.</p></li>
+<li><p>If you try to load an <code class="docutils literal notranslate"><span class="pre">events_file</span></code> (automatically or manually) with over 5,000 events or if the final column in the loaded dictionary does not contain a numerical value in its first index (both forms of error catching) then the file will be rejected and will not be loaded.</p></li>
+<li><p>If you want to force no events data to be loaded you can pass and <code class="docutils literal notranslate"><span class="pre">events_file</span></code> of <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">montage</span></code></p>
+<ul>
+<li><p>If you specify a <code class="docutils literal notranslate"><span class="pre">montage</span></code>, it will load a standard montage with the specified name into the epoch data.</p></li>
+<li><p>If montage data already exists in the main data file and a <code class="docutils literal notranslate"><span class="pre">montage</span></code> is provided the original data overwritten in the epoch object.</p></li>
+<li><p>If you do not specify a <code class="docutils literal notranslate"><span class="pre">montage</span></code> and montage data already exists in the main data then it will be used instead.</p></li>
+<li><p>If you do not specify a <code class="docutils literal notranslate"><span class="pre">montage</span></code> and montage data does not exist in the main data then one attempt will be made to load a “easycap-M1” montage. If this fails then no montage information will be loaded.</p></li>
+<li><p>If you want to force no <code class="docutils literal notranslate"><span class="pre">montage</span></code> to be loaded data to be loaded you can pass and <code class="docutils literal notranslate"><span class="pre">events_file</span></code> of <code class="docutils literal notranslate"><span class="pre">None</span></code>.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">start_second</span></code></p>
+<ul>
 <li><p>If you specify a <code class="docutils literal notranslate"><span class="pre">start_second</span></code>, a single epoch will be generated with an impact event at the specified second.</p></li>
 <li><p>If you do not specify a <code class="docutils literal notranslate"><span class="pre">start_second</span></code>, epochs will be automatically generated using the impact times found in the <code class="docutils literal notranslate"><span class="pre">impact</span> <span class="pre">locations.mat</span></code> file in the selected <code class="docutils literal notranslate"><span class="pre">experiment_folder</span></code>.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">tmin</span></code> specifies the number of seconds before the impact to use, and <code class="docutils literal notranslate"><span class="pre">tmin</span></code> specifies the number of seconds after the impact.</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tmin</span></code></p>
+<ul>
+<li><p>specifies the number of seconds before the impact to use,</p></li>
+</ul>
+</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tmax</span></code></p>
+<ul>
+<li><p>specifies the number of seconds after the impact.</p></li>
+</ul>
+</li>
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># path to the experiment folder</span>
-<span class="n">experiment_folder</span> <span class="o">=</span> <span class="s2">&quot;../../data/109&quot;</span>
+<span class="n">folder_path</span> <span class="o">=</span> <span class="s2">&quot;../../data/109&quot;</span>
 
-<span class="c1"># number of seconds before the impact, should be a negative number for before impact</span>
+<span class="c1"># the name of the main data file to load (optional)</span>
+<span class="n">file_name</span> <span class="o">=</span> <span class="s2">&quot;fixica.set&quot;</span>
+
+<span class="c1"># the name of the events file to load (optional)</span>
+<span class="n">events_file</span> <span class="o">=</span> <span class="s2">&quot;impact locations.mat&quot;</span>
+
+<span class="c1"># the montage type to load (optional)</span>
+<span class="n">montage</span> <span class="o">=</span> <span class="kc">None</span>
+
+<span class="c1"># number of seconds before the impact, should be a negative number for before impact (optional)</span>
 <span class="n">tmin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
 
-<span class="c1"># number of seconds after the impact</span>
+<span class="c1"># number of seconds after the impact (optional)</span>
 <span class="n">tmax</span> <span class="o">=</span> <span class="mi">1</span>
 
-<span class="c1"># if creating a custom epoch, select a starting second</span>
+<span class="c1"># if creating a custom epoch, select a starting second (optional)</span>
 <span class="n">start_second</span> <span class="o">=</span> <span class="kc">None</span>
 </pre></div>
 </div>
@@ -536,10 +644,85 @@ class Epochs(builtins.object)
 <br></div>
 <div class="section" id="create-epoched-data">
 <h3>Create epoched data<a class="headerlink" href="#create-epoched-data" title="Permalink to this headline">¶</a></h3>
+<p>The following data formats are currently supported. Note that due to limited availability of test files not all formats have been fully tested (see Notes).</p>
+<table class="colwidths-auto table">
+<thead>
+<tr class="row-odd"><th class="head"><p></p></th>
+<th class="head"><p>Main File</p></th>
+<th class="head"><p>Secondary File</p></th>
+<th class="head"><p>Events File</p></th>
+<th class="head"><p>Notes</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>EEGLAB</p></td>
+<td><p>.set</p></td>
+<td><p>.fdt</p></td>
+<td><p>.mat</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>BrainVision</p></td>
+<td><p>.vhdr</p></td>
+<td><p>.eeg</p></td>
+<td><p>.vmrk</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-even"><td><p>European data format</p></td>
+<td><p>.edf</p></td>
+<td><p>N/A</p></td>
+<td><p>N/A</p></td>
+<td><p></p></td>
+</tr>
+<tr class="row-odd"><td><p>BioSemi data format</p></td>
+<td><p>.bdf</p></td>
+<td><p>N/A</p></td>
+<td><p>N/A</p></td>
+<td><p>Montage has not be successfully loaded with test files.</p></td>
+</tr>
+<tr class="row-even"><td><p>General data format</p></td>
+<td><p>.gdf</p></td>
+<td><p>N/A</p></td>
+<td><p>N/A</p></td>
+<td><p>Events have not be successfully loaded with test files.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Neuroscan CNT</p></td>
+<td><p>.cnt</p></td>
+<td><p>N/A</p></td>
+<td><p>N/A</p></td>
+<td><p>Montage has not be successfully loaded with test files.</p></td>
+</tr>
+<tr class="row-even"><td><p>eXimia</p></td>
+<td><p>.nxe</p></td>
+<td><p>N/A</p></td>
+<td><p>N/A</p></td>
+<td><p>Events have not be successfully loaded with test files.</p></td>
+</tr>
+<tr class="row-odd"><td><p>Nihon Kohden EEG data</p></td>
+<td><p>.eeg</p></td>
+<td><p>.pnt AND .21e</p></td>
+<td><p>.log</p></td>
+<td><p>Montage has not be successfully loaded with test files.</p></td>
+</tr>
+</tbody>
+</table>
+<ul class="simple">
+<li><p>A <strong>main file</strong> represents the lead file used to load in your EEG data. This is the file that may be passed as your <code class="docutils literal notranslate"><span class="pre">file_name</span></code>.</p></li>
+<li><p>A <strong>secondary file</strong> contains some secondary information for some data types. They will be automatically loaded to when the main file is loaded.</p></li>
+<li><p>A <strong>events file</strong> contains a list of the annotations associated with events in your EEG data. This is the file that may be passed as your <code class="docutils literal notranslate"><span class="pre">events_file</span></code>.</p></li>
+<li><p>A <strong>montage</strong> must exist in your epoch in order to visualize it. This contains information about your node locations in 3D space. A complete list of usable montages is available here: <a class="reference external" href="https://mne.tools/dev/generated/mne.channels.make_standard_montage.html">https://mne.tools/dev/generated/mne.channels.make_standard_montage.html</a>.</p></li>
+</ul>
 <p>You can create epoched data using the <code class="docutils literal notranslate"><span class="pre">Epochs</span></code> class.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_folder</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">epochs</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span>
+    <span class="n">folder_path</span> <span class="o">=</span> <span class="n">folder_path</span><span class="p">,</span>
+    <span class="n">file_name</span> <span class="o">=</span> <span class="n">file_name</span><span class="p">,</span>
+    <span class="n">events_file</span> <span class="o">=</span> <span class="n">events_file</span><span class="p">,</span>
+    <span class="n">montage</span> <span class="o">=</span> <span class="n">montage</span><span class="p">,</span>
+    <span class="n">tmin</span> <span class="o">=</span> <span class="n">tmin</span><span class="p">,</span>
+    <span class="n">tmax</span> <span class="o">=</span> <span class="n">tmax</span><span class="p">,</span>
+    <span class="n">start_second</span> <span class="o">=</span> <span class="n">start_second</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -547,11 +730,12 @@ class Epochs(builtins.object)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/data/109/fixica.fdt
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:52: RuntimeWarning: Data file name in EEG.data (109 whole fixed ica.fdt) is incorrect, the file name must have changed on disk, using the correct file name (fixica.fdt).
-  self.raw = mne.io.read_raw_eeglab(folder_path+&quot;/&quot;+file_name+&quot;.set&quot;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:199: RuntimeWarning: Data file name in EEG.data (109 whole fixed ica.fdt) is incorrect, the file name must have changed on disk, using the correct file name (fixica.fdt).
+  raw = mne.io.read_raw_eeglab(data_path)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loaded raw from ../../data/109/fixica.set
+Not setting metadata
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
@@ -610,7 +794,7 @@ class Epochs(builtins.object)
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">start_second</span> <span class="o">=</span> <span class="mi">15</span>  <span class="c1"># record event at second 15</span>
-<span class="n">custom_epoch</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">experiment_folder</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span> 
+<span class="n">custom_epoch</span> <span class="o">=</span> <span class="n">eeg_objects</span><span class="o">.</span><span class="n">Epochs</span><span class="p">(</span><span class="n">folder_path</span><span class="p">,</span> <span class="n">tmin</span><span class="p">,</span> <span class="n">tmax</span><span class="p">,</span> <span class="n">start_second</span><span class="p">)</span> 
 
 <span class="n">custom_epoch</span><span class="o">.</span><span class="n">all_epochs</span>
 </pre></div>
@@ -620,7 +804,8 @@ class Epochs(builtins.object)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Reading /Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/data/109/fixica.fdt
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>loaded raw from ../../data/109/fixica.set
+Not setting metadata
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Not setting metadata
@@ -644,8 +829,8 @@ class Epochs(builtins.object)
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0 bad epochs dropped
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:52: RuntimeWarning: Data file name in EEG.data (109 whole fixed ica.fdt) is incorrect, the file name must have changed on disk, using the correct file name (fixica.fdt).
-  self.raw = mne.io.read_raw_eeglab(folder_path+&quot;/&quot;+file_name+&quot;.set&quot;)
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:199: RuntimeWarning: Data file name in EEG.data (109 whole fixed ica.fdt) is incorrect, the file name must have changed on disk, using the correct file name (fixica.fdt).
+  raw = mne.io.read_raw_eeglab(data_path)
 </pre></div>
 </div>
 <div class="output text_html">
@@ -677,21 +862,22 @@ class Epochs(builtins.object)
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">eeg_file</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">eeg_file</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eeg_file</span><span class="o">.</span><span class="n">folder_path</span><span class="p">)</span>  <span class="c1"># experiment folder path</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eeg_file</span><span class="o">.</span><span class="n">experiment</span><span class="p">)</span>  <span class="c1"># experiment number</span>
-<span class="nb">print</span><span class="p">(</span><span class="n">eeg_file</span><span class="o">.</span><span class="n">mat</span><span class="p">)</span>  <span class="c1"># impact times</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">eeg_file</span><span class="o">.</span><span class="n">raw</span><span class="p">)</span>  <span class="c1"># raw data</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">eeg_file</span><span class="o">.</span><span class="n">file_source</span><span class="p">)</span> <span class="c1"># primary data file the EEG data was loaded from</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">eeg_file</span><span class="o">.</span><span class="n">events_source</span><span class="p">)</span> <span class="c1"># source file of events</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">eeg_file</span><span class="o">.</span><span class="n">montage_source</span><span class="p">)</span> <span class="c1"># source of the montage (may be pre-set montage name)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">eeg_file</span><span class="o">.</span><span class="n">events</span><span class="p">)</span>  <span class="c1"># impact times</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>../../data/109
 109
-{&#39;__header__&#39;: b&#39;MATLAB 5.0 MAT-file, Platform: PCWIN64, Created on: Tue Mar 23 17:21:01 2021&#39;, &#39;__version__&#39;: &#39;1.0&#39;, &#39;__globals__&#39;: [], &#39;baselocs&#39;: array([[   27722, 10544897]], dtype=int32), &#39;elecmax1&#39;: array([[ 1506127,  1828393,  2103572,  2332113,  2566359,  2806427,
-         3246204,  3475576,  3712770,  3963481,  4208934,  4544740,
-         4840659,  5064290,  5314417,  5557193,  5936062,  6213199,
-         6451715,  6695044,  6941686,  7206205,  7431075,  7731054,
-         8080362,  8317857,  8562682,  8847325,  9142217,  9549010,
-         9801198, 10049013, 10301077]], dtype=int32)}
 &lt;RawEEGLAB | fixica.fdt, 19 x 11175225 (5456.7 s), ~30 kB, data not loaded&gt;
+fixica.set
+impact locations.mat
+primary data file
+[[1506127, 0, 735], [1828393, 0, 892], [2103572, 0, 1027], [2332113, 0, 1138], [2566359, 0, 1253], [2806427, 0, 1370], [3246204, 0, 1585], [3475576, 0, 1697], [3712770, 0, 1812], [3963481, 0, 1935], [4208934, 0, 2055], [4544740, 0, 2219], [4840659, 0, 2363], [5064290, 0, 2472], [5314417, 0, 2594], [5557193, 0, 2713], [5936062, 0, 2898], [6213199, 0, 3033], [6451715, 0, 3150], [6695044, 0, 3269], [6941686, 0, 3389], [7206205, 0, 3518], [7431075, 0, 3628], [7731054, 0, 3774], [8080362, 0, 3945], [8317857, 0, 4061], [8562682, 0, 4180], [8847325, 0, 4319], [9142217, 0, 4463], [9549010, 0, 4662], [9801198, 0, 4785], [10049013, 0, 4906], [10301077, 0, 5029]]
 </pre></div>
 </div>
 </div>
@@ -759,87 +945,25 @@ class Epochs(builtins.object)
 </div></div>
 </div>
 </div>
-<div class="section" id="decimate-the-epoch-optional">
-<h4>Decimate the epoch (optional)<a class="headerlink" href="#decimate-the-epoch-optional" title="Permalink to this headline">¶</a></h4>
-<p>To reduce the size of the selected epoch you can choose to skip a selected number of time steps by calling the <code class="docutils literal notranslate"><span class="pre">skip_n_steps</span></code> method. If <code class="docutils literal notranslate"><span class="pre">use_single=True</span></code> (the default), it will only be run on the current selected epoch from the previous step, contained in the <code class="docutils literal notranslate"><span class="pre">epoch</span></code> attribute. Otherwise it will run on all the epochs contained within the <code class="docutils literal notranslate"><span class="pre">all_epochs</span></code> attribute.</p>
-<p>Skipping steps will greatly reduce animation times for the other functions in the package. The greater the number of steps skipped, the fewer the frames to animate. In the example below we are reducing the selected epoch from 4097 time steps to 81 time steps.</p>
+<div class="section" id="getting-an-evoked-object">
+<h4>Getting an evoked object<a class="headerlink" href="#getting-an-evoked-object" title="Permalink to this headline">¶</a></h4>
+<p>You can also use the <code class="docutils literal notranslate"><span class="pre">get_epoch</span></code> method to retrieve an evoked object, which represents an averaging of each event in your epoch. Note that evoked data is its own type of object and is not guaranteed to work with every function in this package.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_epoch</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">evoked</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">get_epoch</span><span class="p">(</span><span class="s2">&quot;evoked&quot;</span><span class="p">)</span>
+<span class="nb">type</span><span class="p">(</span><span class="n">evoked</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1, 19, 4097)
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>mne.evoked.EvokedArray
 </pre></div>
 </div>
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_steps</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="n">smaller_epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">skip_n_steps</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span>
-<span class="n">smaller_epoch</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:218: RuntimeWarning: The measurement information indicates a low-pass frequency of 1024 Hz. The decim=50 parameter will result in a sampling frequency of 40.96 Hz, which can cause aliasing artifacts.
-  return epochs.copy().decimate(num_steps)
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1, 19, 81)
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="average-the-epoch-optional">
-<h4>Average the epoch (optional)<a class="headerlink" href="#average-the-epoch-optional" title="Permalink to this headline">¶</a></h4>
-<p>To reduce the size of the selected epoch you can choose to average a selected number of time steps by calling the <code class="docutils literal notranslate"><span class="pre">average_n_steps</span></code> method. It will be run on the current selected epoch from the previous step, contained in the <code class="docutils literal notranslate"><span class="pre">epoch</span></code> attribute.</p>
-<p>Averaging works the same way as decimating above, but instead of simply ignoring records between steps it takes an average.</p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_steps</span> <span class="o">=</span> <span class="mi">50</span>
-<span class="n">average_epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">average_n_steps</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span>
-<span class="n">average_epoch</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
-</pre></div>
-</div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:248: RuntimeWarning: The measurement information indicates a low-pass frequency of 1024 Hz. The decim=50 parameter will result in a sampling frequency of 40.96 Hz, which can cause aliasing artifacts.
-  evoked = epochs.copy().average(method=roll_average).decimate(num_steps)
-</pre></div>
-</div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>array([[-3.50878071e-06, -3.86003531e-06, -2.26174050e-06, ...,
-        -2.58509868e-06, -3.36954384e-06, -1.04532290e-06],
-       [ 1.72670106e-05,  8.84197522e-06,  5.32844571e-06, ...,
-        -1.11340265e-06, -4.26652664e-06, -3.72240846e-06],
-       [-1.73890007e-05, -1.35014074e-05, -8.20861945e-06, ...,
-         3.36712460e-08,  4.92969208e-06,  8.85115596e-06],
-       ...,
-       [-1.04841451e-05, -1.31587877e-05, -7.97807490e-06, ...,
-         1.74272477e-06,  1.19533190e-06, -1.72241428e-06],
-       [-1.17475386e-05, -9.73196146e-06, -3.78909694e-07, ...,
-         3.11983713e-06,  1.00823167e-05,  6.77745841e-06],
-       [-1.54455510e-05, -1.71576997e-05, -1.45139455e-06, ...,
-         6.83422956e-06,  2.97323660e-06,  3.79298234e-06]])
-</pre></div>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="section" id="mne-functions">
-<h3>MNE functions<a class="headerlink" href="#mne-functions" title="Permalink to this headline">¶</a></h3>
-<p>Now that you have access epoched data, you can use the <code class="docutils literal notranslate"><span class="pre">simpl_eeg</span></code> package functions as well as any <a class="reference external" href="https://mne.tools/stable/generated/mne.Epochs.html">MNE functions</a> which act on <code class="docutils literal notranslate"><span class="pre">mne.epoch</span></code> objects. Below are some useful examples for the MNE objects contained within the object we created.</p>
-<div class="section" id="raw-data">
-<h4>Raw data<a class="headerlink" href="#raw-data" title="Permalink to this headline">¶</a></h4>
-<p><a class="reference external" href="https://mne.tools/stable/generated/mne.io.Raw.html">https://mne.tools/stable/generated/mne.io.Raw.html</a></p>
-<div class="cell docutils container">
-<div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">eeg_file</span><span class="o">.</span><span class="n">raw</span>
-<span class="n">raw</span><span class="o">.</span><span class="n">info</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">evoked</span><span class="o">.</span><span class="n">info</span>
 </pre></div>
 </div>
 </div>
@@ -893,17 +1017,83 @@ class Epochs(builtins.object)
 </table>
 </div></div>
 </div>
+</div>
+<div class="section" id="decimate-the-epoch-optional">
+<h4>Decimate the epoch (optional)<a class="headerlink" href="#decimate-the-epoch-optional" title="Permalink to this headline">¶</a></h4>
+<p>To reduce the size of the selected epoch you can choose to skip a selected number of time steps by calling the <code class="docutils literal notranslate"><span class="pre">skip_n_steps</span></code> method. If <code class="docutils literal notranslate"><span class="pre">use_single=True</span></code> (the default), it will only be run on the current selected epoch from the previous step, contained in the <code class="docutils literal notranslate"><span class="pre">epoch</span></code> attribute. Otherwise it will run on all the epochs contained within the <code class="docutils literal notranslate"><span class="pre">all_epochs</span></code> attribute.</p>
+<p>Skipping steps will greatly reduce animation times for the other functions in the package. The greater the number of steps skipped, the fewer the frames to animate. In the example below we are reducing the selected epoch from 4097 time steps to 81 time steps.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">single_epoch</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>(1, 19, 4097)
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_steps</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">smaller_epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">skip_n_steps</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span>
+<span class="n">smaller_epoch</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:823: RuntimeWarning: The measurement information indicates a low-pass frequency of 1024 Hz. The decim=50 parameter will result in a sampling frequency of 40.96 Hz, which can cause aliasing artifacts.
+  return epochs.copy().decimate(num_steps)
+</pre></div>
+</div>
+<div class="output traceback highlight-ipythontb notranslate"><div class="highlight"><pre><span></span><span class="gt">---------------------------------------------------------------------------</span>
+<span class="ne">AttributeError</span><span class="g g-Whitespace">                            </span>Traceback (most recent call last)
+<span class="o">&lt;</span><span class="n">ipython</span><span class="o">-</span><span class="nb">input</span><span class="o">-</span><span class="mi">14</span><span class="o">-</span><span class="mi">2117361</span><span class="n">c8207</span><span class="o">&gt;</span> <span class="ow">in</span> <span class="o">&lt;</span><span class="n">module</span><span class="o">&gt;</span>
+<span class="g g-Whitespace">      </span><span class="mi">1</span> <span class="n">num_steps</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="g g-Whitespace">      </span><span class="mi">2</span> <span class="n">smaller_epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">skip_n_steps</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span>
+<span class="ne">----&gt; </span><span class="mi">3</span> <span class="n">smaller_epoch</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span>
+
+<span class="ne">AttributeError</span>: &#39;EvokedArray&#39; object has no attribute &#39;get_data&#39;
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="average-the-epoch-optional">
+<h4>Average the epoch (optional)<a class="headerlink" href="#average-the-epoch-optional" title="Permalink to this headline">¶</a></h4>
+<p>To reduce the size of the selected epoch you can choose to average a selected number of time steps by calling the <code class="docutils literal notranslate"><span class="pre">average_n_steps</span></code> method. It will be run on the current selected epoch from the previous step, contained in the <code class="docutils literal notranslate"><span class="pre">epoch</span></code> attribute.</p>
+<p>Averaging works the same way as decimating above, but instead of simply ignoring records between steps it takes an average.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">num_steps</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">average_epoch</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">average_n_steps</span><span class="p">(</span><span class="n">num_steps</span><span class="p">)</span>
+<span class="n">average_epoch</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="section" id="mne-functions">
+<h3>MNE functions<a class="headerlink" href="#mne-functions" title="Permalink to this headline">¶</a></h3>
+<p>Now that you have access epoched data, you can use the <code class="docutils literal notranslate"><span class="pre">simpl_eeg</span></code> package functions as well as any <a class="reference external" href="https://mne.tools/stable/generated/mne.Epochs.html">MNE functions</a> which act on <code class="docutils literal notranslate"><span class="pre">mne.epoch</span></code> objects. Below are some useful examples for the MNE objects contained within the object we created.</p>
+<div class="section" id="raw-data">
+<h4>Raw data<a class="headerlink" href="#raw-data" title="Permalink to this headline">¶</a></h4>
+<p><a class="reference external" href="https://mne.tools/stable/generated/mne.io.Raw.html">https://mne.tools/stable/generated/mne.io.Raw.html</a></p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw</span> <span class="o">=</span> <span class="n">epochs</span><span class="o">.</span><span class="n">eeg_file</span><span class="o">.</span><span class="n">raw</span>
+<span class="n">raw</span><span class="o">.</span><span class="n">info</span>
+</pre></div>
+</div>
+</div>
+</div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">raw</span><span class="o">.</span><span class="n">plot_psd</span><span class="p">();</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Effective window size : 1.000 (s)
-</pre></div>
-</div>
-<img alt="_images/eeg_objects_36_1.png" src="_images/eeg_objects_36_1.png" />
 </div>
 </div>
 </div>
@@ -916,9 +1106,6 @@ class Epochs(builtins.object)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/eeg_objects_38_0.png" src="_images/eeg_objects_38_0.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -927,9 +1114,6 @@ class Epochs(builtins.object)
 </pre></div>
 </div>
 </div>
-<div class="cell_output docutils container">
-<img alt="_images/eeg_objects_39_0.png" src="_images/eeg_objects_39_0.png" />
-</div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -937,13 +1121,6 @@ class Epochs(builtins.object)
 <span class="n">epochs</span><span class="o">.</span><span class="n">skip_n_steps</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
-</div>
-<div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/Users/mpin/Documents/MDS/capstone/simpl_eeg_capstone/simpl_eeg/eeg_objects.py:218: RuntimeWarning: The measurement information indicates a low-pass frequency of 1024 Hz. The decim=100 parameter will result in a sampling frequency of 20.48 Hz, which can cause aliasing artifacts.
-  return epochs.copy().decimate(num_steps)
-</pre></div>
-</div>
-<img alt="_images/eeg_objects_40_1.png" src="_images/eeg_objects_40_1.png" />
 </div>
 </div>
 </div>
