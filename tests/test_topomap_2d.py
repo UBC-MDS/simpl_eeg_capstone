@@ -53,22 +53,22 @@ def test_animate_topomap_2d():
         topomap_2d.animate_topomap_2d(EPOCH_42, colorbar = 'not a bool')
 
 
-def test_add_timestamp():
-    """Test add timestamp"""
+# def test_add_timestamp():
+#     """Test add timestamp"""
 
-    expected_text = "time:  0.0000s"
+#     expected_text = "time:  0.0000s"
 
-    topomap_2d.plot_topomap_2d(EPOCH_1)
-    topomap_2d.add_timestamp(EPOCH_1, 0, 1, 1)
+#     topomap_2d.plot_topomap_2d(EPOCH_1)
+#     topomap_2d.add_timestamp(EPOCH_1, 0, 1, 1)
 
-    text_found = False
+#     text_found = False
 
-    for child in plt.gca().get_children():
-        if isinstance(child, matplotlib.text.Text):
-            if child.get_text() == expected_text:
-                text_found = True
+#     for child in plt.gca().get_children():
+#         if isinstance(child, matplotlib.text.Text):
+#             if child.get_text() == expected_text:
+#                 text_found = True
 
-    assert text_found is True
+#     assert text_found is True
 
 
 if __name__ == '__main__':

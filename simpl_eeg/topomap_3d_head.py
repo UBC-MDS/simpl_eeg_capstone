@@ -144,7 +144,7 @@ def get_eeg_node(raw, standard_montage_list):
             The electrode location from the raw data
     """
 
-    if type(raw) is not mne.epochs.Epochs:
+    if type(raw) is not mne.epochs.Epochs and type(raw) is not mne.evoked.EvokedArray:
         raise TypeError(
             "raw is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
@@ -180,7 +180,7 @@ def get_node_dataframe(raw, montage):
         pandas.core.frame.DataFrame:
             A dataframe which contains the electrode name and electrode location from the raw data
     """
-    if type(raw) is not mne.epochs.Epochs:
+    if type(raw) is not mne.epochs.Epochs and type(raw) is not mne.evoked.EvokedArray:
         raise TypeError(
             "raw is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
@@ -208,12 +208,12 @@ def animate_3d_head(
     data_df=None,
     plot_title="",
     color_title="EEG MicroVolt",
-    color_min=-50,
-    color_max=50,
+    vmin=-50,
+    vmax=50,
     colormap="Bluered",
 ):
 
-    if type(epoch) is not mne.epochs.Epochs:
+    if type(epoch) is not mne.epochs.Epochs and type(epoch) is not mne.evoked.EvokedArray:
         raise TypeError(
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
@@ -231,11 +231,11 @@ def animate_3d_head(
     if type(colormap) is not str:
         raise TypeError("colormap has to be a string")
 
-    if type(color_min) is not int and type(color_min) is not float:
-        raise TypeError("color_min has to be a number")
+    if type(vmin) is not int and type(vmin) is not float:
+        raise TypeError("vmin has to be a number")
 
-    if type(color_max) is not int and type(color_max) is not float:
-        raise TypeError("color_max has to be a number")
+    if type(vmax) is not int and type(vmax) is not float:
+        raise TypeError("vmax has to be a number")
 
     # find out the channel names
     channel_names = epoch.ch_names
@@ -278,8 +278,8 @@ def animate_3d_head(
                     z=np.array(standard_coord)[:, 2],
                     colorscale=colormap,
                     colorbar_title=color_title,
-                    cmin=color_min,
-                    cmax=color_max,
+                    cmin=vmin,
+                    cmax=vmax,
                     intensity=interpolated_values_dict[str(k)],
                     intensitymode="vertex",  # can't be changed
                     alphahull=1,  # can't be changed
@@ -301,8 +301,8 @@ def animate_3d_head(
             z=np.array(standard_coord)[:, 2],
             colorscale=colormap,
             colorbar_title=color_title,
-            cmin=color_min,
-            cmax=color_max,
+            cmin=vmin,
+            cmax=vmax,
             intensity=interpolated_values_dict[str(0)],
             intensitymode="vertex",
             alphahull=1,
@@ -410,8 +410,8 @@ def topo_3d_map(
     time_stamp,
     data_df=None,
     color_title="EEG MicroVolt",
-    color_min=-50,
-    color_max=50,
+    vmin=-50,
+    vmax=50,
     colormap="Bluered",
 ):
     """
@@ -429,10 +429,10 @@ def topo_3d_map(
             interest
         color_title: str (optional)
             The title of the color bar. Defaults to "EEG MicroVolt".
-        color_min: int (optional)
+        vmin: int (optional)
             The minimum EEG voltage value to be shown on the color bar.
             Defaults to -50.
-        color_max: int (optional)
+        vmax: int (optional)
             The maximum EEG voltage value to be shown on the color bar.
             Defaults to 50.
         colormap: str (optional)
@@ -442,7 +442,7 @@ def topo_3d_map(
         plotly.graph_objs._figure.Figure
             A topographic map in a 3D head shape
     """
-    if type(epoch) is not mne.epochs.Epochs:
+    if type(epoch) is not mne.epochs.Epochs and type(epoch) is not mne.evoked.EvokedArray:
         raise TypeError(
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
@@ -457,11 +457,11 @@ def topo_3d_map(
     if type(colormap) is not str:
         raise TypeError("colormap has to be a string")
 
-    if type(color_min) is not int and type(color_min) is not float:
-        raise TypeError("color_min has to be a number")
+    if type(vmin) is not int and type(vmin) is not float:
+        raise TypeError("vmin has to be a number")
 
-    if type(color_max) is not int and type(color_max) is not float:
-        raise TypeError("color_max has to be a number")
+    if type(vmax) is not int and type(vmax) is not float:
+        raise TypeError("vmax has to be a number")
 
     # find out the channel names
     channel_names = epoch.ch_names
@@ -500,8 +500,8 @@ def topo_3d_map(
             z=np.array(standard_coord)[:, 2],
             colorscale=colormap,
             colorbar_title=color_title,
-            cmin=color_min,
-            cmax=color_max,
+            cmin=vmin,
+            cmax=vmax,
             intensity=interpolated_time(
                 df, channel_names, node_coord, x, y, z, time_index
             ),
@@ -567,7 +567,7 @@ def topo3dhead_plot(epoch, i, data_df=None):
         plotly.graph_objs._figure.Figure:
             The 3D topograpic map on 3D shape
     """
-    if type(epoch) is not mne.epochs.Epochs:
+    if type(epoch) is not mne.epochs.Epochs and type(epoch) is not mne.evoked.EvokedArray:
         raise TypeError(
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
@@ -600,7 +600,7 @@ def save_gif(epoch, gifname, duration, data_df=None):
             A data frame of EEG data if epoched data is not of
             interest
     """
-    if type(epoch) is not mne.epochs.Epochs:
+    if type(epoch) is not mne.epochs.Epochs and type(epoch) is not mne.evoked.EvokedArray:
         raise TypeError(
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"

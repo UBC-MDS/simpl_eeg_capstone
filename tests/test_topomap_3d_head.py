@@ -36,15 +36,15 @@ def test_animate_3d_head():
     with pytest.raises(TypeError):
         topomap_3d_head.animate_3d_head(raw, colormap=0)
 
-    # reject non-numeric inputs for color_min and color_max
+    # reject non-numeric inputs for vmin and vmax
     with pytest.raises(TypeError):
-        topomap_3d_head.animate_3d_head(raw, color_min="0")
+        topomap_3d_head.animate_3d_head(raw, vmin="0")
     with pytest.raises(TypeError):
-        topomap_3d_head.animate_3d_head(raw, color_max="0")
+        topomap_3d_head.animate_3d_head(raw, vmax="0")
 
     # check all outputs are as expected
     ani = topomap_3d_head.animate_3d_head(epoch42)
-    ani2 = topomap_3d_head.animate_3d_head(epoch42, color_min=-30, color_max=40)
+    ani2 = topomap_3d_head.animate_3d_head(epoch42, vmin=-30, vmax=40)
     assert isinstance(ani, plotly.graph_objs._figure.Figure)
     assert ani2.data[0]["cmin"] == -30 and ani2.data[0]["cmax"] == 40
 
@@ -73,16 +73,16 @@ def test_topo_3d_map():
     with pytest.raises(TypeError):
         topomap_3d_head.topo_3d_map(raw, time_stamp=0, colormap=0)
 
-    # reject non-numeric inputs for color_min and color_max
+    # reject non-numeric inputs for vmin and vmax
     with pytest.raises(TypeError):
-        topomap_3d_head.topo_3d_map(raw, time_stamp=0, color_min="0")
+        topomap_3d_head.topo_3d_map(raw, time_stamp=0, vmin="0")
     with pytest.raises(TypeError):
-        topomap_3d_head.topo_3d_map(raw, time_stamp=0, color_max="0")
+        topomap_3d_head.topo_3d_map(raw, time_stamp=0, vmax="0")
 
     # check all outputs are as expected
     ani = topomap_3d_head.topo_3d_map(epoch42, time_stamp=0)
     ani2 = topomap_3d_head.topo_3d_map(
-        epoch42, time_stamp=0, color_min=-30.2, color_max=40
+        epoch42, time_stamp=0, vmin=-30.2, vmax=40
     )
     assert isinstance(ani, plotly.graph_objs._figure.Figure)
     assert ani2.data[0]["cmin"] == -30.2 and ani2.data[0]["cmax"] == 40
