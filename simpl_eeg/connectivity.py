@@ -66,7 +66,7 @@ def calculate_connectivity(epoch, calc_type="correlation"):
             Data frame containing connectivity values
     """
 
-    if type(epoch) is not mne.epochs.Epochs:
+    if type(epoch) is not mne.epochs.Epochs and type(epoch) is not mne.evoked.EvokedArray:
         raise TypeError(
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
@@ -110,6 +110,36 @@ def calculate_connectivity(epoch, calc_type="correlation"):
 
     return conn_df
 
+def get_axis_lims_con(epoch):
+    """
+    Generates an invisible mne.viz.plot_topomap plot and gets the ylim from its
+    matplotlib.axes._subplots.AxesSubplot. Helper function for plot_connectivity.
+    
+    Parameters:
+        epoch: mne.epochs.Epochs
+            MNE epochs object containing the timestamps.
+        
+    Returns:
+        ax_lims: tuple
+            A tuple of the ax_lims.
+    """
+    fig, ax = plt.subplots()
+    
+    if type(epoch) is mne.evoked.EvokedArray:
+        plot_data = epoch.data[:, 0]
+    else:
+        plot_data = epoch.get_data('eeg')[0][:, 0]
+
+    mne.viz.plot_topomap(
+        data=plot_data,
+        pos=epoch.info,
+        show=False,
+        res=1
+    )
+    
+    axis_lims = ax.get_ylim()
+    plt.close()
+    return(axis_lims)
 
 def get_frame(epoch, step_size, frame_number):
     """
@@ -150,6 +180,7 @@ def plot_connectivity(
     pair_list=[],
     threshold=0,
     show_sphere=True,
+    readjust_sphere="auto",
     colormap="RdBu_r",
     vmin=None,
     vmax=None,
@@ -178,6 +209,8 @@ def plot_connectivity(
             Defaults to 0.
         show_sphere: bool (optional)
             Whether to show the cartoon head or not. Defaults to True.
+        readjust_sphere: bool or "auto" (optional)
+            Tries to re-align cartoon head but may overcorrect. Defaults to "auto".
         colormap: str (optional)
             Colour scheme to use. Defaults to "RdBlu_r".
         vmin: int (optional)
@@ -203,7 +236,7 @@ def plot_connectivity(
         matplotlib.pyplot.figure:
             The generated connectivity figure
     """
-    if type(epoch) is not mne.epochs.Epochs:
+    if type(epoch) is not mne.epochs.Epochs and type(epoch) is not mne.evoked.EvokedArray:
         raise TypeError(
             "data is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
@@ -269,14 +302,50 @@ def plot_connectivity(
     epoch.copy()
     epoch = epoch.rename_channels(lambda x: "  "+str(x))
 
+    # Default to no sphere values
+    sphere_vals = None
+
+    # If sphere parameters have not been provided by user...
+    if show_sphere and 'sphere' not in locals():
+        # get axis limits
+        ax_lims = get_axis_lims_con(epoch)
+
+        def_sphere = ax_lims[0]*-0.94
+
+        # Attempt to determine whether to readjust sphere or not based
+        # on the limits of the axis
+        if readjust_sphere=="auto":
+            if ax_lims[0] <= -50:
+                readjust_sphere=True
+            else:
+                readjust_sphere=False
+        
+        # Readjust with Cz node at center if it is present
+        if readjust_sphere:
+            if 'Cz' in node_df['name']:
+                def_x = node_df[node_df['name'] == 'Cz']['x']
+                def_y = node_df[node_df['name'] == 'Cz']['y']
+            else:
+                def_x = node_df['x'].mean()
+                def_y = node_df['y'].mean()
+        else:
+            def_x = 0.0
+            def_y = 0.0
+        
+        sphere_vals = (def_x, def_y, 0.0, def_sphere)
+
     # combine default settings with user specified settings
     default_kwargs = {
         "axes": ax,
         "show_names": True,
         "kind": "topomap",
-        "sphere": (9, -15, 0, 100) if show_sphere else None,
+        "sphere": sphere_vals,
         "show": False
     }
+
+    if show_sphere==False:
+        default_kwargs.pop('sphere', None)
+
     kwargs = {**default_kwargs, **kwargs}
 
     epoch.plot_sensors(**kwargs)
@@ -288,7 +357,12 @@ def plot_connectivity(
         plt.title(title)
 
     if caption:
-        plt.text(-35, -130, caption, fontsize=10)
+        if 'ax_lims' not in locals():
+            ax_lims = get_axis_lims_con(epoch)
+        if ax_lims[0] <= -50:
+            plt.text(ax_lims[0]*0.45, -ax_lims[1] - ax_lims[1]*0.25, caption, fontsize=10)
+        else:
+            plt.text(ax_lims[0]*0.45, -ax_lims[1], caption, fontsize=10)
 
     return fig
 
@@ -354,7 +428,7 @@ def animate_connectivity(
         matplotlib.animation.Animation:
             Animation of connectivity plot
     """
-    if type(epoch) is not mne.epochs.Epochs:
+    if type(epoch) is not mne.epochs.Epochs and type(epoch) is not mne.evoked.EvokedArray:
         raise TypeError(
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
@@ -387,7 +461,14 @@ def animate_connectivity(
 
         caption = None
         if timestamp is True:
-            caption = f"time: {'%.3f' % start_time}s to {'%.3f' % end_time}s"
+            start_space=''
+            end_space=''
+            if start_time > 0:
+                start_space=' '
+            if end_time > 0:
+                end_space=' '
+
+            caption = f"time: {start_space}{'%.3f' % start_time}s to {end_space}{'%.3f' % end_time}s"
 
         return [
             plot_connectivity(
@@ -474,7 +555,7 @@ def plot_conn_circle(
         matplotlib.pyplot.figure:
             Connectivity circle figure
     """
-    if type(epoch) is not mne.epochs.Epochs:
+    if type(epoch) is not mne.epochs.Epochs and type(epoch) is not mne.evoked.EvokedArray:
         raise TypeError(
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"
@@ -580,7 +661,7 @@ def animate_connectivity_circle(
         matplotlib.animation.Animation:
             Animation of connectivity plot
     """
-    if type(epoch) is not mne.epochs.Epochs:
+    if type(epoch) is not mne.epochs.Epochs and type(epoch) is not mne.evoked.EvokedArray:
         raise TypeError(
             "epoch is not an epoched data, "
             "please refer to eeg_objects to create an epoched data"

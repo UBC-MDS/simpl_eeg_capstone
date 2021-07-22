@@ -20,18 +20,18 @@ def test_EEG_File():
     # check attribute types
     eeg_file = eeg_objects.EEG_File(
         PATH,
-        file_name="test"
+        file_name="test.set"
     )
     assert eeg_file.experiment == FOLDER
     assert eeg_file.folder_path == PATH
     assert isinstance(eeg_file.raw, mne.io.eeglab.eeglab.RawEEGLAB)
-    assert isinstance(eeg_file.mat, dict)
+    #assert isinstance(eeg_file.events, list)
 
 
 def test_Epoch():
     epochs = eeg_objects.Epochs(
         PATH,
-        file_name="test"
+        file_name="test.set"
     )
 
     # check attribute types

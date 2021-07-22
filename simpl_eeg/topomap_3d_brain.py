@@ -115,14 +115,13 @@ def convert_figure_to_image(fig, img_height, img_width):
     else:
         plot_image = plot_image[cropped_height:, :, :]
     
-    print("type of plot image is" + str(type(plot_image)))
-    
     return plot_image
 
 
 def move_axes(ax, fig, copy = False):
     """
-    Moves or copies axes from one matplotlib.figure.Figure to another.
+    Helper function for plot_topomap_3d_brain and animate_matplot_brain. Moves or 
+    copies axes from one matplotlib.figure.Figure to another.
 
     Parameters:
         ax: matplotlib.axes._subplots.AxesSubplot
@@ -145,7 +144,7 @@ def move_axes(ax, fig, copy = False):
     fig.axes.append(ax)
     fig.add_axes(ax)
 
-def calculate_clim_values(cmin, cmid, cmax, colormap_limit_type):
+def calculate_clim_values(vmin, vmid, vmax, colormap_limit_type):
     """
     Creates clim_values to be used in colorbar/figure generation
 
@@ -158,27 +157,27 @@ def calculate_clim_values(cmin, cmid, cmax, colormap_limit_type):
 
     Returns:
     """
-    if (cmin is None) and (cmax is None):
+    if (vmin is None) and (vmax is None):
         clim_values = 'auto'
     else:
-        if cmin is None:
-            cmin = -cmax
-        if cmax is None:
-            cmax = -cmin
-        if cmid is None:
-            cmid = (cmin + cmax) / 2
+        if vmin is None:
+            vmin = -vmax
+        if vmax is None:
+            vmax = -vmin
+        if vmid is None:
+            vmid = (vmin + vmax) / 2
 
         if colormap_limit_type == 'lims':
             clim_values = dict(kind='value', lims=[
-                cmin,
-                cmid,
-                cmax]
+                vmin,
+                vmid,
+                vmax]
             )
         elif colormap_limit_type == 'pos_lims':
             clim_values = dict(kind='value', pos_lims=[
-                cmin,
-                cmid,
-                cmax]
+                vmin,
+                vmid,
+                vmax]
             )
     return clim_values
 
@@ -203,17 +202,15 @@ def create_fsaverage_forward(epoch, **kwargs):
     defaultKwargs = { 'n_jobs': 1, 'mindist': 5.0 }
     kwargs = { **defaultKwargs, **kwargs }
 
-    # Download fsaverage files
+    # Download fsaverage brain files (to use as 3D MRI brain for model)
     fs_dir = fetch_fsaverage(verbose=True)
     subjects_dir = op.dirname(fs_dir)
-
-    # Used to download/load example MRI brain model
-    # The files live in:
     subject = 'fsaverage'
     trans = 'fsaverage'  # MNE has a built-in fsaverage transformation
     src = op.join(fs_dir, 'bem', 'fsaverage-ico-5-src.fif')
     bem = op.join(fs_dir, 'bem', 'fsaverage-5120-5120-5120-bem-sol.fif')
 
+    # Make forward
     fwd = mne.make_forward_solution(epoch.info,
                                     trans=trans,
                                     src=src,
@@ -247,11 +244,6 @@ def create_inverse_solution(
         fwd: mne.forward.forward.Forward
             Specifies the 'forward' parameter in the mne.minimum_norm.make_inverse_operator() function.
 
-        epoch_num: int or 'all'
-            If input is an 'int' then this specifies which epoch in the 'epochs' number to build an
-            inverse solution from. If input is "all" then an inverse solution will be built from all
-            epochs.
-
         covariance_method: list
             Specifies the 'method' parameter in the mne.compute_covariance() function.
 
@@ -277,15 +269,15 @@ def create_inverse_solution(
             Forward operator built from the user_input epochs and the fsaverage brain.
     """
 
-    if type(epoch) == mne.epochs.Epochs:
-        if len(epoch.events) > 1:
-            raise Warning(
-                """Epoch with multiple events passed. The first event will be used to
-                generate the STC. If you wish to see a specific event_number please pass
-                epoch[event_number]. If you wish to see an averaged version of all of
-                your epochs please pass evoked data instead (generated using 
-                `evoked = epoch.average()`)"""
-            )
+    # if type(epoch) == mne.epochs.Epochs:
+    #     if len(epoch.events) > 1:
+    #         raise Warning(
+    #             """Epoch with multiple events passed. The first event will be used to
+    #             generate the STC. If you wish to see a specific event_number please pass
+    #             epoch[event_number]. If you wish to see an averaged version of all of
+    #             your epochs please pass evoked data instead (generated using 
+    #             `evoked = epoch.average()`)"""
+    #         )
 
     noise_cov = mne.compute_covariance(epoch, method=covariance_method)
 
@@ -293,8 +285,6 @@ def create_inverse_solution(
                                              loose=loose, depth=depth)
 
     lambda2 = 1.0 / snr ** 2
-
-    # If epoch_num is any string other than "all" return false
 
     if isinstance(epoch, mne.epochs.Epochs):
         stc = apply_inverse_epochs(epoch,
@@ -314,11 +304,40 @@ def create_inverse_solution(
     return stc
 
 def create_inverse_solution_auto(stc = 'auto', fwd = 'auto', epoch = None):
+    """
+    Helper function for plot_topomap_3d_brain(). Generates an inverse solution (stc) or passes
+    an already existing one through based on its parameters.
+
+    Parameters:
+        stc: mne.source_estimate.SourceEstimate or 'auto'
+            'inverse_solution' to generate the plot from. If set to "auto" then an stc will be
+            automatically generated from either an epoch or an epoch and a fwd, however, this
+            will significantly slow down rendering time. Defaults to 'auto'.
+    
+        fwd: mne.forward.forward.Forward or 'auto'
+            MNE forward object. If provided alongside an epoch they will both be used in
+            create_fsaverage_forward() to create an stc which the brain figure will then be
+            generated from. Defaults to 'auto'.
+        
+        epoch: mne.epochs.Epoch or None
+            MNE epochs object containing portions of raw EEG data built around specified
+            timestamp(s). If no fwd and stc are provided a fwd will be generated from the
+            epoch using create_fsaverage_forward(). The epoch and fwd (either provided or
+            generated) will then be used in create_inverse_solution() to generate an stc that
+            the brain figure will be generated from.
+
+    Returns:
+        mne.source_estimate.SourceEstimate:
+            inverse_solution ready to be used in plot function
+    """
     # Calculate stc/forward they are not provided in plotting function
     gen_stc = None
+
+    # Possibility 1: stc: no, fwd: no, Epoch: yes (slowest)
     if stc == 'auto' and fwd == 'auto' and epoch != None:
         gen_forward = create_fsaverage_forward(epoch)
         gen_stc = create_inverse_solution(epoch, gen_forward)
+    # Possibility 2: stc: no, fwd: yes, Epoch: yes
     elif stc == 'auto' and fwd != 'auto' and epoch != None:
         gen_stc = create_inverse_solution(epoch, fwd)
     elif stc != 'auto' and fwd != 'auto' and epoch != None:
@@ -355,9 +374,9 @@ def plot_topomap_3d_brain(
         hemi='both',
         colormap='mne',
         colormap_limit_type='lims',
-        cmin=None,
-        cmid=None,
-        cmax=None,
+        vmin=None,
+        vmid=None,
+        vmax=None,
         colorbar=True,
         time_viewer = 'auto',
         background='black',
@@ -436,32 +455,32 @@ def plot_topomap_3d_brain(
             this colormap provides a grey texture for the brain.
 
         colormap_limit_type: str
-            Can be either "lims" or "pos_lims". "lims" means that your cmin, cmid, and cmax values will specify the
-            "Lower, middle, and upper bounds for colormap". Using "pos_lims" will lead to cmin, cmid, and cmax representing
+            Can be either "lims" or "pos_lims". "lims" means that your vmin, vmid, and vmax values will specify the
+            "Lower, middle, and upper bounds for colormap". Using "pos_lims" will lead to vmin, vmid, and vmax representing
             the "Lower, middle, and upper bound for colormap. Positive values will be mirrored directly across
             zero during colormap construction to obtain negative control points." Defaults to "lims".
 
-        cmin: float
+        vmin: float
             Specifies the lower value of the colormap limit. If no value is specified then
             limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the negative value of cmax if only that is provided.
+            will be the negative value of vmax if only that is provided.
 
-        cmid: float
+        vmid: float
             Specifies the middle value of the colormap limit. If no value is specified then
             limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the value between cmin and cmax if one/both of them is provided.
+            will be the value between vmin and vmax if one/both of them is provided.
 
-        cmax: float
+        vmax: float
             Specifies the middle value of the colormap limit. If no value is specified then
             limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the negative value of cmin if only that is provided.
+            will be the negative value of vmin if only that is provided.
 
         colorbar: bool
             Determines whether to include a colorbar on the plot not. Defaults to True.
 
         time_viewer: bool or str
             Specifies the 'time_viewer' parameter in the mne.SourceEstimate.plot() function. 'auto' by default. With a
-            PyVista backend this will allow for the user to interact with the genreated plot. Has no effect on figures
+            PyVista backend this will allow for the user to interact with the generated plot. Has no effect on figures
             generated with the matplotlib backend. 
 
         background: matplotlib color
@@ -638,7 +657,7 @@ def plot_topomap_3d_brain(
         time_label_size = None
 
     # Set colorbar values
-    clim_values = calculate_clim_values(cmin, cmid, cmax, colormap_limit_type)
+    clim_values = calculate_clim_values(vmin, vmid, vmax, colormap_limit_type)
 
     def make_plot(
         views=views,
@@ -672,10 +691,11 @@ def plot_topomap_3d_brain(
         )
         return brain
     
-    
+    # Non matplotlib backend requires no additional tweaking
     if backend != 'matplotlib':
         return (make_plot())
 
+    # Single view for matplotlib backend. Fairly straightforward.
     elif (hemi == 'lh' and len(views) == 1) or (hemi == 'rh' and len(views) == 1):
         
         brain = make_plot(views=views[0])
@@ -688,6 +708,8 @@ def plot_topomap_3d_brain(
 
         return (brain)
 
+    # Multiple views for matplotlib backend. Requires signifcant pre-processing
+    # since this feature is not built into the plot_stc.plot() function
     else:
         if hemi == 'both' or hemi == 'split':
             brain_hemi = ['lh', 'rh']
@@ -839,9 +861,9 @@ def animate_matplot_brain(
     colormap='mne',
     colorbar = True,
     colormap_limit_type='lims',
-    cmin=None,
-    cmid=None,
-    cmax=None,
+    vmin=None,
+    vmid=None,
+    vmax=None,
     spacing='oct5',
     smoothing_steps=3,
     timestamp=True,
@@ -896,25 +918,25 @@ def animate_matplot_brain(
             Determines whether to include a colorbar on the plot not. Defaults to True.
 
         colormap_limit_type: str
-            Can be either "lims" or "pos_lims". "lims" means that your cmin, cmid, and cmax values will specify the
-            "Lower, middle, and upper bounds for colormap". Using "pos_lims" will lead to cmin, cmid, and cmax representing
+            Can be either "lims" or "pos_lims". "lims" means that your vmin, vmid, and vmax values will specify the
+            "Lower, middle, and upper bounds for colormap". Using "pos_lims" will lead to vmin, vmid, and vmax representing
             the "Lower, middle, and upper bound for colormap. Positive values will be mirrored directly across
             zero during colormap construction to obtain negative control points." Defaults to "lims".
 
-        cmin: float
+        vmin: float
             Specifies the lower value of the colormap limit. If no value is specified then
             limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the negative value of cmax if only that is provided.
+            will be the negative value of vmax if only that is provided.
 
-        cmid: float
+        vmid: float
             Specifies the middle value of the colormap limit. If no value is specified then
             limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the value between cmin and cmax if one/both of them is provided.
+            will be the value between vmin and vmax if one/both of them is provided.
 
-        cmax: float
+        vmax: float
             Specifies the middle value of the colormap limit. If no value is specified then
             limits will be automatically calculated based on the mne.SourceEstimate.plot() function defaults OR
-            will be the negative value of cmin if only that is provided.
+            will be the negative value of vmin if only that is provided.
 
         spacing: str
             Specifies the 'spacing' parameter in the mne.SourceEstimate.plot() function. "The spacing to use for the
@@ -990,9 +1012,9 @@ def animate_matplot_brain(
                                       spacing=spacing,
                                       smoothing_steps=smoothing_steps,
                                       colormap_limit_type='lims',
-                                      cmin=cmin,
-                                      cmid=cmid,
-                                      cmax=cmax,
+                                      vmin=vmin,
+                                      vmid=vmid,
+                                      vmax=vmax,
                                       size=size,
                                       recording_number=recording_number,
                                       figure=figure,
@@ -1002,8 +1024,8 @@ def animate_matplot_brain(
                                       )
                 )
 
+    # Create animation function if using a single view
     if (hemi == 'lh' and len(views) == 1) or (hemi == 'rh' and len(views) == 1):
-        # Plotting for single view/hemi matplotlib.figure.Figure
 
         fig, ax = plt.subplots(round(size/100), round(size/100))
         
@@ -1022,8 +1044,8 @@ def animate_matplot_brain(
 
             return[fig]
 
+    # Create animation function if using a multi-view
     else:
-        # Plotting for multi view/hemi matplotlib.image.AxesImage
         img_width = len(views)
         img_figsize = round(size / 100)
         
